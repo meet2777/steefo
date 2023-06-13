@@ -36,12 +36,6 @@
 @import shared_preferences_foundation;
 #endif
 
-#if __has_include(<smart_auth/SmartAuthPlugin.h>)
-#import <smart_auth/SmartAuthPlugin.h>
-#else
-@import smart_auth;
-#endif
-
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
@@ -50,7 +44,6 @@
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
   [PathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"PathProviderPlugin"]];
   [SharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"SharedPreferencesPlugin"]];
-  [SmartAuthPlugin registerWithRegistrar:[registry registrarForPlugin:@"SmartAuthPlugin"]];
 }
 
 @end
