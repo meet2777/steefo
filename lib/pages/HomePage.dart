@@ -1054,7 +1054,7 @@ class _HomePageState extends State<HomeContent> {
                     ),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        foregroundColor: Colors.black))
+                        foregroundColor: Colors.blue))
               ],
             );
           }
