@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=C:\flutter
-FLUTTER_APPLICATION_PATH=C:\StudioProjects\steffoApp-main\steffoApp-main
+FLUTTER_ROOT=C:\Users\admin\Downloads\flutter_windows_3.3.9-stable\flutter
+FLUTTER_APPLICATION_PATH=E:\steffoApp-main
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_TARGET=lib\main.dart
 FLUTTER_BUILD_DIR=build

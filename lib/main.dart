@@ -1,14 +1,11 @@
 import 'dart:async';
 
-import 'package:email_auth/email_auth.dart';
-import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stefomobileapp/pages/ChangePP.dart';
 import 'package:stefomobileapp/pages/DistBuyerspage.dart';
 import 'package:stefomobileapp/pages/EditableProfilePage.dart';
 import 'package:stefomobileapp/pages/ForgetPassPage.dart';
@@ -16,13 +13,13 @@ import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stefomobileapp/pages/LoginPage.dart';
 import 'package:stefomobileapp/pages/OTPPage.dart';
-import 'package:stefomobileapp/pages/OrdersPage.dart';
+import 'package:stefomobileapp/pages/Withsize.dart';
 import 'package:stefomobileapp/pages/ProfilePage.dart';
 import 'package:stefomobileapp/pages/RegistrationPage.dart';
 import 'package:stefomobileapp/pages/RequestPage.dart';
 import 'package:stefomobileapp/pages/PlaceOrderPage.dart';
 import 'package:stefomobileapp/pages/UserProfilePage.dart';
-import 'package:stefomobileapp/pages/addItem.dart';
+
 import 'package:stefomobileapp/pages/newPassPage.dart';
 import 'pages/LRPage.dart';
 import 'UI/common.dart';
