@@ -83,6 +83,7 @@ class _AddItemPageState extends State<AddItemContent> {
       r.cost = responseData3['data'][i]["tCost"];
       regionList.add(r);
     }
+    int abc;
 
     var res = await http.post(
         Uri.parse("http://urbanwebmobile.in/steffo/getinventory.php"),
