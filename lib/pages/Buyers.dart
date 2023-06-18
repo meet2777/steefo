@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stefomobileapp/Models/user.dart';
 import 'package:stefomobileapp/pages/DistBuyerspage.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
@@ -20,8 +22,23 @@ class buyerspage extends StatefulWidget {
 
 class _buyerspageState extends State<buyerspage> {
   var _selected = 2;
+  var userType;
+  loaduser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    userType = await prefs.getString('userType');
+    print(userType);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loaduser();
+  }
+
   @override
   Widget build(BuildContext context) {
+    loaduser();
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: appbar("Buyers", () {
@@ -117,31 +134,33 @@ class _buyerspageState extends State<buyerspage> {
         body: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(children: [
-              GestureDetector(
-                onTap: () {
-                  Get.to(DealerPage());
-                },
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  height: 120,
-                  width: double.infinity,
-                  padding: EdgeInsets.only(
-                    left: 10,
-                    right: 24,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(0xFF93C6E7),
-                  ),
-                  child: Text(
-                    'VIEW DISTRIBUTORS',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
+              userType != "Distributor"
+                  ? GestureDetector(
+                      onTap: () {
+                        Get.to(DealerPage());
+                      },
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 80,
+                        width: double.infinity,
+                        padding: EdgeInsets.only(
+                          left: 10,
+                          right: 24,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFF93C6E7),
+                        ),
+                        child: Text(
+                          'VIEW DISTRIBUTORS',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    )
+                  : Container(),
               SizedBox(
                 height: 10,
               ),
@@ -151,7 +170,7 @@ class _buyerspageState extends State<buyerspage> {
                 },
                 child: Container(
                   alignment: Alignment.centerLeft,
-                  height: 120,
+                  height: 80,
                   width: double.infinity,
                   padding: EdgeInsets.only(
                     left: 10,
@@ -180,7 +199,7 @@ class _buyerspageState extends State<buyerspage> {
                 },
                 child: Container(
                   alignment: Alignment.centerLeft,
-                  height: 120,
+                  height: 80,
                   width: double.infinity,
                   padding: EdgeInsets.only(
                     left: 10,

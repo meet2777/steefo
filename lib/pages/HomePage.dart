@@ -200,7 +200,7 @@ class _HomePageState extends State<HomeContent> {
             }
           }),
           floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerDocked,
+              FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: StylishBottomBar(
             option: AnimatedBarOptions(
               iconSize: 30,
@@ -217,7 +217,7 @@ class _HomePageState extends State<HomeContent> {
                 backgroundColor: Colors.grey,
                 //  selectedColor: Colors.cyanAccent,
                 selectedIcon:
-                const Icon(Icons.home_filled, color: Colors.black),
+                    const Icon(Icons.home_filled, color: Colors.black),
               ),
               BottomBarItem(
                   icon: const Icon(
@@ -242,7 +242,7 @@ class _HomePageState extends State<HomeContent> {
                   title: const Text('Cabin'),
                   backgroundColor: Colors.grey,
                   selectedIcon:
-                  const Icon(Icons.person_pin, color: Colors.blueAccent)),
+                      const Icon(Icons.person_pin, color: Colors.blueAccent)),
             ],
             //fabLocation: StylishBarFabLocation.center,
             hasNotch: false,
@@ -431,10 +431,10 @@ class _HomePageState extends State<HomeContent> {
                                                   "http://urbanwebmobile.in/steffo/delcar.php"),
                                               body: {
                                                 "id": responseData1['images'][i]
-                                                ['id']
+                                                        ['id']
                                                     .toString(),
                                                 "name": responseData1['images']
-                                                [i]['name'],
+                                                    [i]['name'],
                                               });
 
                                           responseData1['images'].removeAt(i);
@@ -656,7 +656,7 @@ class _HomePageState extends State<HomeContent> {
                   Text(
                     'Market is close',
                     style: TextStyle(
-                      // fontSize: 30,
+                        // fontSize: 30,
                         fontWeight: FontWeight.w600,
                         color: Colors.redAccent),
                   ),
@@ -694,7 +694,7 @@ class _HomePageState extends State<HomeContent> {
                             Colors.white60,
                           ],
                           NumberFormat.simpleCurrency(
-                              locale: 'hi-IN', decimalDigits: 0)
+                                  locale: 'hi-IN', decimalDigits: 0)
                               .format(int.parse(basePrice.toString())),
                           style: TextStyle(
                             letterSpacing: 2,
@@ -825,7 +825,7 @@ class _HomePageState extends State<HomeContent> {
                         child: Column(
                           children: [
                             Image.asset(
-                              "assets/images/basket.png",
+                              "assets/images/add-product.png",
                               height: 60,
                               width: 60,
                               //  color: Colors.blueGrey,
@@ -1129,183 +1129,183 @@ class _HomePageState extends State<HomeContent> {
       builder: (BuildContext context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return LayoutBuilder(builder: (context, constraint) {
-                // if (light == true) {
-                return Container(
-                  //  height: 100,
-                  child: LayoutBuilder(builder: (context, constraints) {
-                    if (editPrice == false) {
-                      return Column(
-                        mainAxisAlignment: user_type == "Manufacturer"
-                            ? MainAxisAlignment.spaceBetween
-                            : MainAxisAlignment.center,
+          return LayoutBuilder(builder: (context, constraint) {
+            // if (light == true) {
+            return Container(
+              //  height: 100,
+              child: LayoutBuilder(builder: (context, constraints) {
+                if (editPrice == false) {
+                  return Column(
+                    mainAxisAlignment: user_type == "Manufacturer"
+                        ? MainAxisAlignment.spaceBetween
+                        : MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "BASIC RATE PER TON",
+                        style: TextStyle(
+                            letterSpacing: 2,
+                            fontSize: 17,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Divider(
+                        color: Colors.white,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "BASIC RATE PER TON",
-                            style: TextStyle(
-                                letterSpacing: 2,
-                                fontSize: 17,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Divider(
-                            color: Colors.white,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GradientText(
-                                colors: [
-                                  Colors.white,
-                                  Colors.white,
-                                  Colors.white60,
-                                ],
-                                NumberFormat.simpleCurrency(
+                          GradientText(
+                            colors: [
+                              Colors.white,
+                              Colors.white,
+                              Colors.white60,
+                            ],
+                            NumberFormat.simpleCurrency(
                                     locale: 'hi-IN', decimalDigits: 0)
-                                    .format(int.parse(basePrice.toString())),
-                                style: TextStyle(
-                                  letterSpacing: 2,
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              Text(
-                                "/-",
-                                style: TextStyle(color: Colors.white, fontSize: 35),
-                              ),
-                            ],
+                                .format(int.parse(basePrice.toString())),
+                            style: TextStyle(
+                              letterSpacing: 2,
+                              fontSize: 35,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
-                          Divider(
-                            color: Colors.white,
+                          Text(
+                            "/-",
+                            style: TextStyle(color: Colors.white, fontSize: 35),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              user_type == "Manufacturer"
-                                  ? FlutterSwitch(
-                                borderRadius: 15,
-                                showOnOff: true,
-
-                                //  toggleSize: 50,
-                                onToggle: (bool value) async {
-                                  setState(() {
-                                    light = value;
-                                  });
-                                  var res = await http.post(
-                                      Uri.parse(
-                                          "http://urbanwebmobile.in/steffo/setsale.php"),
-                                      body: {"status": value.toString()});
-                                },
-
-                                // This bool value toggles the switch.
-                                value: light,
-                                inactiveColor: Colors.black,
-                                activeColor: Colors.white,
-                                activeToggleColor: Colors.black,
-                                inactiveTextColor: Colors.white,
-                                activeTextColor: Colors.black,
-                              )
-                                  : Container(),
-                              LayoutBuilder(builder: (context, constraints) {
-                                if (user_type == "Manufacturer") {
-                                  return Container(
-                                    // width:
-                                    //     MediaQuery.of(context).size.width * 0.2,
-                                    child: IconButton(
-                                      color: Colors.white,
-                                      onPressed: () {
-                                        setState(() {
-                                          editPrice = true;
-                                        });
-                                      },
-                                      icon: Icon(
-                                        Icons.edit,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              }),
-                            ],
-                          )
                         ],
-                      );
-                    } else {
-                      return Row(
+                      ),
+                      Divider(
+                        color: Colors.white,
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            child: TextFormField(
-                              // initialValue: price.toString(),
-                              keyboardType: TextInputType.number,
-                              textInputAction: TextInputAction.done,
-                              controller: newBasePrice,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700),
-                              cursorColor: Colors.white,
-                              decoration: const InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Colors.white, width: 2.0),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Colors.black, width: 4.0),
-                                ),
-                              ),
-                            ),
-                            width: MediaQuery.of(context).size.width / 3,
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                // print(newBasePrice.text);
-                                setState(() {
-                                  editPrice = false;
-                                  final numericRegex = RegExp(r'^[0-9]*$');
-                                  if (numericRegex.hasMatch(newBasePrice.text) &&
-                                      newBasePrice.text.trim() != "") {
-                                    price = int.parse(newBasePrice.text);
-                                    http.post(
+                          user_type == "Manufacturer"
+                              ? FlutterSwitch(
+                                  borderRadius: 15,
+                                  showOnOff: true,
+
+                                  //  toggleSize: 50,
+                                  onToggle: (bool value) async {
+                                    setState(() {
+                                      light = value;
+                                    });
+                                    var res = await http.post(
                                         Uri.parse(
-                                            "http://urbanwebmobile.in/steffo/setbaseprice.php"),
-                                        body: {
-                                          "basePrice": newBasePrice.text.toString()
-                                        });
-                                    basePrice = newBasePrice.text;
-                                  }
-                                });
-                              },
-                              child: Text(
-                                "Submit",
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: Colors.black))
+                                            "http://urbanwebmobile.in/steffo/setsale.php"),
+                                        body: {"status": value.toString()});
+                                  },
+
+                                  // This bool value toggles the switch.
+                                  value: light,
+                                  inactiveColor: Colors.black,
+                                  activeColor: Colors.white,
+                                  activeToggleColor: Colors.black,
+                                  inactiveTextColor: Colors.white,
+                                  activeTextColor: Colors.black,
+                                )
+                              : Container(),
+                          LayoutBuilder(builder: (context, constraints) {
+                            if (user_type == "Manufacturer") {
+                              return Container(
+                                // width:
+                                //     MediaQuery.of(context).size.width * 0.2,
+                                child: IconButton(
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    setState(() {
+                                      editPrice = true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }),
                         ],
-                      );
-                    }
-                  }),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: light
-                        ? Color.fromRGBO(19, 59, 78, 1.0)
-                        : Colors.blueGrey.shade100,
-                  ),
-                  padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 0),
-                );
-                // } else {
-                //   return Container();
-                // }
-              });
-            });
+                      )
+                    ],
+                  );
+                } else {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        child: TextFormField(
+                          // initialValue: price.toString(),
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          controller: newBasePrice,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700),
+                          cursorColor: Colors.white,
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.white, width: 2.0),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 4.0),
+                            ),
+                          ),
+                        ),
+                        width: MediaQuery.of(context).size.width / 3,
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            // print(newBasePrice.text);
+                            setState(() {
+                              editPrice = false;
+                              final numericRegex = RegExp(r'^[0-9]*$');
+                              if (numericRegex.hasMatch(newBasePrice.text) &&
+                                  newBasePrice.text.trim() != "") {
+                                price = int.parse(newBasePrice.text);
+                                http.post(
+                                    Uri.parse(
+                                        "http://urbanwebmobile.in/steffo/setbaseprice.php"),
+                                    body: {
+                                      "basePrice": newBasePrice.text.toString()
+                                    });
+                                basePrice = newBasePrice.text;
+                              }
+                            });
+                          },
+                          child: Text(
+                            "Submit",
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.black))
+                    ],
+                  );
+                }
+              }),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: light
+                    ? Color.fromRGBO(19, 59, 78, 1.0)
+                    : Colors.blueGrey.shade100,
+              ),
+              padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 0),
+            );
+            // } else {
+            //   return Container();
+            // }
+          });
+        });
       },
     );
   }
@@ -1355,7 +1355,7 @@ class _HomePageState extends State<HomeContent> {
               MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
               ModalRoute.withName(
                   '/') // Replace this with your root screen's route name (usually '/')
-          );
+              );
         },
         onCancelBtnTap: () {
           Get.back();

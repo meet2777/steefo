@@ -231,7 +231,7 @@ class _DealerPageState extends State<DealerContent1> {
                                     builder: (context) =>
                                         DealerDetailPage(user: child[index])));
                           },
-                          child: DealerCard(child[index], context)),
+                          child: BuilderCard(child[index], context)),
                       SizedBox(
                         height: 10,
                       )

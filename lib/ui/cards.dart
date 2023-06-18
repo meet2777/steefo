@@ -232,33 +232,32 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                                     bottomLeft: Radius.circular(10))),
                             child: Text(
                               order!.status!,
-
                             ));
-                      } else if(order.status == "Denied") {
+                      } else if (order.status == "Denied") {
                         return Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 5),
                             decoration: BoxDecoration(
                                 color: Colors.redAccent,
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
                             child: Text(
-                                order.status!,
-                              style: TextStyle(
-                                  color: Colors.white
-                              ),
+                              order.status!,
+                              style: TextStyle(color: Colors.white),
                             ));
-                      } else{
+                      } else {
                         return Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 5),
                             decoration: BoxDecoration(
                                 color: Colors.yellow,
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
                             child: Text(
                               order.status!,
-                              style: TextStyle(
-                                  color: Colors.white
-                              ),
+                              style: TextStyle(color: Colors.white),
                             ));
                       }
                     })),
