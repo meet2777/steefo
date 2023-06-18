@@ -43,7 +43,7 @@ class _buyerspageState extends State<buyerspage> {
                 Icons.home_filled,
               ),
               title: const Text('Abc'),
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.grey,
               selectedIcon: const Icon(Icons.home_filled, color: Colors.black),
             ),
             BottomBarItem(
@@ -51,7 +51,7 @@ class _buyerspageState extends State<buyerspage> {
                   Icons.inventory_2_rounded,
                 ),
                 title: const Text('Safety'),
-                backgroundColor: Colors.orange,
+                backgroundColor: Colors.grey,
                 selectedIcon: const Icon(Icons.inventory, color: Colors.black)),
             BottomBarItem(
                 icon: const Icon(
@@ -66,7 +66,7 @@ class _buyerspageState extends State<buyerspage> {
                   Icons.person_pin,
                 ),
                 title: const Text('Cabin'),
-                backgroundColor: Colors.purple,
+                backgroundColor: Colors.grey,
                 selectedIcon:
                     const Icon(Icons.person_pin, color: Colors.blueAccent)),
           ],

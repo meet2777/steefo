@@ -163,7 +163,7 @@ class _InventoryPageState extends State<InventoryContent> {
                   Icons.home_filled,
                 ),
                 title: const Text('Abc'),
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.grey,
                 selectedIcon:
                     const Icon(Icons.home_filled, color: Colors.blueAccent),
               ),
@@ -172,7 +172,7 @@ class _InventoryPageState extends State<InventoryContent> {
                     Icons.inventory_2_rounded,
                   ),
                   title: const Text('Safety'),
-                  backgroundColor: Colors.orange,
+                  backgroundColor: Colors.grey,
                   selectedIcon:
                       const Icon(Icons.inventory, color: Colors.black)),
               BottomBarItem(
@@ -187,7 +187,7 @@ class _InventoryPageState extends State<InventoryContent> {
                     Icons.person_pin,
                   ),
                   title: const Text('Cabin'),
-                  backgroundColor: Colors.purple,
+                  backgroundColor: Colors.grey,
                   selectedIcon:
                       const Icon(Icons.person_pin, color: Colors.blueAccent)),
             ],

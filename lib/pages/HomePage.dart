@@ -212,7 +212,7 @@ class _HomePageState extends State<HomeContent> {
                   Icons.home_outlined,
                 ),
                 title: const Text('Abc'),
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.grey,
                 //  selectedColor: Colors.cyanAccent,
                 selectedIcon:
                     const Icon(Icons.home_filled, color: Colors.black),
@@ -222,7 +222,7 @@ class _HomePageState extends State<HomeContent> {
                     Icons.inventory_2_rounded,
                   ),
                   title: const Text('Safety'),
-                  backgroundColor: Colors.orange,
+                  backgroundColor: Colors.grey,
                   selectedIcon: const Icon(Icons.inventory_2_rounded,
                       color: Colors.blueAccent)),
               BottomBarItem(
@@ -238,7 +238,7 @@ class _HomePageState extends State<HomeContent> {
                     Icons.person_pin,
                   ),
                   title: const Text('Cabin'),
-                  backgroundColor: Colors.purple,
+                  backgroundColor: Colors.grey,
                   selectedIcon:
                       const Icon(Icons.person_pin, color: Colors.blueAccent)),
             ],
