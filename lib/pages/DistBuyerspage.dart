@@ -232,10 +232,11 @@ class _DealerPageState extends State<DealerContent> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => DealerDetailPage(
-                                          user: child[index])));
+                                      builder: (context) =>
+                                          DistributorDetailPage(
+                                              user: child[index])));
                             },
-                            child: DealerCard(child[index], context)),
+                            child: DistributorCard(child[index], context)),
                         SizedBox(
                           height: 10,
                         )
