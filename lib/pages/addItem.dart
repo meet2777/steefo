@@ -440,6 +440,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                 "gradePrice": Price.text,
                                               });
                                           Navigator.pop(context);
+                                          
 
                                           setState(() {
                                             //   gradeList.length;
@@ -749,6 +750,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                             fontSize: 20),
                                       ),
                                       onPressed: () async {
+
                                         // print(newBasePrice.text);
                                         if (_formKey.currentState!.validate()) {
                                           await http.post(

@@ -1672,7 +1672,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       return dropdownTransType;
     }
 
-    List<DropdownMenuItem<String>> getOrderType() {
+    List<DropdownMenuItem<String>>getOrderType() {
       for (int i = 0; i < orderType.length; i++) {
         DropdownMenuItem<String> it = DropdownMenuItem(
           value: orderType[i],
@@ -1902,8 +1902,9 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               //--------------------------Loading Type--------------------------
 
               LayoutBuilder(builder: (context, constraints) {
-                if (selectedOrderType != "Lump-sum" &&
-                    (user_type == "Dealer" || user_type == "Distributor")) {
+                if (selectedOrderType != "Lump-sum"
+                    // (user_type == "Dealer" || user_type == "Distributor")
+                ){
                   return Column(
                     children: [
                       Container(

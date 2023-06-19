@@ -116,8 +116,6 @@ class DistributorDetailState extends State<DistributorDetailContent> {
     }
   }
 
-
-
   Widget DistributorDetailPageBody() {
     loadChildData();
     return SingleChildScrollView(

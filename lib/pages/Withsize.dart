@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/Models/item.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
-
 import '../Models/challan.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
@@ -627,10 +626,21 @@ class _OrdersPageState extends State<OrdersContent> {
                         fontFamily: "Poppins_Bold", color: Colors.grey),
                   ),
                   Padding(padding: EdgeInsets.only(right: 5)),
-                  Text(requestList[index].base_price!)
+                  Text(requestList[index].base_price!),
+
+                  Container(
+                    padding: EdgeInsets.only(left: 20),
+                    height: 30,
+                    child: VerticalDivider(
+                      color: Colors.grey,
+                      thickness: 2,
+                      width: 2,
+                    ),
+                  ),
                 ],
               ),
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -654,7 +664,6 @@ class _OrdersPageState extends State<OrdersContent> {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
-
                         setState(() {
                           print('setstate');
                           loadData();

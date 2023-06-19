@@ -232,8 +232,9 @@ class _DealerPageState extends State<DealerContent1> {
                                   builder: (context) =>
                                       DealerDetailPage(user: child[index])));
                         },
-                        child: userType == "Builder"
-                            ? Container(
+                        child:
+                        userType == "Builder" ?
+                        Container(
                                 height: 160,
                                 margin: EdgeInsets.all(10.0),
                                 padding: const EdgeInsets.all(8.0),
