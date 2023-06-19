@@ -36,38 +36,38 @@ class OrdersContent extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersContent> {
-  List<Item> qtyandprice = [];
-  loadDatafortotal() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    id = prefs.getString('id');
-    print(widget.order.orderType);
-    print(widget.order.loading_type);
-    print(widget.order.order_id);
+  // List<Item> qtyandprice = [];
+  // loadDatafortotal() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   id = prefs.getString('id');
+  //   print(widget.order.orderType);
+  //   print(widget.order.loading_type);
+  //   print(widget.order.order_id);
 
-    if (widget.order.orderType != "Lump-sum" &&
-        widget.order.orderType == "With Size") {
-      print(widget.order.order_id);
-      final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
-        body: {
-          "order_id": widget.order.order_id,
-        },
-      );
-      var responseData1 = jsonDecode(res.body);
-      for (int i = 0; i < responseData1["data"].length; i++) {
-        Item i = Item();
+  //   if (widget.order.orderType != "Lump-sum" &&
+  //       widget.order.orderType == "With Size") {
+  //     print(widget.order.order_id);
+  //     final res = await http.post(
+  //       Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
+  //       body: {
+  //         "order_id": widget.order.order_id,
+  //       },
+  //     );
+  //     var responseData1 = jsonDecode(res.body);
+  //     for (int i = 0; i < responseData1["data"].length; i++) {
+  //       Item i = Item();
 
-        i.name = responseData1['data'][i]['id'];
-        i.price = responseData1['data'][i]['price'];
-        i.qty = responseData1['data'][i]['qty'];
-        qtyandprice.add(i);
-      }
-      print(qtyandprice);
+  //       i.name = responseData1['data'][i]['id'];
+  //       i.price = responseData1['data'][i]['price'];
+  //       i.qty = responseData1['data'][i]['qty'];
+  //       qtyandprice.add(i);
+  //     }
+  //     print(qtyandprice);
 
-      // flag = 1;
-      setState(() {});
-    }
-  }
+  //     // flag = 1;
+  //     setState(() {});
+  //   }
+  // }
 
   int flag = 0;
   String? id;
@@ -627,7 +627,7 @@ class _OrdersPageState extends State<OrdersContent> {
                         fontFamily: "Poppins_Bold", color: Colors.grey),
                   ),
                   Padding(padding: EdgeInsets.only(right: 5)),
-                  Text(requestList[index].base_price!)
+                  Text(requestList[index].base_price.toString())
                 ],
               ),
             ),
@@ -647,7 +647,7 @@ class _OrdersPageState extends State<OrdersContent> {
                             "http://urbanwebmobile.in/steffo/approveorder.php"),
                         body: {
                           "decision": "Approved",
-                          "order_id": requestList[index].order_id!
+                          "order_id": requestList[index].order_id
                         },
                       );
                       () {
@@ -657,7 +657,7 @@ class _OrdersPageState extends State<OrdersContent> {
 
                         setState(() {
                           print('setstate');
-                          loadData();
+                          //  loadData();
                         });
                       }();
                       // Get.to(RequestPage());
@@ -676,7 +676,7 @@ class _OrdersPageState extends State<OrdersContent> {
                             "http://urbanwebmobile.in/steffo/approveorder.php"),
                         body: {
                           "decision": "Denied",
-                          "order_id": requestList[index].order_id!
+                          "order_id": requestList[index].order_id
                         },
                       );
                       () {
