@@ -150,6 +150,30 @@ class _DealerPageState extends State<DealerContent2> {
                         ],
                       );
                     });
+              } else if (userType == "Builder") {
+                return ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: child.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          InkWell(
+                              overlayColor:
+                                  MaterialStatePropertyAll(Colors.white),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DealerDetailPage(
+                                            user: child[index])));
+                              },
+                              child: DealerCard(child[index], context)),
+                          SizedBox(
+                            height: 10,
+                          )
+                        ],
+                      );
+                    });
               } else {
                 return Container();
               }

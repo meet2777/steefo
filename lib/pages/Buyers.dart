@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/user.dart';
-import 'package:stefomobileapp/pages/DistributorsPage.dart';
+import 'package:stefomobileapp/pages/DistBuyerspage.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
-import 'package:stefomobileapp/pages/builderspage.dart';
+import 'package:stefomobileapp/pages/buildersbuyerspage.dart';
 import 'package:stefomobileapp/pages/dealerbuyerspage.dart';
 import 'package:stefomobileapp/ui/common.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
@@ -27,13 +27,14 @@ class _buyerspageState extends State<buyerspage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     userType = await prefs.getString('userType');
+    setState(() {});
     print(userType);
   }
 
   @override
   void initState() {
     super.initState();
-    loaduser();
+    // loaduser();
   }
 
   @override
@@ -137,7 +138,7 @@ class _buyerspageState extends State<buyerspage> {
               userType != "Distributor"
                   ? GestureDetector(
                       onTap: () {
-                        Get.to(DistributorPage());
+                        Get.to(DealerPage());
                       },
                       child: Container(
                         alignment: Alignment.centerLeft,
@@ -164,31 +165,33 @@ class _buyerspageState extends State<buyerspage> {
               SizedBox(
                 height: 10,
               ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(buildersPage());
-                },
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  height: 80,
-                  width: double.infinity,
-                  padding: EdgeInsets.only(
-                    left: 10,
-                    right: 24,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(0xFF93C6E7),
-                  ),
-                  child: Text(
-                    'VIEW BUILDERS',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
+              userType != "Builder"
+                  ? GestureDetector(
+                      onTap: () {
+                        Get.to(DealerPage1());
+                      },
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 80,
+                        width: double.infinity,
+                        padding: EdgeInsets.only(
+                          left: 10,
+                          right: 24,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFF93C6E7),
+                        ),
+                        child: Text(
+                          'VIEW BUILDERS',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    )
+                  : Container(),
               SizedBox(
                 height: 10,
               ),

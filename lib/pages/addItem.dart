@@ -919,8 +919,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                     "http://urbanwebmobile.in/steffo/deleteregion.php"),
                                                                 body: {
                                                                   "regionName":
-                                                                      regionList[
-                                                                              ind]
+                                                                      regions[ind]
                                                                           .toString()
                                                                   // regionList[ind]
                                                                   //     .value

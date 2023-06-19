@@ -187,7 +187,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                       Row(
                         children: [
                           Text(
-                            order.user_id!.toUpperCase(),
+                            order.order_id!.toUpperCase(),
                             style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                     color: Colors.white,
