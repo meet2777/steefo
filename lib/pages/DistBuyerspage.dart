@@ -218,7 +218,32 @@ class _DealerPageState extends State<DealerContent> {
                       ],
                     );
                   });
-            } else if (userType == "Distributor") {
+            } else if (userType == "Builder") {
+              return ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: child.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        InkWell(
+                            overlayColor:
+                                MaterialStatePropertyAll(Colors.white),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DistributorDetailPage(
+                                              user: child[index])));
+                            },
+                            child: DistributorCard(child[index], context)),
+                        SizedBox(
+                          height: 10,
+                        )
+                      ],
+                    );
+                  });
+            } else if (userType == "Builder") {
               return ListView.builder(
                   physics: BouncingScrollPhysics(),
                   itemCount: child.length,

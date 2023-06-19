@@ -16,7 +16,8 @@ class Order {
       loading_type,
       order_date,
       orderType,
-      date;
+      date,
+      totalPrice;
 
   late List<Item> items;
 }

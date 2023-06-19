@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/pages/DealerDetailPage.dart';
 import 'package:stefomobileapp/pages/DistributorDetailPage.dart';
@@ -223,15 +224,95 @@ class _DealerPageState extends State<DealerContent1> {
                   return Column(
                     children: [
                       InkWell(
-                          overlayColor: MaterialStatePropertyAll(Colors.white),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DealerDetailPage(user: child[index])));
-                          },
-                          child: BuilderCard(child[index], context)),
+                        overlayColor: MaterialStatePropertyAll(Colors.white),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      DealerDetailPage(user: child[index])));
+                        },
+                        child: userType == "Builder"
+                            ? Container(
+                                height: 160,
+                                margin: EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  // gradient: LinearGradient(colors: [
+                                  //   Color.fromARGB(255, 228, 245, 181),
+                                  //   Color.fromARGB(255, 242, 255, 64)
+                                  // ]),
+
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  //  border: Border.all(color: Colors.black),
+                                  // border: Border.all(color: Colors.black),
+                                  color: Colors.grey.shade100,
+                                ),
+                                // margin: EdgeInsets.only(top: 20,),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                            padding: EdgeInsets.only(
+                                                top: 10, left: 5),
+                                            child: Text(
+                                              child[index].userType!,
+                                              style: GoogleFonts.raleway(
+                                                  textStyle: TextStyle(
+                                                      fontSize: 25,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.green)),
+                                              textAlign: TextAlign.left,
+                                            )),
+                                        Container(
+                                            padding: EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              child[index].orgName!,
+                                              style: GoogleFonts.raleway(
+                                                  textStyle: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              textAlign: TextAlign.left,
+                                              overflow: TextOverflow.visible,
+                                            )),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  1.5,
+                                              padding: EdgeInsets.only(
+                                                  top: 10, left: 5),
+                                              child: Text(
+                                                child[index].address!,
+                                                style: GoogleFonts.raleway(
+                                                    textStyle: TextStyle(
+                                                        fontSize: 15)),
+                                                textAlign: TextAlign.left,
+                                                overflow: TextOverflow.visible,
+                                                maxLines: 4,
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                    Expanded(
+                                        child: Container(
+                                            margin: EdgeInsets.only(right: 10),
+                                            child: Image.asset(
+                                                "assets/images/distributor.png")))
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                      ),
                       SizedBox(
                         height: 10,
                       )

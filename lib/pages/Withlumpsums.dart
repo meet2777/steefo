@@ -39,20 +39,24 @@ class _OrdersPageState extends State<OrdersContent> {
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: CustomTabBar(
-          // padding: EdgeInsets.only(left: 10,right: 10),
+            // padding: EdgeInsets.only(left: 10,right: 10),
             selectedCardColor: Colors.blueGrey,
             selectedTitleColor: Colors.white,
             unSelectedTitleColor: Colors.black,
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             unSelectedCardColor: Colors.white,
             titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             tabBarItemExtend: ((MediaQuery.of(context).size.width) / 2),
-            tabBarItems: ["Requests","Orders"],
+            tabBarItems: [
+              "Requests",
+              "Orders"
+            ],
             tabViewItems: [
               Container(child: OrderList1()),
-              Container(child: OrdersPageBody())]),
+              Container(child: OrdersPageBody())
+            ]),
       ),
     );
   }
@@ -288,8 +292,7 @@ class _OrdersPageState extends State<OrdersContent> {
   Widget orderwidget1(int index) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
-      child:
-      Container(
+      child: Container(
         margin: EdgeInsets.only(top: 10),
         // padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
@@ -333,7 +336,7 @@ class _OrdersPageState extends State<OrdersContent> {
                       Row(
                         children: [
                           Text(
-                            requestList[index].user_id!,
+                            requestList[index].order_id!,
                             style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                     color: Colors.white,
@@ -351,10 +354,9 @@ class _OrdersPageState extends State<OrdersContent> {
               height: 5,
             ),
             Container(
-              padding: EdgeInsets.only(top: 10,left: 10),
+              padding: EdgeInsets.only(top: 10, left: 10),
               alignment: Alignment.topLeft,
               child: Text(
-
                 requestList[index].user_name!.toUpperCase(),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
@@ -369,7 +371,6 @@ class _OrdersPageState extends State<OrdersContent> {
             ),
             // Divider(color: Colors.orangeAccent),
 
-
             Container(
               padding: EdgeInsets.only(left: 10),
               child: Row(
@@ -377,8 +378,10 @@ class _OrdersPageState extends State<OrdersContent> {
                 children: [
                   Text(
                     "Base Price:",
-                    style: TextStyle(fontFamily: "Poppins_Bold",color: Colors.grey),
-                  ),Padding(padding: EdgeInsets.only(right: 5)),
+                    style: TextStyle(
+                        fontFamily: "Poppins_Bold", color: Colors.grey),
+                  ),
+                  Padding(padding: EdgeInsets.only(right: 5)),
                   Text(requestList[index].base_price!)
                 ],
               ),
@@ -402,7 +405,7 @@ class _OrdersPageState extends State<OrdersContent> {
                           "order_id": requestList[index].order_id!
                         },
                       );
-                          () {
+                      () {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
@@ -416,7 +419,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     },
                     child: GradientText(
                       style:
-                      TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       colors: [Colors.greenAccent, Colors.greenAccent],
                       "Accept",
                     )),
@@ -431,7 +434,7 @@ class _OrdersPageState extends State<OrdersContent> {
                           "order_id": requestList[index].order_id!
                         },
                       );
-                          () {
+                      () {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
@@ -442,7 +445,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     },
                     child: GradientText(
                       style:
-                      TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       colors: [Colors.redAccent, Colors.red],
                       "Decline",
                     ))

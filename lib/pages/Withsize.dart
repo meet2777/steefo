@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:stefomobileapp/Models/item.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 
 import '../Models/challan.dart';
@@ -18,7 +19,7 @@ import 'OrderPage.dart';
 
 class OrdersPage extends StatelessWidget {
   final Order order;
-  OrdersPage({super.key,required this.order});
+  OrdersPage({super.key, required this.order});
   @override
   Widget build(BuildContext context) {
     return OrdersContent(order: order);
@@ -28,23 +29,55 @@ class OrdersPage extends StatelessWidget {
 
 class OrdersContent extends StatefulWidget {
   final Order order;
-  const OrdersContent({super.key,required this.order});
+  const OrdersContent({super.key, required this.order});
   final selected = 0;
   @override
   State<OrdersContent> createState() => _OrdersPageState();
 }
 
 class _OrdersPageState extends State<OrdersContent> {
+  List<Item> qtyandprice = [];
+  loadDatafortotal() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id = prefs.getString('id');
+    print(widget.order.orderType);
+    print(widget.order.loading_type);
+    print(widget.order.order_id);
 
-  int flag =0;
+    if (widget.order.orderType != "Lump-sum" &&
+        widget.order.orderType == "With Size") {
+      print(widget.order.order_id);
+      final res = await http.post(
+        Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
+        body: {
+          "order_id": widget.order.order_id,
+        },
+      );
+      var responseData1 = jsonDecode(res.body);
+      for (int i = 0; i < responseData1["data"].length; i++) {
+        Item i = Item();
+
+        i.name = responseData1['data'][i]['id'];
+        i.price = responseData1['data'][i]['price'];
+        i.qty = responseData1['data'][i]['qty'];
+        qtyandprice.add(i);
+      }
+      print(qtyandprice);
+
+      // flag = 1;
+      setState(() {});
+    }
+  }
+
+  int flag = 0;
   String? id;
   String? userType;
   List<Challan> challanList = [];
-  loadChallanList() async{
+  loadChallanList() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     id = await prefs.getString('id');
-    if(flag == 0){
+    if (flag == 0) {
       final res = await http.post(
         Uri.parse("http://urbanwebmobile.in/steffo/getchallanlist.php"),
         body: {"order_id": widget.order.order_id},
@@ -54,20 +87,23 @@ class _OrdersPageState extends State<OrdersContent> {
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Challan ch = Challan();
-        ch.order_id=responseData["data"][i]["order_id"];
-        ch.challan_id=responseData["data"][i]["challan_id"].toString();
-        ch.transporter_name=responseData["data"][i]["transporter_name"];
-        ch.vehicle_number=responseData["data"][i]["vehicle_number"];
-        ch.lr_number=responseData["data"][i]["lr_number"];
+        ch.order_id = responseData["data"][i]["order_id"];
+        ch.challan_id = responseData["data"][i]["challan_id"].toString();
+        ch.transporter_name = responseData["data"][i]["transporter_name"];
+        ch.vehicle_number = responseData["data"][i]["vehicle_number"];
+        ch.lr_number = responseData["data"][i]["lr_number"];
         challanList.add(ch);
       }
-      flag =1;
-      setState(() {
-
-      });
+      flag = 1;
+      setState(() {});
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    //loadDatafortotal();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,19 +119,23 @@ class _OrdersPageState extends State<OrdersContent> {
             selectedTitleColor: Colors.white,
             unSelectedTitleColor: Colors.black,
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             unSelectedCardColor: Colors.white,
             titleStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             tabBarItemExtend: ((MediaQuery.of(context).size.width) / 3),
             // tabBarItems: ["Orders", "Requests"],
-            tabBarItems: ["Reqeuests"," Confirmed Orders","Completed"],
+            tabBarItems: [
+              "Requests",
+              " Confirmed Orders",
+              "Completed"
+            ],
             // tabViewItems: [OrdersPageBody(), OrderList1()]
             tabViewItems: [
               Container(child: OrderList1()),
               Card(child: Container(child: ConfirmedOrders())),
-              Card(child: Container(child: ChallanListBody()))]
-        ),
+              Card(child: Container(child: ChallanListBody()))
+            ]),
       ),
     );
   }
@@ -201,6 +241,7 @@ class _OrdersPageState extends State<OrdersContent> {
   }
 
   Widget ConfirmedOrders() {
+    //loadDatafortotal();
     loadData();
     // loadData1();
     return Padding(
@@ -228,6 +269,7 @@ class _OrdersPageState extends State<OrdersContent> {
                       child: orderCard(
                         context,
                         salesOrderList[index],
+                        //  qtyandprice[index],
                         id,
                       ));
                 } else
@@ -248,28 +290,28 @@ class _OrdersPageState extends State<OrdersContent> {
     return Container(
         height: MediaQuery.of(context).size.height * 0.83,
         decoration: const BoxDecoration(
-          // gradient:
-          //         LinearGradient(transform: GradientRotation(1.07), colors: [
-          //   Color.fromRGBO(75, 100, 160, 1.0),
-          //   Color.fromRGBO(19, 59, 78, 1.0),
-          // ]
-          //         )
-        ),
+            // gradient:
+            //         LinearGradient(transform: GradientRotation(1.07), colors: [
+            //   Color.fromRGBO(75, 100, 160, 1.0),
+            //   Color.fromRGBO(19, 59, 78, 1.0),
+            // ]
+            //         )
+            ),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 decoration: const BoxDecoration(
-                  // color: Colors.grey,
-                  // borderRadius: BorderRadius.circular(20)
-                ),
+                    // color: Colors.grey,
+                    // borderRadius: BorderRadius.circular(20)
+                    ),
                 width: MediaQuery.of(context).size.width * 0.8,
                 margin: const EdgeInsets.only(top: 20),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children:  [
+                  children: [
                     Text(
                       "Order Id:",
                       style: TextStyle(fontFamily: "Poppins_Bold"),
@@ -303,11 +345,14 @@ class _OrdersPageState extends State<OrdersContent> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => GeneratedChallan(challan_id: challanList[index].challan_id!)
-                                        )
-                                    );
+                                            builder: (context) =>
+                                                GeneratedChallan(
+                                                    challan_id:
+                                                        challanList[index]
+                                                            .challan_id!)));
                                   },
-                                  child: ChallanCard(context, challanList[index]));
+                                  child:
+                                      ChallanCard(context, challanList[index]));
                             },
                           ),
                         ),
@@ -316,8 +361,6 @@ class _OrdersPageState extends State<OrdersContent> {
                   ),
                 ),
               ),
-
-
             ],
           ),
         ));
@@ -329,8 +372,8 @@ class _OrdersPageState extends State<OrdersContent> {
     return Card(
       child: Container(
         decoration: BoxDecoration(
-          // color: Colors.white, borderRadius: BorderRadius.circular(20)
-        ),
+            // color: Colors.white, borderRadius: BorderRadius.circular(20)
+            ),
         padding: EdgeInsets.all(5),
         margin: EdgeInsets.all(5),
         child: Column(
@@ -341,13 +384,13 @@ class _OrdersPageState extends State<OrdersContent> {
               children: [
                 Container(
                     child: const Text(
-                      "Challan ID:",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontFamily: "Poppins_Bold"),
-                    )),
+                  "Challan ID:",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontFamily: "Poppins_Bold"),
+                )),
                 Container(
                     padding: EdgeInsets.only(left: 65),
-                    child:  Text(
+                    child: Text(
                       challan.challan_id!.toString(),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontFamily: "Poppins_Bold"),
@@ -378,7 +421,6 @@ class _OrdersPageState extends State<OrdersContent> {
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                 children: [
                   Text("Vehicle Number:"),
                   Padding(
@@ -495,8 +537,7 @@ class _OrdersPageState extends State<OrdersContent> {
   Widget orderwidget1(int index) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
-      child:
-      Container(
+      child: Container(
         margin: EdgeInsets.only(top: 10),
         // padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
@@ -540,13 +581,12 @@ class _OrdersPageState extends State<OrdersContent> {
                       Row(
                         children: [
                           Text(
-                            requestList[index].user_id!,
+                            requestList[index].order_id!,
                             style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 17)
-                            ),
+                                    fontSize: 17)),
                           ),
                         ],
                       ),
@@ -559,10 +599,9 @@ class _OrdersPageState extends State<OrdersContent> {
               height: 5,
             ),
             Container(
-              padding: EdgeInsets.only(top: 10,left: 10),
+              padding: EdgeInsets.only(top: 10, left: 10),
               alignment: Alignment.topLeft,
               child: Text(
-
                 requestList[index].user_name!.toUpperCase(),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
@@ -577,7 +616,6 @@ class _OrdersPageState extends State<OrdersContent> {
             ),
             // Divider(color: Colors.orangeAccent),
 
-
             Container(
               padding: EdgeInsets.only(left: 10),
               child: Row(
@@ -585,8 +623,10 @@ class _OrdersPageState extends State<OrdersContent> {
                 children: [
                   Text(
                     "Base Price:",
-                    style: TextStyle(fontFamily: "Poppins_Bold",color: Colors.grey),
-                  ),Padding(padding: EdgeInsets.only(right: 5)),
+                    style: TextStyle(
+                        fontFamily: "Poppins_Bold", color: Colors.grey),
+                  ),
+                  Padding(padding: EdgeInsets.only(right: 5)),
                   Text(requestList[index].base_price!)
                 ],
               ),
@@ -610,7 +650,7 @@ class _OrdersPageState extends State<OrdersContent> {
                           "order_id": requestList[index].order_id!
                         },
                       );
-                          () {
+                      () {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
@@ -624,7 +664,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     },
                     child: GradientText(
                       style:
-                      TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       colors: [Colors.greenAccent, Colors.greenAccent],
                       "Accept",
                     )),
@@ -639,7 +679,7 @@ class _OrdersPageState extends State<OrdersContent> {
                           "order_id": requestList[index].order_id!
                         },
                       );
-                          () {
+                      () {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
@@ -650,7 +690,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     },
                     child: GradientText(
                       style:
-                      TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       colors: [Colors.redAccent, Colors.red],
                       "Decline",
                     ))
@@ -958,7 +998,6 @@ class _OrdersPageState extends State<OrdersContent> {
 //   );
 // }
 
-
 Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
   if (order.status == 'Confirmed') {
     return Card(
@@ -1000,6 +1039,10 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                             "ORDER ID",
                             style: TextStyle(color: Colors.grey),
                           ),
+                          // Text(
+                          //   item.price.toString(),
+                          //   style: TextStyle(color: Colors.grey),
+                          // ),
                           // SizedBox(
                           //   width: 180,
                           // ),
@@ -1012,7 +1055,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                       Row(
                         children: [
                           Text(
-                            order.user_id!.toUpperCase(),
+                            order.order_id!.toUpperCase(),
                             style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                     color: Colors.white,
@@ -1040,15 +1083,14 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                         color: Color.fromRGBO(19, 59, 78, 1.0),
                         // color: Colors.grey
                       ),
-                    )
-                ),
+                    )),
 
                 Container(
                     padding: EdgeInsets.only(top: 10),
                     child: LayoutBuilder(builder: (context, constraints) {
                       if (order.status == "Confirmed") {
                         return Container(
-                          // width: 40,
+                            // width: 40,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 5),
                             decoration: BoxDecoration(
@@ -1058,37 +1100,35 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                                     bottomLeft: Radius.circular(10))),
                             child: Text(
                               order!.status!,
-
                             ));
-                      } else if(order.status == "Denied") {
+                      } else if (order.status == "Denied") {
                         return Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 5),
                             decoration: BoxDecoration(
                                 color: Colors.redAccent,
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
                             child: Text(
                               order.status!,
-                              style: TextStyle(
-                                  color: Colors.white
-                              ),
+                              style: TextStyle(color: Colors.white),
                             ));
-                      } else{
+                      } else {
                         return Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 5),
                             decoration: BoxDecoration(
                                 color: Colors.yellow,
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
                             child: Text(
                               order.status!,
-                              style: TextStyle(
-                                  color: Colors.white
-                              ),
+                              style: TextStyle(color: Colors.white),
                             ));
                       }
                     })),
-
 
                 // Container(
                 //     padding: EdgeInsets.only(top: 10),
@@ -1173,7 +1213,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                   style: TextStyle(
-                    // color: Color.fromRGBO(19, 59, 78, 1.0),
+                      // color: Color.fromRGBO(19, 59, 78, 1.0),
                       color: Colors.grey),
                 ),
                 Container(
@@ -1186,8 +1226,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                   ),
                 ),
                 // Text( tot_price )
-                
-                
+
                 // Container(
                 //   child: Text(
                 //       item.price!

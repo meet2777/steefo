@@ -40,7 +40,9 @@ class _OrderPageState extends State<OrderPage> {
     print(widget.order!.orderType);
     print(widget.order!.loading_type);
     if (flag == 0) {
-      if (widget.order!.orderType != "Lump-sum"&& widget.order!.orderType =="With Size") {
+      if (widget.order!.orderType != "Lump-sum" &&
+          widget.order!.orderType == "With Size") {
+        print(widget.order!.order_id);
         final res = await http.post(
           Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
           body: {
@@ -60,6 +62,14 @@ class _OrderPageState extends State<OrderPage> {
           });
           tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
         }
+        listOfColumns.add({
+          "Sr_no": " ",
+          "Name": " ",
+          "Qty": "Total:",
+          "Price": tot_price.toString()
+          // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
+          //     .format(int.parse(tot_price.toString())),
+        });
       } else {
         final res = await http.post(
           Uri.parse("http://urbanwebmobile.in/steffo/getlumpsumorder.php"),

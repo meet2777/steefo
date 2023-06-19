@@ -27,13 +27,14 @@ class _buyerspageState extends State<buyerspage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     userType = await prefs.getString('userType');
+    setState(() {});
     print(userType);
   }
 
   @override
   void initState() {
     super.initState();
-    loaduser();
+    // loaduser();
   }
 
   @override
@@ -164,31 +165,33 @@ class _buyerspageState extends State<buyerspage> {
               SizedBox(
                 height: 10,
               ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(DealerPage1());
-                },
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  height: 80,
-                  width: double.infinity,
-                  padding: EdgeInsets.only(
-                    left: 10,
-                    right: 24,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(0xFF93C6E7),
-                  ),
-                  child: Text(
-                    'VIEW BUILDERS',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
+              userType != "Builder"
+                  ? GestureDetector(
+                      onTap: () {
+                        Get.to(DealerPage1());
+                      },
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 80,
+                        width: double.infinity,
+                        padding: EdgeInsets.only(
+                          left: 10,
+                          right: 24,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFF93C6E7),
+                        ),
+                        child: Text(
+                          'VIEW BUILDERS',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    )
+                  : Container(),
               SizedBox(
                 height: 10,
               ),
