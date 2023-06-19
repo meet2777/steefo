@@ -9,7 +9,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stefomobileapp/pages/DistBuyerspage.dart';
+import 'package:stefomobileapp/pages/DistributorsPage.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stefomobileapp/pages/OrderPage.dart';
 import 'package:stefomobileapp/pages/ProfilePage.dart';
@@ -158,7 +158,7 @@ class _HomePageState extends State<HomeContent> {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) =>
-                          DealerPage(),
+                          DistributorPage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),

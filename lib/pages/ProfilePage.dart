@@ -10,7 +10,7 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 // import '../Models/order.dart';
 import '../Models/user.dart';
 import '../UI/common.dart';
-import 'DistBuyerspage.dart';
+import 'DistributorsPage.dart';
 import 'HomePage.dart';
 
 class ProfilePage extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/pages/DealerDetailPage.dart';
-import 'package:stefomobileapp/pages/DistributorDetailPage.dart';
+import 'package:stefomobileapp/pages/InformationPage.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stefomobileapp/pages/EditableProfilePage.dart';
@@ -16,20 +16,20 @@ import '../Models/user.dart';
 import '../ui/common.dart';
 import 'ProfilePage.dart';
 
-class DealerPage extends StatelessWidget {
+class buildersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return DealerContent();
+    return DealerContent1();
   }
 }
 
-class DealerContent extends StatefulWidget {
-  const DealerContent({super.key});
+class DealerContent1 extends StatefulWidget {
+  const DealerContent1({super.key});
   @override
-  State<DealerContent> createState() => _DealerPageState();
+  State<DealerContent1> createState() => _DealerPageState();
 }
 
-class _DealerPageState extends State<DealerContent> {
+class _DealerPageState extends State<DealerContent1> {
   var _selected = 2;
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _DealerPageState extends State<DealerContent> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: appbar("Distributors", () {
+        appBar: appbar("Builders", () {
           Navigator.pop(context);
         }),
         body: DealerPageBody(),
@@ -147,7 +147,7 @@ class _DealerPageState extends State<DealerContent> {
         //       }
         //     });
         //   },
-        // ),
+        // )
       ),
     );
   }
@@ -192,62 +192,56 @@ class _DealerPageState extends State<DealerContent> {
     //loadChildData();
     return LayoutBuilder(builder: (context, constraints) {
       if (isDataReady) {
-        return Container(
-          margin: EdgeInsets.only(top: 20),
-          child: LayoutBuilder(builder: (context, constraints) {
-            if (userType == "Manufacturer") {
-              return ListView.builder(
-                  //  physics: BouncingScrollPhysics(),
-                  itemCount: child.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          DistributorDetailPage(
-                                              user: child[index])));
-                            },
-                            child: DistributorCard(child[index], context)),
-                        // SizedBox(
-                        //   height: 10,
-                        // )
-                      ],
-                    );
-                  });
-            } else if (userType == "Distributor") {
-              return ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: child.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        InkWell(
-                            overlayColor:
-                                MaterialStatePropertyAll(Colors.white),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          DistributorDetailPage(
-                                              user: child[index])));
-                            },
-                            child: DistributorCard(child[index], context)),
-                        SizedBox(
-                          height: 10,
-                        )
-                      ],
-                    );
-                  });
-            } else {
-              return Container();
-            }
-          }),
-        );
+        return LayoutBuilder(builder: (context, constraints) {
+          if (userType == "Manufacturer") {
+            return ListView.builder(
+                //  physics: BouncingScrollPhysics(),
+                itemCount: child.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DistributorDetailPage(
+                                        user: child[index])));
+                          },
+                          child: BuilderCard(child[index], context)),
+                      SizedBox(
+                        height: 10,
+                      )
+                    ],
+                  );
+                });
+          } else if (userType == "Distributor") {
+            return ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: child.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      InkWell(
+                          overlayColor: MaterialStatePropertyAll(Colors.white),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        DealerDetailPage(user: child[index])));
+                          },
+                          child: BuilderCard(child[index], context)),
+                      SizedBox(
+                        height: 10,
+                      )
+                    ],
+                  );
+                });
+          } else {
+            return Container();
+          }
+        });
       } else {
         return Center(
             child: CircularProgressIndicator(

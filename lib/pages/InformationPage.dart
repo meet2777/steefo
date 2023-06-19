@@ -45,7 +45,8 @@ class DistributorDetailState extends State<DistributorDetailContent> {
       appBar: appbar("Information", () {
         Navigator.pop(context);
       }),
-      body: DistributorDetailPageBody(),
+      body: DistributorDetailPageBody()
+      // DistributorDetailPageBody(),
     );
   }
 
@@ -114,6 +115,8 @@ class DistributorDetailState extends State<DistributorDetailContent> {
       setState(() {});
     }
   }
+
+
 
   Widget DistributorDetailPageBody() {
     loadChildData();
@@ -311,34 +314,34 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
-                  child: Container(
-                    // width: 500,
-                    // width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                          itemCount: child.length,
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DealerDetailPage(
-                                                  user: child[index])));
-                                },
-                                child: DealerCard(child[index], context));
-                          },
-                        ),
-                      ],
+                    child: Container(
+                      // width: 500,
+                      // width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            itemCount: child.length,
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DealerDetailPage(
+                                                    user: child[index])));
+                                  },
+                                  child: DealerCard(child[index], context));
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: SingleChildScrollView(

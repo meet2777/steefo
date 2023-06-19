@@ -6,7 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stefomobileapp/pages/DistBuyerspage.dart';
+import 'package:stefomobileapp/pages/DistributorsPage.dart';
 import 'package:stefomobileapp/pages/EditableProfilePage.dart';
 import 'package:stefomobileapp/pages/ForgetPassPage.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         '/register': (BuildContext context) => RegistrationPage(),
         '/home': (BuildContext context) => HomePage(),
         '/inventory': (BuildContext context) => InventoryPage(),
-        '/dealer': (BuildContext context) => DealerPage(),
+        '/dealer': (BuildContext context) => DistributorPage(),
         '/orderreq': (BuildContext context) => RequestPage(),
         //'/challanlist': (BuildContext context) => ChallanListPage(),
         '/placeorder': (BuildContext context) => PlaceOrderPage(),
