@@ -33,23 +33,26 @@ class _OrdersPageState extends State<OrdersContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appbar("Orders & Requests", () {
+      appBar: appbar("Lump-Sums", () {
         Get.to(HomePage());
       }),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: CustomTabBar(
+          // padding: EdgeInsets.only(left: 10,right: 10),
             selectedCardColor: Colors.blueGrey,
             selectedTitleColor: Colors.white,
             unSelectedTitleColor: Colors.black,
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             unSelectedCardColor: Colors.white,
             titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             tabBarItemExtend: ((MediaQuery.of(context).size.width) / 2),
-            tabBarItems: ["Orders", "Requests"],
-            tabViewItems: [OrdersPageBody(), OrderList1()]),
+            tabBarItems: ["Requests","Orders"],
+            tabViewItems: [
+              Container(child: OrderList1()),
+              Container(child: OrdersPageBody())]),
       ),
     );
   }
@@ -285,9 +288,10 @@ class _OrdersPageState extends State<OrdersContent> {
   Widget orderwidget1(int index) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
-      child: Container(
+      child:
+      Container(
         margin: EdgeInsets.only(top: 10),
-        padding: const EdgeInsets.all(8.0),
+        // padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.grey.shade100,
@@ -295,62 +299,86 @@ class _OrdersPageState extends State<OrdersContent> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                Container(
+                  //  height: 50,
+                  padding: EdgeInsets.only(left: 10, top: 10, right: 10),
+                  width: MediaQuery.of(context).size.width / 1.06,
+                  // color: Colors.red,
+                  decoration: BoxDecoration(
+                      color: Color.fromRGBO(19, 59, 78, 1.0),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Padding(padding: EdgeInsets.only(left: 5)),
+                          // Align(alignment: Alignment.topRight,),
+                          Text(
+                            "ORDER ID",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(
+                            requestList[index].order_date!.substring(0, 10),
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            requestList[index].user_id!,
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
             SizedBox(
               height: 5,
             ),
-            Text(
-              requestList[index].user_name!.toUpperCase(),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 3,
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Container(
+              padding: EdgeInsets.only(top: 10,left: 10),
+              alignment: Alignment.topLeft,
+              child: Text(
+
+                requestList[index].user_name!.toUpperCase(),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             SizedBox(
-              height: 5,
+              height: 10,
             ),
-            Divider(color: Colors.orangeAccent),
+            // Divider(color: Colors.orangeAccent),
+
+
             Container(
+              padding: EdgeInsets.only(left: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Text(
-                      "Organization Name:",
-                      style: TextStyle(fontFamily: "Poppins_Bold"),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                  ),
-                  Text(
-                    requestList[index].party_name!,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                  )
-                ],
-              ),
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Order Date:",
-                    style: TextStyle(fontFamily: "Poppins_Bold"),
-                  ),
-                  Text(requestList[index].order_date!.substring(0, 10))
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Base Price:",
-                    style: TextStyle(fontFamily: "Poppins_Bold"),
-                  ),
+                    style: TextStyle(fontFamily: "Poppins_Bold",color: Colors.grey),
+                  ),Padding(padding: EdgeInsets.only(right: 5)),
                   Text(requestList[index].base_price!)
                 ],
               ),
@@ -374,7 +402,7 @@ class _OrdersPageState extends State<OrdersContent> {
                           "order_id": requestList[index].order_id!
                         },
                       );
-                      () {
+                          () {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
@@ -388,8 +416,8 @@ class _OrdersPageState extends State<OrdersContent> {
                     },
                     child: GradientText(
                       style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                      colors: [Colors.greenAccent, Colors.grey],
+                      TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      colors: [Colors.greenAccent, Colors.greenAccent],
                       "Accept",
                     )),
 
@@ -403,7 +431,7 @@ class _OrdersPageState extends State<OrdersContent> {
                           "order_id": requestList[index].order_id!
                         },
                       );
-                      () {
+                          () {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
@@ -414,8 +442,8 @@ class _OrdersPageState extends State<OrdersContent> {
                     },
                     child: GradientText(
                       style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                      colors: [Colors.redAccent, Colors.grey],
+                      TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      colors: [Colors.redAccent, Colors.red],
                       "Decline",
                     ))
               ],

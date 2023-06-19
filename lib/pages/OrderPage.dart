@@ -40,7 +40,7 @@ class _OrderPageState extends State<OrderPage> {
     print(widget.order!.orderType);
     print(widget.order!.loading_type);
     if (flag == 0) {
-      if (widget.order!.orderType != "Lump-sum") {
+      if (widget.order!.orderType != "Lump-sum"&& widget.order!.orderType =="With Size") {
         final res = await http.post(
           Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
           body: {

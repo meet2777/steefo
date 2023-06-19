@@ -45,66 +45,67 @@ class _RequestPageState extends State<RequestContent> {
         }),
         extendBodyBehindAppBar: false,
         body: RequestPageBody(),
-        bottomNavigationBar: StylishBottomBar(
-          option: AnimatedBarOptions(
-            iconSize: 30,
-            //barAnimation: BarAnimation.liquid,
-            iconStyle: IconStyle.simple,
-            opacity: 0.3,
-          ),
-
-          items: [
-            BottomBarItem(
-              icon: const Icon(
-                Icons.home_filled,
-              ),
-              title: const Text('Abc'),
-              backgroundColor: Colors.red,
-              selectedIcon: const Icon(Icons.home_filled, color: Colors.black),
-            ),
-            BottomBarItem(
-                icon: const Icon(
-                  Icons.inventory_2_rounded,
-                ),
-                title: const Text('Safety'),
-                backgroundColor: Colors.orange,
-                selectedIcon: const Icon(Icons.inventory_2_rounded,
-                    color: Colors.blueAccent)),
-            BottomBarItem(
-                icon: const Icon(
-                  Icons.warehouse_rounded,
-                ),
-                title: const Text('Safety'),
-                backgroundColor: Colors.orange,
-                selectedIcon: const Icon(Icons.warehouse_rounded,
-                    color: Colors.blueAccent)),
-            BottomBarItem(
-                icon: const Icon(
-                  Icons.person_pin,
-                ),
-                title: const Text('Cabin'),
-                backgroundColor: Colors.purple,
-                selectedIcon:
-                    const Icon(Icons.person_pin, color: Colors.blueAccent)),
-          ],
-          //fabLocation: StylishBarFabLocation.center,
-          hasNotch: false,
-          onTap: (index) {
-            setState(() {
-              if (index == 0) {
-                Navigator.of(context).popAndPushNamed('/home');
-              }
-
-              if (index == 1) {
-                Navigator.of(context).popAndPushNamed('/inventory');
-              }
-
-              if (index == 2) {
-                Navigator.of(context).popAndPushNamed('/dealer');
-              }
-            });
-          },
-        ));
+        // bottomNavigationBar: StylishBottomBar(
+        //   option: AnimatedBarOptions(
+        //     iconSize: 30,
+        //     //barAnimation: BarAnimation.liquid,
+        //     iconStyle: IconStyle.simple,
+        //     opacity: 0.3,
+        //   ),
+        //
+        //   items: [
+        //     BottomBarItem(
+        //       icon: const Icon(
+        //         Icons.home_filled,
+        //       ),
+        //       title: const Text('Abc'),
+        //       backgroundColor: Colors.grey,
+        //       selectedIcon: const Icon(Icons.home_filled, color: Colors.black),
+        //     ),
+        //     BottomBarItem(
+        //         icon: const Icon(
+        //           Icons.inventory_2_rounded,
+        //         ),
+        //         title: const Text('Safety'),
+        //         backgroundColor: Colors.grey,
+        //         selectedIcon: const Icon(Icons.inventory_2_rounded,
+        //             color: Colors.blueAccent)),
+        //     BottomBarItem(
+        //         icon: const Icon(
+        //           Icons.warehouse_rounded,
+        //         ),
+        //         title: const Text('Safety'),
+        //         backgroundColor: Colors.grey,
+        //         selectedIcon: const Icon(Icons.warehouse_rounded,
+        //             color: Colors.blueAccent)),
+        //     BottomBarItem(
+        //         icon: const Icon(
+        //           Icons.person_pin,
+        //         ),
+        //         title: const Text('Cabin'),
+        //         backgroundColor: Colors.grey,
+        //         selectedIcon:
+        //             const Icon(Icons.person_pin, color: Colors.blueAccent)),
+        //   ],
+        //   //fabLocation: StylishBarFabLocation.center,
+        //   hasNotch: false,
+        //   onTap: (index) {
+        //     setState(() {
+        //       if (index == 0) {
+        //         Navigator.of(context).popAndPushNamed('/home');
+        //       }
+        //
+        //       if (index == 1) {
+        //         Navigator.of(context).popAndPushNamed('/inventory');
+        //       }
+        //
+        //       if (index == 2) {
+        //         Navigator.of(context).popAndPushNamed('/dealer');
+        //       }
+        //     });
+        //   },
+        // )
+    );
   }
 
   //----------------------------------PageBody----------------------------------

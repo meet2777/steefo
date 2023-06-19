@@ -528,7 +528,8 @@ class _ChallanPageState extends State<ChallanPage> {
                                               DataCell(Text(element["Name"]!)),
                                               DataCell(Text(element["Qty"]!)),
                                             ],
-                                          )),
+                                          )
+                                      ),
                                     )
                                     .toList(),
                               ),

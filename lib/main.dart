@@ -21,6 +21,7 @@ import 'package:stefomobileapp/pages/PlaceOrderPage.dart';
 import 'package:stefomobileapp/pages/UserProfilePage.dart';
 
 import 'package:stefomobileapp/pages/newPassPage.dart';
+import 'Models/order.dart';
 import 'pages/LRPage.dart';
 import 'UI/common.dart';
 
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
         '/orderreq': (BuildContext context) => RequestPage(),
         //'/challanlist': (BuildContext context) => ChallanListPage(),
         '/placeorder': (BuildContext context) => PlaceOrderPage(),
-        '/orders': (BuildContext context) => OrdersPage(),
+        '/orders': (BuildContext context) => OrdersPage(order:Order(),),
         //'/gnchallan': (BuildContext context) => GenerateChallanPage(),
         //'/order': (BuildContext context) => OrderDetails(),
         // '/challan': (BuildContext context) => GeneratedChallan(),
