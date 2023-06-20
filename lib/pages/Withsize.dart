@@ -7,28 +7,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/Models/item.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
-
 import '../Models/challan.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
-import '../ui/cards.dart';
+
 import '../ui/custom_tabbar.dart';
 import 'GenerateChallanPage.dart';
 import 'GeneratedChallanPage.dart';
 import 'OrderPage.dart';
 
-class OrdersPage extends StatelessWidget {
-  final Order order;
-  OrdersPage({super.key, required this.order});
-  @override
-  Widget build(BuildContext context) {
-    return OrdersContent(order: order);
-    //  throw UnimplementedError();
-  }
-}
+// class OrdersPage extends StatelessWidget {
+//   Order order;
+//   OrdersPage({super.key, required this.order});
+//   @override
+//   Widget build(BuildContext context) {
+//     return OrdersContent(order: order);
+//     //  throw UnimplementedError();
+//   }
+// }
 
 class OrdersContent extends StatefulWidget {
-  final Order order;
+  final Order? order;
   const OrdersContent({super.key, required this.order});
   final selected = 0;
   @override
@@ -36,38 +35,39 @@ class OrdersContent extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersContent> {
-  // List<Item> qtyandprice = [];
-  // loadDatafortotal() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   id = prefs.getString('id');
-  //   print(widget.order.orderType);
-  //   print(widget.order.loading_type);
-  //   print(widget.order.order_id);
+  List<Item> qtyandprice = [];
 
-  //   if (widget.order.orderType != "Lump-sum" &&
-  //       widget.order.orderType == "With Size") {
-  //     print(widget.order.order_id);
-  //     final res = await http.post(
-  //       Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
-  //       body: {
-  //         "order_id": widget.order.order_id,
-  //       },
-  //     );
-  //     var responseData1 = jsonDecode(res.body);
-  //     for (int i = 0; i < responseData1["data"].length; i++) {
-  //       Item i = Item();
+  loadDatafortotal() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id = prefs.getString('id');
+    print(widget.order!.orderType);
+    print(widget.order!.loading_type);
+    print("${widget.order!.order_id}order id");
 
-  //       i.name = responseData1['data'][i]['id'];
-  //       i.price = responseData1['data'][i]['price'];
-  //       i.qty = responseData1['data'][i]['qty'];
-  //       qtyandprice.add(i);
-  //     }
-  //     print(qtyandprice);
+    if (widget.order!.orderType != "Lump-sum" &&
+        widget.order!.orderType == "With Size") {
+      print(widget.order!.order_id);
+      final res = await http.post(
+        Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
+        body: {
+          "order_id": widget.order!.order_id,
+        },
+      );
+      var responseData1 = jsonDecode(res.body);
+      for (int i = 0; i < responseData1["data"].length; i++) {
+        Item i = Item();
 
-  //     // flag = 1;
-  //     setState(() {});
-  //   }
-  // }
+        i.name = responseData1['data'][i]['id'];
+        i.price = responseData1['data'][i]['price'];
+        i.qty = responseData1['data'][i]['qty'];
+        qtyandprice.add(i);
+      }
+      print(qtyandprice);
+
+      // flag = 1;
+      setState(() {});
+    }
+  }
 
   int flag = 0;
   String? id;
@@ -80,7 +80,7 @@ class _OrdersPageState extends State<OrdersContent> {
     if (flag == 0) {
       final res = await http.post(
         Uri.parse("http://urbanwebmobile.in/steffo/getchallanlist.php"),
-        body: {"order_id": widget.order.order_id},
+        body: {"order_id": widget.order!.order_id},
       );
       var responseData = jsonDecode(res.body);
       print(responseData);
@@ -102,7 +102,7 @@ class _OrdersPageState extends State<OrdersContent> {
   @override
   void initState() {
     super.initState();
-    //loadDatafortotal();
+    //  loadDatafortotal();
   }
 
   @override
@@ -318,7 +318,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 8.0),
-                      child: Text(widget.order.order_id.toString()),
+                      child: Text(widget.order!.order_id.toString()),
                     )
                   ],
                 ),
@@ -627,7 +627,7 @@ class _OrdersPageState extends State<OrdersContent> {
                         fontFamily: "Poppins_Bold", color: Colors.grey),
                   ),
                   Padding(padding: EdgeInsets.only(right: 5)),
-                  Text(requestList[index].base_price.toString())
+                  Text(requestList[index].base_price!)
                 ],
               ),
             ),
@@ -647,17 +647,17 @@ class _OrdersPageState extends State<OrdersContent> {
                             "http://urbanwebmobile.in/steffo/approveorder.php"),
                         body: {
                           "decision": "Approved",
-                          "order_id": requestList[index].order_id
+                          "order_id": requestList[index].order_id!
                         },
                       );
                       () {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
-
+                        requestList.removeAt(index);
                         setState(() {
-                          print('setstate');
-                          //  loadData();
+                          // print('setstate');
+                          // loadData();
                         });
                       }();
                       // Get.to(RequestPage());
@@ -676,14 +676,15 @@ class _OrdersPageState extends State<OrdersContent> {
                             "http://urbanwebmobile.in/steffo/approveorder.php"),
                         body: {
                           "decision": "Denied",
-                          "order_id": requestList[index].order_id
+                          "order_id": requestList[index].order_id!
                         },
                       );
                       () {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
+                        requestList.removeAt(index);
                         id = "none";
-                        loadData();
+                        // loadData();
                         setState(() {});
                         // Get.to(RequestPage());
                       }();

@@ -19,6 +19,7 @@ import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stefomobileapp/pages/ProfilePage.dart';
 
 import 'package:stefomobileapp/pages/Withlumpsums.dart';
+import 'package:stefomobileapp/pages/Withsize.dart';
 import 'package:stefomobileapp/pages/purchases.dart';
 import 'package:stefomobileapp/ui/common.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
@@ -727,6 +728,11 @@ class _HomePageState extends State<HomeContent> {
                 width: MediaQuery.of(context).size.width / 3.2,
                 child: GestureDetector(
                     onTap: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) =>
+                      //             OrdersPage(order: salesOrderList)));
                       Navigator.of(context).pushNamed('/orders');
                     },
                     child: Column(

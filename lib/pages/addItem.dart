@@ -6,6 +6,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/ui/custom_tabbar.dart';
 import '../Models/grade.dart';
 import '../Models/region.dart';
@@ -439,8 +440,18 @@ class _AddItemPageState extends State<AddItemContent> {
                                                 "gradeName": newGrade.text,
                                                 "gradePrice": Price.text,
                                               });
-                                          Navigator.pop(context);
-
+                                          // Navigator.pop(context);
+                                          Get.to(HomePage());
+                                          Get.showSnackbar(
+                                            GetSnackBar(
+                                              title: "",
+                                              message:
+                                                  'Item added successfully!',
+                                              //  icon: const Icon(Icons.refresh),
+                                              duration:
+                                                  const Duration(seconds: 3),
+                                            ),
+                                          );
                                           setState(() {
                                             //   gradeList.length;
                                           });
@@ -758,8 +769,18 @@ class _AddItemPageState extends State<AddItemContent> {
                                                 "sizeName": newSize.text,
                                                 "sizePrice": newSizeprice.text,
                                               });
-                                          Navigator.pop(context);
-
+                                          // Navigator.pop(context);
+                                          Get.to(HomePage());
+                                          Get.showSnackbar(
+                                            GetSnackBar(
+                                              title: "",
+                                              message:
+                                                  'Item added successfully!',
+                                              //  icon: const Icon(Icons.refresh),
+                                              duration:
+                                                  const Duration(seconds: 3),
+                                            ),
+                                          );
                                           setState(() {
                                             //   gradeList.length;
                                           });
@@ -1058,7 +1079,18 @@ class _AddItemPageState extends State<AddItemContent> {
                                                         newRegion.text,
                                                     "tCost": RegionPrice.text,
                                                   });
-                                              Navigator.pop(context);
+
+                                              Get.to(HomePage());
+                                              Get.showSnackbar(
+                                                GetSnackBar(
+                                                  title: "",
+                                                  message:
+                                                      'Item added successfully!',
+                                                  //  icon: const Icon(Icons.refresh),
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                ),
+                                              );
 
                                               setState(() {
                                                 //   gradeList.length;
