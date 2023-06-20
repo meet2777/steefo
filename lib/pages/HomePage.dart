@@ -1196,16 +1196,17 @@ class _HomePageState extends State<HomeContent> {
                                   //  toggleSize: 50,
                                   onToggle: (bool value) async {
                                     setState(() {
-                                      light = value;
+                                      isSalesEnabled = value.toString();
                                     });
+
                                     var res = await http.post(
                                         Uri.parse(
                                             "http://urbanwebmobile.in/steffo/setsale.php"),
-                                        body: {"status": value.toString()});
+                                        body: {"status": isSalesEnabled});
                                   },
 
                                   // This bool value toggles the switch.
-                                  value: light,
+                                  value: bool.parse(isSalesEnabled.toString()),
                                   inactiveColor: Colors.black,
                                   activeColor: Colors.white,
                                   activeToggleColor: Colors.black,
@@ -1301,7 +1302,7 @@ class _HomePageState extends State<HomeContent> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: light
+                color: isSalesEnabled == "true"
                     ? Color.fromRGBO(19, 59, 78, 1.0)
                     : Colors.blueGrey.shade100,
               ),
@@ -1336,6 +1337,13 @@ class _HomePageState extends State<HomeContent> {
       }
       setState(() {});
     } catch (e) {
+      Get.showSnackbar(
+        GetSnackBar(
+          message: 'Image size is larger than expected!',
+          //  icon: const Icon(Icons.refresh),
+          duration: const Duration(seconds: 3),
+        ),
+      );
       print("Image Error");
     }
   }
