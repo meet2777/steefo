@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/pages/DealerDetailPage.dart';
-import 'package:stefomobileapp/pages/DistributorDetailPage.dart';
+import 'package:stefomobileapp/pages/InformationPage.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stefomobileapp/pages/EditableProfilePage.dart';

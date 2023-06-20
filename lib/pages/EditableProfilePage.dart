@@ -5,7 +5,7 @@ import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:http/http.dart' as http;
-import 'DistBuyerspage.dart';
+import 'DistributorsPage.dart';
 import 'HomePage.dart';
 
 class EditableProfilePage extends StatelessWidget {
@@ -620,7 +620,7 @@ class _ProfilePageState extends State<ProfileContent> {
                   context,
                   PageRouteBuilder(
                     pageBuilder: (context, animation1, animation2) =>
-                        DealerPage(),
+                        DistributorPage(),
                     transitionDuration: Duration.zero,
                     reverseTransitionDuration: Duration.zero,
                   ),

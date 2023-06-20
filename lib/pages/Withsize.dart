@@ -10,24 +10,24 @@ import 'package:stefomobileapp/pages/HomePage.dart';
 import '../Models/challan.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
-
+import '../ui/cards.dart';
 import '../ui/custom_tabbar.dart';
 import 'GenerateChallanPage.dart';
 import 'GeneratedChallanPage.dart';
 import 'OrderPage.dart';
 
-// class OrdersPage extends StatelessWidget {
-//   Order order;
-//   OrdersPage({super.key, required this.order});
-//   @override
-//   Widget build(BuildContext context) {
-//     return OrdersContent(order: order);
-//     //  throw UnimplementedError();
-//   }
-// }
+class OrdersPage extends StatelessWidget {
+  final Order order;
+  OrdersPage({super.key, required this.order});
+  @override
+  Widget build(BuildContext context) {
+    return OrdersContent(order: order);
+    //  throw UnimplementedError();
+  }
+}
 
 class OrdersContent extends StatefulWidget {
-  final Order? order;
+  final Order order;
   const OrdersContent({super.key, required this.order});
   final selected = 0;
   @override
@@ -36,21 +36,20 @@ class OrdersContent extends StatefulWidget {
 
 class _OrdersPageState extends State<OrdersContent> {
   List<Item> qtyandprice = [];
-
   loadDatafortotal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id');
-    print(widget.order!.orderType);
-    print(widget.order!.loading_type);
-    print("${widget.order!.order_id}order id");
+    print(widget.order.orderType);
+    print(widget.order.loading_type);
+    print(widget.order.order_id);
 
-    if (widget.order!.orderType != "Lump-sum" &&
-        widget.order!.orderType == "With Size") {
-      print(widget.order!.order_id);
+    if (widget.order.orderType != "Lump-sum" &&
+        widget.order.orderType == "With Size") {
+      print(widget.order.order_id);
       final res = await http.post(
         Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
         body: {
-          "order_id": widget.order!.order_id,
+          "order_id": widget.order.order_id,
         },
       );
       var responseData1 = jsonDecode(res.body);
@@ -80,7 +79,7 @@ class _OrdersPageState extends State<OrdersContent> {
     if (flag == 0) {
       final res = await http.post(
         Uri.parse("http://urbanwebmobile.in/steffo/getchallanlist.php"),
-        body: {"order_id": widget.order!.order_id},
+        body: {"order_id": widget.order.order_id},
       );
       var responseData = jsonDecode(res.body);
       print(responseData);
@@ -102,7 +101,7 @@ class _OrdersPageState extends State<OrdersContent> {
   @override
   void initState() {
     super.initState();
-    //  loadDatafortotal();
+    //loadDatafortotal();
   }
 
   @override
@@ -318,7 +317,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 8.0),
-                      child: Text(widget.order!.order_id.toString()),
+                      child: Text(widget.order.order_id.toString()),
                     )
                   ],
                 ),
@@ -627,10 +626,21 @@ class _OrdersPageState extends State<OrdersContent> {
                         fontFamily: "Poppins_Bold", color: Colors.grey),
                   ),
                   Padding(padding: EdgeInsets.only(right: 5)),
-                  Text(requestList[index].base_price!)
+                  Text(requestList[index].base_price!),
+
+                  Container(
+                    padding: EdgeInsets.only(left: 20),
+                    height: 30,
+                    child: VerticalDivider(
+                      color: Colors.grey,
+                      thickness: 2,
+                      width: 2,
+                    ),
+                  ),
                 ],
               ),
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -654,10 +664,9 @@ class _OrdersPageState extends State<OrdersContent> {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
-                        requestList.removeAt(index);
                         setState(() {
-                          // print('setstate');
-                          // loadData();
+                          print('setstate');
+                          loadData();
                         });
                       }();
                       // Get.to(RequestPage());
@@ -682,9 +691,8 @@ class _OrdersPageState extends State<OrdersContent> {
                       () {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
-                        requestList.removeAt(index);
                         id = "none";
-                        // loadData();
+                        loadData();
                         setState(() {});
                         // Get.to(RequestPage());
                       }();

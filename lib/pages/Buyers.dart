@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/user.dart';
-import 'package:stefomobileapp/pages/DistBuyerspage.dart';
+import 'package:stefomobileapp/pages/DistributorsPage.dart';
+import 'package:stefomobileapp/pages/DistributorsPage.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
-import 'package:stefomobileapp/pages/buildersbuyerspage.dart';
+import 'package:stefomobileapp/pages/builderspage.dart';
 import 'package:stefomobileapp/pages/dealerbuyerspage.dart';
 import 'package:stefomobileapp/ui/common.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
@@ -138,7 +139,7 @@ class _buyerspageState extends State<buyerspage> {
               userType != "Distributor"
                   ? GestureDetector(
                       onTap: () {
-                        Get.to(DealerPage());
+                        Get.to(DistributorPage());
                       },
                       child: Container(
                         alignment: Alignment.centerLeft,
@@ -165,10 +166,10 @@ class _buyerspageState extends State<buyerspage> {
               SizedBox(
                 height: 10,
               ),
-              userType != "Builder"
+              userType != "Builder"&& userType!="Distributor"
                   ? GestureDetector(
                       onTap: () {
-                        Get.to(DealerPage1());
+                        Get.to(buildersPage());
                       },
                       child: Container(
                         alignment: Alignment.centerLeft,

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/lumpsum.dart';
 import 'package:stefomobileapp/pages/Buyers.dart';
-import 'package:stefomobileapp/pages/DistBuyerspage.dart';
+import 'package:stefomobileapp/pages/DistributorsPage.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/ProfilePage.dart';
 import 'package:stefomobileapp/ui/cards.dart';

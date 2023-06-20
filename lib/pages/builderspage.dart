@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/pages/DealerDetailPage.dart';
-import 'package:stefomobileapp/pages/DistributorDetailPage.dart';
+import 'package:stefomobileapp/pages/InformationPage.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stefomobileapp/pages/EditableProfilePage.dart';
@@ -17,7 +17,7 @@ import '../Models/user.dart';
 import '../ui/common.dart';
 import 'ProfilePage.dart';
 
-class DealerPage1 extends StatelessWidget {
+class buildersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DealerContent1();
@@ -232,8 +232,9 @@ class _DealerPageState extends State<DealerContent1> {
                                   builder: (context) =>
                                       DealerDetailPage(user: child[index])));
                         },
-                        child: userType == "Builder"
-                            ? Container(
+                        child:
+                        userType == "Builder" ?
+                        Container(
                                 height: 160,
                                 margin: EdgeInsets.all(10.0),
                                 padding: const EdgeInsets.all(8.0),

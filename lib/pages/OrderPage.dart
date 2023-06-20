@@ -373,7 +373,7 @@ class _OrderPageState extends State<OrderPage> {
                                       style: TextStyle(
                                           fontSize: 22,
                                           fontWeight: FontWeight.bold),
-                                      colors: [Colors.greenAccent, Colors.grey],
+                                      colors: [Colors.green, Colors.green],
                                       "Accept",
                                     ))),
                             const SizedBox(
@@ -399,9 +399,10 @@ class _OrderPageState extends State<OrderPage> {
                                     style: TextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold),
-                                    colors: [Colors.redAccent, Colors.grey],
+                                    colors: [Colors.redAccent, Colors.redAccent],
                                   ),
-                                )),
+                                )
+                            ),
                           ],
                         ),
                       );
