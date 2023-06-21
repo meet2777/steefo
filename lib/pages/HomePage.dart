@@ -19,7 +19,6 @@ import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stefomobileapp/pages/ProfilePage.dart';
 
 import 'package:stefomobileapp/pages/Withlumpsums.dart';
-import 'package:stefomobileapp/pages/Withsize.dart';
 import 'package:stefomobileapp/pages/purchases.dart';
 import 'package:stefomobileapp/ui/common.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';

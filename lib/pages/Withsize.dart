@@ -160,6 +160,7 @@ class _OrdersPageState extends State<OrdersContent> {
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+        req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
@@ -627,7 +628,6 @@ class _OrdersPageState extends State<OrdersContent> {
                   ),
                   Padding(padding: EdgeInsets.only(right: 5)),
                   Text(requestList[index].base_price!),
-
                   Container(
                     padding: EdgeInsets.only(left: 20),
                     height: 30,
@@ -662,7 +662,7 @@ class _OrdersPageState extends State<OrdersContent> {
                       );
                       () {
                         // orderList.add(requestList[index]);
-                        // requestList.removeAt(index);
+                        requestList.removeAt(index);
                         id = "none";
                         setState(() {
                           print('setstate');
@@ -690,7 +690,7 @@ class _OrdersPageState extends State<OrdersContent> {
                       );
                       () {
                         // orderList.add(requestList[index]);
-                        // requestList.removeAt(index);
+                        requestList.removeAt(index);
                         id = "none";
                         loadData();
                         setState(() {});
@@ -1048,10 +1048,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                             "ORDER ID",
                             style: TextStyle(color: Colors.grey),
                           ),
-                          // Text(
-                          //   item.price.toString(),
-                          //   style: TextStyle(color: Colors.grey),
-                          // ),
+
                           // SizedBox(
                           //   width: 180,
                           // ),
@@ -1207,33 +1204,65 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
               height: 10,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(padding: EdgeInsets.only(left: 10)),
+                //  Padding(padding: EdgeInsets.only(left: 10)),
                 Container(
-                  child: Text(
-                    "Base Price:",
-                    style: TextStyle(
-                        fontFamily: "Poppins_Bold", color: Colors.grey),
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Base Price:",
+                        style: TextStyle(
+                            fontFamily: "Poppins_Bold", color: Colors.grey),
+                      ),
+                      Text(
+                        order.base_price!,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        style: TextStyle(
+                            // color: Color.fromRGBO(19, 59, 78, 1.0),
+                            color: Colors.grey),
+                      ),
+                    ],
                   ),
-                  padding: EdgeInsets.only(right: 5),
+                  //  padding: EdgeInsets.only(right: 5),
                 ),
-                Text(
-                  order.base_price!,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: TextStyle(
-                      // color: Color.fromRGBO(19, 59, 78, 1.0),
-                      color: Colors.grey),
-                ),
+
+                // Container(
+                //   padding: EdgeInsets.only(left: 20),
+                //   height: 30,
+                //   child: VerticalDivider(
+                //     color: Colors.grey,
+                //     thickness: 2,
+                //     width: 2,
+                //   ),
+                // ),
                 Container(
-                  padding: EdgeInsets.only(left: 20),
-                  height: 30,
-                  child: VerticalDivider(
-                    color: Colors.grey,
-                    thickness: 2,
-                    width: 2,
+                  padding: EdgeInsets.only(right: 10),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Quantity:",
+                        style: TextStyle(
+                            fontFamily: "Poppins_Bold", color: Colors.grey),
+                      ),
+                      Text(
+                        order.totalQuantity.toString()!,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        style: TextStyle(
+                            // color: Color.fromRGBO(19, 59, 78, 1.0),
+                            color: Colors.grey),
+                      ),
+                    ],
                   ),
+                  //  padding: EdgeInsets.only(right: 5),
                 ),
+                // Text(
+                //   "${order.totalQuantity!.toString()}",
+                //   style: TextStyle(color: Colors.black),
+                // ),
                 // Text( tot_price )
 
                 // Container(

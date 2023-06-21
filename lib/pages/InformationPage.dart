@@ -41,13 +41,13 @@ class DistributorDetailState extends State<DistributorDetailContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: appbar("Information", () {
-        Navigator.pop(context);
-      }),
-      body: DistributorDetailPageBody()
-      // DistributorDetailPageBody(),
-    );
+        backgroundColor: Colors.white,
+        appBar: appbar("Information", () {
+          Navigator.pop(context);
+        }),
+        body: DistributorDetailPageBody()
+        // DistributorDetailPageBody(),
+        );
   }
 
   var f = 0;
@@ -132,7 +132,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             tabBarItemExtend: ((MediaQuery.of(context).size.width) / 3),
             tabViewItemHeight: MediaQuery.of(context).size.height * 0.7,
-            selectedCardColor: Colors.lightBlueAccent,
+            selectedCardColor: Colors.blueGrey,
 
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             //tabBarItemExtend: ((MediaQuery.of(context).size.width)),
@@ -312,34 +312,34 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
-                    child: Container(
-                      // width: 500,
-                      // width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        children: [
-                          ListView.builder(
-                            itemCount: child.length,
-                            physics: const BouncingScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DealerDetailPage(
-                                                    user: child[index])));
-                                  },
-                                  child: DealerCard(child[index], context));
-                            },
-                          ),
-                        ],
-                      ),
+                  child: Container(
+                    // width: 500,
+                    // width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                          itemCount: child.length,
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DealerDetailPage(
+                                                  user: child[index])));
+                                },
+                                child: DealerCard(child[index], context));
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: SingleChildScrollView(
