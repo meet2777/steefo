@@ -727,6 +727,11 @@ class _HomePageState extends State<HomeContent> {
                 width: MediaQuery.of(context).size.width / 3.2,
                 child: GestureDetector(
                     onTap: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) =>
+                      //             OrdersPage(order: salesOrderList)));
                       Navigator.of(context).pushNamed('/orders');
                     },
                     child: Column(
@@ -1158,7 +1163,7 @@ class _HomePageState extends State<HomeContent> {
                             colors: [
                               Colors.white,
                               Colors.white,
-                              Colors.white,
+                              Colors.white60,
                             ],
                             NumberFormat.simpleCurrency(
                                     locale: 'hi-IN', decimalDigits: 0)
@@ -1189,18 +1194,18 @@ class _HomePageState extends State<HomeContent> {
 
                                   //  toggleSize: 50,
                                   onToggle: (bool value) async {
-                                    
                                     setState(() {
-                                      light = value;
+                                      isSalesEnabled = value.toString();
                                     });
+
                                     var res = await http.post(
                                         Uri.parse(
                                             "http://urbanwebmobile.in/steffo/setsale.php"),
-                                        body: {"status": value.toString()});
+                                        body: {"status": isSalesEnabled});
                                   },
 
                                   // This bool value toggles the switch.
-                                  value: light,
+                                  value: bool.parse(isSalesEnabled.toString()),
                                   inactiveColor: Colors.black,
                                   activeColor: Colors.white,
                                   activeToggleColor: Colors.black,
@@ -1282,11 +1287,9 @@ class _HomePageState extends State<HomeContent> {
                               }
                             });
                           },
-                          child:SingleChildScrollView (
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
+                          child: Text(
+                            "Submit",
+                            style: TextStyle(fontWeight: FontWeight.w600),
                           ),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
@@ -1298,10 +1301,9 @@ class _HomePageState extends State<HomeContent> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: light
-                    // ? Color.fromRGBO(19, 59, 78, 1.0)
-                    ? Colors.green
-                    : Colors.redAccent,
+                color: isSalesEnabled == "true"
+                    ? Color.fromRGBO(19, 59, 78, 1.0)
+                    : Colors.blueGrey.shade100,
               ),
               padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 0),
             );
@@ -1334,6 +1336,13 @@ class _HomePageState extends State<HomeContent> {
       }
       setState(() {});
     } catch (e) {
+      Get.showSnackbar(
+        GetSnackBar(
+          message: 'Image size is larger than expected!',
+          //  icon: const Icon(Icons.refresh),
+          duration: const Duration(seconds: 3),
+        ),
+      );
       print("Image Error");
     }
   }

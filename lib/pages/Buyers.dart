@@ -166,7 +166,7 @@ class _buyerspageState extends State<buyerspage> {
               SizedBox(
                 height: 10,
               ),
-              userType != "Builder"&& userType!="Distributor"
+              userType != "Builder"
                   ? GestureDetector(
                       onTap: () {
                         Get.to(buildersPage());

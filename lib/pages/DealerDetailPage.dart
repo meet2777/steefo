@@ -36,6 +36,7 @@ class DealerDetailState extends State<DealerDetailContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: appbar("Dealer Info", () {
         Navigator.pop(context);
       }),
@@ -93,7 +94,7 @@ class DealerDetailState extends State<DealerDetailContent> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                elevation: 15,
+                elevation: 0,
                 child: Column(
                   children: [
                     Container(
@@ -230,44 +231,52 @@ class DealerDetailState extends State<DealerDetailContent> {
         ),
         Expanded(
           flex: 1,
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: EdgeInsets.all(5),
-            elevation: 10,
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    Text(
-                      "Orders",
-                      style: GoogleFonts.poppins(
-                          textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    ListView.builder(
-                      itemCount: orderList.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        print(orderList.length);
-                        return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => OrderDetails(
-                                          order: orderList[index])));
-                            },
-                            child: orderCard(
-                                context, orderList[index], widget.user.id));
-                      },
-                    ),
-                  ],
-                ),
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 10),
+                  //   child: Text(
+                  //     "Orders",
+                  //     style: GoogleFonts.poppins(
+                  //         textStyle: TextStyle(
+                  //             fontWeight: FontWeight.bold, fontSize: 20)),
+                  //   ),
+                  // ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Divider(
+                    color: Colors.blueGrey,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  ListView.builder(
+                    itemCount: orderList.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      print(orderList.length);
+                      return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        OrderDetails(order: orderList[index])));
+                          },
+                          child: orderCard(
+                              context, orderList[index], widget.user.id));
+                    },
+                  ),
+                ],
               ),
             ),
           ),

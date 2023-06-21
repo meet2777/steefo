@@ -409,10 +409,10 @@ class _OrdersPageState extends State<OrdersContent> {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
-
+                        requestList.removeAt(index);
                         setState(() {
-                          print('setstate');
-                          loadData();
+                          // print('setstate');
+                          // loadData();
                         });
                       }();
                       // Get.to(RequestPage());
@@ -438,7 +438,8 @@ class _OrdersPageState extends State<OrdersContent> {
                         // orderList.add(requestList[index]);
                         // requestList.removeAt(index);
                         id = "none";
-                        loadData();
+                        requestList.removeAt(index);
+                        // loadData();
                         setState(() {});
                         // Get.to(RequestPage());
                       }();

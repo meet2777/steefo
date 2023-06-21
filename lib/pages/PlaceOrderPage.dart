@@ -1342,7 +1342,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       selectedRegion,
       selectedTransType,
       selectedOrderType;
-
   TextEditingController qty = TextEditingController();
   TextEditingController party_name = TextEditingController();
   TextEditingController party_address = TextEditingController();
@@ -1526,7 +1525,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       }
     }
     var res = await http.post(
-      Uri.parse("http://urbanwebmobile.in/steffo/placeorder.php"),
+      Uri.parse("http://urbanwebmobile.in/steffo/placeOrder.php"),
       body: selectedOrderType == "Lump-sum"
           ? {
               "userId": id!,
@@ -1540,7 +1539,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "loadingType": "None",
               "transportationType": "None",
               "orderType": selectedOrderType,
-              "totalQuantity": totalQuantity,
+              "totalQuantity": totalQuantity.toString(),
+              "totalPrice": "1200",
             }
           : {
               "userId": id!,
@@ -1553,7 +1553,9 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "status": "Pending",
               "loadingType": selectedType,
               "orderType": selectedOrderType,
-              "transportationType": selectedTransType
+              "transportationType": selectedTransType,
+              "totalQuantity": totalQuantity.toString(),
+              "totalPrice": "1200",
             },
     );
     Fluttertoast.showToast(
@@ -1674,7 +1676,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       return dropdownTransType;
     }
 
-    List<DropdownMenuItem<String>>getOrderType() {
+    List<DropdownMenuItem<String>> getOrderType() {
       for (int i = 0; i < orderType.length; i++) {
         DropdownMenuItem<String> it = DropdownMenuItem(
           value: orderType[i],
@@ -1906,7 +1908,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               LayoutBuilder(builder: (context, constraints) {
                 if (selectedOrderType != "Lump-sum"
                     // (user_type == "Dealer" || user_type == "Distributor")
-                ){
+                    ) {
                   return Column(
                     children: [
                       Container(
@@ -2460,9 +2462,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       ),
                       Align(
                         child: Container(
-                            child: Text(
-                                "Total = $totalQuantity Tons",
-
+                            child: Text("Total = $totalQuantity Tons",
                                 style: TextStyle(
                                     color: Colors.blueAccent,
                                     fontWeight: FontWeight.w700)),
