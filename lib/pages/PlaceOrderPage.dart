@@ -1342,6 +1342,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       selectedRegion,
       selectedTransType,
       selectedOrderType;
+
   TextEditingController qty = TextEditingController();
   TextEditingController party_name = TextEditingController();
   TextEditingController party_address = TextEditingController();
@@ -1538,7 +1539,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "status": "Pending",
               "loadingType": "None",
               "transportationType": "None",
-              "orderType": selectedOrderType
+              "orderType": selectedOrderType,
+              "totalQuantity": totalQuantity,
             }
           : {
               "userId": id!,
@@ -2458,7 +2460,9 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       ),
                       Align(
                         child: Container(
-                            child: Text("Total = $totalQuantity Tons",
+                            child: Text(
+                                "Total = $totalQuantity Tons",
+
                                 style: TextStyle(
                                     color: Colors.blueAccent,
                                     fontWeight: FontWeight.w700)),

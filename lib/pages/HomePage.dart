@@ -1158,7 +1158,7 @@ class _HomePageState extends State<HomeContent> {
                             colors: [
                               Colors.white,
                               Colors.white,
-                              Colors.white60,
+                              Colors.white,
                             ],
                             NumberFormat.simpleCurrency(
                                     locale: 'hi-IN', decimalDigits: 0)
@@ -1189,6 +1189,7 @@ class _HomePageState extends State<HomeContent> {
 
                                   //  toggleSize: 50,
                                   onToggle: (bool value) async {
+                                    
                                     setState(() {
                                       light = value;
                                     });
@@ -1281,9 +1282,11 @@ class _HomePageState extends State<HomeContent> {
                               }
                             });
                           },
-                          child: Text(
-                            "Submit",
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                          child:SingleChildScrollView (
+                            child: Text(
+                              "Submit",
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
                           ),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
@@ -1296,8 +1299,9 @@ class _HomePageState extends State<HomeContent> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: light
-                    ? Color.fromRGBO(19, 59, 78, 1.0)
-                    : Colors.blueGrey.shade100,
+                    // ? Color.fromRGBO(19, 59, 78, 1.0)
+                    ? Colors.green
+                    : Colors.redAccent,
               ),
               padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 0),
             );

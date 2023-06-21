@@ -440,8 +440,6 @@ class _AddItemPageState extends State<AddItemContent> {
                                                 "gradePrice": Price.text,
                                               });
                                           Navigator.pop(context);
-                                          
-
                                           setState(() {
                                             //   gradeList.length;
                                           });
