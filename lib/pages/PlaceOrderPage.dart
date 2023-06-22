@@ -1684,6 +1684,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         );
         dropdownOrderType.add(it);
       }
+      // setState(() {});
       return dropdownOrderType;
     }
 
@@ -1715,7 +1716,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                   key: field1Key,
                   focusNode: focusNode1,
                   validator: (value) {
-                    if (value!.isEmpty || value == null) {
+                    if (value!.isEmpty) {
                       return 'Please enter a Name.';
                     }
                     return null;
@@ -1744,7 +1745,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                   key: field2Key,
                   focusNode: focusNode2,
                   validator: (value) {
-                    if (value!.isEmpty || value == null) {
+                    if (value!.isEmpty) {
                       return 'Please enter an Address.';
                     }
                     return null;
@@ -1884,9 +1885,10 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                         value: selectedOrderType,
                         items: getOrderType(),
                         onChanged: (String? newValue) {
+                          setState(() {});
                           selectedOrderType = newValue;
                           if (selectedOrderType == "Lump-sum") {
-                            selectedTransType = "None";
+                            // selectedTransType = "None";
                           }
                         },
                         // key: field5Key,
@@ -2155,11 +2157,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           var grdpct, szpct = 0;
                           if (selectedOrderType != "Use Lumpsum") {
                             if (selectedGrade != null &&
-                                selectedSize != null &&
-                                qty.text != "" &&
-                                base_price.text != "" &&
-                                selectedRegion != null &&
-                                selectedTransType != null) {
+                                    // selectedSize != null &&
+                                    qty.text != "" &&
+                                    base_price.text != "" &&
+                                    selectedRegion != null
+                                // selectedTransType != null
+                                ) {
                               for (int i = 0; i < gradeList.length; i++) {
                                 if (gradeList[i].value == selectedGrade) {
                                   grdpct = int.parse(gradeList[i].price!);
