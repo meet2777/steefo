@@ -161,7 +161,7 @@ class UserRequestPage extends StatelessWidget {
                               fontSize: 15,
                               color: Colors.grey)),
                       SizedBox(height: 20),
-                      Text("21/03/2023",
+                      Text(user.date.toString().substring(0, 10),
                           style: TextStyle(
                               fontFamily: "Poppins",
                               fontSize: 15,

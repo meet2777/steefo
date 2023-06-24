@@ -19,6 +19,7 @@ import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stefomobileapp/pages/ProfilePage.dart';
 
 import 'package:stefomobileapp/pages/Withlumpsums.dart';
+import 'package:stefomobileapp/pages/dealerbuyerspage.dart';
 import 'package:stefomobileapp/pages/purchases.dart';
 import 'package:stefomobileapp/ui/common.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
@@ -525,7 +526,7 @@ class _HomePageState extends State<HomeContent> {
             }),
           ),
           SizedBox(
-            height: 20,
+            height: 0,
           ),
 
           // LayoutBuilder(builder: (context, constraints) {
@@ -553,20 +554,20 @@ class _HomePageState extends State<HomeContent> {
           //     return Container();
           //   }
           // }),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: 05,
-              width: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
+          // Align(
+          //   alignment: Alignment.center,
+          //   child: Container(
+          //     height: 05,
+          //     width: 40,
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(10),
+          //       color: Colors.grey,
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 10,
+          // ),
 
           //carousel end//////////////////////////////////////////////////
           // baserate(),
@@ -647,20 +648,23 @@ class _HomePageState extends State<HomeContent> {
           LayoutBuilder(builder: (context, constraint) {
             if (isSalesEnabled == 'false' && user_type != 'Manufacturer') {
               print('marketisclose');
-              return Row(
-                children: [
-                  Icon(
-                    Icons.arrow_right_rounded,
-                    color: Colors.redAccent,
-                  ),
-                  Text(
-                    'Market is close',
-                    style: TextStyle(
-                        // fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.redAccent),
-                  ),
-                ],
+              return Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: 10, bottom: 5),
+                decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 95, 12, 12),
+                    borderRadius: BorderRadius.circular(10)),
+                width: double.infinity,
+                height: 80,
+                // height: 80,
+                child: Text(
+                  "Market is closed ",
+                  style: TextStyle(
+                      letterSpacing: 2,
+                      fontSize: 17,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
               );
             } else if (isSalesEnabled == 'true' &&
                 user_type != 'Manufacturer') {
@@ -818,6 +822,7 @@ class _HomePageState extends State<HomeContent> {
           //.......................
 
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               LayoutBuilder(builder: (context, constraints) {
                 if (user_type != "Manufacturer") {
@@ -852,79 +857,133 @@ class _HomePageState extends State<HomeContent> {
                         ),
                       ));
                 } else
+                  return SizedBox();
+              }),
+              LayoutBuilder(builder: (context, constraints) {
+                if (user_type != "Manufacturer") {
+                  return GestureDetector(
+                      onTap: () {
+                        Get.to(DealerPage2());
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 3.2,
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/broker.png",
+                              height: 60,
+                              width: 60,
+                              //  color: Colors.blueGrey,
+                            ),
+                            // Icon(
+                            //   Icons.settings_sharp,
+                            //   color: Colors.blue,
+                            //   size: 60,
+                            // ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Dealers",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            )
+                          ],
+                        ),
+                      ));
+                } else
                   return Container();
               }),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  if (user_type == "Manufacturer") {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                              Get.to(AddItemPage());
-                            },
-                            child: Container(
+              LayoutBuilder(builder: (context, constraints) {
+                if (user_type != "Manufacturer") {
+                  return Container(
+                    width: MediaQuery.of(context).size.width / 3.2,
+                  );
+                } else
+                  return Container();
+              }),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (user_type == "Manufacturer") {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  Get.to(AddItemPage());
+                                },
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 3.2,
+                                  child: Column(
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/add-product.png",
+                                        height: 60,
+                                        width: 60,
+                                        //  color: Colors.blueGrey,
+                                      ),
+                                      // Icon(
+                                      //   Icons.settings_sharp,
+                                      //   color: Colors.blue,
+                                      //   size: 60,
+                                      // ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        "Product Control",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      )
+                                    ],
+                                  ),
+                                )),
+                            GestureDetector(
+                                onTap: () {
+                                  _showmodelbottomsheet();
+                                },
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 3.2,
+                                  child: Column(
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/price-tag.png",
+                                        height: 60,
+                                        width: 60,
+                                        // color: Colors.orangeAccent,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        "Price Controls",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      )
+                                    ],
+                                  ),
+                                )),
+                            SizedBox(
                               width: MediaQuery.of(context).size.width / 3.2,
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    "assets/images/add-product.png",
-                                    height: 60,
-                                    width: 60,
-                                    //  color: Colors.blueGrey,
-                                  ),
-                                  // Icon(
-                                  //   Icons.settings_sharp,
-                                  //   color: Colors.blue,
-                                  //   size: 60,
-                                  // ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    "Product Control",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15),
-                                  )
-                                ],
-                              ),
-                            )),
-                        GestureDetector(
-                            onTap: () {
-                              _showmodelbottomsheet();
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 3.2,
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    "assets/images/price-tag.png",
-                                    height: 60,
-                                    width: 60,
-                                    // color: Colors.orangeAccent,
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    "Price Controls",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15),
-                                  )
-                                ],
-                              ),
-                            )),
-                      ],
-                    );
-                  } else
-                    return SizedBox();
-                },
+                            )
+                          ],
+                        );
+                      } else
+                        return SizedBox();
+                    },
+                  ),
+                ],
               ),
             ],
           ),
+
           // Container(
           //   width: MediaQuery.of(context).size.width / 3.2,
           //   height: 10,
@@ -1303,7 +1362,7 @@ class _HomePageState extends State<HomeContent> {
                 borderRadius: BorderRadius.circular(8),
                 color: isSalesEnabled == "true"
                     ? Color.fromRGBO(19, 59, 78, 1.0)
-                    : Colors.blueGrey.shade100,
+                    : Color.fromARGB(255, 95, 12, 12),
               ),
               padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 0),
             );

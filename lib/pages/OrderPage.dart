@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -40,8 +41,7 @@ class _OrderPageState extends State<OrderPage> {
     print(widget.order!.orderType);
     print(widget.order!.loading_type);
     if (flag == 0) {
-      if (widget.order!.orderType != "Lump-sum" &&
-          widget.order!.orderType == "With Size") {
+      if (widget.order!.orderType != "Lump-sum") {
         print(widget.order!.order_id);
         final res = await http.post(
           Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
@@ -142,7 +142,7 @@ class _OrderPageState extends State<OrderPage> {
                             borderRadius: BorderRadius.all(
                               Radius.circular(10),
                             ),
-                            color: Colors.lightBlueAccent,
+                            color: Color.fromRGBO(19, 59, 78, 1.0),
                           ),
                           child: Text(widget.order!.user_name!.toUpperCase(),
                               style: const TextStyle(
@@ -408,18 +408,71 @@ class _OrderPageState extends State<OrderPage> {
                       );
                     } else {
                       if (widget.order!.status == "Confirmed") {
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          child: buttonStyle("View Challan", () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ChallanListPage(
-                                          order: widget.order!,
-                                        )));
-                          }),
+                        return Column(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              child: buttonStyle("View Challan", () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChallanListPage(
+                                              order: widget.order!,
+                                            )));
+                              }),
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                print('taapp');
+
+                                await http.post(
+                                  Uri.parse(
+                                      "http://urbanwebmobile.in/steffo/approveorder.php"),
+                                  body: {
+                                    "decision": "Canceled",
+                                    "order_id": widget.order!.order_id!
+                                  },
+                                );
+                                widget.order!.status = "Canceled";
+                                setState(() {});
+                                Navigator.of(context).pushNamed('/orders');
+                                // Navigator.pop(context);
+                                //Get.back();
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 20, right: 20),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
+                                  height: 40,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.cancel_outlined,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text("Cancel Order",
+                                          style: const TextStyle(
+                                              fontFamily: 'Poppins_Bold',
+                                              color: Colors.white)),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                      color: Colors.redAccent,
+                                      borderRadius: BorderRadius.circular(10)),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
                         );
                       } else {
                         return (Container());

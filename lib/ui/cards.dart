@@ -135,7 +135,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
     return Column(
       children: [
         Container(
-          height: 130,
+          //  height: 130,
           //margin: EdgeInsets.only(top: 10),
           // padding: const EdgeInsets.all(10.0),
           // width: MediaQuery.of(context).size.width,
@@ -270,36 +270,87 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
               SizedBox(
                 height: 10,
               ),
-              Row(
-                children: [
-                  Padding(padding: EdgeInsets.only(left: 10)),
-                  Container(
-                    child: Text(
-                      "Base Price:",
-                      style: TextStyle(
-                          fontFamily: "Poppins_Bold", color: Colors.grey),
+              Padding(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Padding(padding: EdgeInsets.only(left: 10, right: 10)),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Row(
+                            children: [
+                              Text(
+                                "Base Price:",
+                                style: TextStyle(
+                                    fontFamily: "Poppins_Bold",
+                                    color: Colors.grey),
+                              ),
+                              Text(
+                                order.base_price!,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                                style: TextStyle(
+                                    // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                    color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                          //padding: EdgeInsets.only(right: 5),
+                        ),
+                        Container(
+                          child: Row(
+                            children: [
+                              Text(
+                                "Total Price:",
+                                style: TextStyle(
+                                    fontFamily: "Poppins_Bold",
+                                    color: Colors.grey),
+                              ),
+                              Text(
+                                order.totalPrice.toString(),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                                style: TextStyle(
+                                    // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                    color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                          //padding: EdgeInsets.only(right: 5),
+                        ),
+                      ],
                     ),
-                    padding: EdgeInsets.only(right: 5),
-                  ),
-                  Text(
-                    order.base_price!,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    style: TextStyle(
-                        // color: Color.fromRGBO(19, 59, 78, 1.0),
-                        color: Colors.grey),
-                  ),
-                  VerticalDivider(
-                    color: Colors.grey,
-                    thickness: 2,
-                    width: 2,
-                  ),
-                  // Container(
-                  //   child: Text(
-                  //       item.price!
-                  //   ),
-                  // )
-                ],
+                    Container(
+                      child: Row(
+                        children: [
+                          Text(
+                            "Quantity:",
+                            style: TextStyle(
+                                fontFamily: "Poppins_Bold", color: Colors.grey),
+                          ),
+                          Text(
+                            order.totalQuantity.toString(),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
+                            style: TextStyle(
+                                // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                      //padding: EdgeInsets.only(right: 5),
+                    ),
+
+                    // Container(
+                    //   child: Text(
+                    //       item.price!
+                    //   ),
+                    // )
+                  ],
+                ),
               ),
             ],
           ),

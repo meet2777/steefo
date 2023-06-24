@@ -1286,6 +1286,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   late FocusNode focusNode7;
   late FocusNode focusNode8;
   late FocusNode focusNode9;
+  late FocusNode focusNode10;
   final field1Key = GlobalKey<FormFieldState>();
   final field2Key = GlobalKey<FormFieldState>();
   final field3Key = GlobalKey<FormFieldState>();
@@ -1295,6 +1296,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   final field8Key = GlobalKey<FormFieldState>();
   final field7Key = GlobalKey<FormFieldState>();
   final field9Key = GlobalKey<FormFieldState>();
+  final field10Key = GlobalKey<FormFieldState>();
 
   var user_type;
   void loadusertype() async {
@@ -1323,11 +1325,11 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       id = await prefs.getString('id');
       supplier_id = await prefs.getString('parentId');
-      if (user_type == "Builder") {
-        selectedOrderType = "With Size";
-        selectedTransType = "None";
-        selectedType = "None";
-      }
+      // if (user_type == "Builder") {
+      //   selectedOrderType = "With Size";
+      //   selectedTransType = "None";
+      //   selectedType = "None";
+      // }
       f1 = 1;
       setState(() {});
     }
@@ -1349,6 +1351,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   TextEditingController party_mob_num = TextEditingController();
   TextEditingController loading_type = TextEditingController();
   TextEditingController base_price = TextEditingController();
+  TextEditingController deliveryDate = TextEditingController();
   List<Lumpsum> lumpsumList = [];
   bool isInventoryDataLoaded = false;
   loadLumpsumData() async {
@@ -1395,6 +1398,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
     focusNode7 = FocusNode();
     focusNode8 = FocusNode();
     focusNode9 = FocusNode();
+    focusNode10 = FocusNode();
     focusNode1.addListener(() {
       if (!focusNode1.hasFocus) {
         field1Key.currentState?.validate();
@@ -1440,6 +1444,11 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         field9Key.currentState?.validate();
       }
     });
+    focusNode10.addListener(() {
+      if (!focusNode10.hasFocus) {
+        field10Key.currentState?.validate();
+      }
+    });
   }
 
   @override
@@ -1464,6 +1473,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   List<Region> regionList = [];
   List<ItemSize> sizeList = [];
   var f = 0;
+  num tot_price = 0;
   loadItemData() async {
     if (f == 0) {
       f = 1;
@@ -1540,7 +1550,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "transportationType": "None",
               "orderType": selectedOrderType,
               "totalQuantity": totalQuantity.toString(),
-              "totalPrice": "1200",
+              "totalPrice": tot_price.toString(),
+              "deliveryDate": deliveryDate.text
             }
           : {
               "userId": id!,
@@ -1555,7 +1566,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "orderType": selectedOrderType,
               "transportationType": selectedTransType,
               "totalQuantity": totalQuantity.toString(),
-              "totalPrice": "1200",
+              "totalPrice": tot_price.toString(),
+              "deliveryDate": deliveryDate.text
             },
     );
     Fluttertoast.showToast(
@@ -1581,6 +1593,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             "price": listOfColumns[i]["Price"]
           },
         );
+        tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
       }
     } else {
       for (int i = 0; i < listOfColumns.length; i++) {
@@ -1593,6 +1606,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             "price": listOfColumns[i]["Price"]
           },
         );
+        tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
       }
     }
     // print(listOfColumns[0]['Name']);
@@ -1707,6 +1721,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             // )
             color: Colors.white),
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               //-----------------------Name-------------------------------------
@@ -1724,8 +1739,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                   controller: party_name,
                   maxLines: 1,
                   decoration: const InputDecoration(
-                      labelText: "Name",
-                      labelStyle: TextStyle(fontSize: 20),
+                      hintText: "Name",
+                      hintStyle: TextStyle(fontSize: 20),
                       //  hintText: "Name",
                       // floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(
@@ -1753,8 +1768,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                   controller: party_address,
                   maxLines: 4,
                   decoration: const InputDecoration(
-                      labelText: "Shipping Address",
-                      labelStyle: TextStyle(fontSize: 20),
+                      hintText: "Shipping Address",
+                      hintStyle: TextStyle(fontSize: 20),
                       //  floatingLabelBehavior: FloatingLabelBehavior.never,
                       alignLabelWithHint: true,
                       border: OutlineInputBorder(
@@ -1774,6 +1789,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                   child: DropdownButtonFormField(
                     decoration: const InputDecoration(
                         hintText: "Select Region of Delivery",
+                        hintStyle: TextStyle(fontSize: 20),
                         filled: true,
                         fillColor:
                             Color.fromRGBO(233, 236, 239, 0.792156862745098),
@@ -1818,8 +1834,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     return null;
                   },
                   decoration: const InputDecoration(
-                      labelText: "GST Number",
-                      labelStyle: TextStyle(fontSize: 20),
+                      hintText: "GST Number",
+                      hintStyle: TextStyle(fontSize: 20),
                       //  floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(
                           // borderRadius: BorderRadius.circular(20),
@@ -1855,8 +1871,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     return null;
                   },
                   decoration: const InputDecoration(
-                      labelText: "Contact Number",
-                      labelStyle: TextStyle(fontSize: 20),
+                      hintText: "Contact Number",
+                      hintStyle: TextStyle(fontSize: 20),
                       // floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(
                           // borderRadius: BorderRadius.circular(20),
@@ -1869,12 +1885,15 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               ),
 
               LayoutBuilder(builder: (context, constraints) {
-                if (user_type == "Distributor" || user_type == "Dealer") {
+                if (user_type == "Distributor" ||
+                    user_type == "Dealer" ||
+                    user_type == "Builder") {
                   return Container(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: DropdownButtonFormField(
                         decoration: const InputDecoration(
                             hintText: "Select Order Type",
+                            hintStyle: TextStyle(fontSize: 20),
                             filled: true,
                             fillColor: Color.fromRGBO(
                                 233, 236, 239, 0.792156862745098),
@@ -1918,6 +1937,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           child: DropdownButtonFormField(
                             decoration: const InputDecoration(
                                 hintText: "Select Loading Type",
+                                hintStyle: TextStyle(fontSize: 20),
                                 filled: true,
                                 fillColor: Color.fromRGBO(
                                     233, 236, 239, 0.792156862745098),
@@ -1944,6 +1964,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           child: DropdownButtonFormField(
                             decoration: const InputDecoration(
                                 hintText: "Select Transportation Type",
+                                hintStyle: TextStyle(fontSize: 20),
                                 filled: true,
                                 fillColor: Color.fromRGBO(
                                     233, 236, 239, 0.792156862745098),
@@ -2016,8 +2037,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     return null;
                   },
                   decoration: const InputDecoration(
-                      labelText: "Base Price",
-                      labelStyle: TextStyle(fontSize: 20),
+                      hintText: "Base Price",
+                      hintStyle: TextStyle(fontSize: 20),
                       //  floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(
                           // borderRadius: BorderRadius.circular(20),
@@ -2068,6 +2089,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                         child: DropdownButtonFormField(
                           decoration: const InputDecoration(
                               hintText: "Select The Grade",
+                              hintStyle: TextStyle(fontSize: 20),
                               filled: true,
                               fillColor: Color.fromRGBO(
                                   233, 236, 239, 0.792156862745098),
@@ -2099,6 +2121,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             child: DropdownButtonFormField(
                               decoration: const InputDecoration(
                                   hintText: "Select The Size",
+                                  hintStyle: TextStyle(fontSize: 20),
                                   filled: true,
                                   fillColor: Color.fromRGBO(
                                       233, 236, 239, 0.792156862745098),
@@ -2132,8 +2155,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                         controller: qty,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
-                          labelText: "Quantity",
-                          labelStyle: TextStyle(fontSize: 20),
+                          hintText: "Quantity",
+                          hintStyle: TextStyle(fontSize: 20),
                           //  floatingLabelBehavior: FloatingLabelBehavior.never,
                           border: OutlineInputBorder(
                               // borderRadius: BorderRadius.circular(20),
@@ -2142,6 +2165,35 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           fillColor: Color.fromRGBO(233, 236, 239,
                               0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
                         ),
+                      ),
+                    ),
+                    //-------------------------deliveryDAte-----------------------
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+                      child: TextFormField(
+                        key: field10Key,
+                        focusNode: focusNode10,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter a date.';
+                          }
+                          return null;
+                        },
+                        controller: deliveryDate,
+                        maxLines: 1,
+                        decoration: const InputDecoration(
+                            hintText: "DeliveryDate",
+                            hintStyle: TextStyle(fontSize: 20),
+                            //  hintText: "Name",
+                            // floatingLabelBehavior: FloatingLabelBehavior.never,
+                            border: OutlineInputBorder(
+                                // borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide.none),
+                            filled: true,
+                            fillColor: Color.fromRGBO(233, 236, 239,
+                                0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
+
+                            ),
                       ),
                     ),
                     Center(

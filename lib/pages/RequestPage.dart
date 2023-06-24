@@ -402,6 +402,7 @@ class _RequestPageState extends State<RequestContent> {
       for (int i = 0; i < responseData['data'].length; i++) {
         print("enter2");
         User u = User();
+        u.date=responseData['data'][i]['createdAt'];
         u.id = responseData['data'][i]['id'];
         u.firstName = responseData['data'][i]['firstName'];
         u.lastName = responseData['data'][i]['lastName'];
