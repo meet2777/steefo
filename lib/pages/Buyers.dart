@@ -136,7 +136,7 @@ class _buyerspageState extends State<buyerspage> {
         body: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(children: [
-              userType != "Distributor"
+              userType == "Manufacturer"
                   ? GestureDetector(
                       onTap: () {
                         Get.to(DistributorPage());
@@ -166,7 +166,7 @@ class _buyerspageState extends State<buyerspage> {
               SizedBox(
                 height: 10,
               ),
-              userType != "Builder"
+              userType == "Manufacturer"
                   ? GestureDetector(
                       onTap: () {
                         Get.to(buildersPage());
@@ -196,32 +196,34 @@ class _buyerspageState extends State<buyerspage> {
               SizedBox(
                 height: 10,
               ),
-              GestureDetector(
-                onTap: () {
-                  //nnn
-                  Get.to(DealerPage2());
-                },
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  height: 80,
-                  width: double.infinity,
-                  padding: EdgeInsets.only(
-                    left: 10,
-                    right: 24,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(0xFF93C6E7),
-                  ),
-                  child: Text(
-                    'VIEW DEALERS',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
+              userType != "Dealer"
+                  ? GestureDetector(
+                      onTap: () {
+                        //nnn
+                        Get.to(DealerPage2());
+                      },
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 80,
+                        width: double.infinity,
+                        padding: EdgeInsets.only(
+                          left: 10,
+                          right: 24,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFF93C6E7),
+                        ),
+                        child: Text(
+                          'VIEW DEALERS',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    )
+                  : Container(),
               // Container(
               //   alignment: Alignment.centerLeft,
               //   height: 120,

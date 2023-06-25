@@ -18,19 +18,23 @@ import '../ui/common.dart';
 
 class GeneratedChallan extends StatelessWidget {
   final String challan_id;
-  const GeneratedChallan({super.key, required this.challan_id});
+  final String orderid;
+  const GeneratedChallan(
+      {super.key, required this.challan_id, required this.orderid});
 
   @override
   Widget build(BuildContext context) {
     print(challan_id);
-    return ChallanPage(challan_id: challan_id);
+    return ChallanPage(challan_id: challan_id, orderid: orderid);
   }
 }
 
 class ChallanPage extends StatefulWidget {
   final String challan_id;
+  final String orderid;
 
-  const ChallanPage({super.key, required this.challan_id});
+  const ChallanPage(
+      {super.key, required this.challan_id, required this.orderid});
 
   @override
   State<ChallanPage> createState() => _ChallanPageState();
@@ -41,7 +45,7 @@ class _ChallanPageState extends State<ChallanPage> {
   Order or = Order();
   Challan ch = Challan();
   bool isDataAvailable = false;
-
+  List<Challan> challanList = [];
   var responseData, listOfColumns;
   loadChallanData() async {
     if (flag == 0) {
@@ -54,6 +58,7 @@ class _ChallanPageState extends State<ChallanPage> {
 
       responseData = jsonDecode(res.body);
       print(responseData);
+      ch.order_id = responseData["data"][0]["order_id"];
       ch.transporter_name = responseData["data"][0]["transporter_name"];
       ch.lr_number = responseData["data"][0]["lr_number"];
       ch.vehicle_number = responseData["data"][0]["vehicle_number"];
@@ -62,7 +67,7 @@ class _ChallanPageState extends State<ChallanPage> {
       or.party_mob_num = responseData["data"][0]["partyMobileNumber"];
       or.loading_type = responseData["data"][0]["loadingType"];
       or.order_date = responseData["data"][0]["updatedAt"];
-
+      challanList.add(ch);
       final resp = await http.post(
         Uri.parse("http://urbanwebmobile.in/steffo/getchallanitemdetails.php"),
         body: {
@@ -528,8 +533,7 @@ class _ChallanPageState extends State<ChallanPage> {
                                               DataCell(Text(element["Name"]!)),
                                               DataCell(Text(element["Qty"]!)),
                                             ],
-                                          )
-                                      ),
+                                          )),
                                     )
                                     .toList(),
                               ),
@@ -560,7 +564,52 @@ class _ChallanPageState extends State<ChallanPage> {
                         // )
                       ],
                     )),
-              )
+              ),
+              GestureDetector(
+                onTap: () async {
+                  await http.post(
+                    Uri.parse(
+                        "http://urbanwebmobile.in/steffo/approveorder.php"),
+                    body: {"decision": "Completed", "order_id": widget.orderid},
+                  );
+                  () {
+                    // orderList.add(requestList[index]);
+                    // requestList.removeAt(index);
+                    // id = "none";
+                    // requestList.removeAt(index);
+                    // loadData();
+                    setState(() {});
+                    Get.to(HomePage());
+                  }();
+                },
+                child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(left: 10, right: 10),
+                    height: 60,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        gradient: LinearGradient(colors: [
+                          Color.fromRGBO(75, 100, 160, 1.0),
+                          Color.fromRGBO(19, 59, 78, 1.0),
+
+                          //add more colors
+                        ])),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 18,
+                        bottom: 18,
+                      ),
+                      child: Text(
+                        "Complete Order",
+                        style: const TextStyle(
+                            fontFamily: 'Poppins_Bold', color: Colors.white),
+                      ),
+                    )),
+              ),
+              SizedBox(
+                height: 10,
+              ),
             ])),
       ),
     );

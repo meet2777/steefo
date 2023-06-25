@@ -54,7 +54,11 @@ class DistributorDetailState extends State<DistributorDetailContent> {
   String? id;
   List<User> child = [];
   List<Order> orderList = [];
+  var userType;
   loadChildData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    userType = await prefs.getString('userType');
     if (f == 0) {
       orderList = [];
       child = [];
@@ -130,7 +134,9 @@ class DistributorDetailState extends State<DistributorDetailContent> {
             unSelectedCardColor: Colors.white,
             titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            tabBarItemExtend: ((MediaQuery.of(context).size.width) / 3),
+            tabBarItemExtend: widget.user.userType == "Distributor"
+                ? ((MediaQuery.of(context).size.width) / 3)
+                : ((MediaQuery.of(context).size.width) / 2),
             tabViewItemHeight: MediaQuery.of(context).size.height * 0.7,
             selectedCardColor: Colors.blueGrey,
 
@@ -141,238 +147,457 @@ class DistributorDetailState extends State<DistributorDetailContent> {
             //     background: Container(
             //       width: MediaQuery.of(context).size.width / 1.5,
             //     )),
-            tabBarItems: ['Info', 'Dealers', 'Orders'],
-            tabViewItems: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: Stack(
-                  children: [
-                    // padding: EdgeInsets.symmetric(vertical: 20),
-                    // Padding(padding: EdgeInsets.only(bottom: 10)),
-                    Column(
-                      children: [
-                        Padding(padding: EdgeInsets.only(bottom: 10)),
-                        Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding:
-                                EdgeInsets.only(left: 20, right: 20, top: 20),
-                            child: Text(
-                              widget.user.orgName!,
-                              style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.green)),
-                            )),
-                        Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Text(
-                              widget.user.address!,
-                              style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(fontSize: 15)),
-                            )),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.only(top: 10),
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            tabBarItems: widget.user.userType == "Distributor"
+                ? [
+                    'Info',
+                    'Dealers',
+                    'Orders',
+                  ]
+                : [
+                    'Info',
+                    'Orders',
+                  ],
+            tabViewItems: widget.user.userType == "Distributor"
+                ? [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Stack(
+                        children: [
+                          // padding: EdgeInsets.symmetric(vertical: 20),
+                          // Padding(padding: EdgeInsets.only(bottom: 10)),
+                          Column(
                             children: [
-                              Text("Email Id :",
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15))),
-                              Text(
-                                widget.user.email!,
-                                style: TextStyle(fontSize: 15),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.only(top: 10),
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Mobile Number :",
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15))),
-                              Text(
-                                widget.user.mobileNumber!,
-                                style: TextStyle(fontSize: 15),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.only(top: 10),
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Gst Number :",
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15))),
-                              Text(
-                                widget.user.gstNumber!,
-                                style: TextStyle(fontSize: 15),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.only(top: 10),
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("PAN Number :",
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15))),
-                              Text(
-                                widget.user.panNumber!,
-                                style: TextStyle(fontSize: 15),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.only(top: 10),
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Aadhar Number :",
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15))),
-                              Text(
-                                widget.user.adhNumber!,
-                                style: TextStyle(fontSize: 15),
+                              Padding(padding: EdgeInsets.only(bottom: 10)),
+                              Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.only(
+                                      left: 20, right: 20, top: 20),
+                                  child: Text(
+                                    widget.user.orgName!,
+                                    style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            color: Colors.green)),
+                                  )),
+                              Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Text(
+                                    widget.user.address!,
+                                    style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(fontSize: 15)),
+                                  )),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Email Id :",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15))),
+                                    Text(
+                                      widget.user.email!,
+                                      style: TextStyle(fontSize: 15),
+                                    )
+                                  ],
+                                ),
                               ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Mobile Number :",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15))),
+                                    Text(
+                                      widget.user.mobileNumber!,
+                                      style: TextStyle(fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Gst Number :",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15))),
+                                    Text(
+                                      widget.user.gstNumber!,
+                                      style: TextStyle(fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("PAN Number :",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15))),
+                                    Text(
+                                      widget.user.panNumber!,
+                                      style: TextStyle(fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Aadhar Number :",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15))),
+                                    Text(
+                                      widget.user.adhNumber!,
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: EdgeInsets.only(top: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      shape: MaterialStatePropertyAll(
+                                          ContinuousRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20))),
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Colors.green),
+                                    ),
+                                    onPressed: () {
+                                      Get.to(InventoryPage());
+                                    },
+                                    child: Text("View Inventory"),
+                                  )),
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.only(top: 10),
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                shape: MaterialStatePropertyAll(
-                                    ContinuousRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20))),
-                                backgroundColor:
-                                    MaterialStatePropertyAll(Colors.green),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                widget.user.userType!,
+                                style: TextStyle(color: Colors.white),
                               ),
-                              onPressed: () {
-                                Get.to(InventoryPage());
-                              },
-                              child: Text("View Inventory"),
-                            )),
-                      ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text(
-                          widget.user.userType!,
-                          style: TextStyle(color: Colors.white),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Container(
+                          // width: 500,
+                          // width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                itemCount: child.length,
+                                physics: const BouncingScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DealerDetailPage(
+                                                        user: child[index])));
+                                      },
+                                      child: DealerCard(child[index], context));
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                itemCount: orderList.length,
+                                physics: BouncingScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => OrderPage(
+                                                      order: orderList[index],
+                                                    )));
+                                      },
+                                      child: orderCard(context,
+                                          orderList[index], widget.user.id));
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ]
+                : [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Stack(
+                        children: [
+                          // padding: EdgeInsets.symmetric(vertical: 20),
+                          // Padding(padding: EdgeInsets.only(bottom: 10)),
+                          Column(
+                            children: [
+                              Padding(padding: EdgeInsets.only(bottom: 10)),
+                              Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.only(
+                                      left: 20, right: 20, top: 20),
+                                  child: Text(
+                                    widget.user.orgName!,
+                                    style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            color: Colors.green)),
+                                  )),
+                              Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Text(
+                                    widget.user.address!,
+                                    style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(fontSize: 15)),
+                                  )),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Email Id :",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15))),
+                                    Text(
+                                      widget.user.email!,
+                                      style: TextStyle(fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Mobile Number :",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15))),
+                                    Text(
+                                      widget.user.mobileNumber!,
+                                      style: TextStyle(fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Gst Number :",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15))),
+                                    Text(
+                                      widget.user.gstNumber!,
+                                      style: TextStyle(fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("PAN Number :",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15))),
+                                    Text(
+                                      widget.user.panNumber!,
+                                      style: TextStyle(fontSize: 15),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Aadhar Number :",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15))),
+                                    Text(
+                                      widget.user.adhNumber!,
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: EdgeInsets.only(top: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      shape: MaterialStatePropertyAll(
+                                          ContinuousRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20))),
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Colors.green),
+                                    ),
+                                    onPressed: () {
+                                      Get.to(InventoryPage());
+                                    },
+                                    child: Text("View Inventory"),
+                                  )),
+                            ],
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                widget.user.userType!,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                itemCount: orderList.length,
+                                physics: BouncingScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => OrderPage(
+                                                      order: orderList[index],
+                                                    )));
+                                      },
+                                      child: orderCard(context,
+                                          orderList[index], widget.user.id));
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     )
                   ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Container(
-                    // width: 500,
-                    // width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                          itemCount: child.length,
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DealerDetailPage(
-                                                  user: child[index])));
-                                },
-                                child: DealerCard(child[index], context));
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                          itemCount: orderList.length,
-                          physics: BouncingScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => OrderPage(
-                                                order: orderList[index],
-                                              )));
-                                },
-                                child: orderCard(
-                                    context, orderList[index], widget.user.id));
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
           ),
         ],
       ),

@@ -151,7 +151,7 @@ class _ChallanListPageState extends State<ChallanListContent> {
               borderRadius: BorderRadius.all(
                 Radius.circular(10),
               ),
-              color: Colors.lightBlueAccent,
+              color: Color.fromRGBO(19, 59, 78, 1.0),
             ),
             // decoration: BoxDecoration(
             //     color: Colors.lightBlueAccent,
@@ -199,28 +199,30 @@ class _ChallanListPageState extends State<ChallanListContent> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => GeneratedChallan(
-                                  challan_id: challanList[index].challan_id!)));
+                                    challan_id: challanList[index].challan_id!,
+                                    orderid:
+                                        challanList[index].order_id.toString(),
+                                  )));
                     },
                     child: ChallanCard(context, challanList[index]));
               },
             ),
           ),
           Container(child: LayoutBuilder(builder: (context, constraints) {
-            if (id == "0") {
-              return Container(
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-                  width: MediaQuery.of(context).size.width,
-                  child: buttonStyle("Generate Challan", () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GenerateChallanPage(
-                                  order: widget.order,
-                                )));
-                  }));
-            } else {
-              return Container();
-            }
+            return Container(
+                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+                width: MediaQuery.of(context).size.width,
+                child: buttonStyle("Generate Challan", () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => GenerateChallanPage(
+                                order: widget.order,
+                              )));
+                }));
+            // } else {
+            //   return Container();
+            // }
           }))
         ],
       ),

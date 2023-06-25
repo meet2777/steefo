@@ -72,31 +72,31 @@ class _OrdersPageState extends State<OrdersContent> {
   String? id;
   String? userType;
   List<Challan> challanList = [];
-  loadChallanList() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // loadChallanList() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    id = await prefs.getString('id');
-    if (flag == 0) {
-      final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/getchallanlist.php"),
-        body: {"order_id": widget.order.order_id},
-      );
-      var responseData = jsonDecode(res.body);
-      print(responseData);
+  //   id = await prefs.getString('id');
+  //   if (flag == 0) {
+  //     final res = await http.post(
+  //       Uri.parse("http://urbanwebmobile.in/steffo/getchallanlist.php"),
+  //       body: {"order_id": widget.order.order_id},
+  //     );
+  //     var responseData = jsonDecode(res.body);
+  //     print(responseData);
 
-      for (int i = 0; i < responseData["data"].length; i++) {
-        Challan ch = Challan();
-        ch.order_id = responseData["data"][i]["order_id"];
-        ch.challan_id = responseData["data"][i]["challan_id"].toString();
-        ch.transporter_name = responseData["data"][i]["transporter_name"];
-        ch.vehicle_number = responseData["data"][i]["vehicle_number"];
-        ch.lr_number = responseData["data"][i]["lr_number"];
-        challanList.add(ch);
-      }
-      flag = 1;
-      setState(() {});
-    }
-  }
+  //     for (int i = 0; i < responseData["data"].length; i++) {
+  //       Challan ch = Challan();
+  //       ch.order_id = responseData["data"][i]["order_id"];
+  //       ch.challan_id = responseData["data"][i]["challan_id"].toString();
+  //       ch.transporter_name = responseData["data"][i]["transporter_name"];
+  //       ch.vehicle_number = responseData["data"][i]["vehicle_number"];
+  //       ch.lr_number = responseData["data"][i]["lr_number"];
+  //       challanList.add(ch);
+  //     }
+  //     flag = 1;
+  //     setState(() {});
+  //   }
+  // }
 
   @override
   void initState() {
@@ -108,7 +108,7 @@ class _OrdersPageState extends State<OrdersContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appbar("With Size", () {
+      appBar: appbar("Specific", () {
         Get.to(HomePage());
       }),
       body: SingleChildScrollView(
@@ -131,9 +131,9 @@ class _OrdersPageState extends State<OrdersContent> {
             ],
             // tabViewItems: [OrdersPageBody(), OrderList1()]
             tabViewItems: [
-              Container(child: Requests()),
-              Card(child: Container(child: ConfirmedOrders())),
-              Card(child: Container(child: CompletedOrder()))
+              Container(child: OrderList1()),
+              Container(child: ConfirmedOrders()),
+              Container(child: CompletedListBody())
             ]),
       ),
     );
@@ -160,6 +160,7 @@ class _OrdersPageState extends State<OrdersContent> {
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+        req.totalPrice = responseData["data"][i]["totalPrice"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
@@ -214,6 +215,8 @@ class _OrdersPageState extends State<OrdersContent> {
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+        req.totalPrice = responseData["data"][i]["totalPrice"];
+        req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.orderType = responseData["data"][i]["orderType"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
@@ -245,7 +248,7 @@ class _OrdersPageState extends State<OrdersContent> {
     loadData();
     // loadData1();
     return Padding(
-      padding: const EdgeInsets.only(left: 5, right: 7),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -266,13 +269,12 @@ class _OrdersPageState extends State<OrdersContent> {
                                 builder: (context) => OrderDetails(
                                     order: salesOrderList[index])));
                       },
-                      child: ConfirmorderCard(
+                      child: orderCard(
                         context,
                         salesOrderList[index],
                         //  qtyandprice[index],
                         id,
-                      )
-                  );
+                      ));
                 } else
                   return Container();
               },
@@ -286,13 +288,89 @@ class _OrdersPageState extends State<OrdersContent> {
     );
   }
 
-
-  Widget CompletedOrder() {
-    //loadDatafortotal();
-    loadData();
+  Widget CompletedListBody() {
+    // loadChallanList();
+    // return Container(
+    //     height: MediaQuery.of(context).size.height * 0.83,
+    //     decoration: const BoxDecoration(
+    //         // gradient:
+    //         //         LinearGradient(transform: GradientRotation(1.07), colors: [
+    //         //   Color.fromRGBO(75, 100, 160, 1.0),
+    //         //   Color.fromRGBO(19, 59, 78, 1.0),
+    //         // ]
+    //         //         )
+    //         ),
+    //     child: SingleChildScrollView(
+    //       child: Column(
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: [
+    //           Container(
+    //             decoration: const BoxDecoration(
+    //                 // color: Colors.grey,
+    //                 // borderRadius: BorderRadius.circular(20)
+    //                 ),
+    //             width: MediaQuery.of(context).size.width * 0.8,
+    //             margin: const EdgeInsets.only(top: 20),
+    //             padding: const EdgeInsets.symmetric(horizontal: 10),
+    //             child: Row(
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               children: [
+    //                 // Text(
+    //                 //   "Order Id:",
+    //                 //   style: TextStyle(fontFamily: "Poppins_Bold"),
+    //                 // ),
+    //                 // Padding(
+    //                 //   padding: EdgeInsets.only(left: 8.0),
+    //                 //   child: Text(widget.order.order_id.toString()),
+    //                 // )
+    //               ],
+    //             ),
+    //           ),
+    //           Card(
+    //             child: Container(
+    //               decoration: BoxDecoration(
+    //                   color: const Color.fromRGBO(255, 255, 255, 0.5),
+    //                   borderRadius: BorderRadius.circular(8)),
+    //               margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+    //               child: Column(
+    //                 children: [
+    //                   SingleChildScrollView(
+    //                     child: Container(
+    //                       height: MediaQuery.of(context).size.height * 0.6,
+    //                       child: ListView.builder(
+    //                         itemCount: challanList.length,
+    //                         //physics: const NeverScrollableScrollPhysics(),
+    //                         scrollDirection: Axis.vertical,
+    //                         shrinkWrap: false,
+    //                         itemBuilder: (context, index) {
+    //                           return InkWell(
+    //                               onTap: () {
+    //                                 Navigator.push(
+    //                                     context,
+    //                                     MaterialPageRoute(
+    //                                         builder: (context) =>
+    //                                             GeneratedChallan(
+    //                                                 challan_id:
+    //                                                     challanList[index]
+    //                                                         .challan_id!)));
+    //                               },
+    //                               child:
+    //                                   ChallanCard(context, challanList[index]));
+    //                         },
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ],
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ));
+    // loadData();
     // loadData1();
     return Padding(
-      padding: const EdgeInsets.only(left: 5, right: 7),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -313,13 +391,12 @@ class _OrdersPageState extends State<OrdersContent> {
                                 builder: (context) => OrderDetails(
                                     order: salesOrderList[index])));
                       },
-                      child: CompletedOrderCard(
+                      child: completedorderCard(
                         context,
                         salesOrderList[index],
                         //  qtyandprice[index],
                         id,
-                      )
-                  );
+                      ));
                 } else
                   return Container();
               },
@@ -333,157 +410,75 @@ class _OrdersPageState extends State<OrdersContent> {
     );
   }
 
+  // Widget ChallanCard(context, Challan challan) {
+  //   String trp_name = "XY Transporter";
 
-  // Widget CompletedOrder() {
-  //   loadChallanList();
-  //   return Container(
-  //       height: MediaQuery.of(context).size.height * 0.83,
-  //       decoration: const BoxDecoration(
-  //           // gradient:
-  //           //         LinearGradient(transform: GradientRotation(1.07), colors: [
-  //           //   Color.fromRGBO(75, 100, 160, 1.0),
-  //           //   Color.fromRGBO(19, 59, 78, 1.0),
-  //           // ]
-  //           //         )
+  //   return Card(
+  //     child: Container(
+  //       decoration: BoxDecoration(
+  //           // color: Colors.white, borderRadius: BorderRadius.circular(20)
   //           ),
-  //       child: SingleChildScrollView(
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           children: [
-  //             Container(
-  //               decoration: const BoxDecoration(
-  //                   // color: Colors.grey,
-  //                   // borderRadius: BorderRadius.circular(20)
-  //                   ),
-  //               width: MediaQuery.of(context).size.width * 0.8,
-  //               margin: const EdgeInsets.only(top: 20),
-  //               padding: const EdgeInsets.symmetric(horizontal: 10),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 children: [
-  //                   Text(
-  //                     "Order Id:",
+  //       padding: EdgeInsets.all(5),
+  //       margin: EdgeInsets.all(5),
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.start,
+  //         children: [
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               Container(
+  //                   child: const Text(
+  //                 "Challan ID:",
+  //                 textAlign: TextAlign.left,
+  //                 style: TextStyle(fontFamily: "Poppins_Bold"),
+  //               )),
+  //               Container(
+  //                   padding: EdgeInsets.only(left: 65),
+  //                   child: Text(
+  //                     challan.challan_id!.toString(),
+  //                     textAlign: TextAlign.center,
   //                     style: TextStyle(fontFamily: "Poppins_Bold"),
+  //                   ))
+  //             ],
+  //           ),
+  //           Container(
+  //             child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Container(
+  //                   child: Text(
+  //                     "Transporter Name:",
+  //                     style: TextStyle(fontFamily: "Roboto"),
   //                   ),
-  //                   Padding(
-  //                     padding: EdgeInsets.only(left: 8.0),
-  //                     child: Text(widget.order.order_id.toString()),
-  //                   )
-  //                 ],
-  //               ),
-  //             ),
-  //             Card(
-  //               child: Container(
-  //                 decoration: BoxDecoration(
-  //                     color: const Color.fromRGBO(255, 255, 255, 0.5),
-  //                     borderRadius: BorderRadius.circular(8)),
-  //                 margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-  //                 child: Column(
-  //                   children: [
-  //                     SingleChildScrollView(
-  //                       child: Container(
-  //                         height: MediaQuery.of(context).size.height * 0.6,
-  //                         child: ListView.builder(
-  //                           itemCount: challanList.length,
-  //                           //physics: const NeverScrollableScrollPhysics(),
-  //                           scrollDirection: Axis.vertical,
-  //                           shrinkWrap: false,
-  //                           itemBuilder: (context, index) {
-  //                             return InkWell(
-  //                                 onTap: () {
-  //                                   Navigator.push(
-  //                                       context,
-  //                                       MaterialPageRoute(
-  //                                           builder: (context) =>
-  //                                               GeneratedChallan(
-  //                                                   challan_id:
-  //                                                       challanList[index]
-  //                                                           .challan_id!)));
-  //                                 },
-  //                                 child:
-  //                                     ChallanCard(context, challanList[index]));
-  //                           },
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ],
+  //                   padding: EdgeInsets.only(top: 5, bottom: 5),
   //                 ),
-  //               ),
+  //                 Container(
+  //                   child: Text(
+  //                     challan.transporter_name!,
+  //                     overflow: TextOverflow.ellipsis,
+  //                     maxLines: 3,
+  //                   ),
+  //                 )
+  //               ],
   //             ),
-  //           ],
-  //         ),
-  //       ));
+  //           ),
+  //           Container(
+  //             child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Text("Vehicle Number:"),
+  //                 Padding(
+  //                   padding: const EdgeInsets.only(left: 36.0),
+  //                   child: Text(challan.vehicle_number!),
+  //                 )
+  //               ],
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
   // }
-
-  Widget ChallanCard(context, Challan challan) {
-    String trp_name = "XY Transporter";
-
-    return Card(
-      child: Container(
-        decoration: BoxDecoration(
-            // color: Colors.white, borderRadius: BorderRadius.circular(20)
-            ),
-        padding: EdgeInsets.all(5),
-        margin: EdgeInsets.all(5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    child: const Text(
-                  "Challan ID:",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontFamily: "Poppins_Bold"),
-                )),
-                Container(
-                    padding: EdgeInsets.only(left: 65),
-                    child: Text(
-                      challan.challan_id!.toString(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontFamily: "Poppins_Bold"),
-                    ))
-              ],
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Text(
-                      "Transporter Name:",
-                      style: TextStyle(fontFamily: "Roboto"),
-                    ),
-                    padding: EdgeInsets.only(top: 5, bottom: 5),
-                  ),
-                  Container(
-                    child: Text(
-                      challan.transporter_name!,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Vehicle Number:"),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 36.0),
-                    child: Text(challan.vehicle_number!),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   // Widget ComplatedOrders(){
   //   return Padding(
@@ -542,7 +537,7 @@ class _OrdersPageState extends State<OrdersContent> {
   // }
 
 //------------------------------Orderrequest--------------------------------
-  Widget Requests() {
+  Widget OrderList1() {
     loadData1();
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
@@ -567,9 +562,8 @@ class _OrdersPageState extends State<OrdersContent> {
                               builder: (context) =>
                                   OrderDetails(order: requestList[index])));
                     },
-                    child:
-                    requestList[index].orderType == "With Size"
-                        ? RequestCard(index)
+                    child: requestList[index].orderType == "With Size"
+                        ? orderwidget1(index)
                         : Container());
                 // }
                 // return null;
@@ -584,7 +578,7 @@ class _OrdersPageState extends State<OrdersContent> {
     );
   }
 
-  Widget RequestCard(int index) {
+  Widget orderwidget1(int index) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Container(
@@ -667,35 +661,54 @@ class _OrdersPageState extends State<OrdersContent> {
             // Divider(color: Colors.orangeAccent),
 
             Container(
-              padding: EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: 10, right: 10),
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Base Price:",
-                    style: TextStyle(
-                        fontFamily: "Poppins_Bold", color: Colors.grey),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: Row(
+                          children: [
+                            Text(
+                              "Base Price:",
+                              style: TextStyle(
+                                  fontFamily: "Poppins_Bold",
+                                  color: Colors.grey),
+                            ),
+                            Text(requestList[index].base_price!),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          children: [
+                            Text(
+                              "TotalPrice:",
+                              style: TextStyle(
+                                  fontFamily: "Poppins_Bold",
+                                  color: Colors.grey),
+                            ),
+                            Text(requestList[index].totalPrice.toString()),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(padding: EdgeInsets.only(right: 5)),
-                  Text(requestList[index].base_price!),
+                  // Padding(padding: EdgeInsets.only(right: 5)),
                   Container(
-                    padding: EdgeInsets.only(left: 20),
-                    height: 30,
-                    child: VerticalDivider(
-                      color: Colors.grey,
-                      thickness: 2,
-                      width: 2,
+                    child: Row(
+                      children: [
+                        Text(
+                          "Quantity:",
+                          style: TextStyle(
+                              fontFamily: "Poppins_Bold", color: Colors.grey),
+                        ),
+                        Text(requestList[index].totalQuantity.toString()),
+                      ],
                     ),
-
                   ),
-                  // Text(
-                  //   order.totalQuantity.toString()!,
-                  //   overflow: TextOverflow.ellipsis,
-                  //   maxLines: 3,
-                  //   style: TextStyle(
-                  //     // color: Color.fromRGBO(19, 59, 78, 1.0),
-                  //       color: Colors.grey),
-                  // ),
                 ],
               ),
             ),
@@ -1066,832 +1079,897 @@ class _OrdersPageState extends State<OrdersContent> {
 //   );
 // }
 
+Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
+  if (order.status == 'Confirmed') {
+    return Column(
+      children: [
+        Container(
+          //  height: 130,
 
-Widget CompletedOrderCard(BuildContext context, Order order, String? curr_user_id) {
-  if (order.status == 'Denied'|| order.status=='Completed') {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      color: Colors.white,
-      elevation: 5,
-      child: Container(
-        height: 130,
-        // margin: EdgeInsets.only(top: 10),
-        // padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white,
-        ),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  //  height: 50,
-                  padding: EdgeInsets.only(left: 10, top: 10, right: 10),
-                  width: MediaQuery.of(context).size.width / 1.085,
-                  // color: Colors.red,
-                  decoration: BoxDecoration(
-                      color: Color.fromRGBO(19, 59, 78, 1.0),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+          // margin: EdgeInsets.only(top: 10),
+          // padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.grey.shade100,
+          ),
+          child: Column(
+            children: [
+              Container(
+                //  height: 50,
+                padding: EdgeInsets.only(left: 10, top: 10, right: 10),
+                width: MediaQuery.of(context).size.width,
+                // color: Colors.red,
+                decoration: BoxDecoration(
+                    color: Color.fromRGBO(19, 59, 78, 1.0),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Align(alignment: Alignment.topRight,),
+                        Text(
+                          "ORDER ID",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+
+                        // SizedBox(
+                        //   width: 180,
+                        // ),
+                        Text(
+                          order.order_date!.substring(0, 10),
+                          style: TextStyle(color: Colors.grey),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          order.order_id!.toUpperCase(),
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(top: 10, left: 10),
+                      child: Text(
+                        order.user_name!.toUpperCase(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Color.fromRGBO(19, 59, 78, 1.0),
+                          // color: Colors.grey
+                        ),
+                      )),
+
+                  Container(
+                      padding: EdgeInsets.only(top: 10),
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        if (order.status == "Confirmed") {
+                          return Container(
+                              // width: 40,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.greenAccent,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10))),
+                              child: Text(
+                                order!.status!,
+                              ));
+                        } else if (order.status == "Denied") {
+                          return Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.redAccent,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10))),
+                              child: Text(
+                                order.status!,
+                                style: TextStyle(color: Colors.white),
+                              ));
+                        } else {
+                          return Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10))),
+                              child: Text(
+                                order.status!,
+                                style: TextStyle(color: Colors.white),
+                              ));
+                        }
+                      })),
+
+                  // Container(
+                  //     padding: EdgeInsets.only(top: 10),
+                  //     child: LayoutBuilder(builder: (context, constraints) {
+                  //       if (order.status == "Confirmed") {
+                  //         return Container(
+                  //           // width: 40,
+                  //             padding: EdgeInsets.symmetric(
+                  //                 horizontal: 5, vertical: 5),
+                  //             decoration: BoxDecoration(
+                  //                 color: Colors.greenAccent,
+                  //                 borderRadius: BorderRadius.only(
+                  //                     topLeft: Radius.circular(10),
+                  //                     bottomLeft: Radius.circular(10))),
+                  //             child: Text(
+                  //               order!.status!,
+                  //
+                  //             ));
+                  //       } else if(order.status == "Denied") {
+                  //         return Container(
+                  //             padding: EdgeInsets.symmetric(
+                  //                 horizontal: 5, vertical: 5),
+                  //             decoration: BoxDecoration(
+                  //                 color: Colors.redAccent,
+                  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
+                  //             child: Text(
+                  //               order.status!,
+                  //               style: TextStyle(
+                  //                   color: Colors.white
+                  //               ),
+                  //             ));
+                  //       } else{
+                  //         return Container(
+                  //             padding: EdgeInsets.symmetric(
+                  //                 horizontal: 5, vertical: 5),
+                  //             decoration: BoxDecoration(
+                  //                 color: Colors.yellow,
+                  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
+                  //             child: Text(
+                  //               order.status!,
+                  //               style: TextStyle(
+                  //                   color: Colors.white
+                  //               ),
+                  //             ));
+                  //       }
+                  //     })),
+
+                  // Container(
+                  //   padding: EdgeInsets.only(right: 10),
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: [
+                  //             Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
+                  //             Padding(
+                  //               padding: const EdgeInsets.only(left: 10),
+                  //               child: Text(order.status!),
+                  //             )
+                  //           ],
+                  //         ),
+                  //       ),
+                  // Container(
+                  //   child: Text(),
+                  // )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //  Padding(padding: EdgeInsets.only(left: 10)),
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Align(alignment: Alignment.topRight,),
-                          Text(
-                            "ORDER ID",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-
-                          // SizedBox(
-                          //   width: 180,
-                          // ),
-                          Text(
-                            order.order_date!.substring(0, 10),
-                            style: TextStyle(color: Colors.grey),
-                          )
-                        ],
+                      Container(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Base Price:",
+                              style: TextStyle(
+                                  fontFamily: "Poppins_Bold",
+                                  color: Colors.grey),
+                            ),
+                            Text(
+                              order.base_price!,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: TextStyle(
+                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                  color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        //  padding: EdgeInsets.only(right: 5),
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            order.order_id!.toUpperCase(),
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17)),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    alignment: Alignment.topLeft,
-                    padding: EdgeInsets.only(top: 10, left: 10),
-                    child: Text(
-                      order.user_name!.toUpperCase(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        color: Color.fromRGBO(19, 59, 78, 1.0),
-                        // color: Colors.grey
-                      ),
-                    )),
-
-                Container(
-                    padding: EdgeInsets.only(top: 10),
-                    child: LayoutBuilder(builder: (context, constraints) {
-                      if (order.status == "Confirmed") {
-                        return Container(
-                          // width: 40,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.greenAccent,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Text(
-                              order!.status!,
-                            ));
-                      } else if (order.status == "Denied") {
-                        return Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.redAccent,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Text(
-                              order.status!,
-                              style: TextStyle(color: Colors.white),
-                            ));
-                      } else {
-                        return Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Text(
-                              order.status!,
-                              style: TextStyle(color: Colors.white),
-                            ));
-                      }
-                    })),
-
-                // Container(
-                //     padding: EdgeInsets.only(top: 10),
-                //     child: LayoutBuilder(builder: (context, constraints) {
-                //       if (order.status == "Confirmed") {
-                //         return Container(
-                //           // width: 40,
-                //             padding: EdgeInsets.symmetric(
-                //                 horizontal: 5, vertical: 5),
-                //             decoration: BoxDecoration(
-                //                 color: Colors.greenAccent,
-                //                 borderRadius: BorderRadius.only(
-                //                     topLeft: Radius.circular(10),
-                //                     bottomLeft: Radius.circular(10))),
-                //             child: Text(
-                //               order!.status!,
-                //
-                //             ));
-                //       } else if(order.status == "Denied") {
-                //         return Container(
-                //             padding: EdgeInsets.symmetric(
-                //                 horizontal: 5, vertical: 5),
-                //             decoration: BoxDecoration(
-                //                 color: Colors.redAccent,
-                //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
-                //             child: Text(
-                //               order.status!,
-                //               style: TextStyle(
-                //                   color: Colors.white
-                //               ),
-                //             ));
-                //       } else{
-                //         return Container(
-                //             padding: EdgeInsets.symmetric(
-                //                 horizontal: 5, vertical: 5),
-                //             decoration: BoxDecoration(
-                //                 color: Colors.yellow,
-                //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
-                //             child: Text(
-                //               order.status!,
-                //               style: TextStyle(
-                //                   color: Colors.white
-                //               ),
-                //             ));
-                //       }
-                //     })),
-
-                // Container(
-                //   padding: EdgeInsets.only(right: 10),
-                //         child: Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //           children: [
-                //             Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-                //             Padding(
-                //               padding: const EdgeInsets.only(left: 10),
-                //               child: Text(order.status!),
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                // Container(
-                //   child: Text(),
-                // )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //  Padding(padding: EdgeInsets.only(left: 10)),
-                Container(
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Base Price:",
-                        style: TextStyle(
-                            fontFamily: "Poppins_Bold", color: Colors.grey),
-                      ),
-                      Text(
-                        order.base_price!,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          // color: Color.fromRGBO(19, 59, 78, 1.0),
-                            color: Colors.grey),
+                      Container(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Total Price:",
+                              style: TextStyle(
+                                  fontFamily: "Poppins_Bold",
+                                  color: Colors.grey),
+                            ),
+                            Text(
+                              order.totalPrice.toString(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: TextStyle(
+                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                  color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        //  padding: EdgeInsets.only(right: 5),
                       ),
                     ],
                   ),
-                  //  padding: EdgeInsets.only(right: 5),
-                ),
 
-                // Container(
-                //   padding: EdgeInsets.only(left: 20),
-                //   height: 30,
-                //   child: VerticalDivider(
-                //     color: Colors.grey,
-                //     thickness: 2,
-                //     width: 2,
-                //   ),
-                // ),
-                Container(
-                  padding: EdgeInsets.only(right: 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Quantity:",
-                        style: TextStyle(
-                            fontFamily: "Poppins_Bold", color: Colors.grey),
-                      ),
-                      Text(
-                        order.totalQuantity.toString()!,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                          // color: Color.fromRGBO(19, 59, 78, 1.0),
-                            color: Colors.grey),
-                      ),
-                    ],
+                  // Container(
+                  //   padding: EdgeInsets.only(left: 20),
+                  //   height: 30,
+                  //   child: VerticalDivider(
+                  //     color: Colors.grey,
+                  //     thickness: 2,
+                  //     width: 2,
+                  //   ),
+                  // ),
+                  Container(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Quantity:",
+                          style: TextStyle(
+                              fontFamily: "Poppins_Bold", color: Colors.grey),
+                        ),
+                        Text(
+                          order.totalQuantity.toString(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: TextStyle(
+                              // color: Color.fromRGBO(19, 59, 78, 1.0),
+                              color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    //  padding: EdgeInsets.only(right: 5),
                   ),
-                  //  padding: EdgeInsets.only(right: 5),
-                ),
-                // Text(
-                //   "${order.totalQuantity!.toString()}",
-                //   style: TextStyle(color: Colors.black),
-                // ),
-                // Text( tot_price )
+                  // Text(
+                  //   "${order.totalQuantity!.toString()}",
+                  //   style: TextStyle(color: Colors.black),
+                  // ),
+                  // Text( tot_price )
 
-                // Container(
-                //   child: Text(
-                //       item.price!
-                //   ),
-                // )
-              ],
-            ),
+                  // Container(
+                  //   child: Text(
+                  //       item.price!
+                  //   ),
+                  // )
+                ],
+              ),
 
-            // TextButton(
-            //             onPressed: () async {
-            //               await http.post(
-            //                 Uri.parse(
-            //                     "http://urbanwebmobile.in/steffo/approveorder.php"),
-            //                 body: {
-            //                   "decision": "Approved",
-            //                   "order_id": requestList[index].order_id!
-            //                 },
-            //               );
-            //               () {
-            //                 // orderList.add(requestList[index]);
-            //                 // requestList.removeAt(index);
-            //                 id = "none";
-            //                 setState(() {
-            //                   print('setstate');
-            //                   //  loadData();
-            //                 });
-            //               }();
-            //               // Get.to(RequestPage());
-            //             },
-            //             child: GradientText(
-            //               style:
-            //                   TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            //               colors: [Colors.greenAccent, Colors.grey],
-            //               "Accept",
-            //             )),
+              // TextButton(
+              //             onPressed: () async {
+              //               await http.post(
+              //                 Uri.parse(
+              //                     "http://urbanwebmobile.in/steffo/approveorder.php"),
+              //                 body: {
+              //                   "decision": "Approved",
+              //                   "order_id": requestList[index].order_id!
+              //                 },
+              //               );
+              //               () {
+              //                 // orderList.add(requestList[index]);
+              //                 // requestList.removeAt(index);
+              //                 id = "none";
+              //                 setState(() {
+              //                   print('setstate');
+              //                   //  loadData();
+              //                 });
+              //               }();
+              //               // Get.to(RequestPage());
+              //             },
+              //             child: GradientText(
+              //               style:
+              //                   TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              //               colors: [Colors.greenAccent, Colors.grey],
+              //               "Accept",
+              //             )),
 
-            // TextButton(
-            //     onPressed: () async {
-            //       await http.post(
-            //         Uri.parse(
-            //             "http://urbanwebmobile.in/steffo/approveorder.php"),
-            //         body: {
-            //           "decision": "Denied",
-            //           "order_id": requestList[index].order_id!
-            //         },
-            //       );
-            //       () {
-            //         // orderList.add(requestList[index]);
-            //         // requestList.removeAt(index);
-            //         id = "none";
-            //         loadData();
-            //         setState(() {});
-            //         // Get.to(RequestPage());
-            //       }();
-            //     },
-            //     child: GradientText(
-            //       style:
-            //           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            //       colors: [Colors.redAccent, Colors.grey],
-            //       "Decline",
-            //     ))
-          ],
+              // TextButton(
+              //     onPressed: () async {
+              //       await http.post(
+              //         Uri.parse(
+              //             "http://urbanwebmobile.in/steffo/approveorder.php"),
+              //         body: {
+              //           "decision": "Denied",
+              //           "order_id": requestList[index].order_id!
+              //         },
+              //       );
+              //       () {
+              //         // orderList.add(requestList[index]);
+              //         // requestList.removeAt(index);
+              //         id = "none";
+              //         loadData();
+              //         setState(() {});
+              //         // Get.to(RequestPage());
+              //       }();
+              //     },
+              //     child: GradientText(
+              //       style:
+              //           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              //       colors: [Colors.redAccent, Colors.grey],
+              //       "Decline",
+              //     ))
+            ],
+          ),
+          // Container(
+          //   child: Text("data"),
+          // )
+
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     Container(
+          //       padding: EdgeInsets.only(top: 5, bottom: 5),
+          //       child: Text(
+          //         order.user_name!.toUpperCase(),
+          //         style: GoogleFonts.poppins(
+          //             textStyle: TextStyle(
+          //                 color: Colors.black,
+          //                 fontWeight: FontWeight.bold,
+          //                 fontSize: 20)),
+          //       ),
+          //     ),
+          //     // LayoutBuilder(builder: (context, constraints) {
+          //     //   if (curr_user_id == order.reciever_id) {
+          //     //     return Container(
+          //     //         padding:
+          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+          //     //         decoration: BoxDecoration(
+          //     //             color: Colors.blue,
+          //     //             borderRadius: BorderRadius.circular(20)),
+          //     //         child: Text(
+          //     //           "Sales",
+          //     //         ));
+          //     //   } else {
+          //     //     return Container(
+          //     //         padding:
+          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+          //     //         decoration: BoxDecoration(
+          //     //             color: Colors.green,
+          //     //             borderRadius: BorderRadius.circular(20)),
+          //     //         child: Text("Purchase"));
+          //     //   }
+          //     // })
+          //     Divider(
+          //       color: Colors.greenAccent,
+          //     ),
+          //
+          //     Container(
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           Container(
+          //             child: Text(
+          //               "Org Name:",
+          //               style: TextStyle(fontFamily: "Poppins_Bold"),
+          //             ),
+          //             padding: EdgeInsets.only(bottom: 5, right: 5),
+          //           ),
+          //           Text(
+          //             order.party_name!,
+          //             overflow: TextOverflow.ellipsis,
+          //             maxLines: 3,
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //     Container(
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
+          //           Padding(
+          //             padding: const EdgeInsets.only(left: 35.0),
+          //             child: Text(order.status!),
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //     Container(
+          //       padding: EdgeInsets.symmetric(vertical: 5),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           Text("Order Date: ",
+          //               style: TextStyle(fontFamily: "Poppins_Bold")),
+          //           Text(order.order_date!.substring(0, 10))
+          //         ],
+          //       ),
+          //     )
+          //   ],
+          // ),
         ),
-        // Container(
-        //   child: Text("data"),
-        // )
-
-        // Column(
-        //   mainAxisAlignment: MainAxisAlignment.start,
-        //   children: [
-        //     Container(
-        //       padding: EdgeInsets.only(top: 5, bottom: 5),
-        //       child: Text(
-        //         order.user_name!.toUpperCase(),
-        //         style: GoogleFonts.poppins(
-        //             textStyle: TextStyle(
-        //                 color: Colors.black,
-        //                 fontWeight: FontWeight.bold,
-        //                 fontSize: 20)),
-        //       ),
-        //     ),
-        //     // LayoutBuilder(builder: (context, constraints) {
-        //     //   if (curr_user_id == order.reciever_id) {
-        //     //     return Container(
-        //     //         padding:
-        //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-        //     //         decoration: BoxDecoration(
-        //     //             color: Colors.blue,
-        //     //             borderRadius: BorderRadius.circular(20)),
-        //     //         child: Text(
-        //     //           "Sales",
-        //     //         ));
-        //     //   } else {
-        //     //     return Container(
-        //     //         padding:
-        //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-        //     //         decoration: BoxDecoration(
-        //     //             color: Colors.green,
-        //     //             borderRadius: BorderRadius.circular(20)),
-        //     //         child: Text("Purchase"));
-        //     //   }
-        //     // })
-        //     Divider(
-        //       color: Colors.greenAccent,
-        //     ),
-        //
-        //     Container(
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Container(
-        //             child: Text(
-        //               "Org Name:",
-        //               style: TextStyle(fontFamily: "Poppins_Bold"),
-        //             ),
-        //             padding: EdgeInsets.only(bottom: 5, right: 5),
-        //           ),
-        //           Text(
-        //             order.party_name!,
-        //             overflow: TextOverflow.ellipsis,
-        //             maxLines: 3,
-        //           )
-        //         ],
-        //       ),
-        //     ),
-        //     Container(
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-        //           Padding(
-        //             padding: const EdgeInsets.only(left: 35.0),
-        //             child: Text(order.status!),
-        //           )
-        //         ],
-        //       ),
-        //     ),
-        //     Container(
-        //       padding: EdgeInsets.symmetric(vertical: 5),
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Text("Order Date: ",
-        //               style: TextStyle(fontFamily: "Poppins_Bold")),
-        //           Text(order.order_date!.substring(0, 10))
-        //         ],
-        //       ),
-        //     )
-        //   ],
-        // ),
-      ),
+        SizedBox(
+          height: 10,
+        ),
+      ],
     );
   } else
     return Container();
 }
 
+Widget completedorderCard(
+    BuildContext context, Order order, String? curr_user_id) {
+  if (order.status == 'Canceled' ||
+      order.status == 'Denied' ||
+      order.status == 'Completed') {
+    return Column(
+      children: [
+        Container(
+          // height: 130,
 
+          // margin: EdgeInsets.only(top: 10),
+          // padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.grey.shade100,
+          ),
+          child: Column(
+            children: [
+              Container(
+                //  height: 50,
+                padding: EdgeInsets.only(left: 10, top: 10, right: 10),
+                width: MediaQuery.of(context).size.width,
+                // color: Colors.red,
+                decoration: BoxDecoration(
+                    color: Color.fromRGBO(19, 59, 78, 1.0),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Align(alignment: Alignment.topRight,),
+                        Text(
+                          "ORDER ID",
+                          style: TextStyle(color: Colors.grey),
+                        ),
 
-Widget ConfirmorderCard(BuildContext context, Order order, String? curr_user_id) {
-  if (order.status == 'Confirmed') {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      color: Colors.white,
-      elevation: 5,
-      child: Container(
-        height: 130,
-        // margin: EdgeInsets.only(top: 10),
-        // padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white,
-        ),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  //  height: 50,
-                  padding: EdgeInsets.only(left: 10, top: 10, right: 10),
-                  width: MediaQuery.of(context).size.width / 1.085,
-                  // color: Colors.red,
-                  decoration: BoxDecoration(
-                      color: Color.fromRGBO(19, 59, 78, 1.0),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                        // SizedBox(
+                        //   width: 180,
+                        // ),
+                        Text(
+                          order.order_date!.substring(0, 10),
+                          style: TextStyle(color: Colors.grey),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          order.order_id!.toUpperCase(),
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(top: 10, left: 10),
+                      child: Text(
+                        order.user_name!.toUpperCase(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Color.fromRGBO(19, 59, 78, 1.0),
+                          // color: Colors.grey
+                        ),
+                      )),
+
+                  Container(
+                      padding: EdgeInsets.only(top: 10),
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        if (order.status == "Confirmed") {
+                          return Container(
+                              // width: 40,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.greenAccent,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10))),
+                              child: Text(
+                                order!.status!,
+                              ));
+                        } else if (order.status == "Denied") {
+                          return Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.redAccent,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10))),
+                              child: Text(
+                                order.status!,
+                                style: TextStyle(color: Colors.white),
+                              ));
+                        } else if (order.status == "Canceled") {
+                          return Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10))),
+                              child: Text(
+                                order.status!,
+                                style: TextStyle(color: Colors.white),
+                              ));
+                        } else {
+                          return Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10))),
+                              child: Text(
+                                order.status!,
+                                style: TextStyle(color: Colors.white),
+                              ));
+                        }
+                      })),
+
+                  // Container(
+                  //     padding: EdgeInsets.only(top: 10),
+                  //     child: LayoutBuilder(builder: (context, constraints) {
+                  //       if (order.status == "Confirmed") {
+                  //         return Container(
+                  //           // width: 40,
+                  //             padding: EdgeInsets.symmetric(
+                  //                 horizontal: 5, vertical: 5),
+                  //             decoration: BoxDecoration(
+                  //                 color: Colors.greenAccent,
+                  //                 borderRadius: BorderRadius.only(
+                  //                     topLeft: Radius.circular(10),
+                  //                     bottomLeft: Radius.circular(10))),
+                  //             child: Text(
+                  //               order!.status!,
+                  //
+                  //             ));
+                  //       } else if(order.status == "Denied") {
+                  //         return Container(
+                  //             padding: EdgeInsets.symmetric(
+                  //                 horizontal: 5, vertical: 5),
+                  //             decoration: BoxDecoration(
+                  //                 color: Colors.redAccent,
+                  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
+                  //             child: Text(
+                  //               order.status!,
+                  //               style: TextStyle(
+                  //                   color: Colors.white
+                  //               ),
+                  //             ));
+                  //       } else{
+                  //         return Container(
+                  //             padding: EdgeInsets.symmetric(
+                  //                 horizontal: 5, vertical: 5),
+                  //             decoration: BoxDecoration(
+                  //                 color: Colors.yellow,
+                  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
+                  //             child: Text(
+                  //               order.status!,
+                  //               style: TextStyle(
+                  //                   color: Colors.white
+                  //               ),
+                  //             ));
+                  //       }
+                  //     })),
+
+                  // Container(
+                  //   padding: EdgeInsets.only(right: 10),
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: [
+                  //             Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
+                  //             Padding(
+                  //               padding: const EdgeInsets.only(left: 10),
+                  //               child: Text(order.status!),
+                  //             )
+                  //           ],
+                  //         ),
+                  //       ),
+                  // Container(
+                  //   child: Text(),
+                  // )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //  Padding(padding: EdgeInsets.only(left: 10)),
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Align(alignment: Alignment.topRight,),
-                          Text(
-                            "ORDER ID",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-
-                          // SizedBox(
-                          //   width: 180,
-                          // ),
-                          Text(
-                            order.order_date!.substring(0, 10),
-                            style: TextStyle(color: Colors.grey),
-                          )
-                        ],
+                      Container(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Base Price:",
+                              style: TextStyle(
+                                  fontFamily: "Poppins_Bold",
+                                  color: Colors.grey),
+                            ),
+                            Text(
+                              order.base_price!,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: TextStyle(
+                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                  color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        //  padding: EdgeInsets.only(right: 5),
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            order.order_id!.toUpperCase(),
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17)),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    alignment: Alignment.topLeft,
-                    padding: EdgeInsets.only(top: 10, left: 10),
-                    child: Text(
-                      order.user_name!.toUpperCase(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        color: Color.fromRGBO(19, 59, 78, 1.0),
-                        // color: Colors.grey
-                      ),
-                    )),
-
-                Container(
-                    padding: EdgeInsets.only(top: 10),
-                    child: LayoutBuilder(builder: (context, constraints) {
-                      if (order.status == "Confirmed") {
-                        return Container(
-                            // width: 40,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.greenAccent,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Text(
-                              order!.status!,
-                            ));
-                      } else if (order.status == "Denied") {
-                        return Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.redAccent,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Text(
-                              order.status!,
-                              style: TextStyle(color: Colors.white),
-                            ));
-                      } else {
-                        return Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Text(
-                              order.status!,
-                              style: TextStyle(color: Colors.white),
-                            ));
-                      }
-                    })),
-
-                // Container(
-                //     padding: EdgeInsets.only(top: 10),
-                //     child: LayoutBuilder(builder: (context, constraints) {
-                //       if (order.status == "Confirmed") {
-                //         return Container(
-                //           // width: 40,
-                //             padding: EdgeInsets.symmetric(
-                //                 horizontal: 5, vertical: 5),
-                //             decoration: BoxDecoration(
-                //                 color: Colors.greenAccent,
-                //                 borderRadius: BorderRadius.only(
-                //                     topLeft: Radius.circular(10),
-                //                     bottomLeft: Radius.circular(10))),
-                //             child: Text(
-                //               order!.status!,
-                //
-                //             ));
-                //       } else if(order.status == "Denied") {
-                //         return Container(
-                //             padding: EdgeInsets.symmetric(
-                //                 horizontal: 5, vertical: 5),
-                //             decoration: BoxDecoration(
-                //                 color: Colors.redAccent,
-                //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
-                //             child: Text(
-                //               order.status!,
-                //               style: TextStyle(
-                //                   color: Colors.white
-                //               ),
-                //             ));
-                //       } else{
-                //         return Container(
-                //             padding: EdgeInsets.symmetric(
-                //                 horizontal: 5, vertical: 5),
-                //             decoration: BoxDecoration(
-                //                 color: Colors.yellow,
-                //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
-                //             child: Text(
-                //               order.status!,
-                //               style: TextStyle(
-                //                   color: Colors.white
-                //               ),
-                //             ));
-                //       }
-                //     })),
-
-                // Container(
-                //   padding: EdgeInsets.only(right: 10),
-                //         child: Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //           children: [
-                //             Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-                //             Padding(
-                //               padding: const EdgeInsets.only(left: 10),
-                //               child: Text(order.status!),
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                // Container(
-                //   child: Text(),
-                // )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //  Padding(padding: EdgeInsets.only(left: 10)),
-                Container(
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Base Price:",
-                        style: TextStyle(
-                            fontFamily: "Poppins_Bold", color: Colors.grey),
-                      ),
-                      Text(
-                        order.base_price!,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                            // color: Color.fromRGBO(19, 59, 78, 1.0),
-                            color: Colors.grey),
+                      Container(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Total Price:",
+                              style: TextStyle(
+                                  fontFamily: "Poppins_Bold",
+                                  color: Colors.grey),
+                            ),
+                            Text(
+                              order.totalPrice.toString(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: TextStyle(
+                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                  color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        //  padding: EdgeInsets.only(right: 5),
                       ),
                     ],
                   ),
-                  //  padding: EdgeInsets.only(right: 5),
-                ),
 
-                // Container(
-                //   padding: EdgeInsets.only(left: 20),
-                //   height: 30,
-                //   child: VerticalDivider(
-                //     color: Colors.grey,
-                //     thickness: 2,
-                //     width: 2,
-                //   ),
-                // ),
-                Container(
-                  padding: EdgeInsets.only(right: 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Quantity:",
-                        style: TextStyle(
-                            fontFamily: "Poppins_Bold", color: Colors.grey),
-                      ),
-                      Text(
-                        order.totalQuantity.toString()!,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: TextStyle(
-                            // color: Color.fromRGBO(19, 59, 78, 1.0),
-                            color: Colors.grey),
-                      ),
-                    ],
+                  // Container(
+                  //   padding: EdgeInsets.only(left: 20),
+                  //   height: 30,
+                  //   child: VerticalDivider(
+                  //     color: Colors.grey,
+                  //     thickness: 2,
+                  //     width: 2,
+                  //   ),
+                  // ),
+                  Container(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Quantity:",
+                          style: TextStyle(
+                              fontFamily: "Poppins_Bold", color: Colors.grey),
+                        ),
+                        Text(
+                          order.totalQuantity.toString(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: TextStyle(
+                              // color: Color.fromRGBO(19, 59, 78, 1.0),
+                              color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    //  padding: EdgeInsets.only(right: 5),
                   ),
-                  //  padding: EdgeInsets.only(right: 5),
-                ),
-                // Text(
-                //   "${order.totalQuantity!.toString()}",
-                //   style: TextStyle(color: Colors.black),
-                // ),
-                // Text( tot_price )
+                  // Text(
+                  //   "${order.totalQuantity!.toString()}",
+                  //   style: TextStyle(color: Colors.black),
+                  // ),
+                  // Text( tot_price )
 
-                // Container(
-                //   child: Text(
-                //       item.price!
-                //   ),
-                // )
-              ],
-            ),
+                  // Container(
+                  //   child: Text(
+                  //       item.price!
+                  //   ),
+                  // )
+                ],
+              ),
 
-            // TextButton(
-            //             onPressed: () async {
-            //               await http.post(
-            //                 Uri.parse(
-            //                     "http://urbanwebmobile.in/steffo/approveorder.php"),
-            //                 body: {
-            //                   "decision": "Approved",
-            //                   "order_id": requestList[index].order_id!
-            //                 },
-            //               );
-            //               () {
-            //                 // orderList.add(requestList[index]);
-            //                 // requestList.removeAt(index);
-            //                 id = "none";
-            //                 setState(() {
-            //                   print('setstate');
-            //                   //  loadData();
-            //                 });
-            //               }();
-            //               // Get.to(RequestPage());
-            //             },
-            //             child: GradientText(
-            //               style:
-            //                   TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            //               colors: [Colors.greenAccent, Colors.grey],
-            //               "Accept",
-            //             )),
+              // TextButton(
+              //             onPressed: () async {
+              //               await http.post(
+              //                 Uri.parse(
+              //                     "http://urbanwebmobile.in/steffo/approveorder.php"),
+              //                 body: {
+              //                   "decision": "Approved",
+              //                   "order_id": requestList[index].order_id!
+              //                 },
+              //               );
+              //               () {
+              //                 // orderList.add(requestList[index]);
+              //                 // requestList.removeAt(index);
+              //                 id = "none";
+              //                 setState(() {
+              //                   print('setstate');
+              //                   //  loadData();
+              //                 });
+              //               }();
+              //               // Get.to(RequestPage());
+              //             },
+              //             child: GradientText(
+              //               style:
+              //                   TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              //               colors: [Colors.greenAccent, Colors.grey],
+              //               "Accept",
+              //             )),
 
-            // TextButton(
-            //     onPressed: () async {
-            //       await http.post(
-            //         Uri.parse(
-            //             "http://urbanwebmobile.in/steffo/approveorder.php"),
-            //         body: {
-            //           "decision": "Denied",
-            //           "order_id": requestList[index].order_id!
-            //         },
-            //       );
-            //       () {
-            //         // orderList.add(requestList[index]);
-            //         // requestList.removeAt(index);
-            //         id = "none";
-            //         loadData();
-            //         setState(() {});
-            //         // Get.to(RequestPage());
-            //       }();
-            //     },
-            //     child: GradientText(
-            //       style:
-            //           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            //       colors: [Colors.redAccent, Colors.grey],
-            //       "Decline",
-            //     ))
-          ],
+              // TextButton(
+              //     onPressed: () async {
+              //       await http.post(
+              //         Uri.parse(
+              //             "http://urbanwebmobile.in/steffo/approveorder.php"),
+              //         body: {
+              //           "decision": "Denied",
+              //           "order_id": requestList[index].order_id!
+              //         },
+              //       );
+              //       () {
+              //         // orderList.add(requestList[index]);
+              //         // requestList.removeAt(index);
+              //         id = "none";
+              //         loadData();
+              //         setState(() {});
+              //         // Get.to(RequestPage());
+              //       }();
+              //     },
+              //     child: GradientText(
+              //       style:
+              //           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              //       colors: [Colors.redAccent, Colors.grey],
+              //       "Decline",
+              //     ))
+            ],
+          ),
+          // Container(
+          //   child: Text("data"),
+          // )
+
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     Container(
+          //       padding: EdgeInsets.only(top: 5, bottom: 5),
+          //       child: Text(
+          //         order.user_name!.toUpperCase(),
+          //         style: GoogleFonts.poppins(
+          //             textStyle: TextStyle(
+          //                 color: Colors.black,
+          //                 fontWeight: FontWeight.bold,
+          //                 fontSize: 20)),
+          //       ),
+          //     ),
+          //     // LayoutBuilder(builder: (context, constraints) {
+          //     //   if (curr_user_id == order.reciever_id) {
+          //     //     return Container(
+          //     //         padding:
+          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+          //     //         decoration: BoxDecoration(
+          //     //             color: Colors.blue,
+          //     //             borderRadius: BorderRadius.circular(20)),
+          //     //         child: Text(
+          //     //           "Sales",
+          //     //         ));
+          //     //   } else {
+          //     //     return Container(
+          //     //         padding:
+          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+          //     //         decoration: BoxDecoration(
+          //     //             color: Colors.green,
+          //     //             borderRadius: BorderRadius.circular(20)),
+          //     //         child: Text("Purchase"));
+          //     //   }
+          //     // })
+          //     Divider(
+          //       color: Colors.greenAccent,
+          //     ),
+          //
+          //     Container(
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           Container(
+          //             child: Text(
+          //               "Org Name:",
+          //               style: TextStyle(fontFamily: "Poppins_Bold"),
+          //             ),
+          //             padding: EdgeInsets.only(bottom: 5, right: 5),
+          //           ),
+          //           Text(
+          //             order.party_name!,
+          //             overflow: TextOverflow.ellipsis,
+          //             maxLines: 3,
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //     Container(
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
+          //           Padding(
+          //             padding: const EdgeInsets.only(left: 35.0),
+          //             child: Text(order.status!),
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //     Container(
+          //       padding: EdgeInsets.symmetric(vertical: 5),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           Text("Order Date: ",
+          //               style: TextStyle(fontFamily: "Poppins_Bold")),
+          //           Text(order.order_date!.substring(0, 10))
+          //         ],
+          //       ),
+          //     )
+          //   ],
+          // ),
         ),
-        // Container(
-        //   child: Text("data"),
-        // )
-
-        // Column(
-        //   mainAxisAlignment: MainAxisAlignment.start,
-        //   children: [
-        //     Container(
-        //       padding: EdgeInsets.only(top: 5, bottom: 5),
-        //       child: Text(
-        //         order.user_name!.toUpperCase(),
-        //         style: GoogleFonts.poppins(
-        //             textStyle: TextStyle(
-        //                 color: Colors.black,
-        //                 fontWeight: FontWeight.bold,
-        //                 fontSize: 20)),
-        //       ),
-        //     ),
-        //     // LayoutBuilder(builder: (context, constraints) {
-        //     //   if (curr_user_id == order.reciever_id) {
-        //     //     return Container(
-        //     //         padding:
-        //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-        //     //         decoration: BoxDecoration(
-        //     //             color: Colors.blue,
-        //     //             borderRadius: BorderRadius.circular(20)),
-        //     //         child: Text(
-        //     //           "Sales",
-        //     //         ));
-        //     //   } else {
-        //     //     return Container(
-        //     //         padding:
-        //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-        //     //         decoration: BoxDecoration(
-        //     //             color: Colors.green,
-        //     //             borderRadius: BorderRadius.circular(20)),
-        //     //         child: Text("Purchase"));
-        //     //   }
-        //     // })
-        //     Divider(
-        //       color: Colors.greenAccent,
-        //     ),
-        //
-        //     Container(
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Container(
-        //             child: Text(
-        //               "Org Name:",
-        //               style: TextStyle(fontFamily: "Poppins_Bold"),
-        //             ),
-        //             padding: EdgeInsets.only(bottom: 5, right: 5),
-        //           ),
-        //           Text(
-        //             order.party_name!,
-        //             overflow: TextOverflow.ellipsis,
-        //             maxLines: 3,
-        //           )
-        //         ],
-        //       ),
-        //     ),
-        //     Container(
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-        //           Padding(
-        //             padding: const EdgeInsets.only(left: 35.0),
-        //             child: Text(order.status!),
-        //           )
-        //         ],
-        //       ),
-        //     ),
-        //     Container(
-        //       padding: EdgeInsets.symmetric(vertical: 5),
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Text("Order Date: ",
-        //               style: TextStyle(fontFamily: "Poppins_Bold")),
-        //           Text(order.order_date!.substring(0, 10))
-        //         ],
-        //       ),
-        //     )
-        //   ],
-        // ),
-      ),
+        SizedBox(
+          height: 10,
+        ),
+      ],
     );
   } else
     return Container();

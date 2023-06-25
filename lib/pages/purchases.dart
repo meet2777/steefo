@@ -7,6 +7,7 @@ import 'package:stefomobileapp/Models/order.dart';
 import 'package:http/http.dart' as http;
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/OrderPage.dart';
+import 'package:stefomobileapp/pages/orderdetailsforpurchases.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import 'package:stefomobileapp/ui/common.dart';
 import 'package:stefomobileapp/ui/custom_tabbar.dart';
@@ -45,6 +46,8 @@ class _purchasesState extends State<purchases> {
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+          req.totalPrice = responseData["data"][i]["totalPrice"];
+        req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
@@ -61,6 +64,7 @@ class _purchasesState extends State<purchases> {
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
         req.order_id = responseData["data"][i]["order_id"].toString();
+        
         print(purchaseOrderList);
         if (req.status != "Rejected") {
           if (id == req.user_id) {
@@ -97,15 +101,11 @@ class _purchasesState extends State<purchases> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             unSelectedCardColor: Colors.white,
-            titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            titleStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            tabBarItemExtend: ((MediaQuery.of(context).size.width) / 2),
-            tabBarItems: ["With Size", "Lump-sums"],
-            tabViewItems: [
-              Container(
-                  child: withsize()),
-              Container(
-                  child: lumpsum())]),
+            tabBarItemExtend: ((MediaQuery.of(context).size.width) / 3),
+            tabBarItems: ["With Size", "Lump-sums", "Completed"],
+            tabViewItems: [withsize(), lumpsum(), completed()]),
       ),
     );
   }
@@ -116,6 +116,7 @@ class _purchasesState extends State<purchases> {
       child: Column(
         children: [
           Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
             child: ListView.builder(
                 itemCount: purchaseOrderList.length,
                 physics: const NeverScrollableScrollPhysics(),
@@ -127,15 +128,19 @@ class _purchasesState extends State<purchases> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => OrderDetails(
+                                builder: (context) => OrderDetailsforpurchases(
                                     order: purchaseOrderList[index])));
                       },
-                      child: purchaseOrderList[index].orderType == "With Size"
-                          ? orderCard(context, purchaseOrderList[index], id)
-                          : Container());
+                      child:
+                          purchaseOrderList[index].orderType == "With Size" &&
+                                  purchaseOrderList[index].status == "Confirmed"
+                              ? orderCard(context, purchaseOrderList[index], id)
+                              : Container());
                 }),
           ),
-          SizedBox(height: 10,)
+          SizedBox(
+            height: 30,
+          )
         ],
       ),
     );
@@ -147,6 +152,7 @@ class _purchasesState extends State<purchases> {
       child: Column(
         children: [
           Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
             child: ListView.builder(
               itemCount: purchaseOrderList.length,
               physics: const NeverScrollableScrollPhysics(),
@@ -160,10 +166,11 @@ class _purchasesState extends State<purchases> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => OrderDetails(
+                              builder: (context) => OrderDetailsforpurchases(
                                   order: purchaseOrderList[index])));
                     },
-                    child: purchaseOrderList[index].orderType == "Lump-sum"
+                    child: purchaseOrderList[index].orderType == "Lump-sum" &&
+                            purchaseOrderList[index].status == "Confirmed"
                         ? orderCard(context, purchaseOrderList[index], id)
                         : Container());
               },
@@ -172,6 +179,40 @@ class _purchasesState extends State<purchases> {
           SizedBox(
             height: 30,
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget completed() {
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: ListView.builder(
+                itemCount: purchaseOrderList.length,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderDetailsforpurchases(
+                                    order: purchaseOrderList[index])));
+                      },
+                      child: purchaseOrderList[index].status != "Confirmed"
+                          ? orderCard(context, purchaseOrderList[index], id)
+                          : Container());
+                }),
+          ),
+          SizedBox(
+            height: 30,
+          )
         ],
       ),
     );

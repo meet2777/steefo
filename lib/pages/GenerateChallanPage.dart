@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:stefomobileapp/pages/GeneratedChallanPage.dart';
 import '../Models/order.dart';
@@ -36,7 +38,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
   final field2Key = GlobalKey<FormFieldState>();
   final field3Key = GlobalKey<FormFieldState>();
   final field4Key = GlobalKey<FormFieldState>();
-
+  late File file;
   // String? selectedValue;
   // TextEditingController first_name = TextEditingController();
   // TextEditingController last_name = TextEditingController();
@@ -225,8 +227,10 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                GeneratedChallan(challan_id: responseData['data'].toString())));
+            builder: (context) => GeneratedChallan(
+                  challan_id: responseData['data'].toString(),
+                  orderid: widget.order.order_id.toString(),
+                )));
   }
 
   Widget GenerateChallanPageBody() {
@@ -401,6 +405,24 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                             ),
                           ),
                         ),
+                        // Container(
+                        //   width: width,
+                        //   padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        //   child: ElevatedButton(
+                        //     onPressed: () async {
+                        //       FilePickerResult? result =
+                        //           await FilePicker.platform.pickFiles();
+
+                        //       if (result != null) {
+                        //         print(result.files.single.path);
+                        //         file = File(result.files.single.path!);
+                        //       } else {
+                        //         // User canceled the picker
+                        //       }
+                        //     },
+                        //     child: Text("Upload"),
+                        //   ),
+                        // ),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.lightBlueAccent,

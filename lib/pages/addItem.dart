@@ -440,9 +440,9 @@ class _AddItemPageState extends State<AddItemContent> {
                                                 "gradeName": newGrade.text,
                                                 "gradePrice": Price.text,
                                               });
-                                          Navigator.pop(context);
+                                          //Navigator.pop(context);
                                           //  gradeList.indexed.toList();
-                                          //  Get.to(HomePage());
+                                          Get.to(HomePage());
                                           Get.showSnackbar(
                                             GetSnackBar(
                                               title: "",

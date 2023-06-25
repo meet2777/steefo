@@ -200,6 +200,7 @@ class _DealerPageState extends State<DealerContent> {
                   //  physics: BouncingScrollPhysics(),
                   itemCount: child.length,
                   itemBuilder: (context, index) {
+                    print("usertype${child[index].userType}");
                     return Column(
                       children: [
                         InkWell(

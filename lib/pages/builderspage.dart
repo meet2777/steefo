@@ -194,7 +194,7 @@ class _DealerPageState extends State<DealerContent1> {
     return LayoutBuilder(builder: (context, constraints) {
       if (isDataReady) {
         return LayoutBuilder(builder: (context, constraints) {
-          if (userType == "Manufacturer") {
+          if (userType == "Manufacturer" || userType == "Dealer") {
             return ListView.builder(
                 //  physics: BouncingScrollPhysics(),
                 itemCount: child.length,
@@ -232,9 +232,8 @@ class _DealerPageState extends State<DealerContent1> {
                                   builder: (context) =>
                                       DealerDetailPage(user: child[index])));
                         },
-                        child:
-                        userType == "Builder" ?
-                        Container(
+                        child: userType == "Builder"
+                            ? Container(
                                 height: 160,
                                 margin: EdgeInsets.all(10.0),
                                 padding: const EdgeInsets.all(8.0),

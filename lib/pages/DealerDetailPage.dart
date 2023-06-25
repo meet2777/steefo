@@ -56,6 +56,7 @@ class DealerDetailState extends State<DealerDetailContent> {
         Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
         body: {"id": widget.user.id},
       );
+      print("${widget.user.id}widgetuserid");
       var responseData = jsonDecode(res.body);
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();

@@ -27,18 +27,20 @@ Widget logo(BuildContext context) {
 Widget buttonStyle(String str, void c()) {
   return DecoratedBox(
       decoration: const BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Color.fromRGBO(75, 100, 160, 1.0),
-            Color.fromRGBO(19, 59, 78, 1.0),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        gradient: LinearGradient(colors: [
+          Color.fromRGBO(75, 100, 160, 1.0),
+          Color.fromRGBO(19, 59, 78, 1.0),
 
-            //add more colors
-          ]),
-          // borderRadius: BorderRadius.circular(30),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.57), //shadow for button
-                blurRadius: 5) //blur radius of shadow
-          ]),
+          //add more colors
+        ]),
+        // borderRadius: BorderRadius.circular(30),
+        // boxShadow: <BoxShadow>[
+        // BoxShadow(
+        //     color: Color.fromRGBO(0, 0, 0, 0.57), //shadow for button
+        //     blurRadius: 5) //blur radius of shadow
+        //]
+      ),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: Colors.transparent,
