@@ -344,6 +344,77 @@ class _OrderPageState extends State<OrderPage> {
                   SizedBox(
                     height: 10,
                   ),
+
+                  // LayoutBuilder(builder: (context,constraints) {
+                  //   if(widget.order!.status =='Confirmed' ){
+                  //     return Container(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 20),
+                  //       width: MediaQuery.of(context).size.width,
+                  //       child: Row(
+                  //         children: [
+                  //           Expanded(
+                  //               flex: 40,
+                  //               child: TextButton(
+                  //                   onPressed: () async {
+                  //                     await http.post(
+                  //                       Uri.parse(
+                  //                           "http://urbanwebmobile.in/steffo/approveorder.php"),
+                  //                       body: {
+                  //                         "decision": "Approved",
+                  //                         "order_id": widget.order!.order_id!
+                  //                       },
+                  //                     );
+                  //                     widget.order!.status = "Confirmed";
+                  //                     setState(() {
+                  //
+                  //                     });
+                  //                   },
+                  //                   style: ElevatedButton.styleFrom(
+                  //                       backgroundColor: Colors.white),
+                  //                   child: GradientText(
+                  //                     style: TextStyle(
+                  //                         fontSize: 22,
+                  //                         fontWeight: FontWeight.bold),
+                  //                     colors: [Colors.greenAccent, Colors.greenAccent],
+                  //                     "Accept",
+                  //                   ))),
+                  //           const SizedBox(
+                  //             width: 10,
+                  //           ),
+                  //           Expanded(
+                  //               flex: 40,
+                  //               child: TextButton(
+                  //                 onPressed: () async {
+                  //                   await http.post(
+                  //                     Uri.parse(
+                  //                         "http://urbanwebmobile.in/steffo/approveorder.php"),
+                  //                     body: {
+                  //                       "decision": "Denied",
+                  //                       "order_id": widget.order!.order_id!
+                  //                     },
+                  //                   );
+                  //                   widget.order!.status = "Denied";
+                  //                   setState(() {});
+                  //                 },
+                  //                 child: GradientText(
+                  //                   "Decline",
+                  //                   style: TextStyle(
+                  //                       fontSize: 22,
+                  //                       fontWeight: FontWeight.bold),
+                  //                   colors: [Colors.redAccent, Colors.redAccent],
+                  //                 ),
+                  //               )
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     );;
+                  //
+                  //   }
+                  //   else{
+                  //     return(Container());
+                  //   }
+                  // }),
+
                   LayoutBuilder(builder: (context, constraints) {
                     if (widget.order!.status == "Pending" &&
                         id == widget.order!.reciever_id) {

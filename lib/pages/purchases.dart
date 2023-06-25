@@ -101,7 +101,11 @@ class _purchasesState extends State<purchases> {
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             tabBarItemExtend: ((MediaQuery.of(context).size.width) / 2),
             tabBarItems: ["With Size", "Lump-sums"],
-            tabViewItems: [withsize(), lumpsum()]),
+            tabViewItems: [
+              Container(
+                  child: withsize()),
+              Container(
+                  child: lumpsum())]),
       ),
     );
   }
@@ -131,9 +135,7 @@ class _purchasesState extends State<purchases> {
                           : Container());
                 }),
           ),
-          SizedBox(
-            height: 30,
-          )
+          SizedBox(height: 10,)
         ],
       ),
     );
