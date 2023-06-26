@@ -46,7 +46,7 @@ class _purchasesState extends State<purchases> {
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
-          req.totalPrice = responseData["data"][i]["totalPrice"];
+        req.totalPrice = responseData["data"][i]["totalPrice"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
@@ -65,7 +65,7 @@ class _purchasesState extends State<purchases> {
         req.orderType = responseData["data"][i]["orderType"];
         req.order_id = responseData["data"][i]["order_id"].toString();
 
-        print(purchaseOrderList);
+        //  print(purchaseOrderList);
         if (req.status != "Rejected") {
           if (id == req.user_id) {
             purchaseOrderList.add(req);
@@ -133,7 +133,9 @@ class _purchasesState extends State<purchases> {
                       },
                       child:
                           purchaseOrderList[index].orderType == "With Size" &&
-                                  purchaseOrderList[index].status == "Confirmed"
+                                      purchaseOrderList[index].status ==
+                                          "Confirmed" ||
+                                  purchaseOrderList[index].status == "Pending"
                               ? orderCard(context, purchaseOrderList[index], id)
                               : Container());
                 }),
@@ -160,7 +162,7 @@ class _purchasesState extends State<purchases> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 print(purchaseOrderList[index].orderType);
-                if (purchaseOrderList[index].orderType == "Lump-sum") {}
+              //  if (purchaseOrderList[index].orderType == "Lump-sum") {}
                 return InkWell(
                     onTap: () {
                       Navigator.push(
@@ -170,7 +172,9 @@ class _purchasesState extends State<purchases> {
                                   order: purchaseOrderList[index])));
                     },
                     child: purchaseOrderList[index].orderType == "Lump-sum" &&
-                            purchaseOrderList[index].status == "Confirmed"
+                                purchaseOrderList[index].status ==
+                                    "Confirmed" ||
+                            purchaseOrderList[index].status == "Pending"
                         ? orderCard(context, purchaseOrderList[index], id)
                         : Container());
               },

@@ -21,7 +21,7 @@ class Order {
       totalQuantity,
       deliveryDate;
 
-  late List<Item> items;
+  List<Item> items = [];
 }
 
 

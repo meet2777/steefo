@@ -18,23 +18,23 @@ import '../ui/common.dart';
 
 class GeneratedChallan extends StatelessWidget {
   final String challan_id;
-  final String orderid;
+  
   const GeneratedChallan(
-      {super.key, required this.challan_id, required this.orderid});
+      {super.key, required this.challan_id});
 
   @override
   Widget build(BuildContext context) {
     print(challan_id);
-    return ChallanPage(challan_id: challan_id, orderid: orderid);
+    return ChallanPage(challan_id: challan_id);
   }
 }
 
 class ChallanPage extends StatefulWidget {
   final String challan_id;
-  final String orderid;
+  
 
   const ChallanPage(
-      {super.key, required this.challan_id, required this.orderid});
+      {super.key, required this.challan_id});
 
   @override
   State<ChallanPage> createState() => _ChallanPageState();
@@ -565,48 +565,48 @@ class _ChallanPageState extends State<ChallanPage> {
                       ],
                     )),
               ),
-              GestureDetector(
-                onTap: () async {
-                  await http.post(
-                    Uri.parse(
-                        "http://urbanwebmobile.in/steffo/approveorder.php"),
-                    body: {"decision": "Completed", "order_id": widget.orderid},
-                  );
-                  () {
-                    // orderList.add(requestList[index]);
-                    // requestList.removeAt(index);
-                    // id = "none";
-                    // requestList.removeAt(index);
-                    // loadData();
-                    setState(() {});
-                    Get.to(HomePage());
-                  }();
-                },
-                child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 10, right: 10),
-                    height: 60,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        gradient: LinearGradient(colors: [
-                          Color.fromRGBO(75, 100, 160, 1.0),
-                          Color.fromRGBO(19, 59, 78, 1.0),
+              // GestureDetector(
+              //   onTap: () async {
+              //     await http.post(
+              //       Uri.parse(
+              //           "http://urbanwebmobile.in/steffo/approveorder.php"),
+              //       body: {"decision": "Completed", "order_id": widget.orderid},
+              //     );
+              //     () {
+              //       // orderList.add(requestList[index]);
+              //       // requestList.removeAt(index);
+              //       // id = "none";
+              //       // requestList.removeAt(index);
+              //       // loadData();
+              //       setState(() {});
+              //       Get.to(HomePage());
+              //     }();
+              //   },
+              //   child: Container(
+              //       alignment: Alignment.center,
+              //       margin: EdgeInsets.only(left: 10, right: 10),
+              //       height: 60,
+              //       width: MediaQuery.of(context).size.width,
+              //       decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.all(Radius.circular(10)),
+              //           gradient: LinearGradient(colors: [
+              //             Color.fromRGBO(75, 100, 160, 1.0),
+              //             Color.fromRGBO(19, 59, 78, 1.0),
 
-                          //add more colors
-                        ])),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 18,
-                        bottom: 18,
-                      ),
-                      child: Text(
-                        "Complete Order",
-                        style: const TextStyle(
-                            fontFamily: 'Poppins_Bold', color: Colors.white),
-                      ),
-                    )),
-              ),
+              //             //add more colors
+              //           ])),
+              //       child: Padding(
+              //         padding: const EdgeInsets.only(
+              //           top: 18,
+              //           bottom: 18,
+              //         ),
+              //         child: Text(
+              //           "Complete Order",
+              //           style: const TextStyle(
+              //               fontFamily: 'Poppins_Bold', color: Colors.white),
+              //         ),
+              //       )),
+              // ),
               SizedBox(
                 height: 10,
               ),

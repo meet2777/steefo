@@ -131,324 +131,323 @@ import '../Models/user.dart';
 //     return Container();
 // }
 Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
-  if (order.status != 'Pending') {
-    return Column(
-      children: [
-        Container(
-          //  height: 130,
-          //margin: EdgeInsets.only(top: 10),
-          // padding: const EdgeInsets.all(10.0),
-          // width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.grey.shade100,
-          ),
-          child: Column(
-            children: [
-              Container(
-                //  height: 50,
-                padding: EdgeInsets.only(left: 10, right: 10, top: 10),
-                //  width: MediaQuery.of(context).size.width,
-                // color: Colors.red,
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(19, 59, 78, 1.0),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Align(alignment: Alignment.topRight,),
-                        Text(
-                          "ORDER ID",
-                          style: TextStyle(color: Colors.grey),
-                        ),
+  return Column(
+    children: [
+      Container(
+        //  height: 130,
+        //margin: EdgeInsets.only(top: 10),
+        // padding: const EdgeInsets.all(10.0),
+        // width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.grey.shade100,
+        ),
+        child: Column(
+          children: [
+            Container(
+              //  height: 50,
+              padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+              //  width: MediaQuery.of(context).size.width,
+              // color: Colors.red,
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(19, 59, 78, 1.0),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Align(alignment: Alignment.topRight,),
+                      Text(
+                        "ORDER ID",
+                        style: TextStyle(color: Colors.grey),
+                      ),
 
-                        // SizedBox(
-                        //   width: 180,
-                        // ),
-                        Text(
-                          order.order_date!.substring(0, 10),
-                          style: TextStyle(color: Colors.grey),
-                        )
-                      ],
-                    ),
-                    Text(
-                      order.order_id!.toUpperCase(),
-                      style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17)),
-                    ),
-                  ],
-                ),
+                      // SizedBox(
+                      //   width: 180,
+                      // ),
+                      Text(
+                        order.order_date!.substring(0, 10),
+                        style: TextStyle(color: Colors.grey),
+                      )
+                    ],
+                  ),
+                  Text(
+                    order.order_id!.toUpperCase(),
+                    style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17)),
+                  ),
+                ],
               ),
-              Row(
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.only(top: 10, left: 10),
+                    child: Text(
+                      order.user_name!.toUpperCase(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Color.fromRGBO(19, 59, 78, 1.0),
+                        // color: Colors.grey
+                      ),
+                    )),
+
+                Container(
+                    padding: EdgeInsets.only(top: 10),
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      if (order.status == "Confirmed") {
+                        return Container(
+                            // width: 40,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.greenAccent,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
+                            child: Text(
+                              order!.status!,
+                            ));
+                      } else if (order.status == "Denied") {
+                        return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
+                            child: Text(
+                              order.status!,
+                              style: TextStyle(color: Colors.white),
+                            ));
+                      } else {
+                        return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
+                            child: Text(
+                              order.status!,
+                              style: TextStyle(color: Colors.white),
+                            ));
+                      }
+                    })),
+
+                // Container(
+                //   padding: EdgeInsets.only(right: 10),
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //           children: [
+                //             Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
+                //             Padding(
+                //               padding: const EdgeInsets.only(left: 10),
+                //               child: Text(order.status!),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                // Container(
+                //   child: Text(),
+                // )
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                      alignment: Alignment.topLeft,
-                      padding: EdgeInsets.only(top: 10, left: 10),
-                      child: Text(
-                        order.user_name!.toUpperCase(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
-                          color: Color.fromRGBO(19, 59, 78, 1.0),
-                          // color: Colors.grey
+                  // Padding(padding: EdgeInsets.only(left: 10, right: 10)),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: Row(
+                          children: [
+                            Text(
+                              "Base Price:",
+                              style: TextStyle(
+                                  fontFamily: "Poppins_Bold",
+                                  color: Colors.grey),
+                            ),
+                            Text(
+                              order.base_price!,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: TextStyle(
+                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                  color: Colors.grey),
+                            ),
+                          ],
                         ),
-                      )),
-
+                        //padding: EdgeInsets.only(right: 5),
+                      ),
+                      Container(
+                        child: Row(
+                          children: [
+                            Text(
+                              "Total Price:",
+                              style: TextStyle(
+                                  fontFamily: "Poppins_Bold",
+                                  color: Colors.grey),
+                            ),
+                            Text(
+                              order.totalPrice.toString(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: TextStyle(
+                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                  color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        //padding: EdgeInsets.only(right: 5),
+                      ),
+                    ],
+                  ),
                   Container(
-                      padding: EdgeInsets.only(top: 10),
-                      child: LayoutBuilder(builder: (context, constraints) {
-                        if (order.status == "Confirmed") {
-                          return Container(
-                              // width: 40,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.greenAccent,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10))),
-                              child: Text(
-                                order!.status!,
-                              ));
-                        } else if (order.status == "Denied") {
-                          return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.redAccent,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10))),
-                              child: Text(
-                                order.status!,
-                                style: TextStyle(color: Colors.white),
-                              ));
-                        } else {
-                          return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.yellow,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10))),
-                              child: Text(
-                                order.status!,
-                                style: TextStyle(color: Colors.white),
-                              ));
-                        }
-                      })),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Quantity:",
+                          style: TextStyle(
+                              fontFamily: "Poppins_Bold", color: Colors.grey),
+                        ),
+                        Text(
+                          order.totalQuantity.toString(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: TextStyle(
+                              // color: Color.fromRGBO(19, 59, 78, 1.0),
+                              color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    //padding: EdgeInsets.only(right: 5),
+                  ),
 
                   // Container(
-                  //   padding: EdgeInsets.only(right: 10),
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //           children: [
-                  //             Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-                  //             Padding(
-                  //               padding: const EdgeInsets.only(left: 10),
-                  //               child: Text(order.status!),
-                  //             )
-                  //           ],
-                  //         ),
-                  //       ),
-                  // Container(
-                  //   child: Text(),
+                  //   child: Text(
+                  //       item.price!
+                  //   ),
                   // )
                 ],
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Padding(padding: EdgeInsets.only(left: 10, right: 10)),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Row(
-                            children: [
-                              Text(
-                                "Base Price:",
-                                style: TextStyle(
-                                    fontFamily: "Poppins_Bold",
-                                    color: Colors.grey),
-                              ),
-                              Text(
-                                order.base_price!,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
-                                style: TextStyle(
-                                    // color: Color.fromRGBO(19, 59, 78, 1.0),
-                                    color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                          //padding: EdgeInsets.only(right: 5),
-                        ),
-                        Container(
-                          child: Row(
-                            children: [
-                              Text(
-                                "Total Price:",
-                                style: TextStyle(
-                                    fontFamily: "Poppins_Bold",
-                                    color: Colors.grey),
-                              ),
-                              Text(
-                                order.totalPrice.toString(),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
-                                style: TextStyle(
-                                    // color: Color.fromRGBO(19, 59, 78, 1.0),
-                                    color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                          //padding: EdgeInsets.only(right: 5),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      child: Row(
-                        children: [
-                          Text(
-                            "Quantity:",
-                            style: TextStyle(
-                                fontFamily: "Poppins_Bold", color: Colors.grey),
-                          ),
-                          Text(
-                            order.totalQuantity.toString(),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                            style: TextStyle(
-                                // color: Color.fromRGBO(19, 59, 78, 1.0),
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                      //padding: EdgeInsets.only(right: 5),
-                    ),
-
-                    // Container(
-                    //   child: Text(
-                    //       item.price!
-                    //   ),
-                    // )
-                  ],
-                ),
-              ),
-            ],
-          ),
-          // Container(
-          //   child: Text("data"),
-          // )
-
-          // Column(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     Container(
-          //       padding: EdgeInsets.only(top: 5, bottom: 5),
-          //       child: Text(
-          //         order.user_name!.toUpperCase(),
-          //         style: GoogleFonts.poppins(
-          //             textStyle: TextStyle(
-          //                 color: Colors.black,
-          //                 fontWeight: FontWeight.bold,
-          //                 fontSize: 20)),
-          //       ),
-          //     ),
-          //     // LayoutBuilder(builder: (context, constraints) {
-          //     //   if (curr_user_id == order.reciever_id) {
-          //     //     return Container(
-          //     //         padding:
-          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-          //     //         decoration: BoxDecoration(
-          //     //             color: Colors.blue,
-          //     //             borderRadius: BorderRadius.circular(20)),
-          //     //         child: Text(
-          //     //           "Sales",
-          //     //         ));
-          //     //   } else {
-          //     //     return Container(
-          //     //         padding:
-          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-          //     //         decoration: BoxDecoration(
-          //     //             color: Colors.green,
-          //     //             borderRadius: BorderRadius.circular(20)),
-          //     //         child: Text("Purchase"));
-          //     //   }
-          //     // })
-          //     Divider(
-          //       color: Colors.greenAccent,
-          //     ),
-          //
-          //     Container(
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Container(
-          //             child: Text(
-          //               "Org Name:",
-          //               style: TextStyle(fontFamily: "Poppins_Bold"),
-          //             ),
-          //             padding: EdgeInsets.only(bottom: 5, right: 5),
-          //           ),
-          //           Text(
-          //             order.party_name!,
-          //             overflow: TextOverflow.ellipsis,
-          //             maxLines: 3,
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     Container(
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-          //           Padding(
-          //             padding: const EdgeInsets.only(left: 35.0),
-          //             child: Text(order.status!),
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     Container(
-          //       padding: EdgeInsets.symmetric(vertical: 5),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Text("Order Date: ",
-          //               style: TextStyle(fontFamily: "Poppins_Bold")),
-          //           Text(order.order_date!.substring(0, 10))
-          //         ],
-          //       ),
-          //     )
-          //   ],
-          // ),
+            ),
+          ],
         ),
-        SizedBox(
-          height: 10,
-        ),
-      ],
-    );
-  } else
-    return Container();
+        // Container(
+        //   child: Text("data"),
+        // )
+
+        // Column(
+        //   mainAxisAlignment: MainAxisAlignment.start,
+        //   children: [
+        //     Container(
+        //       padding: EdgeInsets.only(top: 5, bottom: 5),
+        //       child: Text(
+        //         order.user_name!.toUpperCase(),
+        //         style: GoogleFonts.poppins(
+        //             textStyle: TextStyle(
+        //                 color: Colors.black,
+        //                 fontWeight: FontWeight.bold,
+        //                 fontSize: 20)),
+        //       ),
+        //     ),
+        //     // LayoutBuilder(builder: (context, constraints) {
+        //     //   if (curr_user_id == order.reciever_id) {
+        //     //     return Container(
+        //     //         padding:
+        //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+        //     //         decoration: BoxDecoration(
+        //     //             color: Colors.blue,
+        //     //             borderRadius: BorderRadius.circular(20)),
+        //     //         child: Text(
+        //     //           "Sales",
+        //     //         ));
+        //     //   } else {
+        //     //     return Container(
+        //     //         padding:
+        //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+        //     //         decoration: BoxDecoration(
+        //     //             color: Colors.green,
+        //     //             borderRadius: BorderRadius.circular(20)),
+        //     //         child: Text("Purchase"));
+        //     //   }
+        //     // })
+        //     Divider(
+        //       color: Colors.greenAccent,
+        //     ),
+        //
+        //     Container(
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           Container(
+        //             child: Text(
+        //               "Org Name:",
+        //               style: TextStyle(fontFamily: "Poppins_Bold"),
+        //             ),
+        //             padding: EdgeInsets.only(bottom: 5, right: 5),
+        //           ),
+        //           Text(
+        //             order.party_name!,
+        //             overflow: TextOverflow.ellipsis,
+        //             maxLines: 3,
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //     Container(
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
+        //           Padding(
+        //             padding: const EdgeInsets.only(left: 35.0),
+        //             child: Text(order.status!),
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //     Container(
+        //       padding: EdgeInsets.symmetric(vertical: 5),
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           Text("Order Date: ",
+        //               style: TextStyle(fontFamily: "Poppins_Bold")),
+        //           Text(order.order_date!.substring(0, 10))
+        //         ],
+        //       ),
+        //     )
+        //   ],
+        // ),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+    ],
+  );
+  // } else
+  //   return Container();
 }
 
 Widget DistributorCard(User user, BuildContext context) {
@@ -846,119 +845,149 @@ Widget DealerCard(User user, BuildContext context,) {
 }
 
 Widget InventoryCard(BuildContext context, Lumpsum lumpsum) {
-  return Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("ORDER ID: ",
-              style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20))),
-          Text(lumpsum.orderId.toString(),
-              style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20))),
-        ],
-      ),
+  print('object');
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      color: Colors.grey.shade100,
+    ),
+    child: Column(
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 5, right: 5),
+          //  margin: EdgeInsets.only(top: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color.fromRGBO(19, 59, 78, 1.0),
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("ORDER ID: ",
+                      style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20))),
+                  Text(lumpsum.orderId.toString(),
+                      style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20))),
+                ],
+              ),
+              RichText(
+                text: TextSpan(style: TextStyle(), children: [
+                  TextSpan(
+                      text: "Organization Name: ",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: MediaQuery.of(context).size.width / 27)),
+                  TextSpan(
+                      text: lumpsum.partyname,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: MediaQuery.of(context).size.width / 27,
+                      ))
+                ]),
+              ),
+            ],
+          ),
+        ),
 
-      RichText(
-        text: TextSpan(style: TextStyle(), children: [
-          TextSpan(
-              text: "Organization Name: ",
-              style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w600,
-                  fontSize: MediaQuery.of(context).size.width / 27)),
-          TextSpan(
-              text: lumpsum.partyname,
-              style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.w600,
-                fontSize: MediaQuery.of(context).size.width / 27,
-              ))
-        ]),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      Divider(
-        color: Colors.purple.shade100,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("Order Date: ", style: TextStyle(fontFamily: "Poppins_Bold")),
-          Text(lumpsum.date!.substring(0, 10),
-              style: TextStyle(
-                color: Colors.black,
-              )),
-        ],
-      ),
+        SizedBox(
+          height: 5,
+        ),
 
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("Quantity: ", style: TextStyle(fontFamily: "Poppins_Bold")),
-          Text(lumpsum.qty!,
-              style: TextStyle(
-                color: Colors.black,
-              )),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("Price: ", style: TextStyle(fontFamily: "Poppins_Bold")),
-          Text(lumpsum.price!,
-              style: TextStyle(
-                color: Colors.black,
-              )),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("Status: ", style: TextStyle(fontFamily: "Poppins_Bold")),
-          Text(lumpsum.status!.toString(),
-              style: TextStyle(
-                color: Colors.black,
-              )),
-        ],
-      ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Order Date: ",
+                  style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.date!.substring(0, 10),
+                  style: TextStyle(
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+        ),
 
-      // Container(
-      //   width: MediaQuery.of(context).size.width - 20,
-      //   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-      //   child: DataTable(
-      //       columnSpacing: double.minPositive,
-      //       headingTextStyle: const TextStyle(
-      //           fontWeight: FontWeight.bold, color: Colors.black),
-      //       columns: const [
-      //         // DataColumn(
-      //         //     label: Text(
-      //         //   "Sr No",
-      //         //   textAlign: TextAlign.center,
-      //         // )),
-      //         DataColumn(label: Text("Item name")),
-      //         DataColumn(label: Text("Quantity (Tons)"))
-      //       ],
-      //       rows: [
-      //         DataRow(
-      //           cells: <DataCell>[
-      //             // DataCell(Text("1")), //Extracting from Map element the value
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Quantity: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.qty.toString(),
+                  style: TextStyle(
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Price: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.price.toString(),
+                  style: TextStyle(
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Status: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.status.toString(),
+                  style: TextStyle(
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+        ),
 
-      //             DataCell(Text(lumpsum.name!)),
-      //             DataCell(Text(lumpsum.qty!))
-      //           ],
-      //         )
-      //       ]),
-      // ),
-    ],
+        // Container(
+        //   width: MediaQuery.of(context).size.width - 20,
+        //   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        //   child: DataTable(
+        //       columnSpacing: double.minPositive,
+        //       headingTextStyle: const TextStyle(
+        //           fontWeight: FontWeight.bold, color: Colors.black),
+        //       columns: const [
+        //         // DataColumn(
+        //         //     label: Text(
+        //         //   "Sr No",
+        //         //   textAlign: TextAlign.center,
+        //         // )),
+        //         DataColumn(label: Text("Item name")),
+        //         DataColumn(label: Text("Quantity (Tons)"))
+        //       ],
+        //       rows: [
+        //         DataRow(
+        //           cells: <DataCell>[
+        //             // DataCell(Text("1")), //Extracting from Map element the value
+
+        //             DataCell(Text(lumpsum.name!)),
+        //             DataCell(Text(lumpsum.qty!))
+        //           ],
+        //         )
+        //       ]),
+        // ),
+      ],
+    ),
   );
 }
 

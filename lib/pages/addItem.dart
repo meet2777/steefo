@@ -130,13 +130,13 @@ class _AddItemPageState extends State<AddItemContent> {
         body: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: CustomTabBar(
-            titleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            titleStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             selectedCardColor: Colors.blueGrey,
             selectedTitleColor: Colors.white,
             unSelectedCardColor: Colors.white,
             unSelectedTitleColor: Color.fromRGBO(12, 53, 68, 1),
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            tabBarItemExtend: ((MediaQuery.of(context).size.width) / 3),
+            tabBarItemExtend: ((MediaQuery.of(context).size.width) / 4),
 
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -144,6 +144,7 @@ class _AddItemPageState extends State<AddItemContent> {
               "GRADE",
               "SIZE",
               "REGION",
+              "Payment",
             ],
             tabViewItems: [
               SingleChildScrollView(
@@ -474,9 +475,7 @@ class _AddItemPageState extends State<AddItemContent> {
               ),
 
               //--------------------------Sizes-------------------------------//
-              Container(
-                  //  margin: EdgeInsets.only(top: 15),
-                  child: SingleChildScrollView(
+              SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
                   children: [
@@ -800,318 +799,642 @@ class _AddItemPageState extends State<AddItemContent> {
                     )
                   ],
                 ),
-              )),
-              Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        Container(
-                          child: ListView.builder(
-                            itemCount: regionList.length,
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, ind) {
-                              return Center(
-                                child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.only(
-                                        left: 20.0, right: 20.0),
-                                    child: Column(
+              ),
+              //-------------------------regions----------------------------------
+              SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    Container(
+                      child: ListView.builder(
+                        itemCount: regionList.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (context, ind) {
+                          return Center(
+                            child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding:
+                                    EdgeInsets.only(left: 20.0, right: 20.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                  regionList[ind]
-                                                      .name
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.black)),
-                                            ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                  '\u{20B9}' +
-                                                      regionList[ind]
-                                                          .cost
-                                                          .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.black)),
-                                            ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: IconButton(
-                                                  onPressed: () => {
-                                                        () {
-                                                          showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                return Container(
-                                                                  child: Dialog(
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          150,
-                                                                      child:
-                                                                          Column(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        children: [
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(10),
-                                                                            child:
-                                                                                TextFormField(
-                                                                              maxLines: 1,
-                                                                              controller: newRegionPrice,
-                                                                              keyboardType: TextInputType.number,
-                                                                              decoration: const InputDecoration(
-                                                                                labelText: "New Price",
-                                                                                floatingLabelBehavior: FloatingLabelBehavior.never,
-                                                                                border: OutlineInputBorder(
-                                                                                    // borderRadius: BorderRadius.circular(20),
-                                                                                    borderSide: BorderSide.none),
-                                                                                filled: true,
-                                                                                fillColor: Color.fromRGBO(233, 236, 239, 0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                          ElevatedButton(
-                                                                              style: ButtonStyle(shape: MaterialStatePropertyAll(ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20))), backgroundColor: MaterialStatePropertyAll(Colors.lightBlueAccent)),
-                                                                              onPressed: () {
-                                                                                final numericRegex = RegExp(r'^[0-9]*$');
-                                                                                if (numericRegex.hasMatch(newRegionPrice.text) && newRegionPrice.text.trim() != "") {
-                                                                                  regionList[ind].cost = newRegionPrice.text;
-                                                                                  http.post(Uri.parse("http://urbanwebmobile.in/steffo/updateregion.php"), body: {
-                                                                                    "regionName": regionList[ind].name,
-                                                                                    "price": newRegionPrice.text
-                                                                                  });
-                                                                                }
-                                                                                Navigator.pop(context);
-                                                                              },
-                                                                              child: Text("Submit"))
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              });
-                                                        }(),
-                                                      },
-                                                  icon: Icon(
-                                                    Icons.edit,
-                                                    color: Colors.blueAccent,
-                                                  )),
-                                            ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: IconButton(
-                                                  onPressed: () {
-                                                    QuickAlert.show(
-                                                        confirmBtnColor:
-                                                            Colors.redAccent,
-                                                        showCancelBtn: true,
-                                                        context: context,
-                                                        type: QuickAlertType
-                                                            .error,
-                                                        barrierDismissible:
-                                                            true,
-                                                        cancelBtnText: 'Cancel',
-                                                        confirmBtnText:
-                                                            'Delete',
-                                                        title:
-                                                            'Are you sure you want to delete this item?',
-                                                        // text: 'Delete',
-                                                        // textColor: Colors.red,
-
-                                                        // customAsset: Icon(Icons.login_outlined),
-                                                        onConfirmBtnTap:
-                                                            () async {
-                                                          () async {
-                                                            await http.post(
-                                                                Uri.parse(
-                                                                    "http://urbanwebmobile.in/steffo/deleteregion.php"),
-                                                                body: {
-                                                                  "regionName":
-                                                                      regions[ind]
-                                                                          .toString()
-                                                                  // regionList[ind]
-                                                                  //     .value
-                                                                  //     .toString(),
-                                                                });
-
-                                                            regionList
-                                                                .removeAt(ind);
-                                                            setState(() {});
-                                                          }();
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        onCancelBtnTap: () {
-                                                          Get.back();
-                                                        });
-                                                    // remove(),
-                                                    print(
-                                                        "Delete button pressed");
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.delete_rounded,
-                                                    color: Colors.red,
-                                                  )),
-                                            ),
-                                          ],
-                                        ),
-                                        Divider(color: Colors.black54),
-                                      ],
-                                    )),
-                              );
-                            },
-                          ),
-                        ),
-                        GestureDetector(
-                          child: Container(
-                              height: 35,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  color: Colors.blueGrey,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Icon(Icons.add)),
-                          onTap: () {
-                            //  showAlertDialog(context);
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                // String contentText = "Content of Dialog";
-                                // return StatefulBuilder(
-                                //   builder: (context, setState) {
-                                return Form(
-                                  key: _formKey,
-                                  child: AlertDialog(
-                                    title: Text(
-                                      "ADD REGION",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    //  content: Text(contentText),
-                                    actions: <Widget>[
-                                      TextFormField(
-                                        controller: newRegion,
-                                        maxLines: 1,
-                                        keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                          labelText: "Add new region",
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          border: OutlineInputBorder(
-                                            // borderRadius: BorderRadius.circular(20),
-                                            borderSide: BorderSide.none,
-                                          ),
-                                          filled: true,
-                                          fillColor: Color.fromRGBO(
-                                              233,
-                                              236,
-                                              239,
-                                              0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
-                                        ),
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return "This field can't be empty";
-                                          } else
-                                            return null;
-                                        },
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      TextFormField(
-                                        maxLines: 1,
-                                        controller: RegionPrice,
-                                        keyboardType: TextInputType.number,
-                                        decoration: const InputDecoration(
-                                          labelText: "New Price",
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          border: OutlineInputBorder(
-                                              // borderRadius: BorderRadius.circular(20),
-                                              borderSide: BorderSide.none),
-                                          filled: true,
-                                          fillColor: Color.fromRGBO(
-                                              233,
-                                              236,
-                                              239,
-                                              0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
-                                        ),
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return "This field can't be empty";
-                                          } else
-                                            return null;
-                                        },
-                                      ),
-                                      // TextButton(
-                                      //   onPressed: () => Navigator.pop(context),
-                                      //   child: Text("Cancel"),
-                                      // ),
-                                      TextButton(
+                                        Expanded(
+                                          flex: 2,
                                           child: Text(
-                                            "ADD",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.greenAccent,
-                                                fontSize: 20),
-                                          ),
-                                          onPressed: () async {
-                                            // print(newBasePrice.text);
-                                            if (_formKey.currentState!
-                                                .validate()) {
-                                              await http.post(
-                                                  Uri.parse(
-                                                      "http://urbanwebmobile.in/steffo/addregion.php"),
-                                                  body: {
-                                                    "regionName":
-                                                        newRegion.text,
-                                                    "tCost": RegionPrice.text,
-                                                  });
+                                              regionList[ind].name.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black)),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                              '\u{20B9}' +
+                                                  regionList[ind]
+                                                      .cost
+                                                      .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black)),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                              onPressed: () => {
+                                                    () {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Container(
+                                                              child: Dialog(
+                                                                child:
+                                                                    Container(
+                                                                  height: 150,
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding: const EdgeInsets
+                                                                            .all(
+                                                                            10),
+                                                                        child:
+                                                                            TextFormField(
+                                                                          maxLines:
+                                                                              1,
+                                                                          controller:
+                                                                              newRegionPrice,
+                                                                          keyboardType:
+                                                                              TextInputType.number,
+                                                                          decoration:
+                                                                              const InputDecoration(
+                                                                            labelText:
+                                                                                "New Price",
+                                                                            floatingLabelBehavior:
+                                                                                FloatingLabelBehavior.never,
+                                                                            border: OutlineInputBorder(
+                                                                                // borderRadius: BorderRadius.circular(20),
+                                                                                borderSide: BorderSide.none),
+                                                                            filled:
+                                                                                true,
+                                                                            fillColor: Color.fromRGBO(
+                                                                                233,
+                                                                                236,
+                                                                                239,
+                                                                                0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      ElevatedButton(
+                                                                          style: ButtonStyle(
+                                                                              shape: MaterialStatePropertyAll(ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20))),
+                                                                              backgroundColor: MaterialStatePropertyAll(Colors.lightBlueAccent)),
+                                                                          onPressed: () {
+                                                                            final numericRegex =
+                                                                                RegExp(r'^[0-9]*$');
+                                                                            if (numericRegex.hasMatch(newRegionPrice.text) &&
+                                                                                newRegionPrice.text.trim() != "") {
+                                                                              regionList[ind].cost = newRegionPrice.text;
+                                                                              http.post(Uri.parse("http://urbanwebmobile.in/steffo/updateregion.php"), body: {
+                                                                                "regionName": regionList[ind].name,
+                                                                                "price": newRegionPrice.text
+                                                                              });
+                                                                            }
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child: Text("Submit"))
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                    }(),
+                                                  },
+                                              icon: Icon(
+                                                Icons.edit,
+                                                color: Colors.blueAccent,
+                                              )),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                              onPressed: () {
+                                                QuickAlert.show(
+                                                    confirmBtnColor:
+                                                        Colors.redAccent,
+                                                    showCancelBtn: true,
+                                                    context: context,
+                                                    type: QuickAlertType.error,
+                                                    barrierDismissible: true,
+                                                    cancelBtnText: 'Cancel',
+                                                    confirmBtnText: 'Delete',
+                                                    title:
+                                                        'Are you sure you want to delete this item?',
+                                                    // text: 'Delete',
+                                                    // textColor: Colors.red,
 
-                                              Get.to(HomePage());
-                                              Get.showSnackbar(
-                                                GetSnackBar(
-                                                  title: "",
-                                                  message:
-                                                      'Item added successfully!',
-                                                  //  icon: const Icon(Icons.refresh),
-                                                  duration: const Duration(
-                                                      seconds: 3),
-                                                ),
-                                              );
+                                                    // customAsset: Icon(Icons.login_outlined),
+                                                    onConfirmBtnTap: () async {
+                                                      () async {
+                                                        await http.post(
+                                                            Uri.parse(
+                                                                "http://urbanwebmobile.in/steffo/deleteregion.php"),
+                                                            body: {
+                                                              "regionName":
+                                                                  regions[ind]
+                                                                      .toString()
+                                                              // regionList[ind]
+                                                              //     .value
+                                                              //     .toString(),
+                                                            });
 
-                                              setState(() {
-                                                //   gradeList.length;
-                                              });
-                                            }
-                                          })
-                                    ],
+                                                        regionList
+                                                            .removeAt(ind);
+                                                        setState(() {});
+                                                      }();
+                                                      Navigator.pop(context);
+                                                    },
+                                                    onCancelBtnTap: () {
+                                                      Get.back();
+                                                    });
+                                                // remove(),
+                                                print("Delete button pressed");
+                                              },
+                                              icon: Icon(
+                                                Icons.delete_rounded,
+                                                color: Colors.red,
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(color: Colors.black54),
+                                  ],
+                                )),
+                          );
+                        },
+                      ),
+                    ),
+                    GestureDetector(
+                      child: Container(
+                          height: 35,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.blueGrey,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Icon(Icons.add)),
+                      onTap: () {
+                        //  showAlertDialog(context);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            // String contentText = "Content of Dialog";
+                            // return StatefulBuilder(
+                            //   builder: (context, setState) {
+                            return Form(
+                              key: _formKey,
+                              child: AlertDialog(
+                                title: Text(
+                                  "ADD REGION",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                //  content: Text(contentText),
+                                actions: <Widget>[
+                                  TextFormField(
+                                    controller: newRegion,
+                                    maxLines: 1,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      labelText: "Add new region",
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
+                                      border: OutlineInputBorder(
+                                        // borderRadius: BorderRadius.circular(20),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      filled: true,
+                                      fillColor: Color.fromRGBO(233, 236, 239,
+                                          0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
+                                    ),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "This field can't be empty";
+                                      } else
+                                        return null;
+                                    },
                                   ),
-                                );
-                              },
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  TextFormField(
+                                    maxLines: 1,
+                                    controller: RegionPrice,
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      labelText: "New Price",
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
+                                      border: OutlineInputBorder(
+                                          // borderRadius: BorderRadius.circular(20),
+                                          borderSide: BorderSide.none),
+                                      filled: true,
+                                      fillColor: Color.fromRGBO(233, 236, 239,
+                                          0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
+                                    ),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "This field can't be empty";
+                                      } else
+                                        return null;
+                                    },
+                                  ),
+                                  // TextButton(
+                                  //   onPressed: () => Navigator.pop(context),
+                                  //   child: Text("Cancel"),
+                                  // ),
+                                  TextButton(
+                                      child: Text(
+                                        "ADD",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.greenAccent,
+                                            fontSize: 20),
+                                      ),
+                                      onPressed: () async {
+                                        // print(newBasePrice.text);
+                                        if (_formKey.currentState!.validate()) {
+                                          await http.post(
+                                              Uri.parse(
+                                                  "http://urbanwebmobile.in/steffo/addregion.php"),
+                                              body: {
+                                                "regionName": newRegion.text,
+                                                "tCost": RegionPrice.text,
+                                              });
+
+                                          Get.to(HomePage());
+                                          Get.showSnackbar(
+                                            GetSnackBar(
+                                              title: "",
+                                              message:
+                                                  'Item added successfully!',
+                                              //  icon: const Icon(Icons.refresh),
+                                              duration:
+                                                  const Duration(seconds: 3),
+                                            ),
+                                          );
+
+                                          setState(() {
+                                            //   gradeList.length;
+                                          });
+                                        }
+                                      })
+                                ],
+                              ),
                             );
                           },
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  )),
+                    SizedBox(
+                      height: 40,
+                    ),
+                  ],
+                ),
+              ),
+
+              //--------------------Payment-----------------------------
+              SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    ListView.builder(
+                      itemCount: gradeList.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      //  scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, ind) {
+                        return Center(
+                          child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                            gradeList[ind].value.toString(),
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black)),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                            '\u{20B9}' +
+                                                gradeList[ind].price.toString(),
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black)),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: IconButton(
+                                            onPressed: () => {
+                                                  () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return Container(
+                                                            child: Dialog(
+                                                              child: Container(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            10),
+                                                                height: 170,
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .topLeft,
+                                                                      child:
+                                                                          Text(
+                                                                        "EDIT PRICE",
+                                                                        style: TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          20,
+                                                                    ),
+                                                                    TextFormField(
+                                                                      maxLines:
+                                                                          1,
+                                                                      controller:
+                                                                          newPrice,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .number,
+                                                                      decoration:
+                                                                          const InputDecoration(
+                                                                        labelText:
+                                                                            "New Price",
+                                                                        floatingLabelBehavior:
+                                                                            FloatingLabelBehavior.never,
+                                                                        border: OutlineInputBorder(
+                                                                            // borderRadius: BorderRadius.circular(20),
+                                                                            borderSide: BorderSide.none),
+                                                                        filled:
+                                                                            true,
+                                                                        fillColor: Color.fromRGBO(
+                                                                            233,
+                                                                            236,
+                                                                            239,
+                                                                            0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
+                                                                      ),
+                                                                    ),
+                                                                    TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          final numericRegex =
+                                                                              RegExp(r'^[0-9]*$');
+                                                                          if (numericRegex.hasMatch(newPrice.text) &&
+                                                                              newPrice.text.trim() != "") {
+                                                                            gradeList[ind].price =
+                                                                                newPrice.text;
+                                                                            http.post(Uri.parse("http://urbanwebmobile.in/steffo/updategrade.php"), body: {
+                                                                              "gradeName": gradeList[ind].value,
+                                                                              "price": newPrice.text
+                                                                            });
+                                                                          }
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        },
+                                                                        child:
+                                                                            Container(
+                                                                          padding:
+                                                                              EdgeInsets.only(right: 10),
+                                                                          alignment:
+                                                                              Alignment.bottomRight,
+                                                                          child: Text(
+                                                                              "Submit",
+                                                                              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.greenAccent)),
+                                                                        ))
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        });
+                                                  }()
+                                                },
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: Colors.blueAccent,
+                                            )),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: IconButton(
+                                            onPressed: () => {
+                                                  QuickAlert.show(
+                                                      confirmBtnColor:
+                                                          Colors.redAccent,
+                                                      showCancelBtn: true,
+                                                      context: context,
+                                                      type:
+                                                          QuickAlertType.error,
+                                                      barrierDismissible: true,
+                                                      cancelBtnText: 'Cancel',
+                                                      confirmBtnText: 'Delete',
+                                                      title:
+                                                          'Are you sure you want to delete this item?',
+                                                      // text: 'Delete',
+                                                      // textColor: Colors.red,
+
+                                                      // customAsset: Icon(Icons.login_outlined),
+                                                      onConfirmBtnTap:
+                                                          () async {
+                                                        () async {
+                                                          await http.post(
+                                                              Uri.parse(
+                                                                  "http://urbanwebmobile.in/steffo/deletegrade.php"),
+                                                              body: {
+                                                                "gradeName":
+                                                                    gradeList[
+                                                                            ind]
+                                                                        .value
+                                                                        .toString(),
+                                                              });
+                                                          gradeList
+                                                              .removeAt(ind);
+                                                          setState(() {});
+                                                        }();
+                                                        Navigator.pop(context);
+                                                      },
+                                                      onCancelBtnTap: () {
+                                                        Get.back();
+                                                      }),
+                                                  // remove(),
+                                                  print(
+                                                      "Delete button pressed"),
+                                                },
+                                            icon: Icon(
+                                              Icons.delete_rounded,
+                                              color: Colors.red,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  Divider(color: Colors.black54),
+                                ],
+                              )),
+                        );
+                      },
+                    ),
+                    GestureDetector(
+                      child: Container(
+                          height: 35,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.blueGrey,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Icon(Icons.add)),
+                      onTap: () {
+                        //  showAlertDialog(context);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            // String contentText = "Content of Dialog";
+                            // return StatefulBuilder(
+                            //   builder: (context, setState) {
+                            return Form(
+                              key: _formKey,
+                              child: AlertDialog(
+                                title: Text(
+                                  "ADD GRADE",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                //  content: Text(contentText),
+                                actions: <Widget>[
+                                  TextFormField(
+                                    controller: newGrade,
+                                    maxLines: 1,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      labelText: "Add new Grade",
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
+                                      border: OutlineInputBorder(
+                                        // borderRadius: BorderRadius.circular(20),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      filled: true,
+                                      fillColor: Color.fromRGBO(233, 236, 239,
+                                          0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
+                                    ),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "This field can't be empty";
+                                      } else
+                                        return null;
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  TextFormField(
+                                    maxLines: 1,
+                                    controller: Price,
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      labelText: "New Price",
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
+                                      border: OutlineInputBorder(
+                                          // borderRadius: BorderRadius.circular(20),
+                                          borderSide: BorderSide.none),
+                                      filled: true,
+                                      fillColor: Color.fromRGBO(233, 236, 239,
+                                          0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
+                                    ),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "This field can't be empty";
+                                      } else
+                                        return null;
+                                    },
+                                  ),
+                                  // TextButton(
+                                  //   onPressed: () => Navigator.pop(context),
+                                  //   child: Text("Cancel"),
+                                  // ),
+                                  TextButton(
+                                      child: Text(
+                                        "ADD",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.greenAccent,
+                                            fontSize: 20),
+                                      ),
+                                      onPressed: () async {
+                                        // print(newBasePrice.text);
+                                        if (_formKey.currentState!.validate()) {
+                                          await http.post(
+                                              Uri.parse(
+                                                  "http://urbanwebmobile.in/steffo/addgrade.php"),
+                                              body: {
+                                                "gradeName": newGrade.text,
+                                                "gradePrice": Price.text,
+                                              });
+                                          //Navigator.pop(context);
+                                          //  gradeList.indexed.toList();
+                                          Get.to(HomePage());
+                                          Get.showSnackbar(
+                                            GetSnackBar(
+                                              title: "",
+
+                                              message:
+                                                  'Item added successfully!',
+                                              //  icon: const Icon(Icons.refresh),
+                                              duration:
+                                                  const Duration(seconds: 3),
+                                            ),
+                                          );
+                                          setState(() {
+                                            //   gradeList.length;
+                                          });
+                                        }
+                                      })
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 40,
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ));

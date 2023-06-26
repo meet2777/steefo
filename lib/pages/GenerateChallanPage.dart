@@ -175,21 +175,37 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
   int flag = 0;
   loadOrderData() async {
     if (flag == 0) {
-      final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
-        body: {
-          "order_id": widget.order.order_id,
-        },
-      );
-
-      var responseData = jsonDecode(res.body);
-      print(responseData);
-      for (int i = 0; i < responseData["data"].length; i++) {
-        items.add(responseData["data"][i]["name"]);
-        itemDtls[responseData["data"][i]["name"]] =
-            int.parse(responseData["data"][i]["qty_left"]);
+      if (widget.order.orderType != "Lump-sum") {
+        final res = await http.post(
+          Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
+          body: {
+            "order_id": widget.order.order_id,
+          },
+        );
+        var responseData = jsonDecode(res.body);
+        print("responsedata${responseData}");
+        for (int i = 0; i < responseData["data"].length; i++) {
+          items.add(responseData["data"][i]["name"]);
+          itemDtls[responseData["data"][i]["name"]] =
+              int.parse(responseData["data"][i]["qty_left"]);
+        }
+      } else {
+        final res = await http.post(
+          Uri.parse("http://urbanwebmobile.in/steffo/getlumpsumorder.php"),
+          body: {
+            "order_id": widget.order.order_id,
+          },
+        );
+        var responseData = jsonDecode(res.body);
+        print("responsedata${responseData}");
+        for (int i = 0; i < responseData["data"].length; i++) {
+          items.add(responseData["data"][i]["name"]);
+          itemDtls[responseData["data"][i]["name"]] =
+              int.parse(responseData["data"][i]["qty_left"]);
+        }
       }
-      print(itemDtls);
+
+      print("item details${itemDtls}");
       flag = 1;
       setState(() {});
     }
@@ -229,13 +245,12 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
         MaterialPageRoute(
             builder: (context) => GeneratedChallan(
                   challan_id: responseData['data'].toString(),
-                  orderid: widget.order.order_id.toString(),
                 )));
   }
 
   Widget GenerateChallanPageBody() {
     List<DropdownMenuItem<String>> dropdownItems = [];
-
+    print("orderid${widget.order.order_id}");
     loadOrderData();
     getItems() {
       dropdownItems = [];
@@ -448,7 +463,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                                 print(itemDtls[selectedValue]);
                                 itemNum = itemNum + 1;
                                 selectedValue = null;
-                                qty.text = "";
+                                //  qty.text = "";
 
                                 setState(() {});
                               }
