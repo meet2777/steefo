@@ -1366,9 +1366,10 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         });
 
     var responseData = jsonDecode(res.body);
-    var orders = [];
 
-    print(responseData);
+    /// var orders = [];
+
+    print("lumpsumlist${responseData}");
     for (int i = 0; i < responseData["data"].length; i++) {
       print(responseData['data'][i]['name']);
       Lumpsum l = Lumpsum();
@@ -1593,7 +1594,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             "price": listOfColumns[i]["Price"]
           },
         );
-        tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
+        //  tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
       }
     } else {
       for (int i = 0; i < listOfColumns.length; i++) {
@@ -1606,7 +1607,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             "price": listOfColumns[i]["Price"]
           },
         );
-        tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
+        //  tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
       }
     }
     // print(listOfColumns[0]['Name']);
@@ -1907,7 +1908,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           setState(() {});
                           selectedOrderType = newValue;
                           if (selectedOrderType == "Lump-sum") {
-                            // selectedTransType = "None";
+                            //selectedTransType = "None";
                           }
                         },
                         // key: field5Key,
@@ -2112,7 +2113,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           },
                         )),
                     LayoutBuilder(builder: (context, constraints) {
-                      if (selectedOrderType == "With Size") {
+                      if (selectedOrderType == "With Size" ||
+                          selectedOrderType == "Use Lumpsum") {
                         if (selectedSize == " ") {
                           selectedSize = null;
                         }
@@ -2293,103 +2295,116 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   elevation: 16,
-                                  child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      //height: 400,
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                              child: Text("Select The Lumpsum",
-                                                  style: GoogleFonts.poppins(
-                                                      textStyle: TextStyle()))),
-                                          SingleChildScrollView(
-                                            child: Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  2,
-                                              child: ListView.builder(
-                                                  itemCount: lumpsumList.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return LayoutBuilder(
-                                                        builder: (context,
-                                                            constraints) {
-                                                      if (lumpsumList[index]
-                                                                  .name ==
-                                                              "$selectedGrade $selectedSize" &&
-                                                          int.parse(lumpsumList[
-                                                                      index]
-                                                                  .qty!) >
-                                                              int.parse(
-                                                                  qty.text)) {
-                                                        return Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    top: 10),
-                                                            child: InkWell(
-                                                              onTap: () {
-                                                                listOfColumns
-                                                                    .add({
-                                                                  "Sr_no": itemNum
-                                                                      .toString(),
-                                                                  "Name": lumpsumList[
-                                                                          index]
-                                                                      .name!,
-                                                                  "Qty":
-                                                                      qty.text,
-                                                                  "Price": selectedTransType ==
-                                                                              "CIF" &&
-                                                                          selectedOrderType !=
-                                                                              "Lump-sum"
-                                                                      ? ((int.parse(lumpsumList[index].price!) + tCost) *
-                                                                              int.parse(qty
-                                                                                  .text))
-                                                                          .toString()
-                                                                      : ((int.parse(lumpsumList[index].price!)) *
-                                                                              int.parse(qty.text))
-                                                                          .toString()
-                                                                });
-                                                                lumpsumList[
-                                                                        index]
-                                                                    .qty = (int.parse(lumpsumList[index]
-                                                                            .qty!) -
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: Colors.blueGrey,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          height: 50,
+                                          width: double.infinity,
+                                          child: Text("Select The Lumpsum",
+                                              style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600)))),
+                                      SingleChildScrollView(
+                                        physics: BouncingScrollPhysics(),
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              1.24,
+                                          child: ListView.builder(
+                                              physics: BouncingScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: lumpsumList.length,
+                                              itemBuilder: (context, index) {
+                                                print(
+                                                    "lumpsumlistlength${lumpsumList[index].name}selectedlist${selectedGrade}");
+                                                print(int.parse(
+                                                        lumpsumList[index]
+                                                            .qty!) >=
+                                                    int.parse(qty.text));
+                                                return LayoutBuilder(builder:
+                                                    (context, constraints) {
+                                                  // if (
+
+                                                  //     // lumpsumList[index].name ==
+                                                  //     //       "$selectedGrade" &&
+                                                  //     int.parse(
+                                                  //             lumpsumList[index]
+                                                  //                 .qty!) >=
+                                                  //         int.parse(qty.text)) {
+                                                  print("entrance............");
+                                                  print(
+                                                      "status....................${lumpsumList[index].status}");
+                                                  return Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 10),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          listOfColumns.add({
+                                                            "Sr_no": itemNum
+                                                                .toString(),
+                                                            "Name": lumpsumList[
+                                                                    index]
+                                                                .name!,
+                                                            "Qty": qty.text,
+                                                            "Price": selectedTransType ==
+                                                                        "CIF" &&
+                                                                    selectedOrderType !=
+                                                                        "Lump-sum"
+                                                                ? ((int.parse(lumpsumList[index].price!) +
+                                                                            tCost) *
+                                                                        int.parse(qty
+                                                                            .text))
+                                                                    .toString()
+                                                                : ((int.parse(lumpsumList[index]
+                                                                            .price!)) *
                                                                         int.parse(
                                                                             qty.text))
-                                                                    .toString();
+                                                                    .toString()
+                                                          });
+                                                          lumpsumList[index]
+                                                              .qty = (int.parse(
+                                                                      lumpsumList[
+                                                                              index]
+                                                                          .qty!) -
+                                                                  int.parse(
+                                                                      qty.text))
+                                                              .toString();
 
-                                                                reductionData
-                                                                    .add({
-                                                                  "id": lumpsumList[
-                                                                          index]
-                                                                      .id,
-                                                                  "qty": lumpsumList[
-                                                                          index]
-                                                                      .qty
-                                                                });
-                                                                itemNum =
-                                                                    itemNum + 1;
-                                                                setState(() {});
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Card(
-                                                                elevation: 15,
-                                                                child: InventoryCard(
-                                                                    context,
-                                                                    lumpsumList[
-                                                                        index]),
-                                                              ),
-                                                            ));
-                                                      } else {
-                                                        return Container();
-                                                      }
-                                                    });
-                                                  }),
-                                            ),
-                                          )
-                                        ],
-                                      )),
+                                                          reductionData.add({
+                                                            "id": lumpsumList[
+                                                                    index]
+                                                                .id,
+                                                            "qty": lumpsumList[
+                                                                    index]
+                                                                .qty
+                                                          });
+
+                                                          itemNum = itemNum + 1;
+                                                          setState(() {});
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: InventoryCard(
+                                                            context,
+                                                            lumpsumList[index]),
+                                                      ));
+                                                  // } else {
+                                                  //   return Container();
+                                                  // }
+                                                });
+                                              }),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 );
                               },
                             );

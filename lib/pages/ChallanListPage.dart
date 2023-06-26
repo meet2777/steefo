@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/challan.dart';
 import "package:http/http.dart" as http;
+import 'package:stefomobileapp/pages/HomePage.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
 import 'GenerateChallanPage.dart';
@@ -33,6 +36,7 @@ class _ChallanListPageState extends State<ChallanListContent> {
 
   @override
   Widget build(BuildContext context) {
+    print("${widget.order.items}orderitems  ");
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appbar("Challan", () {
@@ -200,8 +204,6 @@ class _ChallanListPageState extends State<ChallanListContent> {
                           MaterialPageRoute(
                               builder: (context) => GeneratedChallan(
                                     challan_id: challanList[index].challan_id!,
-                                    orderid:
-                                        challanList[index].order_id.toString(),
                                   )));
                     },
                     child: ChallanCard(context, challanList[index]));
@@ -223,7 +225,57 @@ class _ChallanListPageState extends State<ChallanListContent> {
             // } else {
             //   return Container();
             // }
-          }))
+          })),
+          SizedBox(
+            height: 10,
+          ),
+          GestureDetector(
+            onTap: () async {
+              await http.post(
+                Uri.parse("http://urbanwebmobile.in/steffo/approveorder.php"),
+                body: {
+                  "decision": "Completed",
+                  "order_id": widget.order.order_id
+                },
+              );
+              () {
+                // orderList.add(requestList[index]);
+                // requestList.removeAt(index);
+                // id = "none";
+                // requestList.removeAt(index);
+                // loadData();
+                setState(() {});
+                Get.to(HomePage());
+              }();
+            },
+            child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(left: 10, right: 10),
+                height: 55,
+                width: MediaQuery.of(context).size.width / 1.123,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    gradient: LinearGradient(colors: [
+                      Color.fromRGBO(75, 100, 160, 1.0),
+                      Color.fromRGBO(19, 59, 78, 1.0),
+
+                      //add more colors
+                    ])),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 18,
+                    bottom: 18,
+                  ),
+                  child: Text(
+                    "Complete Order",
+                    style: const TextStyle(
+                        fontFamily: 'Poppins_Bold', color: Colors.white),
+                  ),
+                )),
+          ),
+          SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );
