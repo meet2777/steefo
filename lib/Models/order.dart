@@ -18,7 +18,8 @@ class Order {
       orderType,
       date,
       totalPrice,
-      totalQuantity;
+      totalQuantity,
+      deliveryDate;
 
   late List<Item> items;
 }

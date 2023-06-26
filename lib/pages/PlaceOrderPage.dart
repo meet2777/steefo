@@ -1521,6 +1521,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
 
   int itemNum = 1;
   int totalQuantity = 0;
+  int totalPrice = 0;
 
   final List<Map<String, String>> listOfColumns = [];
   onPlaceOrder() async {
@@ -2171,6 +2172,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
                       child: TextFormField(
+                        keyboardType: TextInputType.numberWithOptions(),
                         key: field10Key,
                         focusNode: focusNode10,
                         validator: (value) {
@@ -2273,7 +2275,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                     szpct +
                                                     0) *
                                                 int.parse(qty.text))
-                                            .toString()
+                                            .toString(),
+
                                   });
                                   itemNum = itemNum + 1;
                                 }

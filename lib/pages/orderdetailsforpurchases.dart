@@ -13,9 +13,9 @@ import '../Models/order.dart';
 import '../ui/common.dart';
 
 // ignore: must_be_immutable
-class OrderDetails extends StatelessWidget {
+class OrderDetailsforpurchases extends StatelessWidget {
   Order order;
-  OrderDetails({super.key, required this.order});
+  OrderDetailsforpurchases({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -282,30 +282,6 @@ class _OrderPageState extends State<OrderPage> {
                                 ],
                               )),
                         ),
-                        // Card(
-                        //   elevation: 2,
-                        //   shadowColor: Colors.grey,
-                        //   child: Container(
-                        //     // margin: EdgeInsets.only(top: 10),
-                        //       padding: const EdgeInsets.all(10),
-                        //       decoration: const BoxDecoration(
-                        //         // borderRadius: BorderRadius.circular(20),
-                        //         color: Colors.white,
-                        //       ),
-                        //       child: Row(
-                        //         mainAxisAlignment:
-                        //         MainAxisAlignment.spaceBetween,
-                        //         children: [
-                        //           const Text("Delivery Date: ",
-                        //               style: TextStyle(
-                        //                   fontSize: 15,
-                        //                   fontFamily: "Poppins_Bold")),
-                        //           Text(widget.order!.deliveryDate!,
-                        //               style: const TextStyle(
-                        //                   fontSize: 15, fontFamily: "Poppins"))
-                        //         ],
-                        //       )),
-                        // ),
                       ])),
                   const SizedBox(
                     height: 10.0,
@@ -369,77 +345,6 @@ class _OrderPageState extends State<OrderPage> {
                   SizedBox(
                     height: 10,
                   ),
-
-                  // LayoutBuilder(builder: (context,constraints) {
-                  //   if(widget.order!.status =='Confirmed' ){
-                  //     return Container(
-                  //       padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //       width: MediaQuery.of(context).size.width,
-                  //       child: Row(
-                  //         children: [
-                  //           Expanded(
-                  //               flex: 40,
-                  //               child: TextButton(
-                  //                   onPressed: () async {
-                  //                     await http.post(
-                  //                       Uri.parse(
-                  //                           "http://urbanwebmobile.in/steffo/approveorder.php"),
-                  //                       body: {
-                  //                         "decision": "Approved",
-                  //                         "order_id": widget.order!.order_id!
-                  //                       },
-                  //                     );
-                  //                     widget.order!.status = "Confirmed";
-                  //                     setState(() {
-                  //
-                  //                     });
-                  //                   },
-                  //                   style: ElevatedButton.styleFrom(
-                  //                       backgroundColor: Colors.white),
-                  //                   child: GradientText(
-                  //                     style: TextStyle(
-                  //                         fontSize: 22,
-                  //                         fontWeight: FontWeight.bold),
-                  //                     colors: [Colors.greenAccent, Colors.greenAccent],
-                  //                     "Accept",
-                  //                   ))),
-                  //           const SizedBox(
-                  //             width: 10,
-                  //           ),
-                  //           Expanded(
-                  //               flex: 40,
-                  //               child: TextButton(
-                  //                 onPressed: () async {
-                  //                   await http.post(
-                  //                     Uri.parse(
-                  //                         "http://urbanwebmobile.in/steffo/approveorder.php"),
-                  //                     body: {
-                  //                       "decision": "Denied",
-                  //                       "order_id": widget.order!.order_id!
-                  //                     },
-                  //                   );
-                  //                   widget.order!.status = "Denied";
-                  //                   setState(() {});
-                  //                 },
-                  //                 child: GradientText(
-                  //                   "Decline",
-                  //                   style: TextStyle(
-                  //                       fontSize: 22,
-                  //                       fontWeight: FontWeight.bold),
-                  //                   colors: [Colors.redAccent, Colors.redAccent],
-                  //                 ),
-                  //               )
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     );;
-                  //
-                  //   }
-                  //   else{
-                  //     return(Container());
-                  //   }
-                  // }),
-
                   LayoutBuilder(builder: (context, constraints) {
                     if (widget.order!.status == "Pending" &&
                         id == widget.order!.reciever_id) {
@@ -505,6 +410,52 @@ class _OrderPageState extends State<OrderPage> {
                       if (widget.order!.status == "Confirmed") {
                         return Column(
                           children: [
+                            // GestureDetector(
+                            //   onTap: () async {
+                            //     print('taapp');
+
+                            //     await http.post(
+                            //       Uri.parse(
+                            //           "http://urbanwebmobile.in/steffo/approveorder.php"),
+                            //       body: {
+                            //         "decision": "Canceled",
+                            //         "order_id": widget.order!.order_id!
+                            //       },
+                            //     );
+                            //     widget.order!.status = "Canceled";
+                            //     setState(() {});
+                            //     Navigator.of(context).pushNamed('/orders');
+                            //     // Navigator.pop(context);
+                            //     //Get.back();
+                            //   },
+                            //   child: Padding(
+                            //     padding: EdgeInsets.only(left: 20, right: 20),
+                            //     child: Container(
+                            //       alignment: Alignment.center,
+                            //       width: double.infinity,
+                            //       height: 40,
+                            //       child: Row(
+                            //         mainAxisAlignment: MainAxisAlignment.center,
+                            //         children: [
+                            //           Icon(
+                            //             Icons.cancel_outlined,
+                            //             color: Colors.white,
+                            //           ),
+                            //           SizedBox(
+                            //             width: 5,
+                            //           ),
+                            //           Text("Cancel Order",
+                            //               style: const TextStyle(
+                            //                   fontFamily: 'Poppins_Bold',
+                            //                   color: Colors.white)),
+                            //         ],
+                            //       ),
+                            //       decoration: BoxDecoration(
+                            //           color: Colors.redAccent,
+                            //           borderRadius: BorderRadius.circular(10)),
+                            //     ),
+                            //   ),
+                            // ),
                             Container(
                               width: MediaQuery.of(context).size.width,
                               padding: const EdgeInsets.symmetric(
@@ -517,55 +468,6 @@ class _OrderPageState extends State<OrderPage> {
                                               order: widget.order!,
                                             )));
                               }),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                print('taapp');
-
-                                await http.post(
-                                  Uri.parse(
-                                      "http://urbanwebmobile.in/steffo/approveorder.php"),
-                                  body: {
-                                    "decision": "Canceled",
-                                    "order_id": widget.order!.order_id!
-                                  },
-                                );
-                                widget.order!.status = "Canceled";
-                                setState(() {});
-                                Navigator.of(context).pushNamed('/orders');
-                                // Navigator.pop(context);
-                                //Get.back();
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 20, right: 20),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: double.infinity,
-                                  height: 40,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.cancel_outlined,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text("Cancel Order",
-                                          style: const TextStyle(
-                                              fontFamily: 'Poppins_Bold',
-                                              color: Colors.white)),
-                                    ],
-                                  ),
-                                  decoration: BoxDecoration(
-                                      color: Colors.redAccent,
-                                      borderRadius: BorderRadius.circular(10)),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
                             ),
                           ],
                         );

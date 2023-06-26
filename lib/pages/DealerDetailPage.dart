@@ -230,6 +230,22 @@ class DealerDetailState extends State<DealerDetailContent> {
             )
           ],
         ),
+        Divider(
+          color: Colors.blueGrey,
+        ),
+        Container(
+            alignment: Alignment.center,
+            child: Text("Orders",
+              style: TextStyle(
+                  color: Color.fromRGBO(19, 59, 78, 1.0),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+              ),
+
+            ),
+          padding: EdgeInsets.only(bottom: 5),
+        ),
+
         Expanded(
           flex: 1,
           child: SingleChildScrollView(
@@ -252,9 +268,17 @@ class DealerDetailState extends State<DealerDetailContent> {
                   SizedBox(
                     height: 15,
                   ),
-                  Divider(
-                    color: Colors.blueGrey,
-                  ),
+                  // Divider(
+                  //   color: Colors.blueGrey,
+                  // ),
+                  // Container(
+                  //   alignment: Alignment.center,
+                  //     child: Text("Orders",
+                  //       style: TextStyle(
+                  //           color: Color.fromRGBO(19, 59, 78, 1.0),
+                  //         fontSize: 20,
+                  //         fontWeight: FontWeight.bold
+                  //       ),)),
                   SizedBox(
                     height: 15,
                   ),

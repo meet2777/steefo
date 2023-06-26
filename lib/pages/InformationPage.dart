@@ -38,6 +38,7 @@ class DistributorDetailContent extends StatefulWidget {
 }
 
 class DistributorDetailState extends State<DistributorDetailContent> {
+  // List<Order> orderList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,7 +179,8 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                                         textStyle: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
-                                            color: Colors.green)),
+                                            color: Color.fromRGBO(19, 59, 78, 1.0),
+                                        )),
                                   )),
                               Container(
                                   width: MediaQuery.of(context).size.width,
@@ -311,53 +313,46 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                                   )),
                             ],
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 30, horizontal: 10),
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                widget.user.userType!,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          )
+                          // Align(
+                          //   alignment: Alignment.topRight,
+                          //   child: Container(
+                          //     margin: EdgeInsets.symmetric(
+                          //         vertical: 30, horizontal: 10),
+                          //     padding: EdgeInsets.symmetric(horizontal: 10),
+                          //     decoration: BoxDecoration(
+                          //         color: Colors.green,
+                          //         borderRadius: BorderRadius.circular(20)),
+                          //     child: Text(
+                          //       widget.user.userType!,
+                          //       style: TextStyle(color: Colors.white),
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      // padding: EdgeInsets.symmetric(horizontal: 10),
                       child: SingleChildScrollView(
                         physics: BouncingScrollPhysics(),
-                        child: Container(
-                          // width: 500,
-                          // width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                itemCount: child.length,
-                                physics: const BouncingScrollPhysics(),
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DealerDetailPage(
-                                                        user: child[index])));
-                                      },
-                                      child: DealerCard(child[index], context));
+                        child: ListView.builder(
+                          itemCount: child.length,
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DealerDetailPage(
+                                                  user: child[index])));
                                 },
-                              ),
-                            ],
-                          ),
+                                child: DealerCard(child[index], context)
+                            );
+                          },
                         ),
                       ),
                     ),

@@ -64,7 +64,7 @@ class _purchasesState extends State<purchases> {
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
         req.order_id = responseData["data"][i]["order_id"].toString();
-        
+
         print(purchaseOrderList);
         if (req.status != "Rejected") {
           if (id == req.user_id) {

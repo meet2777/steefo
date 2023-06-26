@@ -361,7 +361,7 @@ class _HomePageState extends State<HomeContent> {
     // print(NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
     //     .format(1000000000));
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10),
+      padding: EdgeInsets.only(left: 10, right: 10,),
       //  height: MediaQuery.of(context).size.height,
       decoration: const BoxDecoration(),
       child: SingleChildScrollView(
@@ -870,9 +870,9 @@ class _HomePageState extends State<HomeContent> {
                         child: Column(
                           children: [
                             Image.asset(
-                              "assets/images/broker.png",
-                              height: 60,
-                              width: 60,
+                              "assets/images/dealer.png",
+                              height: 50,
+                              width: 50,
                               //  color: Colors.blueGrey,
                             ),
                             // Icon(
@@ -1003,9 +1003,11 @@ class _HomePageState extends State<HomeContent> {
 
         // SizedBox(
         //   height: 30,
+
         // )
       ),
     );
+
   }
 
   // Widget baserate() {
