@@ -2298,6 +2298,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                   child: Column(
                                     children: [
                                       Container(
+                                          margin: EdgeInsets.only(
+                                              left: 5, right: 5),
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
                                               color: Colors.blueGrey,
@@ -2323,12 +2325,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                               shrinkWrap: true,
                                               itemCount: lumpsumList.length,
                                               itemBuilder: (context, index) {
-                                                print(
-                                                    "lumpsumlistlength${lumpsumList[index].name}selectedlist${selectedGrade}");
-                                                print(int.parse(
-                                                        lumpsumList[index]
-                                                            .qty!) >=
-                                                    int.parse(qty.text));
+                                                // print(
+                                                //     "lumpsumlistlength${lumpsumList[index].name}selectedlist${selectedGrade}");
+                                                // print(int.parse(
+                                                //         lumpsumList[index]
+                                                //             .qty!) >=
+                                                //     int.parse(qty.text));
                                                 return LayoutBuilder(builder:
                                                     (context, constraints) {
                                                   // if (
@@ -2339,9 +2341,9 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                   //             lumpsumList[index]
                                                   //                 .qty!) >=
                                                   //         int.parse(qty.text)) {
-                                                  print("entrance............");
-                                                  print(
-                                                      "status....................${lumpsumList[index].status}");
+                                                  // print("entrance............");
+                                                  // print(
+                                                  //     "status....................${lumpsumList[index].status}");
                                                   return Container(
                                                       margin: EdgeInsets.only(
                                                           top: 10),
