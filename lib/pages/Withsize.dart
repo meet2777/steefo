@@ -35,6 +35,7 @@ class OrdersContent extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersContent> {
+  num totalPrice = 0;
   List<Item> qtyandprice = [];
   loadDatafortotal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -60,6 +61,7 @@ class _OrdersPageState extends State<OrdersContent> {
         i.price = responseData1['data'][i]['price'];
         i.qty = responseData1['data'][i]['qty'];
         qtyandprice.add(i);
+        totalPrice = totalPrice + int.parse(responseData1["data"][i]["price"]);
       }
       print(qtyandprice);
 
@@ -1101,7 +1103,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
               Container(
                 //  height: 50,
                 padding: EdgeInsets.only(left: 10, top: 10, right: 10),
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width/1,
                 // color: Colors.red,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(19, 59, 78, 1.0),
@@ -1607,7 +1609,7 @@ Widget completedorderCard(
                   Container(
                       padding: EdgeInsets.only(top: 10),
                       child: LayoutBuilder(builder: (context, constraints) {
-                        if (order.status == "Confirmed") {
+                        if (order.status == "Completed") {
                           return Container(
                               // width: 40,
                               padding: EdgeInsets.symmetric(
@@ -1638,7 +1640,7 @@ Widget completedorderCard(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
                               decoration: BoxDecoration(
-                                  color: Colors.yellow,
+                                  color: Colors.red,
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10))),
