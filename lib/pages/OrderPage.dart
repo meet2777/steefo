@@ -260,6 +260,31 @@ class _OrderPageState extends State<OrderPage> {
                         ),
                         Card(
                           elevation: 2,
+                          child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                // borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("Delivery Date:",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: "Poppins_Bold")),
+                                  Text(widget.order!.deliveryDate.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 15, fontFamily: "Poppins"))
+                                ],
+                              )),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Card(
+                          elevation: 2,
                           shadowColor: Colors.grey,
                           child: Container(
                               // margin: EdgeInsets.only(top: 10),

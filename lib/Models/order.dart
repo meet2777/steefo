@@ -18,6 +18,7 @@ class Order {
       orderType,
       date,
       totalPrice,
+      deliveryDate,
       totalQuantity;
 
   List<Item> items = [];

@@ -156,10 +156,11 @@ class _OrdersPageState extends State<OrdersContent> {
         body: {"id": id!},
       );
       var responseData = jsonDecode(res.body);
-      //print(responseData);
+      print(responseData);
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+        req.deliveryDate = responseData["data"][i]["deliveryDate"];
         req.totalPrice = responseData["data"][i]["totalPrice"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
@@ -178,6 +179,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
         req.order_id = responseData["data"][i]["order_id"].toString();
+        req.date = responseData["data"][i]["dateTime"].toString();
         //print(req);
         if (req.status != "Rejected") {
           if (id == req.user_id) {
@@ -215,6 +217,7 @@ class _OrdersPageState extends State<OrdersContent> {
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+        req.deliveryDate = responseData["data"][i]["deliveryDate"];
         req.totalPrice = responseData["data"][i]["totalPrice"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.orderType = responseData["data"][i]["orderType"];
@@ -233,6 +236,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.order_id = responseData["data"][i]["order_id"].toString();
+        req.date = responseData["data"][i]["dateTime"];
         if (req.status?.trim() == "Pending" && id1 == req.reciever_id) {
           print(req.loading_type);
           requestList.add(req);
@@ -617,7 +621,7 @@ class _OrdersPageState extends State<OrdersContent> {
                             style: TextStyle(color: Colors.grey),
                           ),
                           Text(
-                            requestList[index].order_date!.substring(0, 10),
+                            requestList[index].date!,
                             style: TextStyle(color: Colors.grey),
                           )
                         ],
@@ -1121,7 +1125,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                         //   width: 180,
                         // ),
                         Text(
-                          order.order_date!.substring(0, 10),
+                          order.date!,
                           style: TextStyle(color: Colors.grey),
                         )
                       ],
@@ -1564,7 +1568,7 @@ Widget completedorderCard(
                         //   width: 180,
                         // ),
                         Text(
-                          order.order_date!.substring(0, 10),
+                          order.date!,
                           style: TextStyle(color: Colors.grey),
                         )
                       ],

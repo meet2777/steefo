@@ -171,7 +171,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                       //   width: 180,
                       // ),
                       Text(
-                        order.order_date!.substring(0, 10),
+                        order.date!,
                         style: TextStyle(color: Colors.grey),
                       )
                     ],
@@ -691,29 +691,29 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum) {
                           textStyle: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20))),
+                              fontSize: 15))),
                   Text(lumpsum.orderId.toString(),
                       style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20))),
+                              fontSize: 15))),
                 ],
               ),
               RichText(
                 text: TextSpan(style: TextStyle(), children: [
                   TextSpan(
-                      text: "Organization Name: ",
+                      text: "Party Name: ",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
-                          fontSize: MediaQuery.of(context).size.width / 27)),
+                          fontSize: MediaQuery.of(context).size.width / 28)),
                   TextSpan(
                       text: lumpsum.partyname,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: MediaQuery.of(context).size.width / 27,
+                        fontSize: MediaQuery.of(context).size.width / 28,
                       ))
                 ]),
               ),
