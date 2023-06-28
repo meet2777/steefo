@@ -182,7 +182,8 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                                         textStyle: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
-                                            color: Colors.green)),
+                                          color: Color.fromRGBO(19, 59, 78, 1.0),
+                                        )),
                                   )),
                               Container(
                                   width: MediaQuery.of(context).size.width,
@@ -295,41 +296,41 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  margin: EdgeInsets.only(top: 10),
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                      shape: MaterialStatePropertyAll(
-                                          ContinuousRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20))),
-                                      backgroundColor: MaterialStatePropertyAll(
-                                          Colors.green),
-                                    ),
-                                    onPressed: () {
-                                      Get.to(InventoryPage());
-                                    },
-                                    child: Text("View Inventory"),
-                                  )),
+                              // Container(
+                              //     width: MediaQuery.of(context).size.width,
+                              //     margin: EdgeInsets.only(top: 10),
+                              //     padding: EdgeInsets.symmetric(horizontal: 20),
+                              //     child: ElevatedButton(
+                              //       style: ButtonStyle(
+                              //         shape: MaterialStatePropertyAll(
+                              //             ContinuousRectangleBorder(
+                              //                 borderRadius:
+                              //                     BorderRadius.circular(20))),
+                              //         backgroundColor: MaterialStatePropertyAll(
+                              //             Colors.green),
+                              //       ),
+                              //       onPressed: () {
+                              //         Get.to(InventoryPage());
+                              //       },
+                              //       child: Text("View Inventory"),
+                              //     )),
                             ],
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 30, horizontal: 10),
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                widget.user.userType!,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          )
+                          // Align(
+                          //   alignment: Alignment.topRight,
+                          //   child: Container(
+                          //     margin: EdgeInsets.symmetric(
+                          //         vertical: 30, horizontal: 10),
+                          //     padding: EdgeInsets.symmetric(horizontal: 10),
+                          //     decoration: BoxDecoration(
+                          //         color: Colors.green,
+                          //         borderRadius: BorderRadius.circular(20)),
+                          //     child: Text(
+                          //       widget.user.userType!,
+                          //       style: TextStyle(color: Colors.white),
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
@@ -400,7 +401,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                   ]
                 : [
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 20),
+                      // padding: EdgeInsets.symmetric(vertical: 20),
                       child: Stack(
                         children: [
                           // padding: EdgeInsets.symmetric(vertical: 20),
@@ -418,7 +419,9 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                                         textStyle: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
-                                            color: Colors.green)),
+                                            color: Color.fromRGBO(19, 59, 78, 1.0),
+                                            // color: Colors.green
+                                        )),
                                   )),
                               Container(
                                   width: MediaQuery.of(context).size.width,
@@ -531,41 +534,41 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  margin: EdgeInsets.only(top: 10),
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                      shape: MaterialStatePropertyAll(
-                                          ContinuousRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20))),
-                                      backgroundColor: MaterialStatePropertyAll(
-                                          Colors.green),
-                                    ),
-                                    onPressed: () {
-                                      Get.to(InventoryPage());
-                                    },
-                                    child: Text("View Inventory"),
-                                  )),
+                              // Container(
+                              //     width: MediaQuery.of(context).size.width,
+                              //     margin: EdgeInsets.only(top: 10),
+                              //     padding: EdgeInsets.symmetric(horizontal: 20),
+                              //     child: ElevatedButton(
+                              //       style: ButtonStyle(
+                              //         shape: MaterialStatePropertyAll(
+                              //             ContinuousRectangleBorder(
+                              //                 borderRadius:
+                              //                     BorderRadius.circular(20))),
+                              //         backgroundColor: MaterialStatePropertyAll(
+                              //             Colors.green),
+                              //       ),
+                              //       onPressed: () {
+                              //         Get.to(InventoryPage());
+                              //       },
+                              //       child: Text("View Inventory"),
+                              //     )),
                             ],
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 30, horizontal: 10),
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                widget.user.userType!,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          )
+                          // Align(
+                          //   alignment: Alignment.topRight,
+                          //   child: Container(
+                          //     margin: EdgeInsets.symmetric(
+                          //         vertical: 30, horizontal: 10),
+                          //     padding: EdgeInsets.symmetric(horizontal: 10),
+                          //     decoration: BoxDecoration(
+                          //         color: Colors.green,
+                          //         borderRadius: BorderRadius.circular(20)),
+                          //     child: Text(
+                          //       widget.user.userType!,
+                          //       style: TextStyle(color: Colors.white),
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       ),
                     ),

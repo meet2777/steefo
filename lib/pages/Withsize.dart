@@ -1625,7 +1625,7 @@ Widget completedorderCard(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
                               decoration: BoxDecoration(
-                                  color: Colors.redAccent,
+                                  color: Colors.red,
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10))),
@@ -1638,7 +1638,7 @@ Widget completedorderCard(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
                               decoration: BoxDecoration(
-                                  color: Colors.yellow,
+                                  color: Colors.orangeAccent,
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10))),
@@ -1651,7 +1651,7 @@ Widget completedorderCard(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
                               decoration: BoxDecoration(
-                                  color: Colors.black,
+                                  color: Colors.blueAccent,
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10))),

@@ -113,7 +113,9 @@ class DealerDetailState extends State<DealerDetailContent> {
                               textStyle: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
-                                  color: Color.fromARGB(255, 129, 18, 18))),
+                                  color: Color.fromRGBO(19, 59, 78, 1.0),
+                                  // color: Color.fromARGB(255, 129, 18, 18)
+                              )),
                         )),
                     Container(
                         width: MediaQuery.of(context).size.width,
@@ -220,20 +222,20 @@ class DealerDetailState extends State<DealerDetailContent> {
                     ),
                   ],
                 )),
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                decoration: BoxDecoration(
-                    color: Colors.lightBlueAccent,
-                    borderRadius: BorderRadius.circular(5)),
-                child: Text(
-                  widget.user.userType!,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            )
+            // Align(
+            //   alignment: Alignment.topRight,
+            //   child: Container(
+            //     margin: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+            //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+            //     decoration: BoxDecoration(
+            //         color: Colors.lightBlueAccent,
+            //         borderRadius: BorderRadius.circular(5)),
+            //     child: Text(
+            //       widget.user.userType!,
+            //       style: TextStyle(color: Colors.white),
+            //     ),
+            //   ),
+            // )
           ],
         ),
         // Divider(

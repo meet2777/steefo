@@ -2183,7 +2183,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: TextFormField(
-                        keyboardType: TextInputType.datetime,
+                        keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.done,
                         key: field10Key,
                         focusNode: focusNode10,
