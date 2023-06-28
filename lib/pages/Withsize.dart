@@ -35,7 +35,6 @@ class OrdersContent extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersContent> {
-  num totalPrice = 0;
   List<Item> qtyandprice = [];
   loadDatafortotal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -61,7 +60,6 @@ class _OrdersPageState extends State<OrdersContent> {
         i.price = responseData1['data'][i]['price'];
         i.qty = responseData1['data'][i]['qty'];
         qtyandprice.add(i);
-        totalPrice = totalPrice + int.parse(responseData1["data"][i]["price"]);
       }
       print(qtyandprice);
 
@@ -158,10 +156,11 @@ class _OrdersPageState extends State<OrdersContent> {
         body: {"id": id!},
       );
       var responseData = jsonDecode(res.body);
-      //print(responseData);
+      print(responseData);
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+        req.deliveryDate = responseData["data"][i]["deliveryDate"];
         req.totalPrice = responseData["data"][i]["totalPrice"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
@@ -180,6 +179,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
         req.order_id = responseData["data"][i]["order_id"].toString();
+        req.date = responseData["data"][i]["dateTime"].toString();
         //print(req);
         if (req.status != "Rejected") {
           if (id == req.user_id) {
@@ -217,13 +217,16 @@ class _OrdersPageState extends State<OrdersContent> {
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+        req.deliveryDate = responseData["data"][i]["deliveryDate"];
         req.totalPrice = responseData["data"][i]["totalPrice"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.orderType = responseData["data"][i]["orderType"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
-        req.user_name = responseData["data"][i]["firstName"] + " " + responseData["data"][i]["lastName"];
+        req.user_name = responseData["data"][i]["firstName"] +
+            " " +
+            responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
@@ -233,6 +236,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.order_id = responseData["data"][i]["order_id"].toString();
+        req.date = responseData["data"][i]["dateTime"];
         if (req.status?.trim() == "Pending" && id1 == req.reciever_id) {
           print(req.loading_type);
           requestList.add(req);
@@ -617,7 +621,7 @@ class _OrdersPageState extends State<OrdersContent> {
                             style: TextStyle(color: Colors.grey),
                           ),
                           Text(
-                            requestList[index].order_date!.substring(0, 10),
+                            requestList[index].date!,
                             style: TextStyle(color: Colors.grey),
                           )
                         ],
@@ -677,11 +681,7 @@ class _OrdersPageState extends State<OrdersContent> {
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
                             ),
-                            SizedBox(width: 5,),
-                            Text(requestList[index].base_price!,
-                            style: TextStyle(
-                              color: Colors.grey
-                            ),),
+                            Text(requestList[index].base_price!),
                           ],
                         ),
                       ),
@@ -694,9 +694,7 @@ class _OrdersPageState extends State<OrdersContent> {
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
                             ),
-                            SizedBox(width: 5,),
-                            Text(requestList[index].totalPrice.toString(),
-                                style: TextStyle(color: Colors.grey)),
+                            Text(requestList[index].totalPrice.toString()),
                           ],
                         ),
                       ),
@@ -711,9 +709,7 @@ class _OrdersPageState extends State<OrdersContent> {
                           style: TextStyle(
                               fontFamily: "Poppins_Bold", color: Colors.grey),
                         ),
-                        SizedBox(width: 5,),
-                        Text(requestList[index].totalQuantity.toString(),
-                        style: TextStyle(color: Colors.grey),),
+                        Text(requestList[index].totalQuantity.toString()),
                       ],
                     ),
                   ),
@@ -1105,7 +1101,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
               Container(
                 //  height: 50,
                 padding: EdgeInsets.only(left: 10, top: 10, right: 10),
-                width: MediaQuery.of(context).size.width/1,
+                width: MediaQuery.of(context).size.width,
                 // color: Colors.red,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(19, 59, 78, 1.0),
@@ -1129,7 +1125,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                         //   width: 180,
                         // ),
                         Text(
-                          order.order_date!.substring(0, 10),
+                          order.date!,
                           style: TextStyle(color: Colors.grey),
                         )
                       ],
@@ -1572,7 +1568,7 @@ Widget completedorderCard(
                         //   width: 180,
                         // ),
                         Text(
-                          order.order_date!.substring(0, 10),
+                          order.date!,
                           style: TextStyle(color: Colors.grey),
                         )
                       ],
@@ -1611,7 +1607,7 @@ Widget completedorderCard(
                   Container(
                       padding: EdgeInsets.only(top: 10),
                       child: LayoutBuilder(builder: (context, constraints) {
-                        if (order.status == "Completed") {
+                        if (order.status == "Confirmed") {
                           return Container(
                               // width: 40,
                               padding: EdgeInsets.symmetric(
@@ -1642,7 +1638,7 @@ Widget completedorderCard(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
                               decoration: BoxDecoration(
-                                  color: Colors.orangeAccent,
+                                  color: Colors.yellow,
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10))),

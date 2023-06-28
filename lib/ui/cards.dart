@@ -171,7 +171,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                       //   width: 180,
                       // ),
                       Text(
-                        order.order_date!.substring(0, 10),
+                        order.date.toString(),
                         style: TextStyle(color: Colors.grey),
                       )
                     ],
@@ -217,7 +217,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                                     topLeft: Radius.circular(10),
                                     bottomLeft: Radius.circular(10))),
                             child: Text(
-                              order!.status!,
+                              order.status!,
                             ));
                       } else if (order.status == "Denied") {
                         return Container(
@@ -232,12 +232,38 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                               order.status!,
                               style: TextStyle(color: Colors.white),
                             ));
-                      } else {
+                      } else if (order.status == "Canceled") {
                         return Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 5),
                             decoration: BoxDecoration(
                                 color: Colors.yellow,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
+                            child: Text(
+                              order.status!,
+                              style: TextStyle(color: Colors.white),
+                            ));
+                      } else if (order.status == "Pending") {
+                        return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.orangeAccent,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
+                            child: Text(
+                              order.status!,
+                              style: TextStyle(color: Colors.white),
+                            ));
+                      } else {
+                        return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.black,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(10),
                                     bottomLeft: Radius.circular(10))),
@@ -453,8 +479,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
 Widget DistributorCard(User user, BuildContext context) {
   if (user.userType == "Distributor") {
     return Container(
-      padding: EdgeInsets.only(bottom: 10),
-      // height: 120,
+      height: 160,
       // margin: EdgeInsets.only(top: 20,),
       margin: EdgeInsets.all(10.0),
       // padding: const EdgeInsets.all(8.0),
@@ -476,96 +501,46 @@ Widget DistributorCard(User user, BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                //  height: 50,
-                padding: EdgeInsets.only( top: 10,bottom: 10),
-                width: MediaQuery.of(context).size.width/1.06,
-                // color: Colors.red,
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(19, 59, 78, 1.0),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
-                child:Text(user.orgName!,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white,fontSize: 25),
-                ),
-
-                // Row(
-                //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Align(alignment: Alignment.center),
-                //     Text(user.orgName!,
-                //       textAlign: TextAlign.center,
-                //       style: TextStyle(color: Colors.grey,fontSize: 25),
-                //     ),
-                //
-                //     // SizedBox(
-                //     //   width: 180,
-                //     // ),
-                //   ],
-                // ),
-              ),
-              SizedBox(height: 10,),
-              Row(
-                children: [
-                  Padding(padding: EdgeInsets.only(left: 10,top: 10)),
-                  Text("Mobile No:",
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15
-                    ),),
-                  Container(
-                      padding: EdgeInsets.only( left: 5),
-                      child: Text(
-                        user.mobileNumber!,
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey
-                        ),
-                        // style: GoogleFonts.raleway(
-                        //     textStyle: TextStyle(
-                        //         // fontSize: 25,
-                        //         // fontWeight: FontWeight.bold,
-                        //         color: Colors.grey)),
-                        textAlign: TextAlign.left,
-                      )),
-
-                ],
-              ),
-              SizedBox(height: 10,),
-              Row(
-                children: [
-                  Padding(padding: EdgeInsets.only(left: 10,top: 10)),
-                  Text("Email:",
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15
-                    ),),
-                  Container(
-                      padding: EdgeInsets.only( left: 5),
-                      child: Text(
-                        user.email!,
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey
-                        ),
-                        // style: GoogleFonts.raleway(
-                        //     textStyle: TextStyle(
-                        //         // fontSize: 25,
-                        //         // fontWeight: FontWeight.bold,
-                        //         color: Colors.grey)),
-                        textAlign: TextAlign.left,
-                      )),
-                ],
+                  padding: EdgeInsets.only(top: 10, left: 5),
+                  child: Text(
+                    user.userType!,
+                    style: GoogleFonts.raleway(
+                        textStyle: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green)),
+                    textAlign: TextAlign.left,
+                  )),
+              Container(
+                  padding: EdgeInsets.only(left: 5),
+                  child: Text(
+                    user.orgName!,
+                    style: GoogleFonts.raleway(
+                        textStyle: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.visible,
+                  )),
+              Expanded(
+                flex: 1,
+                child: Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    padding: EdgeInsets.only(top: 10, left: 5),
+                    child: Text(
+                      user.address!,
+                      style: GoogleFonts.raleway(
+                          textStyle: TextStyle(fontSize: 15)),
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.visible,
+                      maxLines: 4,
+                    )),
               ),
             ],
           ),
-          // Expanded(
-          //     child: Container(
-          //         margin: EdgeInsets.only(right: 10),
-          //         child: Image.asset("assets/images/distributor.png")))
+          Expanded(
+              child: Container(
+                  margin: EdgeInsets.only(right: 10),
+                  child: Image.asset("assets/images/distributor.png")))
         ],
       ),
     );
@@ -576,9 +551,9 @@ Widget DistributorCard(User user, BuildContext context) {
 Widget BuilderCard(User user, BuildContext context) {
   if (user.userType == "Builder") {
     return Container(
-      // height: 160,
+      height: 160,
       margin: EdgeInsets.all(10.0),
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         // gradient: LinearGradient(colors: [
         //   Color.fromARGB(255, 228, 245, 181),
@@ -598,89 +573,39 @@ Widget BuilderCard(User user, BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                //  height: 50,
-                padding: EdgeInsets.only( top: 10,bottom: 10),
-                width: MediaQuery.of(context).size.width/1.06,
-                // color: Colors.red,
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(19, 59, 78, 1.0),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
-                child:Text(user.orgName!,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white,fontSize: 25),
-                ),
-
-                // Row(
-                //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Align(alignment: Alignment.center),
-                //     Text(user.orgName!,
-                //       textAlign: TextAlign.center,
-                //       style: TextStyle(color: Colors.grey,fontSize: 25),
-                //     ),
-                //
-                //     // SizedBox(
-                //     //   width: 180,
-                //     // ),
-                //   ],
-                // ),
-              ),
-              SizedBox(height: 10,),
-
-              Row(
-                children: [
-                  Padding(padding: EdgeInsets.only(left: 10,top: 10)),
-                  Text("Mobile No:",
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15
-                    ),),
-                  Container(
-                      padding: EdgeInsets.only( left: 5),
-                      child: Text(
-                        user.mobileNumber!,
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey
-                        ),
-                        // style: GoogleFonts.raleway(
-                        //     textStyle: TextStyle(
-                        //         // fontSize: 25,
-                        //         // fontWeight: FontWeight.bold,
-                        //         color: Colors.grey)),
-                        textAlign: TextAlign.left,
-                      )),
-                ],
-              ),
-              SizedBox(height: 10,),
-              Row(
-                children: [
-                  Padding(padding: EdgeInsets.only(left: 10,top: 10)),
-                  Text("Email:",
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15
-                    ),),
-                  Container(
-                      padding: EdgeInsets.only( left: 5),
-                      child: Text(
-                        user.email!,
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey
-                        ),
-                        // style: GoogleFonts.raleway(
-                        //     textStyle: TextStyle(
-                        //         // fontSize: 25,
-                        //         // fontWeight: FontWeight.bold,
-                        //         color: Colors.grey)),
-                        textAlign: TextAlign.left,
-                      )),
-                ],
+                  padding: EdgeInsets.only(top: 10, left: 5),
+                  child: Text(
+                    user.userType!,
+                    style: GoogleFonts.raleway(
+                        textStyle: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green)),
+                    textAlign: TextAlign.left,
+                  )),
+              Container(
+                  padding: EdgeInsets.only(left: 5),
+                  child: Text(
+                    user.orgName!,
+                    style: GoogleFonts.raleway(
+                        textStyle: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.visible,
+                  )),
+              Expanded(
+                flex: 1,
+                child: Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    padding: EdgeInsets.only(top: 10, left: 5),
+                    child: Text(
+                      user.address!,
+                      style: GoogleFonts.raleway(
+                          textStyle: TextStyle(fontSize: 15)),
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.visible,
+                      maxLines: 4,
+                    )),
               ),
             ],
           ),
@@ -695,149 +620,71 @@ Widget BuilderCard(User user, BuildContext context) {
     return Container();
 }
 
-Widget DealerCard(User user, BuildContext context,) {
+Widget DealerCard(User user, BuildContext context) {
   if (user.userType == "Dealer") {
-    return Card(
-      margin: EdgeInsets.only(left: 10,right: 10),
-      child: Container(
-        // margin: EdgeInsets.only(top: 10),
-        // padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.grey.shade100,
-        ),
-        padding: EdgeInsets.only(bottom: 10),
-        // width: 400,
-        // height: 160,
-        // margin: EdgeInsets.only(top: 20,),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  //  height: 50,
-                  padding: EdgeInsets.only( top: 10,bottom: 10),
-                   width: MediaQuery.of(context).size.width/1.06,
-                  // color: Colors.red,
-                  decoration: BoxDecoration(
-                      color: Color.fromRGBO(19, 59, 78, 1.0),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
-                  child:Text(user.orgName!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white,fontSize: 25),
-                  ),
-
-                  // Row(
-                  //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Align(alignment: Alignment.center),
-                  //     Text(user.orgName!,
-                  //       textAlign: TextAlign.center,
-                  //       style: TextStyle(color: Colors.grey,fontSize: 25),
-                  //     ),
-                  //
-                  //     // SizedBox(
-                  //     //   width: 180,
-                  //     // ),
-                  //   ],
-                  // ),
-                ),
-                SizedBox(height: 10,),
-
-                Row(
-                  children: [
-                    Padding(padding: EdgeInsets.only(left: 10,top: 10)),
-                    Text("Mobile No:",
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15
-                      ),),
-                    Container(
-                        padding: EdgeInsets.only( left: 5),
-                        child: Text(
-                          user.mobileNumber!,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey
-                          ),
-                          // style: GoogleFonts.raleway(
-                          //     textStyle: TextStyle(
-                          //         // fontSize: 25,
-                          //         // fontWeight: FontWeight.bold,
-                          //         color: Colors.grey)),
-                          textAlign: TextAlign.left,
-                        )),
-                  ],
-                ),
-                SizedBox(height: 10,),
-                Row(
-                  children: [
-                    Padding(padding: EdgeInsets.only(left: 10,top: 10)),
-                    Text("Email:",
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15
-                      ),),
-                    Container(
-                        padding: EdgeInsets.only( left: 5),
-                        child: Text(
-                          user.email!,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey
-                          ),
-                          // style: GoogleFonts.raleway(
-                          //     textStyle: TextStyle(
-                          //         // fontSize: 25,
-                          //         // fontWeight: FontWeight.bold,
-                          //         color: Colors.grey)),
-                          textAlign: TextAlign.left,
-                        )),
-                  ],
-                ),
-                // Container(
-                //     padding: EdgeInsets.only(left: 5),
-                //     child: Text(
-                //       user.email!,
-                //       style: GoogleFonts.raleway(
-                //           textStyle: TextStyle(
-                //               fontSize: 18, fontWeight: FontWeight.bold)),
-                //       textAlign: TextAlign.left,
-                //       overflow: TextOverflow.visible,
-                //     )),
-                // Expanded(
-                //   flex: 1,
-                //   child: Container(
-                //       width: MediaQuery.of(context).size.width / 1.5,
-                //       padding: EdgeInsets.only(top: 10, left: 5),
-                //       child: Text(
-                //         user.address!,
-                //         style: GoogleFonts.raleway(
-                //             textStyle: TextStyle(fontSize: 15)),
-                //         textAlign: TextAlign.left,
-                //         overflow: TextOverflow.visible,
-                //         maxLines: 4,
-                //       )),
-                // ),
-              ],
-            ),
-            Expanded(
-              child: Container(
-                  margin: EdgeInsets.only(right: 10),
-                  // decoration: BoxDecoration(
-                  //     //color: Colors.green,
-                  //     borderRadius: BorderRadius.circular(20)),
-                  // width: 70,
-                  child: Image.asset("assets/images/dealer.png")),
-            )
-          ],
-        ),
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.grey.shade100,
+      ),
+      // width: 400,
+      height: 160,
+      // margin: EdgeInsets.only(top: 20,),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                  padding: EdgeInsets.only(top: 10, left: 5),
+                  child: Text(
+                    user.userType!,
+                    style: GoogleFonts.raleway(
+                        textStyle: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.lightBlueAccent)),
+                    textAlign: TextAlign.left,
+                  )),
+              Container(
+                  padding: EdgeInsets.only(left: 5),
+                  child: Text(
+                    user.orgName!,
+                    style: GoogleFonts.raleway(
+                        textStyle: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.visible,
+                  )),
+              Expanded(
+                flex: 1,
+                child: Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    padding: EdgeInsets.only(top: 10, left: 5),
+                    child: Text(
+                      user.address!,
+                      style: GoogleFonts.raleway(
+                          textStyle: TextStyle(fontSize: 15)),
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.visible,
+                      maxLines: 4,
+                    )),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Container(
+                margin: EdgeInsets.only(right: 10),
+                // decoration: BoxDecoration(
+                //     //color: Colors.green,
+                //     borderRadius: BorderRadius.circular(20)),
+                // width: 70,
+                child: Image.asset("assets/images/dealer.png")),
+          )
+        ],
       ),
     );
   } else
@@ -870,29 +717,29 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum) {
                           textStyle: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20))),
+                              fontSize: 15))),
                   Text(lumpsum.orderId.toString(),
                       style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20))),
+                              fontSize: 15))),
                 ],
               ),
               RichText(
                 text: TextSpan(style: TextStyle(), children: [
                   TextSpan(
-                      text: "Organization Name: ",
+                      text: "Party Name: ",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
-                          fontSize: MediaQuery.of(context).size.width / 27)),
+                          fontSize: MediaQuery.of(context).size.width / 28)),
                   TextSpan(
                       text: lumpsum.partyname,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: MediaQuery.of(context).size.width / 27,
+                        fontSize: MediaQuery.of(context).size.width / 28,
                       ))
                 ]),
               ),

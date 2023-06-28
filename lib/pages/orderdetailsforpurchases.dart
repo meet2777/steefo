@@ -260,6 +260,31 @@ class _OrderPageState extends State<OrderPage> {
                         ),
                         Card(
                           elevation: 2,
+                          child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                // borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("Delivery Date:",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: "Poppins_Bold")),
+                                  Text(widget.order!.deliveryDate.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 15, fontFamily: "Poppins"))
+                                ],
+                              )),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Card(
+                          elevation: 2,
                           shadowColor: Colors.grey,
                           child: Container(
                               // margin: EdgeInsets.only(top: 10),
@@ -327,12 +352,18 @@ class _OrderPageState extends State<OrderPage> {
                                                     Text(element["Name"]!)),
                                                 DataCell(Text(element["Qty"]!)),
 
-                                                DataCell(Text(
-                                                  NumberFormat.simpleCurrency(
-                                                          locale: 'hi-IN',
-                                                          decimalDigits: 0)
-                                                      .format(int.parse(
-                                                          element["Price"]!)),
+                                                DataCell(Container(
+                                                  width: 100,
+                                                  child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    NumberFormat.simpleCurrency(
+                                                            locale: 'hi-IN',
+                                                            decimalDigits: 0)
+                                                        .format(int.parse(
+                                                            element["Price"]!)),
+                                                  ),
                                                 )),
                                               ],
                                             )),
@@ -456,19 +487,19 @@ class _OrderPageState extends State<OrderPage> {
                             //     ),
                             //   ),
                             // ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
-                              child: buttonStyle("View Challan", () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ChallanListPage(
-                                              order: widget.order!,
-                                            )));
-                              }),
-                            ),
+                            // Container(
+                            //   width: MediaQuery.of(context).size.width,
+                            //   padding: const EdgeInsets.symmetric(
+                            //       vertical: 10, horizontal: 20),
+                            //   child: buttonStyle("View Challan", () {
+                            //     Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //             builder: (context) => ChallanListPage(
+                            //                   order: widget.order!,
+                            //                 )));
+                            //   }),
+                            // ),
                           ],
                         );
                       } else {

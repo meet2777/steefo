@@ -1373,11 +1373,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
     for (int i = 0; i < responseData["data"].length; i++) {
       print(responseData['data'][i]['name']);
       Lumpsum l = Lumpsum();
+      l.partyname = responseData["data"][i]["partyName"];
       l.orderId = responseData["data"][i]["order_id"];
       l.name = responseData["data"][i]["name"];
       l.qty = responseData["data"][i]["qty_left"];
       l.price = responseData["data"][i]["price"];
-      l.status = responseData["data"][i]["status"];
+      l.status = responseData["data"][i]["orderStatus"];
       l.id = responseData['data'][i]["ls_id"];
       l.date = responseData["data"][i]["createdAt"];
       lumpsumList.add(l);
@@ -1522,7 +1523,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
 
   int itemNum = 1;
   int totalQuantity = 0;
-  int totalPrice = 0;
 
   final List<Map<String, String>> listOfColumns = [];
   onPlaceOrder() async {
@@ -1553,7 +1553,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "orderType": selectedOrderType,
               "totalQuantity": totalQuantity.toString(),
               "totalPrice": tot_price.toString(),
-              "deliveryDate": deliveryDate.text
+              "deliveryDate": deliveryDate.text,
+              "dateTime": DateTime.now().toString(),
             }
           : {
               "userId": id!,
@@ -1569,7 +1570,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "transportationType": selectedTransType,
               "totalQuantity": totalQuantity.toString(),
               "totalPrice": tot_price.toString(),
-              "deliveryDate": deliveryDate.text
+              "deliveryDate": deliveryDate.text,
+              "dateTime": DateTime.now().toString(),
             },
     );
     Fluttertoast.showToast(
@@ -1595,7 +1597,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             "price": listOfColumns[i]["Price"]
           },
         );
-        //  tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
+        //  print("${listOfColumns[i]["Price"]}...................");
+        //tot_price = tot_price + num.parse(listOfColumns[i]["Price"]);
       }
     } else {
       for (int i = 0; i < listOfColumns.length; i++) {
@@ -1730,6 +1733,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
                 child: TextFormField(
+                  textInputAction: TextInputAction.next,
                   key: field1Key,
                   focusNode: focusNode1,
                   validator: (value) {
@@ -1769,6 +1773,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                   },
                   controller: party_address,
                   maxLines: 4,
+                  textInputAction: TextInputAction.newline,
                   decoration: const InputDecoration(
                       hintText: "Shipping Address",
                       hintStyle: TextStyle(fontSize: 20),
@@ -1819,6 +1824,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
+                  textInputAction: TextInputAction.next,
                   key: field3Key,
                   focusNode: focusNode3,
                   controller: party_pan_no,
@@ -1855,6 +1861,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
+                  textInputAction: TextInputAction.next,
                   key: field4Key,
                   focusNode: focusNode4,
                   controller: party_mob_num,
@@ -2024,33 +2031,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
 
               //------------------------------BasePrice--------------------------
 
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: TextFormField(
-                  key: field6Key,
-                  focusNode: focusNode6,
-                  controller: base_price,
-                  maxLines: 1,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter a value.';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                      hintText: "Base Price",
-                      hintStyle: TextStyle(fontSize: 20),
-                      //  floatingLabelBehavior: FloatingLabelBehavior.never,
-                      border: OutlineInputBorder(
-                          // borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide.none),
-                      filled: true,
-                      fillColor:
-                          Color.fromRGBO(233, 236, 239, 0.792156862745098)),
-                ),
-              ),
-
               //-------------------Add Item Block-------------------------------
 
               Container(
@@ -2087,7 +2067,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     //       },
                     //     )),
                     Container(
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                         child: DropdownButtonFormField(
                           decoration: const InputDecoration(
                               hintText: "Select The Grade",
@@ -2120,7 +2100,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           selectedSize = null;
                         }
                         return Container(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                             child: DropdownButtonFormField(
                               decoration: const InputDecoration(
                                   hintText: "Select The Size",
@@ -2152,8 +2132,37 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       }
                     }),
                     Container(
-                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: TextFormField(
+                        textInputAction: TextInputAction.next,
+                        key: field6Key,
+                        focusNode: focusNode6,
+                        controller: base_price,
+                        maxLines: 1,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter a value.';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                            hintText: "Base Price",
+                            hintStyle: TextStyle(fontSize: 20),
+                            //  floatingLabelBehavior: FloatingLabelBehavior.never,
+                            border: OutlineInputBorder(
+                                // borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide.none),
+                            filled: true,
+                            fillColor: Color.fromRGBO(
+                                233, 236, 239, 0.792156862745098)),
+                      ),
+                    ),
+
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: TextFormField(
+                        textInputAction: TextInputAction.next,
                         maxLines: 1,
                         controller: qty,
                         keyboardType: TextInputType.number,
@@ -2172,9 +2181,10 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     ),
                     //-------------------------deliveryDAte-----------------------
                     Container(
-                      padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: TextFormField(
-                        keyboardType: TextInputType.numberWithOptions(),
+                        keyboardType: TextInputType.datetime,
+                        textInputAction: TextInputAction.done,
                         key: field10Key,
                         focusNode: focusNode10,
                         validator: (value) {
@@ -2205,9 +2215,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     ),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                                // borderRadius: BorderRadius.circular(20),
-                                side: BorderSide.none),
+                            backgroundColor: Colors.blueGrey,
+                            textStyle: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w500),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             minimumSize: const Size(190, 40)),
                         onPressed: () {
                           var grdpct, szpct = 0;
@@ -2230,6 +2243,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                 }
                               }
                               setState(() {
+                                //  tot_price = 0;
                                 isItem = " ";
                                 int f = 0;
                                 for (int i = 0; i < listOfColumns.length; i++) {
@@ -2239,6 +2253,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                     int quty = int.parse(
                                         listOfColumns.elementAt(i)["Qty"]!);
                                     quty = quty + int.parse(qty.text);
+
                                     num p = selectedTransType == "CIF" &&
                                             selectedOrderType != "Lump-sum"
                                         ? (int.parse(base_price.text) +
@@ -2256,6 +2271,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                         quty.toString();
                                     listOfColumns.elementAt(i)["Price"] =
                                         p.toString();
+
                                     f = 1;
                                   }
                                 }
@@ -2277,15 +2293,58 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                     szpct +
                                                     0) *
                                                 int.parse(qty.text))
-                                            .toString(),
-
+                                            .toString()
                                   });
+                                  // print(selectedTransType == "CIF" &&
+                                  //         selectedOrderType != "Lump-sum"
+                                  //     ? ((int.parse(base_price.text) +
+                                  //                 grdpct +
+                                  //                 szpct +
+                                  //                 tCost) *
+                                  //             int.parse(qty.text))
+                                  //         .toString()
+                                  //     : ((int.parse(base_price.text) +
+                                  //                 grdpct +
+                                  //                 szpct +
+                                  //                 0) *
+                                  //             int.parse(qty.text))
+                                  //         .toString());
                                   itemNum = itemNum + 1;
                                 }
                               });
+                              // print(selectedTransType == "CIF" &&
+                              //         selectedOrderType != "Lump-sum"
+                              //     ? ((int.parse(base_price.text) +
+                              //                 grdpct +
+                              //                 szpct +
+                              //                 tCost) *
+                              //             int.parse(qty.text))
+                              //         .toString()
+                              //     : ((int.parse(base_price.text) +
+                              //                 grdpct +
+                              //                 szpct +
+                              //                 0) *
+                              //             int.parse(qty.text))
+                              //         .toString());
+                              // tot_price = tot_price +
+                              //     num.parse(selectedTransType == "CIF" &&
+                              //             selectedOrderType != "Lump-sum"
+                              //         ? ((int.parse(base_price.text) +
+                              //                     grdpct +
+                              //                     szpct +
+                              //                     tCost) *
+                              //                 int.parse(qty.text))
+                              //             .toString()
+                              //         : ((int.parse(base_price.text) +
+                              //                     grdpct +
+                              //                     szpct +
+                              //                     0) *
+                              //                 int.parse(qty.text))
+                              //             .toString());
+
                               totalQuantity =
                                   totalQuantity + int.parse(qty.text);
-                              //print(totalQuantity);
+                              // print(tot_price);
                             } else {
                               isItem = "Please Enter All of the above fields";
                               setState(() {});
@@ -2328,6 +2387,9 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                               shrinkWrap: true,
                                               itemCount: lumpsumList.length,
                                               itemBuilder: (context, index) {
+                                                print(lumpsumList[index]
+                                                    .name
+                                                    .toString());
                                                 // print(
                                                 //     "lumpsumlistlength${lumpsumList[index].name}selectedlist${selectedGrade}");
                                                 // print(int.parse(
@@ -2336,74 +2398,78 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                 //     int.parse(qty.text));
                                                 return LayoutBuilder(builder:
                                                     (context, constraints) {
-                                                  // if (
+                                                  if (lumpsumList[index]
+                                                              .status
+                                                              .toString() ==
+                                                          "Confirmed"
 
-                                                  //     // lumpsumList[index].name ==
-                                                  //     //       "$selectedGrade" &&
-                                                  //     int.parse(
-                                                  //             lumpsumList[index]
-                                                  //                 .qty!) >=
-                                                  //         int.parse(qty.text)) {
-                                                  // print("entrance............");
-                                                  // print(
-                                                  //     "status....................${lumpsumList[index].status}");
-                                                  return Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: 10),
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          listOfColumns.add({
-                                                            "Sr_no": itemNum
-                                                                .toString(),
-                                                            "Name": lumpsumList[
-                                                                    index]
-                                                                .name!,
-                                                            "Qty": qty.text,
-                                                            "Price": selectedTransType ==
-                                                                        "CIF" &&
-                                                                    selectedOrderType !=
-                                                                        "Lump-sum"
-                                                                ? ((int.parse(lumpsumList[index].price!) +
-                                                                            tCost) *
-                                                                        int.parse(qty
-                                                                            .text))
-                                                                    .toString()
-                                                                : ((int.parse(lumpsumList[index]
-                                                                            .price!)) *
-                                                                        int.parse(
-                                                                            qty.text))
-                                                                    .toString()
-                                                          });
-                                                          lumpsumList[index]
-                                                              .qty = (int.parse(
-                                                                      lumpsumList[
-                                                                              index]
-                                                                          .qty!) -
-                                                                  int.parse(
-                                                                      qty.text))
-                                                              .toString();
+                                                      // lumpsumList[index].name ==
+                                                      //       "$selectedGrade" &&
+                                                      ) {
+                                                    print(
+                                                        "entrance............");
+                                                    print(
+                                                        "status....................${lumpsumList[index].status}");
+                                                    return Container(
+                                                        margin: EdgeInsets.only(
+                                                            top: 10),
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            listOfColumns.add({
+                                                              "Sr_no": itemNum
+                                                                  .toString(),
+                                                              "Name":
+                                                                  lumpsumList[
+                                                                          index]
+                                                                      .name!,
+                                                              "Qty": qty.text,
+                                                              "Price": selectedTransType ==
+                                                                          "CIF" &&
+                                                                      selectedOrderType !=
+                                                                          "Lump-sum"
+                                                                  ? ((int.parse(lumpsumList[index].price!) +
+                                                                              tCost) *
+                                                                          int.parse(qty
+                                                                              .text))
+                                                                      .toString()
+                                                                  : ((int.parse(lumpsumList[index]
+                                                                              .price!)) *
+                                                                          int.parse(
+                                                                              qty.text))
+                                                                      .toString()
+                                                            });
+                                                            lumpsumList[index]
+                                                                .qty = (int.parse(
+                                                                        lumpsumList[index]
+                                                                            .qty!) -
+                                                                    int.parse(qty
+                                                                        .text))
+                                                                .toString();
 
-                                                          reductionData.add({
-                                                            "id": lumpsumList[
-                                                                    index]
-                                                                .id,
-                                                            "qty": lumpsumList[
-                                                                    index]
-                                                                .qty
-                                                          });
+                                                            reductionData.add({
+                                                              "id": lumpsumList[
+                                                                      index]
+                                                                  .id,
+                                                              "qty":
+                                                                  lumpsumList[
+                                                                          index]
+                                                                      .qty
+                                                            });
 
-                                                          itemNum = itemNum + 1;
-                                                          setState(() {});
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: InventoryCard(
-                                                            context,
-                                                            lumpsumList[index]),
-                                                      ));
-                                                  // } else {
-                                                  //   return Container();
-                                                  // }
+                                                            itemNum =
+                                                                itemNum + 1;
+                                                            setState(() {});
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: InventoryCard(
+                                                              context,
+                                                              lumpsumList[
+                                                                  index]),
+                                                        ));
+                                                  } else {
+                                                    return Container();
+                                                  }
                                                 });
                                               }),
                                         ),
@@ -2539,7 +2605,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                         child: Container(
                             child: Text("Total = $totalQuantity Tons",
                                 style: TextStyle(
-                                    color: Colors.blueAccent,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w700)),
                             margin: EdgeInsets.fromLTRB(0, 10, 10, 10)),
                         alignment: Alignment.bottomRight,

@@ -6,6 +6,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:stefomobileapp/Models/payment.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/ui/custom_tabbar.dart';
 import '../Models/grade.dart';
@@ -36,6 +37,8 @@ class _AddItemPageState extends State<AddItemContent> {
   List<ItemSize> sizeList = [];
 
   List regions = [];
+  List payment = [];
+  List<Payment> paymentList = [];
   List<Region> regionList = [];
 
   var isEnabled = false;
@@ -51,6 +54,10 @@ class _AddItemPageState extends State<AddItemContent> {
   TextEditingController newRegionPrice = TextEditingController();
   TextEditingController RegionPrice = TextEditingController();
   TextEditingController newRegion = TextEditingController();
+
+  TextEditingController newPaymentname = TextEditingController();
+  TextEditingController newPaymentPrice = TextEditingController();
+  TextEditingController editpaymentPrice = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   // TextEditingController newSizePrice = TextEditingController();
@@ -91,6 +98,17 @@ class _AddItemPageState extends State<AddItemContent> {
       r.name = responseData3['data'][i]["regionName"];
       r.cost = responseData3['data'][i]["tCost"];
       regionList.add(r);
+    }
+    var res4 = await http
+        .post(Uri.parse("http://urbanwebmobile.in/steffo/getpayment.php"));
+    var responseData4 = jsonDecode(res4.body);
+    for (int i = 0; i < responseData4['data'].length; i++) {
+      print(responseData4['data'][i]);
+      //payment.add(responseData4['data'][i]["regionName"]);
+      Payment p = Payment();
+      p.paymentName = responseData4['data'][i]["paymentName"];
+      p.paymentCost = responseData4['data'][i]["paymentPrice"];
+      paymentList.add(p);
     }
 
     var res = await http.post(
@@ -144,7 +162,7 @@ class _AddItemPageState extends State<AddItemContent> {
               "GRADE",
               "SIZE",
               "REGION",
-              "Payment",
+              "PAYMENT",
             ],
             tabViewItems: [
               SingleChildScrollView(
@@ -1109,12 +1127,13 @@ class _AddItemPageState extends State<AddItemContent> {
               ),
 
               //--------------------Payment-----------------------------
+
               SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
                   children: [
                     ListView.builder(
-                      itemCount: gradeList.length,
+                      itemCount: paymentList.length,
                       physics: const NeverScrollableScrollPhysics(),
                       //  scrollDirection: Axis.vertical,
                       shrinkWrap: true,
@@ -1132,7 +1151,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                       Expanded(
                                         flex: 2,
                                         child: Text(
-                                            gradeList[ind].value.toString(),
+                                            "${paymentList[ind].paymentName.toString()}",
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.black)),
@@ -1140,8 +1159,10 @@ class _AddItemPageState extends State<AddItemContent> {
                                       Expanded(
                                         flex: 1,
                                         child: Text(
-                                            '\u{20B9}' +
-                                                gradeList[ind].price.toString(),
+                                            paymentList[ind]
+                                                    .paymentCost
+                                                    .toString() +
+                                                '%',
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.black)),
@@ -1187,7 +1208,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                       maxLines:
                                                                           1,
                                                                       controller:
-                                                                          newPrice,
+                                                                          editpaymentPrice,
                                                                       keyboardType:
                                                                           TextInputType
                                                                               .number,
@@ -1214,15 +1235,20 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                             () {
                                                                           final numericRegex =
                                                                               RegExp(r'^[0-9]*$');
-                                                                          if (numericRegex.hasMatch(newPrice.text) &&
-                                                                              newPrice.text.trim() != "") {
-                                                                            gradeList[ind].price =
-                                                                                newPrice.text;
-                                                                            http.post(Uri.parse("http://urbanwebmobile.in/steffo/updategrade.php"), body: {
-                                                                              "gradeName": gradeList[ind].value,
-                                                                              "price": newPrice.text
-                                                                            });
-                                                                          }
+                                                                          // if (numericRegex.hasMatch(newPrice.text) &&
+                                                                          //     newPrice.text.trim() != "") {
+                                                                          // gradeList[ind].price =
+                                                                          //     newPrice.text;
+                                                                          http.post(
+                                                                              Uri.parse("http://urbanwebmobile.in/steffo/updatepayment.php"),
+                                                                              body: {
+                                                                                "paymentName": paymentList[ind].paymentName,
+                                                                                "paymentPrice": editpaymentPrice.text
+                                                                              });
+                                                                          // }
+                                                                          // Get.back();
+                                                                          setState(
+                                                                              () {});
                                                                           Navigator.pop(
                                                                               context);
                                                                         },
@@ -1274,15 +1300,15 @@ class _AddItemPageState extends State<AddItemContent> {
                                                         () async {
                                                           await http.post(
                                                               Uri.parse(
-                                                                  "http://urbanwebmobile.in/steffo/deletegrade.php"),
+                                                                  "http://urbanwebmobile.in/steffo/deletepayment.php"),
                                                               body: {
-                                                                "gradeName":
-                                                                    gradeList[
+                                                                "paymentName":
+                                                                    paymentList[
                                                                             ind]
-                                                                        .value
+                                                                        .paymentName
                                                                         .toString(),
                                                               });
-                                                          gradeList
+                                                          paymentList
                                                               .removeAt(ind);
                                                           setState(() {});
                                                         }();
@@ -1328,17 +1354,17 @@ class _AddItemPageState extends State<AddItemContent> {
                               key: _formKey,
                               child: AlertDialog(
                                 title: Text(
-                                  "ADD GRADE",
+                                  "ADD PAYMENT",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 //  content: Text(contentText),
                                 actions: <Widget>[
                                   TextFormField(
-                                    controller: newGrade,
+                                    controller: newPaymentname,
                                     maxLines: 1,
                                     keyboardType: TextInputType.text,
                                     decoration: InputDecoration(
-                                      labelText: "Add new Grade",
+                                      labelText: "Add Days",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       border: OutlineInputBorder(
@@ -1361,10 +1387,10 @@ class _AddItemPageState extends State<AddItemContent> {
                                   ),
                                   TextFormField(
                                     maxLines: 1,
-                                    controller: Price,
+                                    controller: newPaymentPrice,
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
-                                      labelText: "New Price",
+                                      labelText: "New Price in %",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       border: OutlineInputBorder(
@@ -1398,10 +1424,12 @@ class _AddItemPageState extends State<AddItemContent> {
                                         if (_formKey.currentState!.validate()) {
                                           await http.post(
                                               Uri.parse(
-                                                  "http://urbanwebmobile.in/steffo/addgrade.php"),
+                                                  "http://urbanwebmobile.in/steffo/addpayment.php"),
                                               body: {
-                                                "gradeName": newGrade.text,
-                                                "gradePrice": Price.text,
+                                                "paymentName":
+                                                    newPaymentname.text,
+                                                "paymentPrice":
+                                                    newPaymentPrice.text,
                                               });
                                           //Navigator.pop(context);
                                           //  gradeList.indexed.toList();

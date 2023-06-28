@@ -361,7 +361,7 @@ class _HomePageState extends State<HomeContent> {
     // print(NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
     //     .format(1000000000));
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10,),
+      padding: EdgeInsets.only(left: 10, right: 10),
       //  height: MediaQuery.of(context).size.height,
       decoration: const BoxDecoration(),
       child: SingleChildScrollView(
@@ -724,97 +724,103 @@ class _HomePageState extends State<HomeContent> {
             height: 10,
           ),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width / 3.2,
-                child: GestureDetector(
-                    onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //             OrdersPage(order: salesOrderList)));
-                      Navigator.of(context).pushNamed('/orders');
-                    },
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          "assets/images/number-12.png",
-                          height: 60,
-                          width: 60,
-                          //  color: Colors.grey,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "Specific",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        )
-                      ],
-                    )),
-              ),
-              // SizedBox(
-              //   height: 10,
-              // ),
-              Container(
-                width: MediaQuery.of(context).size.width / 3.2,
-                child: GestureDetector(
-                    onTap: () {
-                      Get.to(lumpsumsOrdersPage());
-                    },
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          "assets/images/steel.png",
-                          height: 60,
-                          width: 60,
-                          // color: Color.fromARGB(255, 129, 18, 18),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "Lump-sum",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        )
-                      ],
-                    )),
-              ),
-              // SizedBox(
-              //   height: 10,
-              // ),
-              Container(
-                width: MediaQuery.of(context).size.width / 3.2,
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/orderreq');
-                    },
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          "assets/images/add-friend.png",
-                          height: 60,
-                          width: 60,
-                          // color: Colors.orangeAccent,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "Registrations",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        )
-                      ],
-                    )),
-              ),
-            ],
-          ),
+          LayoutBuilder(builder: (context, constraints) {
+            if (user_type != "Dealer" && user_type != "Builder") {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width / 3.2,
+                    child: GestureDetector(
+                        onTap: () {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) =>
+                          //             OrdersPage(order: salesOrderList)));
+                          Navigator.of(context).pushNamed('/orders');
+                        },
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/number-12.png",
+                              height: 60,
+                              width: 60,
+                              //  color: Colors.grey,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Specific",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            )
+                          ],
+                        )),
+                  ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 3.2,
+                    child: GestureDetector(
+                        onTap: () {
+                          Get.to(lumpsumsOrdersPage());
+                        },
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/steel.png",
+                              height: 60,
+                              width: 60,
+                              // color: Color.fromARGB(255, 129, 18, 18),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Lump-sum",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            )
+                          ],
+                        )),
+                  ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 3.2,
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/orderreq');
+                        },
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/add-friend.png",
+                              height: 60,
+                              width: 60,
+                              // color: Colors.orangeAccent,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Registrations",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            )
+                          ],
+                        )),
+                  ),
+                ],
+              );
+            } else {
+              return SizedBox();
+            }
+          }),
           SizedBox(
             height: 20,
           ),
@@ -860,7 +866,7 @@ class _HomePageState extends State<HomeContent> {
                   return SizedBox();
               }),
               LayoutBuilder(builder: (context, constraints) {
-                if (user_type != "Manufacturer") {
+                if (user_type == "Distributor") {
                   return GestureDetector(
                       onTap: () {
                         Get.to(DealerPage2());
@@ -870,9 +876,9 @@ class _HomePageState extends State<HomeContent> {
                         child: Column(
                           children: [
                             Image.asset(
-                              "assets/images/dealer.png",
-                              height: 50,
-                              width: 50,
+                              "assets/images/broker.png",
+                              height: 60,
+                              width: 60,
                               //  color: Colors.blueGrey,
                             ),
                             // Icon(
@@ -1003,11 +1009,9 @@ class _HomePageState extends State<HomeContent> {
 
         // SizedBox(
         //   height: 30,
-
         // )
       ),
     );
-
   }
 
   // Widget baserate() {
