@@ -66,6 +66,7 @@ class _ChallanPageState extends State<ChallanPage> {
       or.party_address = responseData["data"][0]["shippingAddress"];
       or.party_mob_num = responseData["data"][0]["partyMobileNumber"];
       or.loading_type = responseData["data"][0]["loadingType"];
+      or.trans_type = responseData["data"][0]["transType"];
       or.order_date = responseData["data"][0]["updatedAt"];
       challanList.add(ch);
       final resp = await http.post(

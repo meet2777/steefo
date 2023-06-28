@@ -41,6 +41,7 @@ class _OrdersPageState extends State<OrdersContent> {
     id = prefs.getString('id');
     print(widget.order.orderType);
     print(widget.order.loading_type);
+    print(widget.order.trans_type);
     print(widget.order.order_id);
 
     if (widget.order.orderType != "Lump-sum" &&
@@ -166,15 +167,18 @@ class _OrdersPageState extends State<OrdersContent> {
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
+        req.org_name = responseData["data"][i]["orgName"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
+
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
+        req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
@@ -224,6 +228,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
+        req.org_name = responseData["data"][i]["orgName"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
@@ -233,12 +238,14 @@ class _OrdersPageState extends State<OrdersContent> {
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
+        req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.order_id = responseData["data"][i]["order_id"].toString();
         req.date = responseData["data"][i]["dateTime"];
         if (req.status?.trim() == "Pending" && id1 == req.reciever_id) {
           print(req.loading_type);
+          print(req.trans_type);
           requestList.add(req);
         }
       }
@@ -650,7 +657,7 @@ class _OrdersPageState extends State<OrdersContent> {
               padding: EdgeInsets.only(top: 10, left: 10),
               alignment: Alignment.topLeft,
               child: Text(
-                requestList[index].user_name!.toUpperCase(),
+                requestList[index].org_name!.toUpperCase(),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
                 style: GoogleFonts.poppins(
@@ -680,8 +687,9 @@ class _OrdersPageState extends State<OrdersContent> {
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
-                            ),
-                            Text(requestList[index].base_price!),
+                            ),SizedBox(width: 7,),
+                            Text(requestList[index].base_price!,
+                            style: TextStyle(color: Colors.grey),),
                           ],
                         ),
                       ),
@@ -693,8 +701,11 @@ class _OrdersPageState extends State<OrdersContent> {
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
-                            ),
-                            Text(requestList[index].totalPrice.toString()),
+                            ),SizedBox(width: 7,),
+                            Text(requestList[index].totalPrice.toString(),
+                            style: TextStyle(
+                              color: Colors.grey
+                            ),),
                           ],
                         ),
                       ),
@@ -708,8 +719,12 @@ class _OrdersPageState extends State<OrdersContent> {
                           "Quantity:",
                           style: TextStyle(
                               fontFamily: "Poppins_Bold", color: Colors.grey),
+                        ),SizedBox(width: 7,),
+                        Text(requestList[index].totalQuantity.toString(),
+                          style: TextStyle(
+                            color: Colors.grey
+                          ),
                         ),
-                        Text(requestList[index].totalQuantity.toString()),
                       ],
                     ),
                   ),
@@ -1152,7 +1167,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                       alignment: Alignment.topLeft,
                       padding: EdgeInsets.only(top: 10, left: 10),
                       child: Text(
-                        order.user_name!.toUpperCase(),
+                        order.org_name!.toUpperCase(),
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 18,
@@ -1595,7 +1610,7 @@ Widget completedorderCard(
                       alignment: Alignment.topLeft,
                       padding: EdgeInsets.only(top: 10, left: 10),
                       child: Text(
-                        order.user_name!.toUpperCase(),
+                        order.org_name!.toUpperCase(),
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 18,

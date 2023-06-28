@@ -104,6 +104,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
+        req.org_name = responseData["data"][i]["orgName"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
@@ -335,7 +336,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      // padding: EdgeInsets.symmetric(horizontal: 10),
                       child: SingleChildScrollView(
                         physics: BouncingScrollPhysics(),
                         child: Container(

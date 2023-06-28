@@ -90,6 +90,7 @@ class _HomePageState extends State<HomeContent> {
         Order req = Order();
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
+        req.org_name = responseData["data"][i]["orgName"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
@@ -100,6 +101,7 @@ class _HomePageState extends State<HomeContent> {
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
+        req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
@@ -333,6 +335,7 @@ class _HomePageState extends State<HomeContent> {
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.org_name = responseData["data"][i]["orgName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];

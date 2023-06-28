@@ -143,11 +143,13 @@ class _RequestPageState extends State<RequestContent> {
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
+        req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.order_id = responseData["data"][i]["order_id"].toString();
         if (req.status?.trim() == "Pending" && id == req.reciever_id) {
           print(req.loading_type);
+          print(req.trans_type);
           requestList.add(req);
         }
       }
