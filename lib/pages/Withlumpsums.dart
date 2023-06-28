@@ -201,8 +201,7 @@ class _OrdersPageState extends State<OrdersContent> {
                         context,
                         salesOrderList[index],
                         id,
-                      )
-                  );
+                      ));
                 } else
                   return Container();
               },

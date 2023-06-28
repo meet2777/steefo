@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/UI/common.dart';
+import 'package:stefomobileapp/pages/dealerallorderspage.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import 'package:http/http.dart' as http;
 import '../Models/order.dart';
@@ -60,6 +61,10 @@ class DealerDetailState extends State<DealerDetailContent> {
       var responseData = jsonDecode(res.body);
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+        req.date = responseData["data"][i]["dateTime"];
+        req.deliveryDate = responseData["data"][i]["deliveryDate"];
+        req.totalPrice = responseData["data"][i]["totalPrice"];
+        req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
@@ -76,9 +81,10 @@ class DealerDetailState extends State<DealerDetailContent> {
         req.order_id = responseData["data"][i]["order_id"].toString();
 
         //print(req);
-        if (req.status != "Denied" && req.status != "Pending") {
-          orderList.add(req);
-        }
+        // if (req.status != "Denied" && req.status != "Pending") {
+        orderList.add(req);
+
+        /// }
       }
       f = 1;
       setState(() {});
@@ -107,7 +113,7 @@ class DealerDetailState extends State<DealerDetailContent> {
                               textStyle: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
-                                  color: Colors.blue)),
+                                  color: Color.fromARGB(255, 129, 18, 18))),
                         )),
                     Container(
                         width: MediaQuery.of(context).size.width,
@@ -218,10 +224,10 @@ class DealerDetailState extends State<DealerDetailContent> {
               alignment: Alignment.topRight,
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                 decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20)),
+                    color: Colors.lightBlueAccent,
+                    borderRadius: BorderRadius.circular(5)),
                 child: Text(
                   widget.user.userType!,
                   style: TextStyle(color: Colors.white),
@@ -230,24 +236,24 @@ class DealerDetailState extends State<DealerDetailContent> {
             )
           ],
         ),
-        Divider(
-          color: Colors.blueGrey,
-        ),
-        Container(
-            alignment: Alignment.center,
-            child: Text("Orders",
-              style: TextStyle(
-                  color: Color.fromRGBO(19, 59, 78, 1.0),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-              ),
-
-            ),
-          padding: EdgeInsets.only(bottom: 5),
-        ),
+        // Divider(
+        //   color: Colors.blueGrey,
+        // ),
+        // Container(
+        //   // color: Colors.amber,
+        //   alignment: Alignment.center,
+        //   child: Text(
+        //     "ORDERS",
+        //     style: TextStyle(
+        //         color: Color.fromRGBO(19, 59, 78, 1.0),
+        //         fontSize: 22,
+        //         fontWeight: FontWeight.bold),
+        //   ),
+        //   //  padding: EdgeInsets.only(bottom: 5),
+        // ),
 
         Expanded(
-          flex: 1,
+          //  flex: 1,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Container(
@@ -266,41 +272,67 @@ class DealerDetailState extends State<DealerDetailContent> {
                   //   ),
                   // ),
                   SizedBox(
-                    height: 15,
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  dealerallorderpage(user: widget.user)));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 60,
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        "VIEW ORDERS",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(19, 59, 78, 1.0),
+                      ),
+                    ),
                   ),
                   // Divider(
                   //   color: Colors.blueGrey,
                   // ),
                   // Container(
-                  //   alignment: Alignment.center,
-                  //     child: Text("Orders",
+                  //     alignment: Alignment.center,
+                  //     child: Text(
+                  //       "Orders",
                   //       style: TextStyle(
                   //           color: Color.fromRGBO(19, 59, 78, 1.0),
-                  //         fontSize: 20,
-                  //         fontWeight: FontWeight.bold
-                  //       ),)),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  ListView.builder(
-                    itemCount: orderList.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      print(orderList.length);
-                      return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        OrderDetails(order: orderList[index])));
-                          },
-                          child: orderCard(
-                              context, orderList[index], widget.user.id));
-                    },
-                  ),
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.bold),
+                  //     )),
+                  // SizedBox(
+                  //   height: 15,
+                  // ),
+                  // ListView.builder(
+                  //   itemCount: orderList.length,
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   scrollDirection: Axis.vertical,
+                  //   shrinkWrap: true,
+                  //   itemBuilder: (context, index) {
+                  //     print(orderList.length);
+                  //     return InkWell(
+                  //         onTap: () {
+                  //           Navigator.push(
+                  //               context,
+                  //               MaterialPageRoute(
+                  //                   builder: (context) =>
+                  //                       OrderDetails(order: orderList[index])));
+                  //         },
+                  //         child: orderCard(
+                  //             context, orderList[index], widget.user.id));
+                  //   },
+                  // ),
                 ],
               ),
             ),
