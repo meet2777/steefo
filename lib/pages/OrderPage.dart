@@ -248,7 +248,8 @@ class _OrderPageState extends State<OrderPage> {
                                   const Text("Base Price:",
                                       style: TextStyle(
                                           fontSize: 15,
-                                          fontFamily: "Poppins_Bold")),
+                                          fontFamily: "Poppins_Bold")
+                                  ),
                                   Text(widget.order!.base_price!,
                                       style: const TextStyle(
                                           fontSize: 15, fontFamily: "Poppins"))

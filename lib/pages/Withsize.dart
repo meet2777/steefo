@@ -223,9 +223,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
-        req.user_name = responseData["data"][i]["firstName"] +
-            " " +
-            responseData["data"][i]["lastName"];
+        req.user_name = responseData["data"][i]["firstName"] + " " + responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
@@ -679,7 +677,11 @@ class _OrdersPageState extends State<OrdersContent> {
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
                             ),
-                            Text(requestList[index].base_price!),
+                            SizedBox(width: 5,),
+                            Text(requestList[index].base_price!,
+                            style: TextStyle(
+                              color: Colors.grey
+                            ),),
                           ],
                         ),
                       ),
@@ -692,7 +694,9 @@ class _OrdersPageState extends State<OrdersContent> {
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
                             ),
-                            Text(requestList[index].totalPrice.toString()),
+                            SizedBox(width: 5,),
+                            Text(requestList[index].totalPrice.toString(),
+                                style: TextStyle(color: Colors.grey)),
                           ],
                         ),
                       ),
@@ -707,7 +711,9 @@ class _OrdersPageState extends State<OrdersContent> {
                           style: TextStyle(
                               fontFamily: "Poppins_Bold", color: Colors.grey),
                         ),
-                        Text(requestList[index].totalQuantity.toString()),
+                        SizedBox(width: 5,),
+                        Text(requestList[index].totalQuantity.toString(),
+                        style: TextStyle(color: Colors.grey),),
                       ],
                     ),
                   ),
@@ -1636,7 +1642,7 @@ Widget completedorderCard(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
                               decoration: BoxDecoration(
-                                  color: Colors.red,
+                                  color: Colors.orangeAccent,
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10))),
