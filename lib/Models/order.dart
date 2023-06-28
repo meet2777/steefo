@@ -3,6 +3,7 @@ import 'item.dart';
 class Order {
   String? order_id,
       user_id,
+      org_name,
       user_name,
       user_mob_num,
       billing_address,
@@ -16,6 +17,7 @@ class Order {
       loading_type,
       order_date,
       orderType,
+      trans_type,
       date,
       totalPrice,
       deliveryDate,

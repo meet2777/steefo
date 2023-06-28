@@ -91,6 +91,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
+        req.org_name = responseData["data"][i]["orgName"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
@@ -100,6 +101,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
+        req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
@@ -149,6 +151,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
+        req.org_name = responseData["data"][i]["orgName"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
@@ -158,12 +161,14 @@ class _OrdersPageState extends State<OrdersContent> {
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
+        req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.order_id = responseData["data"][i]["order_id"].toString();
         req.date = responseData["data"][i]["dateTime"];
         if (req.status?.trim() == "Pending" && id1 == req.reciever_id) {
           print(req.loading_type);
+          print(req.trans_type);
           requestList.add(req);
         }
       }
@@ -368,7 +373,7 @@ class _OrdersPageState extends State<OrdersContent> {
               padding: EdgeInsets.only(top: 10, left: 10),
               alignment: Alignment.topLeft,
               child: Text(
-                requestList[index].user_name!.toUpperCase(),
+                requestList[index].org_name!.toUpperCase(),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
                 style: GoogleFonts.poppins(

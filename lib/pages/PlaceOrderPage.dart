@@ -1518,7 +1518,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   }
 
   List type = ["Loose", "Bhari"];
-  List transType = ["CIF", "FOB"];
+  List transType = ["Ex-Plant", "FOR"];
   List orderType = ["Lump-sum", "With Size", "Use Lumpsum"];
 
   int itemNum = 1;

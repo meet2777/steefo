@@ -39,6 +39,7 @@ class _OrderPageState extends State<OrderPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id');
     print(widget.order!.orderType);
+    print(widget.order!.trans_type);
     print(widget.order!.loading_type);
     if (flag == 0) {
       if (widget.order!.orderType != "Lump-sum") {
@@ -144,7 +145,7 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                             color: Color.fromRGBO(19, 59, 78, 1.0),
                           ),
-                          child: Text(widget.order!.user_name!.toUpperCase(),
+                          child: Text(widget.order!.org_name!.toUpperCase(),
                               style: const TextStyle(
                                   fontSize: 20,
                                   fontFamily: "Poppins_bold",
@@ -360,6 +361,26 @@ class _OrderPageState extends State<OrderPage> {
                                         fontSize: 15,
                                         fontFamily: "Poppins_Bold")),
                                 Text(widget.order!.status!,
+                                    style: const TextStyle(
+                                        fontSize: 15, fontFamily: "Poppins"))
+                              ],
+                            )),
+                        Container(
+                            // margin: EdgeInsets.only(top: 10),
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                              // borderRadius: BorderRadius.circular(20),
+                              color: Colors.white,
+                            ),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Transportation Type: ",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "Poppins_Bold")),
+                                Text(widget.order!.trans_type.toString(),
                                     style: const TextStyle(
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],

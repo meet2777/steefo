@@ -704,7 +704,7 @@ Widget BuilderCard(User user, BuildContext context) {
 Widget DealerCard(User user, BuildContext context) {
   if (user.userType == "Dealer") {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: EdgeInsets.all(10),
       padding: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
@@ -826,15 +826,15 @@ Widget DealerCard(User user, BuildContext context) {
               // ),
             ],
           ),
-          Expanded(
-            child: Container(
-                margin: EdgeInsets.only(right: 10),
-                // decoration: BoxDecoration(
-                //     //color: Colors.green,
-                //     borderRadius: BorderRadius.circular(20)),
-                // width: 70,
-                child: Image.asset("assets/images/dealer.png")),
-          )
+          // Expanded(
+          //   child: Container(
+          //       margin: EdgeInsets.only(right: 10),
+          //       // decoration: BoxDecoration(
+          //       //     //color: Colors.green,
+          //       //     borderRadius: BorderRadius.circular(20)),
+          //       // width: 70,
+          //       child: Image.asset("assets/images/dealer.png")),
+          // )
         ],
       ),
     );
