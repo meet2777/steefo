@@ -394,7 +394,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                     maxLines: 1,
                                     keyboardType: TextInputType.text,
                                     decoration: InputDecoration(
-                                      labelText: "Add new Grade",
+                                      labelText: "Add Grade",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       border: OutlineInputBorder(
@@ -420,7 +420,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                     controller: Price,
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
-                                      labelText: "New Price",
+                                      labelText: "Add Price",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       border: OutlineInputBorder(
@@ -723,7 +723,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                     maxLines: 1,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
-                                      labelText: "Add new size",
+                                      labelText: "Add size",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       border: OutlineInputBorder(
@@ -749,7 +749,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                     controller: newSizeprice,
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
-                                      labelText: "New Price",
+                                      labelText: "Add Price",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       border: OutlineInputBorder(
@@ -1029,7 +1029,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                     maxLines: 1,
                                     keyboardType: TextInputType.text,
                                     decoration: InputDecoration(
-                                      labelText: "Add new region",
+                                      labelText: "Add region",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       border: OutlineInputBorder(
@@ -1055,7 +1055,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                     controller: RegionPrice,
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
-                                      labelText: "New Price",
+                                      labelText: "Add Price",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       border: OutlineInputBorder(
@@ -1151,7 +1151,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                       Expanded(
                                         flex: 2,
                                         child: Text(
-                                            "${paymentList[ind].paymentName.toString()}",
+                                            "${paymentList[ind].paymentName.toString() + "Days"}",
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.black)),
@@ -1160,9 +1160,8 @@ class _AddItemPageState extends State<AddItemContent> {
                                         flex: 1,
                                         child: Text(
                                             paymentList[ind]
-                                                    .paymentCost
-                                                    .toString() +
-                                                '%',
+                                                .paymentCost
+                                                .toString(),
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.black)),
@@ -1233,8 +1232,8 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                     TextButton(
                                                                         onPressed:
                                                                             () {
-                                                                          final numericRegex =
-                                                                              RegExp(r'^[0-9]*$');
+                                                                          // final numericRegex =
+                                                                          //     RegExp(r'^[0-9]*$');
                                                                           // if (numericRegex.hasMatch(newPrice.text) &&
                                                                           //     newPrice.text.trim() != "") {
                                                                           // gradeList[ind].price =
@@ -1390,7 +1389,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                     controller: newPaymentPrice,
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
-                                      labelText: "New Price in %",
+                                      labelText: "Add Price",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                       border: OutlineInputBorder(

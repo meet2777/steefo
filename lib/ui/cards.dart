@@ -237,13 +237,13 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 5),
                             decoration: BoxDecoration(
-                                color: Colors.orangeAccent,
+                                color: Colors.yellow,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(10),
                                     bottomLeft: Radius.circular(10))),
                             child: Text(
                               order.status!,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                             ));
                       } else if (order.status == "Pending") {
                         return Container(
@@ -263,7 +263,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 5),
                             decoration: BoxDecoration(
-                                color: Colors.blueAccent,
+                                color: Colors.lightBlueAccent,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(10),
                                     bottomLeft: Radius.circular(10))),
@@ -503,8 +503,9 @@ Widget DistributorCard(User user, BuildContext context) {
               Container(
                 //  height: 50,
                 alignment: Alignment.center,
-                padding: EdgeInsets.only(left: 10, right: 10, top: 10,bottom: 10),
-                 width: MediaQuery.of(context).size.width/1.06,
+                padding:
+                    EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                width: MediaQuery.of(context).size.width / 1.06,
                 // color: Colors.red,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(19, 59, 78, 1.0),
@@ -512,63 +513,60 @@ Widget DistributorCard(User user, BuildContext context) {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10))),
                 child: Text(
-                  user.orgName!,
+                  user.orgName!.toUpperCase(),
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Goggle'
-                  ),
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Goggle'),
                   // overflow: TextOverflow.visible,
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
 
               Row(
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 10,top: 10)),
+                  Padding(padding: EdgeInsets.only(left: 10, top: 10)),
                   Container(
-                    child: Text("Mobile No: ",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15
-                    ),),
+                    child: Text(
+                      "Mobile No: ",
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    ),
                   ),
                   Container(
                       padding: EdgeInsets.only(left: 5),
                       child: Text(
                         user.mobileNumber!,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15
-                        ),
-                      )
-                  ),
+                        style: TextStyle(color: Colors.grey, fontSize: 15),
+                      )),
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 10,top: 10)),
+                  Padding(padding: EdgeInsets.only(left: 10, top: 10)),
                   Container(
-                    child: Text("Email: ",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15
-                    ),),
+                    child: Text(
+                      "Email: ",
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    ),
                   ),
                   Container(
                       padding: EdgeInsets.only(left: 5),
                       child: Text(
                         user.email!,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15
-                        ),
-                      )
-                  ),
+                        style: TextStyle(color: Colors.grey, fontSize: 15),
+                      )),
                 ],
               ),
               // Expanded(
@@ -622,12 +620,12 @@ Widget BuilderCard(User user, BuildContext context) {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Container(
                 //  height: 50,
                 alignment: Alignment.center,
-                padding: EdgeInsets.only(left: 10, right: 10, top: 10,bottom: 10),
-                width: MediaQuery.of(context).size.width/1.06,
+                padding:
+                    EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                width: MediaQuery.of(context).size.width / 1.06,
                 // color: Colors.red,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(19, 59, 78, 1.0),
@@ -635,63 +633,59 @@ Widget BuilderCard(User user, BuildContext context) {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10))),
                 child: Text(
-                  user.orgName!,
+                  user.orgName!.toUpperCase(),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Goggle'
-                  ),
+                      fontFamily: 'Goggle'),
                   // overflow: TextOverflow.visible,
                 ),
               ),
-              SizedBox(height: 10,),
-
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 10,top: 10)),
+                  Padding(padding: EdgeInsets.only(left: 10, top: 10)),
                   Container(
-                    child: Text("Mobile No: ",
+                    child: Text(
+                      "Mobile No: ",
                       style: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15
-                      ),),
+                          fontSize: 15),
+                    ),
                   ),
                   Container(
                       padding: EdgeInsets.only(left: 5),
                       child: Text(
                         user.mobileNumber!,
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 15
-                        ),
-                      )
-                  ),
+                        style: TextStyle(color: Colors.grey, fontSize: 15),
+                      )),
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 10,top: 10)),
+                  Padding(padding: EdgeInsets.only(left: 10, top: 10)),
                   Container(
-                    child: Text("Email: ",
+                    child: Text(
+                      "Email: ",
                       style: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15
-                      ),),
+                          fontSize: 15),
+                    ),
                   ),
                   Container(
                       padding: EdgeInsets.only(left: 5),
                       child: Text(
                         user.email!,
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 15
-                        ),
-                      )
-                  ),
+                        style: TextStyle(color: Colors.grey, fontSize: 15),
+                      )),
                 ],
               ),
             ],
@@ -728,8 +722,9 @@ Widget DealerCard(User user, BuildContext context) {
               Container(
                 //  height: 50,
                 alignment: Alignment.center,
-                padding: EdgeInsets.only(left: 10, right: 10, top: 10,bottom: 10),
-                width: MediaQuery.of(context).size.width/1.06,
+                padding:
+                    EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                width: MediaQuery.of(context).size.width / 1.06,
                 // color: Colors.red,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(19, 59, 78, 1.0),
@@ -737,63 +732,60 @@ Widget DealerCard(User user, BuildContext context) {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10))),
                 child: Text(
-                  user.orgName!,
+                  user.orgName!.toUpperCase(),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Goggle'
-                  ),
+                      fontFamily: 'Goggle'),
                   // overflow: TextOverflow.visible,
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
 
               Row(
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 10,top: 10)),
+                  Padding(padding: EdgeInsets.only(left: 10, top: 10)),
                   Container(
-                    child: Text("Mobile No: ",
+                    child: Text(
+                      "Mobile No: ",
                       style: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15
-                      ),),
+                          fontSize: 15),
+                    ),
                   ),
                   Container(
                       padding: EdgeInsets.only(left: 5),
                       child: Text(
                         user.mobileNumber!,
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 15
-                        ),
-                      )
-                  ),
+                        style: TextStyle(color: Colors.grey, fontSize: 15),
+                      )),
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 10,top: 10)),
+                  Padding(padding: EdgeInsets.only(left: 10, top: 10)),
                   Container(
-                    child: Text("Email: ",
+                    child: Text(
+                      "Email: ",
                       style: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15
-                      ),),
+                          fontSize: 15),
+                    ),
                   ),
                   Container(
                       padding: EdgeInsets.only(left: 5),
                       child: Text(
                         user.email!,
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 15
-                        ),
-                      )
-                  ),
+                        style: TextStyle(color: Colors.grey, fontSize: 15),
+                      )),
                 ],
               ),
 

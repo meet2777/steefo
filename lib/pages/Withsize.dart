@@ -1175,34 +1175,10 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10))),
                               child: Text(
-                                order!.status!,
-                              ));
-                        } else if (order.status == "Denied") {
-                          return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.redAccent,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10))),
-                              child: Text(
                                 order.status!,
-                                style: TextStyle(color: Colors.white),
                               ));
                         } else {
-                          return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.yellow,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10))),
-                              child: Text(
-                                order.status!,
-                                style: TextStyle(color: Colors.white),
-                              ));
+                          return Container();
                         }
                       })),
 
@@ -1607,18 +1583,19 @@ Widget completedorderCard(
                   Container(
                       padding: EdgeInsets.only(top: 10),
                       child: LayoutBuilder(builder: (context, constraints) {
-                        if (order.status == "Confirmed") {
+                        if (order.status == "Completed") {
                           return Container(
                               // width: 40,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
                               decoration: BoxDecoration(
-                                  color: Colors.greenAccent,
+                                  color: Colors.lightBlueAccent,
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10))),
                               child: Text(
-                                order!.status!,
+                                order.status!,
+                                style: TextStyle(color: Colors.white),
                               ));
                         } else if (order.status == "Denied") {
                           return Container(
@@ -1638,27 +1615,16 @@ Widget completedorderCard(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
                               decoration: BoxDecoration(
-                                  color: Colors.orangeAccent,
+                                  color: Colors.yellow,
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10))),
                               child: Text(
                                 order.status!,
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.black),
                               ));
                         } else {
-                          return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.blueAccent,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10))),
-                              child: Text(
-                                order.status!,
-                                style: TextStyle(color: Colors.white),
-                              ));
+                          return Container();
                         }
                       })),
 
