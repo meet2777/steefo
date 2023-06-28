@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/Models/user.dart';
 import 'package:stefomobileapp/UI/common.dart';
 import 'package:stefomobileapp/pages/DealerDetailPage.dart';
+import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/OrderPage.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import 'package:http/http.dart' as http;
@@ -77,55 +79,283 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appbar("Dealer's Orders", () {
-        Navigator.pop(context);
-      }),
-      body: CustomTabBar(
-        
-          selectedCardColor: Colors.blueGrey,
-          selectedTitleColor: Colors.white,
-          unSelectedTitleColor: Colors.black,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          unSelectedCardColor: Colors.white,
-          titleStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-          // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          tabBarItemExtend: ((MediaQuery.of(context).size.width) / 4),
-          // tabBarItems: ["Orders", "Requests"],
-          tabBarItems: [
-            "REQUESTS",
-            "DENIED",
-            "CANCELED",
-            "CONFIRMED",
-            "COMPLETED",
+      appBar: AppBar(
+        toolbarHeight: 80,
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Text(
+          "Dealer's order",
+          style: const TextStyle(
+              color: Color.fromRGBO(19, 59, 78, 1), fontFamily: "Poppins_Bold"),
+        ),
+        leading: IconButton(
+            onPressed: () {
+              navigator!.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Colors.black,
+            )),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: GestureDetector(
+              onTap: () {
+                Get.to(HomePage());
+              },
+              child: SvgPicture.asset(
+                "assets/images/logo.svg",
+                // fit: BoxFit.fill,
+                // color: Colors.green,
+                height: 30,
+                width: 30,
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: DefaultTabController(
+        length: 5,
+        child: Column(
+          children: [
+            Material(
+              color: Colors.white,
+              child: TabBar(
+                indicatorColor: Colors.blueGrey,
+                indicator: BoxDecoration(
+                    color: Colors.blueGrey,
+                    borderRadius: BorderRadius.circular(10)),
+                labelColor: Colors.black,
+                isScrollable: true,
+                tabs: [
+                  Tab(
+                    child: Text(
+                      "REQUESTS",
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      "DENIED",
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      "CANCELED",
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      "CONFIRMED",
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      "COMPLETED",
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: TabBarView(physics: BouncingScrollPhysics(), children: [
+                requests(context),
+                denied(context),
+                canceled(context),
+                confirmed(context),
+                completed(context),
+              ]),
+            )
           ],
-          // tabViewItems: [OrdersPageBody(), OrderList1()]
-          tabViewItems: []),
-      //     Container(
-      //   padding: EdgeInsets.only(left: 10, right: 10),
-      //   // height: 100,
-      //   // color: Colors.amber,
-      //   child: ListView.builder(
-      //     itemCount: orderList.length,
-      //     physics: BouncingScrollPhysics(),
-      //     scrollDirection: Axis.vertical,
-      //     shrinkWrap: true,
-      //     itemBuilder: (context, index) {
-      //       print(orderList.length);
-      //       return InkWell(
-      //           onTap: () {
-      //             Navigator.push(
-      //                 context,
-      //                 MaterialPageRoute(
-      //                     builder: (context) =>
-      //                         OrderDetails(order: orderList[index])));
-      //           },
-      //           child: orderList[index].status == "Confirmed"
-      //               ? orderCard(context, orderList[index], widget.user.id)
-      //               : Container());
-      //     },
-      //   ),
-      // ),
+        ),
+      ),
+
+      // selectedCardColor: Colors.blueGrey,
+      // selectedTitleColor: Colors.white,
+      // unSelectedTitleColor: Colors.black,
+      // shape:
+      //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      // unSelectedCardColor: Colors.white,
+      // titleStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+      // // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      // tabBarItemExtend: ((MediaQuery.of(context).size.width) / 4),
+      // // tabBarItems: ["Orders", "Requests"],
+      // tabBarItems: [
+      //   "REQUESTS",
+      //   "DENIED",
+      //   "CANCELED",
+      //   "CONFIRMED",
+      //   "COMPLETED",
+      // ],
+      // // tabViewItems: [OrdersPageBody(), OrderList1()]
+      // tabViewItems: []
+    );
+  }
+
+  Widget requests(BuildContext context) {
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Container(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        // height: 100,
+        // color: Colors.amber,
+        child: ListView.builder(
+          itemCount: orderList.length,
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            print(orderList.length);
+            return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              OrderDetails(order: orderList[index])));
+                },
+                child: orderList[index].status == "Pending"
+                    ? orderCard(context, orderList[index], widget.user.id)
+                    : Container());
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget denied(BuildContext context) {
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Container(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        // height: 100,
+        // color: Colors.amber,
+        child: ListView.builder(
+          itemCount: orderList.length,
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            print(orderList.length);
+            return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              OrderDetails(order: orderList[index])));
+                },
+                child: orderList[index].status == "Denied"
+                    ? orderCard(context, orderList[index], widget.user.id)
+                    : Container());
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget canceled(BuildContext context) {
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Container(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        // height: 100,
+        // color: Colors.amber,
+        child: ListView.builder(
+          itemCount: orderList.length,
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            print(orderList.length);
+            return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              OrderDetails(order: orderList[index])));
+                },
+                child: orderList[index].status == "Canceled"
+                    ? orderCard(context, orderList[index], widget.user.id)
+                    : Container());
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget confirmed(BuildContext context) {
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Container(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        // height: 100,
+        // color: Colors.amber,
+        child: ListView.builder(
+          itemCount: orderList.length,
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            print(orderList.length);
+            return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              OrderDetails(order: orderList[index])));
+                },
+                child: orderList[index].status == "Confirmed"
+                    ? orderCard(context, orderList[index], widget.user.id)
+                    : Container());
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget completed(BuildContext context) {
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Container(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        // height: 100,
+        // color: Colors.amber,
+        child: ListView.builder(
+          itemCount: orderList.length,
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            print(orderList.length);
+            return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              OrderDetails(order: orderList[index])));
+                },
+                child: orderList[index].status == "Completed"
+                    ? orderCard(context, orderList[index], widget.user.id)
+                    : Container());
+          },
+        ),
+      ),
     );
   }
 }
