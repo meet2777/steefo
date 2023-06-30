@@ -1587,7 +1587,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "dateTime": DateTime.now().toString(),
             },
     );
-    Fluttertoast.showToast(
+    Fluttertoast.showToast( 
         msg: 'Your Order Is Placed',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
