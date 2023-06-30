@@ -4,6 +4,7 @@ class Order {
   String? order_id,
       user_id,
       org_name,
+      pincode,
       user_name,
       user_mob_num,
       billing_address,

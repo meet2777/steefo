@@ -1287,6 +1287,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   late FocusNode focusNode8;
   late FocusNode focusNode9;
   late FocusNode focusNode10;
+  late FocusNode focusNode11;
   final field1Key = GlobalKey<FormFieldState>();
   final field2Key = GlobalKey<FormFieldState>();
   final field3Key = GlobalKey<FormFieldState>();
@@ -1297,6 +1298,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   final field7Key = GlobalKey<FormFieldState>();
   final field9Key = GlobalKey<FormFieldState>();
   final field10Key = GlobalKey<FormFieldState>();
+  final field11Key = GlobalKey<FormFieldState>();
 
   var user_type;
   void loadusertype() async {
@@ -1347,6 +1349,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   TextEditingController qty = TextEditingController();
   TextEditingController party_name = TextEditingController();
   TextEditingController party_address = TextEditingController();
+  TextEditingController pincode = TextEditingController();
   TextEditingController party_pan_no = TextEditingController();
   TextEditingController party_mob_num = TextEditingController();
   TextEditingController loading_type = TextEditingController();
@@ -1401,6 +1404,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
     focusNode8 = FocusNode();
     focusNode9 = FocusNode();
     focusNode10 = FocusNode();
+    focusNode11 = FocusNode();
     focusNode1.addListener(() {
       if (!focusNode1.hasFocus) {
         field1Key.currentState?.validate();
@@ -1451,6 +1455,11 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         field10Key.currentState?.validate();
       }
     });
+    focusNode11.addListener(() {
+      if (!focusNode11.hasFocus) {
+        field11Key.currentState?.validate();
+      }
+    });
   }
 
   @override
@@ -1464,6 +1473,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
     focusNode7.dispose();
     focusNode8.dispose();
     focusNode9.dispose();
+    focusNode10.dispose();
+    focusNode11.dispose();
     super.dispose();
   }
 
@@ -1543,6 +1554,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "userId": id!,
               "supplierId": supplier_id!,
               "shippingAddress": party_address.text,
+              "pincode": pincode.text,
               "partyName": party_name.text,
               "gstNumber": party_pan_no.text,
               "mobileNumber": party_mob_num.text,
@@ -1560,6 +1572,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "userId": id!,
               "supplierId": supplier_id!,
               "shippingAddress": party_address.text,
+              "pincode": pincode.text,
               "partyName": party_name.text,
               "gstNumber": party_pan_no.text,
               "mobileNumber": party_mob_num.text,
@@ -1776,6 +1789,39 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                   textInputAction: TextInputAction.newline,
                   decoration: const InputDecoration(
                       hintText: "Shipping Address",
+                      hintStyle: TextStyle(fontSize: 20),
+                      //  floatingLabelBehavior: FloatingLabelBehavior.never,
+                      alignLabelWithHint: true,
+                      border: OutlineInputBorder(
+                          // borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide.none),
+                      filled: true,
+                      fillColor: Color.fromRGBO(233, 236, 239,
+                          0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
+
+                      ),
+                ),
+              ),
+
+              //----------------------------Pincode--------------------
+
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  key: field11Key,
+                  focusNode: focusNode11,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter a Pincode.';
+                    }
+                    return null;
+                  },
+                  controller: pincode,
+                  // maxLines: 4,
+                  textInputAction: TextInputAction.newline,
+                  decoration: const InputDecoration(
+                      hintText: "Pincode",
                       hintStyle: TextStyle(fontSize: 20),
                       //  floatingLabelBehavior: FloatingLabelBehavior.never,
                       alignLabelWithHint: true,
