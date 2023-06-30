@@ -298,6 +298,7 @@ class UserRequestPage extends StatelessWidget {
               physics: ScrollPhysics(),
               child: Container(
                 child: ListView.builder(
+                  reverse: true,
                   itemCount: distributors.length,
                   physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,

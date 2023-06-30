@@ -36,14 +36,18 @@ class _OrderPageState extends State<OrderPage> {
   var id;
   num tot_price = 0;
   loadData() async {
+    print(
+        "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd${widget.order!.order_id.toString()}");
+    print(
+        "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd${widget.order!.orderType.toString()}");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id');
-    print(widget.order!.orderType);
-    print(widget.order!.trans_type);
-    print(widget.order!.loading_type);
+    // print(widget.order!.orderType);
+    // print(widget.order!.trans_type);
+    // print(widget.order!.loading_type);
     if (flag == 0) {
       if (widget.order!.orderType != "Lump-sum") {
-        print(widget.order!.order_id);
+        print('insize');
         final res = await http.post(
           Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
           body: {
@@ -51,6 +55,8 @@ class _OrderPageState extends State<OrderPage> {
           },
         );
         var responseData = jsonDecode(res.body);
+        // print(
+        //     "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd${responseData}");
         //print(responseData);
         listOfColumns = [];
 
@@ -72,15 +78,17 @@ class _OrderPageState extends State<OrderPage> {
           //     .format(int.parse(tot_price.toString())),
         });
       } else {
+        print("inlumpsum");
         final res = await http.post(
           Uri.parse("http://urbanwebmobile.in/steffo/getlumpsumorder.php"),
           body: {
             "order_id": widget.order!.order_id,
           },
         );
-        print("${widget.order!.order_id}order id");
+
         var responseData = jsonDecode(res.body);
-        //print(responseData);
+
+        // print("ddddddddddd");
         listOfColumns = [];
         for (int i = 0; i < responseData["data"].length; i++) {
           listOfColumns.add({
@@ -105,7 +113,9 @@ class _OrderPageState extends State<OrderPage> {
       //   NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
       //       .format(int.parse(tot_price.toString())),
       // );
+
       print(listOfColumns);
+      //  print("${widget.order!.order_id.toString()}order id");
       flag = 1;
       setState(() {});
     }
@@ -119,7 +129,7 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     loadData();
-
+    //  print("orderpage${widget.order!.items.toString()}");
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: appbar("Order", () {
@@ -146,7 +156,8 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                             color: Color.fromRGBO(19, 59, 78, 1.0),
                           ),
-                          child: Text(widget.order!.org_name!.toUpperCase(),
+                          child: Text(
+                              widget.order!.org_name.toString().toUpperCase(),
                               style: const TextStyle(
                                   fontSize: 20,
                                   fontFamily: "Poppins_bold",
@@ -163,14 +174,13 @@ class _OrderPageState extends State<OrderPage> {
                               color: Colors.white,
                             ),
                             child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text("Party Name:",
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontFamily: "Poppins_Bold")),
-                                Text(widget.order!.party_name!,
+                                Text(widget.order!.party_name.toString(),
                                     style: const TextStyle(
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
@@ -183,8 +193,7 @@ class _OrderPageState extends State<OrderPage> {
                               color: Colors.white,
                             ),
                             child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text("Contact:",
                                     style: TextStyle(
@@ -195,7 +204,6 @@ class _OrderPageState extends State<OrderPage> {
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
                             )),
-
 
                         // Container(
                         //   padding: const EdgeInsets.all(10),
@@ -227,7 +235,6 @@ class _OrderPageState extends State<OrderPage> {
                         //     ],
                         //   ),
                         // ),
-
 
                         Container(
                           padding: const EdgeInsets.all(10),
@@ -309,8 +316,7 @@ class _OrderPageState extends State<OrderPage> {
                               color: Colors.white,
                             ),
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text("Loading Type:",
                                     style: TextStyle(
@@ -331,14 +337,12 @@ class _OrderPageState extends State<OrderPage> {
                               color: Colors.white,
                             ),
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text("Base Price:",
                                     style: TextStyle(
                                         fontSize: 15,
-                                        fontFamily: "Poppins_Bold")
-                                ),
+                                        fontFamily: "Poppins_Bold")),
                                 Text(widget.order!.base_price!,
                                     style: const TextStyle(
                                         fontSize: 15, fontFamily: "Poppins"))
@@ -354,8 +358,7 @@ class _OrderPageState extends State<OrderPage> {
                               color: Colors.white,
                             ),
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text("Delivery Date:",
                                     style: TextStyle(
@@ -377,8 +380,7 @@ class _OrderPageState extends State<OrderPage> {
                               color: Colors.white,
                             ),
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text("Status: ",
                                     style: TextStyle(
@@ -397,8 +399,7 @@ class _OrderPageState extends State<OrderPage> {
                               color: Colors.white,
                             ),
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text("Transportation Type: ",
                                     style: TextStyle(
@@ -503,7 +504,10 @@ class _OrderPageState extends State<OrderPage> {
                                       style: TextStyle(
                                           fontSize: 22,
                                           fontWeight: FontWeight.bold),
-                                      colors: [Colors.greenAccent, Colors.greenAccent],
+                                      colors: [
+                                        Colors.greenAccent,
+                                        Colors.greenAccent
+                                      ],
                                       "Accept",
                                     ))),
                             const SizedBox(
@@ -529,7 +533,10 @@ class _OrderPageState extends State<OrderPage> {
                                     style: TextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold),
-                                    colors: [Colors.redAccent, Colors.redAccent],
+                                    colors: [
+                                      Colors.redAccent,
+                                      Colors.redAccent
+                                    ],
                                   ),
                                 )),
                           ],
@@ -554,8 +561,6 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                print('taapp');
-
                                 await http.post(
                                   Uri.parse(
                                       "http://urbanwebmobile.in/steffo/approveorder.php"),

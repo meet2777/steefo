@@ -86,6 +86,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
         u.adhNumber = responseData["data"][i]["adhNumber"];
         print(u);
         child.add(u);
+        //  print("usertype${widget.user.userType}");
       }
 
       res = await http.post(
@@ -97,8 +98,10 @@ class DistributorDetailState extends State<DistributorDetailContent> {
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
-         req.date = responseData["data"][i]["dateTime"];
+        req.user_type = responseData["data"][i]["userType"];
+        req.date = responseData["data"][i]["dateTime"];
         req.deliveryDate = responseData["data"][i]["deliveryDate"];
+        req.orderType = responseData["data"][i]["orderType"];
         req.totalPrice = responseData["data"][i]["totalPrice"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
@@ -109,6 +112,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
             " " +
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
+        req.trans_type = responseData["data"][i]["transType"];
         req.party_name = responseData["data"][i]["partyName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.billing_address = responseData["data"][i]["address"];
@@ -181,10 +185,10 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                                     widget.user.orgName!,
                                     style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          color: Color.fromRGBO(19, 59, 78, 1.0),
-                                        )),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Color.fromRGBO(19, 59, 78, 1.0),
+                                    )),
                                   )),
                               Container(
                                   width: MediaQuery.of(context).size.width,
@@ -345,6 +349,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                           child: Column(
                             children: [
                               ListView.builder(
+                                reverse: true,
                                 itemCount: child.length,
                                 physics: const BouncingScrollPhysics(),
                                 scrollDirection: Axis.vertical,
@@ -376,6 +381,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                           child: Column(
                             children: [
                               ListView.builder(
+                                reverse: true,
                                 itemCount: orderList.length,
                                 physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.vertical,
@@ -386,12 +392,16 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => OrderPage(
+                                                builder: (context) =>
+                                                    OrderDetails(
                                                       order: orderList[index],
                                                     )));
                                       },
-                                      child: orderCard(context,
-                                          orderList[index], widget.user.id));
+                                      child: orderList[index].user_type ==
+                                              "Distributor"
+                                          ? orderCard(context, orderList[index],
+                                              widget.user.id)
+                                          : Container());
                                 },
                               ),
                             ],
@@ -418,11 +428,11 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                                     widget.user.orgName!,
                                     style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                            color: Color.fromRGBO(19, 59, 78, 1.0),
-                                            // color: Colors.green
-                                        )),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Color.fromRGBO(19, 59, 78, 1.0),
+                                      // color: Colors.green
+                                    )),
                                   )),
                               Container(
                                   width: MediaQuery.of(context).size.width,
@@ -582,6 +592,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                           child: Column(
                             children: [
                               ListView.builder(
+                                reverse: true,
                                 itemCount: orderList.length,
                                 physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.vertical,

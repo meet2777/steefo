@@ -450,6 +450,7 @@ class _RequestPageState extends State<RequestContent> {
                 child: Container(
                   //  color: Colors.amber,
                   child: ListView.builder(
+                    reverse: true,
                     itemCount: regReqList.length,
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,

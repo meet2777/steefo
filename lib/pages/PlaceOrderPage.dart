@@ -2429,6 +2429,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                   .height /
                                               1.24,
                                           child: ListView.builder(
+                                            reverse: true,
                                               physics: BouncingScrollPhysics(),
                                               shrinkWrap: true,
                                               itemCount: lumpsumList.length,
