@@ -187,6 +187,7 @@ class _OrdersPageState extends State<OrdersContent> {
         child: Column(
           children: [
             ListView.builder(
+              reverse: true,
               itemCount: salesOrderList.length,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -273,6 +274,7 @@ class _OrdersPageState extends State<OrdersContent> {
           //
           Container(
             child: ListView.builder(
+              reverse: true,
               itemCount: requestList.length,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -599,6 +601,7 @@ class _OrdersPageState extends State<OrdersContent> {
         child: Column(
           children: [
             ListView.builder(
+              reverse: true,
               itemCount: salesOrderList.length,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,

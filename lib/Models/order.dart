@@ -2,6 +2,7 @@ import 'item.dart';
 
 class Order {
   String? order_id,
+  user_type,
       user_id,
       org_name,
       user_name,

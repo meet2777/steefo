@@ -1135,7 +1135,7 @@ class _AddItemPageState extends State<AddItemContent> {
                     ListView.builder(
                       itemCount: paymentList.length,
                       physics: const NeverScrollableScrollPhysics(),
-                      //  scrollDirection: Axis.vertical,
+                      //scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemBuilder: (context, ind) {
                         return Center(
@@ -1245,9 +1245,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                                 "paymentPrice": editpaymentPrice.text
                                                                               });
                                                                           // }
-                                                                          // Get.back();
-                                                                          setState(
-                                                                              () {});
+
                                                                           Navigator.pop(
                                                                               context);
                                                                         },

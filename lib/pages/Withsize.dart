@@ -265,6 +265,7 @@ class _OrdersPageState extends State<OrdersContent> {
         child: Column(
           children: [
             ListView.builder(
+              reverse: true,
               itemCount: salesOrderList.length,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -387,6 +388,7 @@ class _OrdersPageState extends State<OrdersContent> {
         child: Column(
           children: [
             ListView.builder(
+              reverse: true,
               itemCount: salesOrderList.length,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -557,6 +559,7 @@ class _OrdersPageState extends State<OrdersContent> {
           //
           Container(
             child: ListView.builder(
+              reverse: true,
               itemCount: requestList.length,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -687,9 +690,14 @@ class _OrdersPageState extends State<OrdersContent> {
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
-                            ),SizedBox(width: 7,),
-                            Text(requestList[index].base_price!,
-                            style: TextStyle(color: Colors.grey),),
+                            ),
+                            SizedBox(
+                              width: 7,
+                            ),
+                            Text(
+                              requestList[index].base_price!,
+                              style: TextStyle(color: Colors.grey),
+                            ),
                           ],
                         ),
                       ),
@@ -701,11 +709,14 @@ class _OrdersPageState extends State<OrdersContent> {
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
-                            ),SizedBox(width: 7,),
-                            Text(requestList[index].totalPrice.toString(),
-                            style: TextStyle(
-                              color: Colors.grey
-                            ),),
+                            ),
+                            SizedBox(
+                              width: 7,
+                            ),
+                            Text(
+                              requestList[index].totalPrice.toString(),
+                              style: TextStyle(color: Colors.grey),
+                            ),
                           ],
                         ),
                       ),
@@ -719,11 +730,13 @@ class _OrdersPageState extends State<OrdersContent> {
                           "Quantity:",
                           style: TextStyle(
                               fontFamily: "Poppins_Bold", color: Colors.grey),
-                        ),SizedBox(width: 7,),
-                        Text(requestList[index].totalQuantity.toString(),
-                          style: TextStyle(
-                            color: Colors.grey
-                          ),
+                        ),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text(
+                          requestList[index].totalQuantity.toString(),
+                          style: TextStyle(color: Colors.grey),
                         ),
                       ],
                     ),

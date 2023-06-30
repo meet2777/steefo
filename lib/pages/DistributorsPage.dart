@@ -244,7 +244,7 @@ class _DealerPageState extends State<DealerContent> {
                       ],
                     );
                   });
-            } else if (userType == "Builder") {
+            } else {
               return ListView.builder(
                   physics: BouncingScrollPhysics(),
                   itemCount: child.length,
@@ -269,8 +269,6 @@ class _DealerPageState extends State<DealerContent> {
                       ],
                     );
                   });
-            } else {
-              return Container();
             }
           }),
         );

@@ -192,6 +192,7 @@ class _ChallanListPageState extends State<ChallanListContent> {
           Container(
             height: MediaQuery.of(context).size.height * 0.6,
             child: ListView.builder(
+              reverse: true,
               itemCount: challanList.length,
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,

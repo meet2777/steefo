@@ -56,6 +56,7 @@ class _purchasesState extends State<purchases> {
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
+             req.trans_type = responseData["data"][i]["transType"];
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
@@ -120,6 +121,7 @@ class _purchasesState extends State<purchases> {
           Container(
             padding: EdgeInsets.only(left: 10, right: 10),
             child: ListView.builder(
+              reverse: true,
                 itemCount: purchaseOrderList.length,
                 physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
@@ -157,6 +159,7 @@ class _purchasesState extends State<purchases> {
           Container(
             padding: EdgeInsets.only(left: 10, right: 10),
             child: ListView.builder(
+              reverse: true,
               itemCount: purchaseOrderList.length,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -196,6 +199,7 @@ class _purchasesState extends State<purchases> {
           Container(
             padding: EdgeInsets.only(left: 10, right: 10),
             child: ListView.builder(
+              reverse: true,
                 itemCount: purchaseOrderList.length,
                 physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,

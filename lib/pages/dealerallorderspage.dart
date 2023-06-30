@@ -6,13 +6,11 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/Models/user.dart';
-import 'package:stefomobileapp/UI/common.dart';
-import 'package:stefomobileapp/pages/DealerDetailPage.dart';
+
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/OrderPage.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import 'package:http/http.dart' as http;
-import 'package:stefomobileapp/ui/custom_tabbar.dart';
 
 class dealerallorderpage extends StatefulWidget {
   User user;
@@ -39,6 +37,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
       var responseData = jsonDecode(res.body);
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+        req.org_name = responseData["data"][i]["orgName"];
         req.date = responseData["data"][i]["dateTime"];
         req.deliveryDate = responseData["data"][i]["deliveryDate"];
         req.totalPrice = responseData["data"][i]["totalPrice"];
@@ -212,6 +211,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
         // height: 100,
         // color: Colors.amber,
         child: ListView.builder(
+          reverse: true,
           itemCount: orderList.length,
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -243,6 +243,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
         // height: 100,
         // color: Colors.amber,
         child: ListView.builder(
+          reverse: true,
           itemCount: orderList.length,
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -274,6 +275,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
         // height: 100,
         // color: Colors.amber,
         child: ListView.builder(
+          reverse: true,
           itemCount: orderList.length,
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -305,6 +307,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
         // height: 100,
         // color: Colors.amber,
         child: ListView.builder(
+          reverse: true,
           itemCount: orderList.length,
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -336,6 +339,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
         // height: 100,
         // color: Colors.amber,
         child: ListView.builder(
+          reverse: true,
           itemCount: orderList.length,
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
