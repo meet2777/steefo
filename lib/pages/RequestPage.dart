@@ -138,6 +138,7 @@ class _RequestPageState extends State<RequestContent> {
             " " +
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
+        req.pincode = responseData["data"][i]["pincode"];
         req.party_name = responseData["data"][i]["partyName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.billing_address = responseData["data"][i]["address"];

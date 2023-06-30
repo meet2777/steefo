@@ -133,7 +133,10 @@ class _OrderPageState extends State<OrderPage> {
                   Container(
                       padding: const EdgeInsets.all(10),
                       width: MediaQuery.of(context).size.width - 10,
-                      child: Column(children: [
+                      child: Column(
+
+
+                          children: [
                         Container(
                           alignment: Alignment.center,
                           width: double.infinity,
@@ -153,164 +156,203 @@ class _OrderPageState extends State<OrderPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        Card(
-                          elevation: 2,
-                          child: Container(
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Party Name:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.party_name!,
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )
+                            ),
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Contact:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.party_mob_num.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )),
+
+
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            // borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: const [
+                                  Text("Shipping Address",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: "Poppins_Bold")),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(widget.order!.party_address!,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: "Poppins",
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Pincode:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.pincode.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )),
+
+                        Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              // borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Loading Type:",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "Poppins_Bold")),
+                                Text(widget.order!.loading_type.toString(),
+                                    style: const TextStyle(
+                                        fontSize: 15, fontFamily: "Poppins"))
+                              ],
+                            )),
+
+                        Container(
                             padding: const EdgeInsets.all(10),
                             decoration: const BoxDecoration(
                               // borderRadius: BorderRadius.circular(20),
                               color: Colors.white,
                             ),
-                            child: Column(
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: const [
-                                    Text("Shipping Address",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: "Poppins_Bold")),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: Text(widget.order!.party_address!,
-                                          style: const TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: "Poppins",
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5.0,
-                                ),
-                                Row(
-                                  children: const [
-                                    Text("Contact",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: "Poppins_Bold")),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(widget.order!.party_mob_num!,
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: "Poppins"))
-                                  ],
-                                ),
+                                const Text("Base Price:",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "Poppins_Bold")),
+                                Text(widget.order!.base_price!,
+                                    style: const TextStyle(
+                                        fontSize: 15, fontFamily: "Poppins"))
                               ],
+                            )),
+
+                        Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              // borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
                             ),
-                          ),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Delivery Date:",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "Poppins_Bold")),
+                                Text(widget.order!.deliveryDate.toString(),
+                                    style: const TextStyle(
+                                        fontSize: 15, fontFamily: "Poppins"))
+                              ],
+                            )),
+
+                        Container(
+                            // margin: EdgeInsets.only(top: 10),
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                              // borderRadius: BorderRadius.circular(20),
+                              color: Colors.white,
+                            ),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Status: ",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "Poppins_Bold")),
+                                Text(widget.order!.status!,
+                                    style: const TextStyle(
+                                        fontSize: 15, fontFamily: "Poppins"))
+                              ],
+                            )
                         ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        Card(
-                          elevation: 2,
-                          child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("Loading Type:",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: "Poppins_Bold")),
-                                  Text(widget.order!.loading_type.toString(),
-                                      style: const TextStyle(
-                                          fontSize: 15, fontFamily: "Poppins"))
-                                ],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        Card(
-                          elevation: 2,
-                          child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                // borderRadius: BorderRadius.circular(20),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("Base Price:",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: "Poppins_Bold")),
-                                  Text(widget.order!.base_price!,
-                                      style: const TextStyle(
-                                          fontSize: 15, fontFamily: "Poppins"))
-                                ],
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        Card(
-                          elevation: 2,
-                          child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("Delivery Date:",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: "Poppins_Bold")),
-                                  Text(widget.order!.deliveryDate.toString(),
-                                      style: const TextStyle(
-                                          fontSize: 15, fontFamily: "Poppins"))
-                                ],
-                              )),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Card(
-                          elevation: 2,
-                          shadowColor: Colors.grey,
-                          child: Container(
+                            Container(
                               // margin: EdgeInsets.only(top: 10),
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                // borderRadius: BorderRadius.circular(20),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("Status: ",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: "Poppins_Bold")),
-                                  Text(widget.order!.status!,
-                                      style: const TextStyle(
-                                          fontSize: 15, fontFamily: "Poppins"))
-                                ],
-                              )),
-                        ),
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Transportation Type: ",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.trans_type.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )),
+
                       ])),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
+
                   SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Card(

@@ -98,6 +98,7 @@ class _HomePageState extends State<HomeContent> {
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
+        req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
@@ -337,6 +338,7 @@ class _HomePageState extends State<HomeContent> {
         req.party_name = responseData["data"][i]["partyName"];
         req.org_name = responseData["data"][i]["orgName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
+        req.pincode = responseData["data"][i]["pincode"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
         req.order_date = responseData["data"][i]["createdAt"];
