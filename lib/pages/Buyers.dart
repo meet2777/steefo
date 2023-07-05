@@ -224,26 +224,7 @@ class _buyerspageState extends State<buyerspage> {
                       ),
                     )
                   : Container(),
-              // Container(
-              //   alignment: Alignment.centerLeft,
-              //   height: 120,
-              //   width: double.infinity,
-              //   padding: EdgeInsets.only(
-              //     left: 10,
-              //     right: 24,
-              //   ),
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(8),
-              //     color: Colors.blueGrey,
-              //   ),
-              //   child: Text(
-              //     'Distributor',
-              //     style: TextStyle(
-              //         color: Colors.black,
-              //         fontSize: 22,
-              //         fontWeight: FontWeight.w700),
-              //   ),
-              // )
+             
             ])));
   }
 }

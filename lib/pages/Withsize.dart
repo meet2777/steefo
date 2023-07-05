@@ -274,7 +274,8 @@ class _OrdersPageState extends State<OrdersContent> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 print("ordertype${salesOrderList[index].orderType}");
-                if (salesOrderList[index].orderType == "With Size") {
+                if (salesOrderList[index].orderType == "With Size" ||
+                    salesOrderList[index].orderType == "Use Lumpsum") {
                   return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -303,86 +304,6 @@ class _OrdersPageState extends State<OrdersContent> {
   }
 
   Widget CompletedListBody() {
-    // loadChallanList();
-    // return Container(
-    //     height: MediaQuery.of(context).size.height * 0.83,
-    //     decoration: const BoxDecoration(
-    //         // gradient:
-    //         //         LinearGradient(transform: GradientRotation(1.07), colors: [
-    //         //   Color.fromRGBO(75, 100, 160, 1.0),
-    //         //   Color.fromRGBO(19, 59, 78, 1.0),
-    //         // ]
-    //         //         )
-    //         ),
-    //     child: SingleChildScrollView(
-    //       child: Column(
-    //         crossAxisAlignment: CrossAxisAlignment.center,
-    //         children: [
-    //           Container(
-    //             decoration: const BoxDecoration(
-    //                 // color: Colors.grey,
-    //                 // borderRadius: BorderRadius.circular(20)
-    //                 ),
-    //             width: MediaQuery.of(context).size.width * 0.8,
-    //             margin: const EdgeInsets.only(top: 20),
-    //             padding: const EdgeInsets.symmetric(horizontal: 10),
-    //             child: Row(
-    //               mainAxisAlignment: MainAxisAlignment.center,
-    //               children: [
-    //                 // Text(
-    //                 //   "Order Id:",
-    //                 //   style: TextStyle(fontFamily: "Poppins_Bold"),
-    //                 // ),
-    //                 // Padding(
-    //                 //   padding: EdgeInsets.only(left: 8.0),
-    //                 //   child: Text(widget.order.order_id.toString()),
-    //                 // )
-    //               ],
-    //             ),
-    //           ),
-    //           Card(
-    //             child: Container(
-    //               decoration: BoxDecoration(
-    //                   color: const Color.fromRGBO(255, 255, 255, 0.5),
-    //                   borderRadius: BorderRadius.circular(8)),
-    //               margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-    //               child: Column(
-    //                 children: [
-    //                   SingleChildScrollView(
-    //                     child: Container(
-    //                       height: MediaQuery.of(context).size.height * 0.6,
-    //                       child: ListView.builder(
-    //                         itemCount: challanList.length,
-    //                         //physics: const NeverScrollableScrollPhysics(),
-    //                         scrollDirection: Axis.vertical,
-    //                         shrinkWrap: false,
-    //                         itemBuilder: (context, index) {
-    //                           return InkWell(
-    //                               onTap: () {
-    //                                 Navigator.push(
-    //                                     context,
-    //                                     MaterialPageRoute(
-    //                                         builder: (context) =>
-    //                                             GeneratedChallan(
-    //                                                 challan_id:
-    //                                                     challanList[index]
-    //                                                         .challan_id!)));
-    //                               },
-    //                               child:
-    //                                   ChallanCard(context, challanList[index]));
-    //                         },
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ));
-    // loadData();
-    // loadData1();
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: SingleChildScrollView(
@@ -397,7 +318,8 @@ class _OrdersPageState extends State<OrdersContent> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 print("ordertype${salesOrderList[index].orderType}");
-                if (salesOrderList[index].orderType == "With Size") {
+                if (salesOrderList[index].orderType == "With Size" ||
+                    salesOrderList[index].orderType == "Use Lumpsum") {
                   return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -424,132 +346,6 @@ class _OrdersPageState extends State<OrdersContent> {
       ),
     );
   }
-
-  // Widget ChallanCard(context, Challan challan) {
-  //   String trp_name = "XY Transporter";
-
-  //   return Card(
-  //     child: Container(
-  //       decoration: BoxDecoration(
-  //           // color: Colors.white, borderRadius: BorderRadius.circular(20)
-  //           ),
-  //       padding: EdgeInsets.all(5),
-  //       margin: EdgeInsets.all(5),
-  //       child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.start,
-  //         children: [
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Container(
-  //                   child: const Text(
-  //                 "Challan ID:",
-  //                 textAlign: TextAlign.left,
-  //                 style: TextStyle(fontFamily: "Poppins_Bold"),
-  //               )),
-  //               Container(
-  //                   padding: EdgeInsets.only(left: 65),
-  //                   child: Text(
-  //                     challan.challan_id!.toString(),
-  //                     textAlign: TextAlign.center,
-  //                     style: TextStyle(fontFamily: "Poppins_Bold"),
-  //                   ))
-  //             ],
-  //           ),
-  //           Container(
-  //             child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 Container(
-  //                   child: Text(
-  //                     "Transporter Name:",
-  //                     style: TextStyle(fontFamily: "Roboto"),
-  //                   ),
-  //                   padding: EdgeInsets.only(top: 5, bottom: 5),
-  //                 ),
-  //                 Container(
-  //                   child: Text(
-  //                     challan.transporter_name!,
-  //                     overflow: TextOverflow.ellipsis,
-  //                     maxLines: 3,
-  //                   ),
-  //                 )
-  //               ],
-  //             ),
-  //           ),
-  //           Container(
-  //             child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 Text("Vehicle Number:"),
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(left: 36.0),
-  //                   child: Text(challan.vehicle_number!),
-  //                 )
-  //               ],
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Widget ComplatedOrders(){
-  //   return Padding(
-  //       padding: EdgeInsets.only(left: 5,right: 7),
-  //     child: Container(
-  //       color: Colors.grey,
-  //       // height: 10,
-  //       child: Text("data") ,
-  //     ),
-  //
-  //   );
-  //
-  // }
-
-  //----------------------------------OrderList---------------------------------//
-
-  // Widget OrderList() {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(left: 10, right: 10),
-  //     child: SingleChildScrollView(
-  //       physics: BouncingScrollPhysics(),
-  //       child: Column(
-  //         children: [
-  //           ListView.builder(
-  //             itemCount: salesOrderList.length,
-  //             physics: const NeverScrollableScrollPhysics(),
-  //             scrollDirection: Axis.vertical,
-  //             shrinkWrap: true,
-  //             itemBuilder: (context, index) {
-  //               // print("ordertype${salesOrderList[index].orderType}");
-  //               // if (salesOrderList[index].orderType == "Lump-sum") {
-  //               return GestureDetector(
-  //                   onTap: () {
-  //                     Navigator.push(
-  //                         context,
-  //                         MaterialPageRoute(
-  //                             builder: (context) =>
-  //                                 OrderDetails(order: salesOrderList[index])));
-  //                   },
-  //                   child: orderCard(
-  //                     context,
-  //                     salesOrderList[index],
-  //                     id,
-  //                   ));
-  //               // } else
-  //               //   return null;
-  //             },
-  //           ),
-  //           SizedBox(
-  //             height: 50,
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
 //------------------------------Orderrequest--------------------------------
   Widget OrderList1() {
@@ -578,7 +374,8 @@ class _OrdersPageState extends State<OrdersContent> {
                               builder: (context) =>
                                   OrderDetails(order: requestList[index])));
                     },
-                    child: requestList[index].orderType == "With Size"
+                    child: requestList[index].orderType == "With Size" ||
+                            requestList[index].orderType == "Use Lumpsum"
                         ? orderwidget1(index)
                         : Container());
                 // }

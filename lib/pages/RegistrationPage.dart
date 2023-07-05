@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:stefomobileapp/ui/common.dart';
 import 'package:stefomobileapp/validator/validations.dart';
@@ -16,7 +15,7 @@ class RegistrationPage extends StatelessWidget {
         body: SizedBox(
       child: SingleChildScrollView(child: RegistrationForm()),
     ));
-    throw UnimplementedError();
+    
   }
 }
 

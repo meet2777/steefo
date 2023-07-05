@@ -916,13 +916,27 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum) {
             ],
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Name: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.name!,
+                  style: TextStyle(
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+        ),
 
         Padding(
           padding: const EdgeInsets.only(left: 5, right: 5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Quantity: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text("Quantity Left: ",
+                  style: TextStyle(fontFamily: "Poppins_Bold")),
               Text(lumpsum.qty.toString(),
                   style: TextStyle(
                     color: Colors.black,

@@ -181,25 +181,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
         ),
       ),
 
-      // selectedCardColor: Colors.blueGrey,
-      // selectedTitleColor: Colors.white,
-      // unSelectedTitleColor: Colors.black,
-      // shape:
-      //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      // unSelectedCardColor: Colors.white,
-      // titleStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-      // // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      // tabBarItemExtend: ((MediaQuery.of(context).size.width) / 4),
-      // // tabBarItems: ["Orders", "Requests"],
-      // tabBarItems: [
-      //   "REQUESTS",
-      //   "DENIED",
-      //   "CANCELED",
-      //   "CONFIRMED",
-      //   "COMPLETED",
-      // ],
-      // // tabViewItems: [OrdersPageBody(), OrderList1()]
-      // tabViewItems: []
+    
     );
   }
 
