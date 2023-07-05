@@ -31,15 +31,16 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
+
   int flag = 0;
   var listOfColumns = [];
   var id;
   num tot_price = 0;
   loadData() async {
     print(
-        "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd${widget.order!.order_id.toString()}");
+        "${widget.order!.order_id.toString()}");
     print(
-        "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd${widget.order!.orderType.toString()}");
+        "${widget.order!.orderType.toString()}");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id');
     // print(widget.order!.orderType);
@@ -409,7 +410,29 @@ class _OrderPageState extends State<OrderPage> {
                                     style: const TextStyle(
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
-                            )),
+                            )
+                        ),
+
+                         Container(
+                            // margin: EdgeInsets.only(top: 10),
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                              // borderRadius: BorderRadius.circular(20),
+                              color: Colors.white,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Remaining Qty: ",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "Poppins_Bold")),
+                                Text(widget.order!.qty_left.toString(),
+                                    style: const TextStyle(
+                                        fontSize: 15, fontFamily: "Poppins"))
+                              ],
+                            )
+                        ),
                       ]
                       )
                   ),

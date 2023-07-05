@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/lumpsum.dart';
+import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/pages/Buyers.dart';
 import 'package:stefomobileapp/pages/DistributorsPage.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
@@ -31,6 +32,7 @@ class InventoryContent extends StatefulWidget {
 }
 
 class _InventoryPageState extends State<InventoryContent> {
+  String? id, supplier_id;
   var _selected = 1;
   bool isDataLoaded = false;
   List<Lumpsum> lumpsums = [];
@@ -90,6 +92,7 @@ class _InventoryPageState extends State<InventoryContent> {
       l.name = responseData["data"][i]["name"];
       l.qty = responseData["data"][i]["qty_left"];
       l.price = responseData["data"][i]["price"];
+      l.basePrice = responseData["data"][i]["basePrice"];
       l.status = responseData["data"][i]["orderStatus"];
       l.date = responseData["data"][i]["createdAt"];
       l.partyname = responseData["data"][i]["partyName"];
@@ -371,7 +374,7 @@ class _InventoryPageState extends State<InventoryContent> {
                                 color: Colors.grey.shade100,
                               ),
                               // width: 200,
-                              child: InventoryCard(context, lumpsums[index])));
+                              child: InventoryCard(context, lumpsums[index],Order(),id)));
                     },
                   ),
                 ]),

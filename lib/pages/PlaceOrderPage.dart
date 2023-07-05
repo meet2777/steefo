@@ -1251,6 +1251,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import '../Models/grade.dart';
 import '../Models/lumpsum.dart';
@@ -1378,6 +1379,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       Lumpsum l = Lumpsum();
       l.partyname = responseData["data"][i]["partyName"];
       l.orderId = responseData["data"][i]["order_id"];
+      l.basePrice = responseData["data"][i]["basePrice"];
       l.name = responseData["data"][i]["name"];
       l.qty = responseData["data"][i]["qty_left"];
       l.price = responseData["data"][i]["price"];
@@ -1621,7 +1623,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             "order_id": responseData["value"].toString(),
             "name": listOfColumns[i]["Name"],
             "qty": listOfColumns[i]["Qty"],
-            "price": listOfColumns[i]["Price"]
+            "price": listOfColumns[i]["Price"],
+            "basePrice": base_price.text
           },
         );
         //  tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
@@ -2512,7 +2515,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                           child: InventoryCard(
                                                               context,
                                                               lumpsumList[
-                                                                  index]),
+                                                                  index],Order(),id),
                                                         ));
                                                   } else {
                                                     return Container();
@@ -2575,7 +2578,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                               DataColumn(
                                   label: Expanded(
                                 child: Text(
-                                  'HSN/Name',
+                                  'Name',
                                   textAlign: TextAlign.center,
                                 ),
                               )),

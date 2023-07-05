@@ -842,7 +842,7 @@ Widget DealerCard(User user, BuildContext context) {
     return Container();
 }
 
-Widget InventoryCard(BuildContext context, Lumpsum lumpsum) {
+Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? curr_user_id) {
   print('object');
   return Container(
     decoration: BoxDecoration(
@@ -935,11 +935,12 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Price: ", style: TextStyle(fontFamily: "Poppins_Bold")),
-              Text(lumpsum.price.toString(),
+              Text("Base Price: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.basePrice.toString(),
                   style: TextStyle(
                     color: Colors.black,
-                  )),
+                  )
+              ),
             ],
           ),
         ),

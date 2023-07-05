@@ -49,6 +49,7 @@ class _purchasesState extends State<purchases> {
         req.deliveryDate = responseData["data"][i]["deliveryDate"];
         req.date = responseData["data"][i]["dateTime"];
         req.totalPrice = responseData["data"][i]["totalPrice"];
+        req.pincode = responseData["data"][i]["pincode"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
