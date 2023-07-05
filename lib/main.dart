@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -19,13 +21,23 @@ import 'package:stefomobileapp/pages/RegistrationPage.dart';
 import 'package:stefomobileapp/pages/RequestPage.dart';
 import 'package:stefomobileapp/pages/PlaceOrderPage.dart';
 import 'package:stefomobileapp/pages/UserProfilePage.dart';
+import 'package:stefomobileapp/pages/extrahome.dart';
 
 import 'package:stefomobileapp/pages/newPassPage.dart';
 import 'Models/order.dart';
 import 'pages/LRPage.dart';
 import 'UI/common.dart';
 
-void main() {
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroungHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print(message.notification!.title.toString());
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroungHandler);
   runApp(const MyApp());
 }
 

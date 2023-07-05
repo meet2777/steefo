@@ -3,12 +3,13 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/validator/validations.dart';
 import '../UI/common.dart';
-
+import 'package:stefomobileapp/notification_services.dart';
 // import 'package:editable_image/editable_image.dart';
 
 class UserProfilePage extends StatelessWidget {
@@ -36,6 +37,8 @@ class ProfileForm extends StatefulWidget {
 }
 
 class _ProfileFormState extends State<ProfileForm> {
+  NotificationServices notificationServices = NotificationServices();
+
   final _formKey = GlobalKey<FormState>();
 
   late FocusNode focusNode1;
@@ -144,6 +147,20 @@ class _ProfileFormState extends State<ProfileForm> {
         field10Key.currentState?.validate();
       }
     });
+
+    ////////////////////////////////
+    // notificationServices.requestNotificationPermission();
+    // notificationServices.getDeviceToken().then((value) {
+    //   if (kDebugMode) {
+    //     print('device token');
+    //     print(value);
+    //     deviceToken = value;
+    //   }
+    // });
+    // notificationServices.firebaseInit(context);
+    // notificationServices.isTokenRefresh();
+
+    // notificationServices.setupInteractMessage(context);
   }
 
   // void _directUpdateImage(File? file) async {

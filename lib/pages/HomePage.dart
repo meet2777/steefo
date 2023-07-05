@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:stefomobileapp/notification_services.dart';
 import 'package:stefomobileapp/pages/Buyers.dart';
 
 import 'package:stefomobileapp/pages/InventoryPage.dart';
@@ -160,11 +162,23 @@ class _HomePageState extends State<HomeContent> {
     }
   }
 
+  NotificationServices notificationServices = NotificationServices();
+
   @override
   void initState() {
     loadorderlength();
     getRegReqs();
     //  loadrequestlistlength();
+    notificationServices.requestNotificationPermission();
+    notificationServices.getDeviceToken().then((value) {
+      if (kDebugMode) {
+        print('device token');
+        print(value);
+      }
+    });
+    notificationServices.firebaseInit(context);
+    notificationServices.isTokenRefresh();
+    notificationServices.setupInteractMessage(context);
     super.initState();
   }
 
@@ -372,6 +386,31 @@ class _HomePageState extends State<HomeContent> {
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          TextButton(
+            child: Text('send notification'),
+            onPressed: () {
+              notificationServices.getDeviceToken().then((value) async {
+                 var data = {
+                  'to': value.toString(),
+                  'priority': 'high',
+                  'notification': {
+                    'title': 'Parth',
+                    'body': 'You Got An Order',
+                  },
+                  'data': {'type': 'msg', 'id': 'parth1234'},
+                };
+                print(value.toString());
+                await http.post(
+                    Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                    body: jsonEncode(data),
+                    headers: {
+                      'Content-Type': 'application/json; charset=UTF-8',
+                      'Authorization':
+                          'key=AAAA_8-x_z4:APA91bE5c27vN7PgA4BTTOtLcLpxnz3W-Ljjet2YAfwr3b0t10YMXSbgwTX01aJoDZhylqCZjZ3EiuUR9M2KDGcvCfBSBumulrujHHuN7zI_6kN0JIrMCkxiwT63QD5AfNTyE0gxEao7'
+                    });
+              });
+            },
+          ),
           //carousel slider start////////////////////////////////////
           Container(
             decoration: BoxDecoration(
