@@ -64,6 +64,7 @@ class _ChallanPageState extends State<ChallanPage> {
       ch.vehicle_number = responseData["data"][0]["vehicle_number"];
       ch.challan_id = responseData["data"][0]["challan_id"];
       or.party_address = responseData["data"][0]["shippingAddress"];
+      or.party_name = responseData["data"][0]["partyName"];
       or.party_mob_num = responseData["data"][0]["partyMobileNumber"];
       or.loading_type = responseData["data"][0]["loadingType"];
       or.trans_type = responseData["data"][0]["transType"];
@@ -228,343 +229,347 @@ class _ChallanPageState extends State<ChallanPage> {
               const SizedBox(
                 height: 10.0,
               ),
-              Card(
-                child: Container(
-                    padding: const EdgeInsets.all(10),
-                    width: MediaQuery.of(context).size.width - 20,
-                    decoration: BoxDecoration(
-                      // borderRadius: BorderRadius.circular(25),
-                      color: Colors.grey.withOpacity(0.20),
-                    ),
-                    child: Column(
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        // mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Card(
-                            child: Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(20),
-                                color: Colors.white.withOpacity(0.50),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Shipping Address",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins_Bold",
-                                      fontSize: 15,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    or.party_address!,
-                                    style: TextStyle(
-                                        fontSize: 15, fontFamily: "Poppins"),
-                                    // textAlign: TextAlign.right,
-                                    maxLines: 4,
-                                    softWrap: true,
-                                  ),
-                                  // Row(
-                                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //     Text(
-                                  //       "Shipping Address :",
-                                  //       style: TextStyle(
-                                  //         fontSize: 10,
-                                  //         fontWeight: FontWeight.bold,
-                                  //       ),
-                                  //     ),
-                                  //     Expanded(
-                                  //       // padding: EdgeInsets.only(bottom: 25, top: 10),
-                                  //       child: Text(or.party_address!,
-                                  //         style: TextStyle(fontSize: 10,),
-                                  //         textAlign: TextAlign.right,
-                                  //         maxLines: 4,
-                                  //         softWrap: true,
-                                  //       ),
-                                  //     )
-                                  //   ],
-                                  // ),
-                                  const SizedBox(
-                                    height: 5.0,
-                                  ),
-
-                                  const Text("Contact",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins_Bold",
-                                        fontSize: 15,
-                                        // fontWeight: FontWeight.bold
-                                      )),
-                                  Text(or.party_mob_num!,
-                                      style: const TextStyle(
-                                          fontSize: 15, fontFamily: "Poppins")),
-                                ],
+              Container(
+                padding: EdgeInsets.only(left: 7),
+                child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          // borderRadius: BorderRadius.circular(20),
+                          color: Colors.white.withOpacity(0.50),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(20),
+                                  // color: Colors.white.withOpacity(0.85),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Party Name:",
+                                        style: TextStyle(
+                                          fontFamily: "Poppins_Bold",
+                                          fontSize: 15,
+                                          // fontWeight: FontWeight.bold
+                                        )),
+                                    Text(or.party_name!,
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins"))
+                                  ],
+                                )
+                            ),
+                            Text(
+                              "Shipping Address",
+                              style: TextStyle(
+                                fontFamily: "Poppins_Bold",
+                                fontSize: 15,
+                                // fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          Card(
-                            child: Container(
-                                padding: const EdgeInsets.all(10),
+                            Text(
+                              or.party_address!,
+                              style: TextStyle(
+                                  fontSize: 15, fontFamily: "Poppins"),
+                              // textAlign: TextAlign.right,
+                              maxLines: 4,
+                              softWrap: true,
+                            ),Padding(padding: EdgeInsets.only(bottom:10)),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     Text(
+                            //       "Shipping Address :",
+                            //       style: TextStyle(
+                            //         fontSize: 10,
+                            //         fontWeight: FontWeight.bold,
+                            //       ),
+                            //     ),
+                            //     Expanded(
+                            //       // padding: EdgeInsets.only(bottom: 25, top: 10),
+                            //       child: Text(or.party_address!,
+                            //         style: TextStyle(fontSize: 10,),
+                            //         textAlign: TextAlign.right,
+                            //         maxLines: 4,
+                            //         softWrap: true,
+                            //       ),
+                            //     )
+                            //   ],
+                            // ),
+
+
+                            Container(
+                                padding: const EdgeInsets.only(bottom: 10),
                                 decoration: BoxDecoration(
                                   // borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white.withOpacity(0.85),
+                                  // color: Colors.white.withOpacity(0.85),
                                 ),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Loading Type:",
+                                    Text("Contact:",
                                         style: TextStyle(
                                           fontFamily: "Poppins_Bold",
                                           fontSize: 15,
                                           // fontWeight: FontWeight.bold
                                         )),
-                                    Text(or.loading_type!,
+                                    Text(or.party_mob_num!,
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontFamily: "Poppins"))
                                   ],
-                                )),
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          Card(
-                            child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  // borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white.withOpacity(0.85),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Challan no:",
-                                        style: TextStyle(
-                                          fontFamily: "Poppins_Bold",
-                                          fontSize: 15,
-                                          // fontWeight: FontWeight.bold
-                                        )),
-                                    Text(ch.challan_id!,
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: "Poppins"))
-                                  ],
-                                )),
-                          ),
-                        ])),
-              ),
-              Card(
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width - 20,
-                  decoration: BoxDecoration(
-                    // borderRadius: BorderRadius.circular(25),
-                    color: Colors.grey.withOpacity(0.20),
-                  ),
-                  child: Column(children: [
-                    Card(
-                      child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
+                                )
+                            ),
+
+                            // const Text("Contact",
+                            //     style: TextStyle(
+                            //       fontFamily: "Poppins_Bold",
+                            //       fontSize: 15,
+                            //       // fontWeight: FontWeight.bold
+                            //     )),
+                            // Text(or.party_mob_num!,
+                            //     style: const TextStyle(
+                            //         fontSize: 15, fontFamily: "Poppins")),
+                          ],
+                        ),
+                      ),
+                      Container(
+                          padding: const EdgeInsets.only(left: 10,right: 10),
+                          decoration: BoxDecoration(
                             // borderRadius: BorderRadius.circular(20),
-                            color: Colors.white,
+                            // color: Colors.white.withOpacity(0.85),
                           ),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Transporter name:",
+                              Text("Loading Type:",
                                   style: TextStyle(
                                     fontFamily: "Poppins_Bold",
                                     fontSize: 15,
                                     // fontWeight: FontWeight.bold
                                   )),
-                              Text(ch.transporter_name!,
+                              Text(or.loading_type!,
                                   style: TextStyle(
-                                      fontSize: 15, fontFamily: "Poppins"))
+                                      fontSize: 15,
+                                      fontFamily: "Poppins"))
                             ],
                           )),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            // borderRadius: BorderRadius.circular(20),
+                            // color: Colors.white.withOpacity(0.85),
+                          ),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Challan no:",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins_Bold",
+                                    fontSize: 15,
+                                    // fontWeight: FontWeight.bold
+                                  )),
+                              Text(ch.challan_id!,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: "Poppins"))
+                            ],
+                          )),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 7),
+                child: Column(children: [
+                  Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        // borderRadius: BorderRadius.circular(20),
+                        // color: Colors.white,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Transporter name:",
+                              style: TextStyle(
+                                fontFamily: "Poppins_Bold",
+                                fontSize: 15,
+                                // fontWeight: FontWeight.bold
+                              )),
+                          Text(ch.transporter_name!,
+                              style: TextStyle(
+                                  fontSize: 15, fontFamily: "Poppins"))
+                        ],
+                      )),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Column(children: [
+                    Container(
+                        padding: const EdgeInsets.only(left: 10,right: 10),
+                        decoration: const BoxDecoration(
+                          // borderRadius: BorderRadius.circular(20),
+                          // color: Colors.white,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("LR no:",
+                                style: TextStyle(
+                                  fontFamily: "Poppins_Bold",
+                                  fontSize: 15,
+                                  // fontWeight: FontWeight.bold
+                                )),
+                            Text(ch.lr_number!,
+                                style: TextStyle(
+                                    fontSize: 15, fontFamily: "Poppins"))
+                          ],
+                        )),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 10,right: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Vehicle no",
+                              style: TextStyle(
+                                fontFamily: "Poppins_Bold",
+                                fontSize: 15,
+                                // fontWeight: FontWeight.bold
+                              )),
+                          Text(ch.vehicle_number!,
+                              style: TextStyle(
+                                  fontSize: 15, fontFamily: "Poppins"))
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 10.0,
                     ),
-                    Column(children: [
-                      Card(
-                        child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              // borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("LR no:",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins_Bold",
-                                      fontSize: 15,
-                                      // fontWeight: FontWeight.bold
-                                    )),
-                                Text(ch.lr_number!,
-                                    style: TextStyle(
-                                        fontSize: 15, fontFamily: "Poppins"))
-                              ],
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      Card(
-                        child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              // borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Vehicle no",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins_Bold",
-                                      fontSize: 15,
-                                      // fontWeight: FontWeight.bold
-                                    )),
-                                Text(ch.vehicle_number!,
-                                    style: TextStyle(
-                                        fontSize: 15, fontFamily: "Poppins"))
-                              ],
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      Card(
-                        child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              // borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text("Date :",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins_Bold",
-                                      fontSize: 15,
-                                      // fontWeight: FontWeight.bold
-                                    )),
-                                Text(
-                                  or.order_date!,
-                                  style: TextStyle(
-                                      fontSize: 15, fontFamily: "Poppins"),
-                                )
-                              ],
-                            )),
-                      ),
-                    ])
-                  ]),
-                ),
+                    Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          // borderRadius: BorderRadius.circular(20),
+                          // color: Colors.white,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text("Date :",
+                                style: TextStyle(
+                                  fontFamily: "Poppins_Bold",
+                                  fontSize: 15,
+                                  // fontWeight: FontWeight.bold
+                                )),
+                            Text(
+                              or.order_date!,
+                              style: TextStyle(
+                                  fontSize: 15, fontFamily: "Poppins"),
+                            )
+                          ],
+                        )),
+                  ])
+                ]),
               ),
               const SizedBox(
                 height: 10.0,
               ),
               Center(
-                child: Container(
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    width: MediaQuery.of(context).size.width - 20,
-                    decoration: BoxDecoration(
-                      // borderRadius: BorderRadius.circular(25),
-                      color: Colors.grey.withOpacity(0.20),
+                child: Column(
+                  children: [
+                    const Text(
+                      "Items:",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                    child: Column(
-                      children: [
-                        const Text(
-                          "Items:",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                        const SizedBox(
-                          height: 5.0,
-                        ),
-                        Container(
-                          height: 200,
-                          width: MediaQuery.of(context).size.width - 20,
-                          // padding: EdgeInsets.only(
-                          //     top: 10, bottom: 10, left: 10, right: 10),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            // borderRadius: BorderRadius.circular(20.0)
-                          ),
-                          // alignment: Alignment.center,
-                          // padding: const EdgeInsets.only(top: 20),
-                          // child: SingleChildScrollView(
-                          //   padding: EdgeInsets.only(
-                          //       top: 10, bottom: 10, left: 10, right: 10),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: Center(
-                              child: DataTable(
-                                columnSpacing: 60,
-                                horizontalMargin: 2,
-                                headingTextStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                                columns: const [
-                                  DataColumn(label: Text("Sr\nNo")),
-                                  DataColumn(label: Text("Item name")),
-                                  DataColumn(label: Text("Quantity\n(Tons)"))
-                                ],
-                                rows: listOfColumns
-                                    .map<DataRow>(
-                                      ((element) => DataRow(
-                                            cells: <DataCell>[
-                                              DataCell(Text(element[
-                                                  "Sr_no"]!)), //Extracting from Map element the value
-                                              DataCell(Text(element["Name"]!)),
-                                              DataCell(Text(element["Qty"]!)),
-                                            ],
-                                          )),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
+                    const SizedBox(
+                      height: 5.0,
+                    ),
+                    Container(
+                      height: 200,
+                      width: MediaQuery.of(context).size.width - 20,
+                      // padding: EdgeInsets.only(
+                      //     top: 10, bottom: 10, left: 10, right: 10),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        // borderRadius: BorderRadius.circular(20.0)
+                      ),
+                      // alignment: Alignment.center,
+                      // padding: const EdgeInsets.only(top: 20),
+                      // child: SingleChildScrollView(
+                      //   padding: EdgeInsets.only(
+                      //       top: 10, bottom: 10, left: 10, right: 10),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Center(
+                          child: DataTable(
+                            columnSpacing: 60,
+                            horizontalMargin: 2,
+                            headingTextStyle: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                            columns: const [
+                              DataColumn(label: Text("Sr\nNo")),
+                              DataColumn(label: Text("Item name")),
+                              DataColumn(label: Text("Quantity\n(Tons)"))
+                            ],
+                            rows: listOfColumns
+                                .map<DataRow>(
+                                  ((element) => DataRow(
+                                        cells: <DataCell>[
+                                          DataCell(Text(element[
+                                              "Sr_no"]!)), //Extracting from Map element the value
+                                          DataCell(Text(element["Name"]!)),
+                                          DataCell(Text(element["Qty"]!)),
+                                        ],
+                                      )),
+                                )
+                                .toList(),
                           ),
                         ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     Get.to(HomePage());
-                        //   },
-                        //   child: Container(
-                        //     alignment: Alignment.center,
-                        //     child: Text(
-                        //       'Back To Homepage',
-                        //       style:
-                        //           TextStyle(fontSize: 25, color: Colors.white),
-                        //       textAlign: TextAlign.center,
-                        //     ),
-                        //     decoration: BoxDecoration(
-                        //         color: Colors.blueGrey,
-                        //         borderRadius: BorderRadius.circular(10)),
-                        //     height: 40,
-                        //     width: double.infinity,
-                        //   ),
-                        // )
-                      ],
-                    )),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Get.to(HomePage());
+                    //   },
+                    //   child: Container(
+                    //     alignment: Alignment.center,
+                    //     child: Text(
+                    //       'Back To Homepage',
+                    //       style:
+                    //           TextStyle(fontSize: 25, color: Colors.white),
+                    //       textAlign: TextAlign.center,
+                    //     ),
+                    //     decoration: BoxDecoration(
+                    //         color: Colors.blueGrey,
+                    //         borderRadius: BorderRadius.circular(10)),
+                    //     height: 40,
+                    //     width: double.infinity,
+                    //   ),
+                    // )
+                  ],
+                ),
               ),
               // GestureDetector(
               //   onTap: () async {
