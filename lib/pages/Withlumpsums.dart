@@ -348,12 +348,13 @@ class _OrdersPageState extends State<OrdersContent> {
                             style: TextStyle(color: Colors.grey),
                           ),
                           Text(
-                            requestList[index].date!,
+                            requestList[index].date!.substring(0,10),
                             style: TextStyle(color: Colors.grey),
                           )
                         ],
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             requestList[index].order_id!,
@@ -363,6 +364,10 @@ class _OrdersPageState extends State<OrdersContent> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17)),
                           ),
+                          Text(
+                            requestList[index].date!.substring(10,19),
+                            style: TextStyle(color: Colors.grey),
+                          )
                         ],
                       ),
                     ],
@@ -787,12 +792,13 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                         //   width: 180,
                         // ),
                         Text(
-                          order.date!,
+                          order.date!.substring(0,10),
                           style: TextStyle(color: Colors.grey),
                         )
                       ],
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           order.order_id!.toUpperCase(),
@@ -802,6 +808,10 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17)),
                         ),
+                        Text(
+                          order.date!.substring(10,19),
+                          style: TextStyle(color: Colors.grey),
+                        )
                       ],
                     ),
                   ],

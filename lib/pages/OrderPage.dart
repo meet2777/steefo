@@ -100,7 +100,6 @@ class _OrderPageState extends State<OrderPage> {
           });
           tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
         }
-
         listOfColumns.add({
           "Sr_no": " ",
           "Name": " ",

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1098701209406",
+    "project_id": "steefo-2e217",
+    "storage_bucket": "steefo-2e217.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098701209406:android:469ab894847c3adbb2b66f",
+        "android_client_info": {
+          "package_name": "com.steefo.stefomobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098701209406-ctjmrjbpp0q23ccq1vjuvh0tmc3s1df0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlPu5De6yxJFvvlUiYqrPue1sooKvUktM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098701209406-ctjmrjbpp0q23ccq1vjuvh0tmc3s1df0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -171,19 +171,29 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                       //   width: 180,
                       // ),
                       Text(
-                        order.date.toString(),
+                        order.date!.substring(0,10),
                         style: TextStyle(color: Colors.grey),
                       )
                     ],
                   ),
-                  Text(
-                    order.order_id!.toUpperCase(),
-                    style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        order.order_id!.toUpperCase(),
+                        style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17)),
+                      ),
+                      Text(
+                        order.date!.substring(10,19),
+                        style: TextStyle(color: Colors.grey),
+                      )
+                    ],
                   ),
+
                 ],
               ),
             ),
@@ -921,7 +931,7 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? c
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Name: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text("Grade: ", style: TextStyle(fontFamily: "Poppins_Bold")),
               Text(lumpsum.name!,
                   style: TextStyle(
                     color: Colors.black,

@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/Models/user.dart';
 import 'package:stefomobileapp/notification_services.dart';
 import 'package:stefomobileapp/ui/cards.dart';
@@ -33,6 +34,7 @@ class PlaceOrderContent extends StatefulWidget {
 }
 
 class _PlaceOrderPageState extends State<PlaceOrderContent> {
+
   final _formKey = GlobalKey<FormState>();
 
   late FocusNode focusNode1;
@@ -188,6 +190,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       l.partyname = responseData["data"][i]["partyName"];
       l.orderId = responseData["data"][i]["order_id"];
       l.name = responseData["data"][i]["name"];
+      l.basePrice = responseData["data"][i]["basePrice"];
       l.qty = responseData["data"][i]["qty_left"];
       l.price = responseData["data"][i]["price"];
       l.status = responseData["data"][i]["orderStatus"];
@@ -1232,6 +1235,16 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             showDialog(
                               context: context,
                               builder: (context) {
+                                for (int i = 0; i < gradeList.length; i++) {
+                                  if (gradeList[i].value == selectedGrade) {
+                                    grdpct = int.parse(gradeList[i].price!);
+                                  }
+                                }
+                                for (int i = 0; i < sizeList.length; i++) {
+                                  if (sizeList[i].value == selectedSize) {
+                                    szpct = int.parse(sizeList[i].price!);
+                                  }
+                                }
                                 return Dialog(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
@@ -1290,6 +1303,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                         "entrance............");
                                                     print(
                                                         "status....................${lumpsumList[index].name}");
+                                                    print(szpct);
                                                     return Container(
                                                         margin: EdgeInsets.only(
                                                             top: 10),
@@ -1307,13 +1321,14 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                                           "Ex-Plant" &&
                                                                       selectedOrderType !=
                                                                           "Lump-sum"
-                                                                  ? ((int.parse(lumpsumList[index].price!) +
-                                                                              tCost) *
+                                                                  ? (
+                                                                  (int.parse(lumpsumList[index].basePrice!) +
+                                                                              tCost + szpct) *
                                                                           int.parse(qty
                                                                               .text))
                                                                       .toString()
                                                                   : ((int.parse(lumpsumList[index]
-                                                                              .price!)) *
+                                                                              .basePrice!)) *
                                                                           int.parse(
                                                                               qty.text))
                                                                       .toString()
@@ -1348,7 +1363,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                           child: InventoryCard(
                                                               context,
                                                               lumpsumList[
-                                                                  index]),
+                                                                  index],Order(),id ),
                                                         ));
                                                   } else {
                                                     return Container();

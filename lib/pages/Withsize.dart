@@ -184,7 +184,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
         req.order_id = responseData["data"][i]["order_id"].toString();
-        req.date = responseData["data"][i]["dateTime"].toString();
+        req.date = responseData["data"][i]["dateTime"];
         //print(req);
         if (req.status != "Rejected") {
           if (id == req.user_id) {
@@ -430,12 +430,13 @@ class _OrdersPageState extends State<OrdersContent> {
                             style: TextStyle(color: Colors.grey),
                           ),
                           Text(
-                            requestList[index].date!,
+                            requestList[index].date!.substring(0,10),
                             style: TextStyle(color: Colors.grey),
                           )
                         ],
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             requestList[index].order_id!,
@@ -445,6 +446,10 @@ class _OrdersPageState extends State<OrdersContent> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17)),
                           ),
+                          Text(
+                            requestList[index].date!.substring(10,19),
+                            style: TextStyle(color: Colors.grey),
+                          )
                         ],
                       ),
                     ],
@@ -952,12 +957,13 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                         //   width: 180,
                         // ),
                         Text(
-                          order.date!,
+                          order.date!.substring(0,10),
                           style: TextStyle(color: Colors.grey),
                         )
                       ],
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           order.order_id!.toUpperCase(),
@@ -967,6 +973,10 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17)),
                         ),
+                        Text(
+                          order.date!.substring(10,19),
+                          style: TextStyle(color: Colors.grey),
+                        )
                       ],
                     ),
                   ],
@@ -1371,12 +1381,13 @@ Widget completedorderCard(
                         //   width: 180,
                         // ),
                         Text(
-                          order.date!,
+                          order.date!.substring(0,10),
                           style: TextStyle(color: Colors.grey),
                         )
                       ],
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           order.order_id!.toUpperCase(),
@@ -1386,6 +1397,10 @@ Widget completedorderCard(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17)),
                         ),
+                        Text(
+                          order.date!.substring(10,19),
+                          style: TextStyle(color: Colors.grey),
+                        )
                       ],
                     ),
                   ],
