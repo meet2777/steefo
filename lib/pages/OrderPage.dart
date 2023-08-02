@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/pages/ChallanListPage.dart';
+import '../Models/lumpsum.dart';
+import '../Models/lumpsum.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
 
@@ -32,6 +34,42 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage> {
 
+
+  List<Lumpsum> lumpsumList = [];
+  bool isInventoryDataLoaded = false;
+  // loadData() async {
+  //   print("inLoadLumpsumData");
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final user_id = await prefs.getString('id');
+  //   print('${user_id}ddddd');
+  //
+  //   var res = await http.post(
+  //       Uri.parse("http://urbanwebmobile.in/steffo/getinventory.php"),
+  //       body: {
+  //         "user_id": user_id,
+  //       });
+  //   var responseData = jsonDecode(res.body);
+  //   /// var orders = [];
+  //   print("lumpsumlist${responseData}");
+  //   for (int i = 0; i < responseData["data"].length; i++) {
+  //     print(responseData['data'][i]['name']);
+  //     Lumpsum l = Lumpsum();
+  //     l.partyname = responseData["data"][i]["partyName"];
+  //     l.orderId = responseData["data"][i]["order_id"];
+  //     l.name = responseData["data"][i]["name"];
+  //     l.basePrice = responseData["data"][i]["basePrice"];
+  //     l.qty_left = responseData["data"][i]["qty_left"];
+  //     l.price = responseData["data"][i]["price"];
+  //     l.status = responseData["data"][i]["orderStatus"];
+  //     l.id = responseData['data'][i]["ls_id"];
+  //     l.date = responseData["data"][i]["createdAt"];
+  //     lumpsumList.add(l);
+  //   }
+  //   isInventoryDataLoaded = true;
+  //   setState(() {});
+  // }
+
+  Lumpsum get lumpsum => Lumpsum();
   int flag = 0;
   var listOfColumns = [];
   var id;
@@ -41,6 +79,10 @@ class _OrderPageState extends State<OrderPage> {
         "${widget.order!.order_id.toString()}");
     print(
         "${widget.order!.orderType.toString()}");
+    print(
+        "${widget.order!.trans_type.toString()}");
+
+    print("inLoadLumpsumData");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id');
     // print(widget.order!.orderType);
@@ -53,6 +95,8 @@ class _OrderPageState extends State<OrderPage> {
           Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
           body: {
             "order_id": widget.order!.order_id,
+            // "qty_left": widget.order!.qty_left,
+            // "id": widget.order!.id,
           },
         );
         var responseData = jsonDecode(res.body);
@@ -83,12 +127,11 @@ class _OrderPageState extends State<OrderPage> {
         final res = await http.post(
           Uri.parse("http://urbanwebmobile.in/steffo/getlumpsumorder.php"),
           body: {
+            // "qty_left" : responseData["data"][i]["qty_left"],
             "order_id": widget.order!.order_id,
           },
         );
-
         var responseData = jsonDecode(res.body);
-
         // print("ddddddddddd");
         listOfColumns = [];
         for (int i = 0; i < responseData["data"].length; i++) {
@@ -115,6 +158,7 @@ class _OrderPageState extends State<OrderPage> {
       // );
 
       print(listOfColumns);
+      print(widget.order!.qty_left);
       //  print("${widget.order!.order_id.toString()}order id");
       flag = 1;
       setState(() {});
@@ -127,7 +171,7 @@ class _OrderPageState extends State<OrderPage> {
   // }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,) {
     loadData();
     //  print("orderpage${widget.order!.items.toString()}");
     return Scaffold(
@@ -161,7 +205,8 @@ class _OrderPageState extends State<OrderPage> {
                               style: const TextStyle(
                                   fontSize: 20,
                                   fontFamily: "Poppins_bold",
-                                  color: Colors.white)),
+                                  color: Colors.white)
+                          ),
                         ),
                         SizedBox(
                           height: 10,
@@ -201,9 +246,11 @@ class _OrderPageState extends State<OrderPage> {
                                         fontFamily: "Poppins_Bold")),
                                 Text(widget.order!.party_mob_num.toString(),
                                     style: const TextStyle(
-                                        fontSize: 15, fontFamily: "Poppins"))
+                                        fontSize: 15, fontFamily: "Poppins")
+                                )
                               ],
-                            )),
+                            )
+                        ),
 
                         // Container(
                         //   padding: const EdgeInsets.all(10),
@@ -305,7 +352,29 @@ class _OrderPageState extends State<OrderPage> {
                                     style: const TextStyle(
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
-                            )),
+                            )
+                        ),
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("GST No.:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.PartygstNumber.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )
+                            ),
 
 
 
@@ -327,6 +396,25 @@ class _OrderPageState extends State<OrderPage> {
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
                             )),
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Trailer Type:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.trailerType.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )),
                         // const SizedBox(
                         //   height: 10.0,
                         // ),
@@ -390,7 +478,8 @@ class _OrderPageState extends State<OrderPage> {
                                     style: const TextStyle(
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
-                            )),
+                            )
+                        ),
                         Container(
                             // margin: EdgeInsets.only(top: 10),
                             padding: const EdgeInsets.all(10),
@@ -426,7 +515,7 @@ class _OrderPageState extends State<OrderPage> {
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontFamily: "Poppins_Bold")),
-                                Text(widget.order!.qty_left.toString(),
+                                Text(lumpsum.qty_left.toString(),
                                     style: const TextStyle(
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
@@ -631,7 +720,19 @@ class _OrderPageState extends State<OrderPage> {
                           ],
                         );
                       } else {
-                        return (Container());
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          child: buttonStyle("View Challan", () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChallanListPage(
+                                      order: widget.order!,
+                                    )));
+                          }),
+                        );
                       }
                     }
                   })

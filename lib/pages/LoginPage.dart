@@ -100,7 +100,17 @@ class _loginPageState extends State<LoginContent> {
       if (rememberMe) {
         prefs.setString('isLoggedIn', 'true');
       }
-      if (responseData['userStatus'] == 'Approved') {
+       if (responseData['userType'] == 'challan') {
+        Navigator.of(context).pushNamed('/challangenerator');
+        Fluttertoast.showToast(
+            msg: 'Logged in Successfully',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.orangeAccent,
+            textColor: Colors.white);
+      }
+      else if (responseData['userStatus'] == 'Approved') {
         Navigator.of(context).pushNamed("/home");
         Fluttertoast.showToast(
             msg: 'Logged In Successfully',
@@ -118,7 +128,8 @@ class _loginPageState extends State<LoginContent> {
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.lightGreen,
             textColor: Colors.white);
-      } else if (responseData['userStatus'] == 'Registered') {
+      }
+      else if (responseData['userStatus'] == 'Registered') {
         Fluttertoast.showToast(
             msg: 'Your Request Is In Review',
             toastLength: Toast.LENGTH_LONG,
@@ -126,7 +137,8 @@ class _loginPageState extends State<LoginContent> {
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.orangeAccent,
             textColor: Colors.white);
-      } else {
+      }
+      else {
         Fluttertoast.showToast(
             msg: 'Your Request Has Been Rejected.\n Please Register Again',
             toastLength: Toast.LENGTH_LONG,

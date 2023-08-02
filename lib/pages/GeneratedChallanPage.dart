@@ -18,7 +18,7 @@ import '../ui/common.dart';
 
 class GeneratedChallan extends StatelessWidget {
   final String challan_id;
-  
+
   const GeneratedChallan(
       {super.key, required this.challan_id});
 
@@ -31,7 +31,7 @@ class GeneratedChallan extends StatelessWidget {
 
 class ChallanPage extends StatefulWidget {
   final String challan_id;
-  
+
 
   const ChallanPage(
       {super.key, required this.challan_id});
@@ -230,7 +230,7 @@ class _ChallanPageState extends State<ChallanPage> {
                 height: 10.0,
               ),
               Container(
-                padding: EdgeInsets.only(left: 7),
+                padding: EdgeInsets.only(left: 7,right:5),
                 child: Column(
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     // mainAxisAlignment: MainAxisAlignment.start,
@@ -305,8 +305,6 @@ class _ChallanPageState extends State<ChallanPage> {
                             //     )
                             //   ],
                             // ),
-
-
                             Container(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 decoration: BoxDecoration(
@@ -393,7 +391,7 @@ class _ChallanPageState extends State<ChallanPage> {
                     ]),
               ),
               Container(
-                padding: EdgeInsets.only(left: 7),
+                padding: EdgeInsets.only(left: 7,right: 5),
                 child: Column(children: [
                   Container(
                       padding: const EdgeInsets.all(10),
@@ -418,74 +416,72 @@ class _ChallanPageState extends State<ChallanPage> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  Column(children: [
-                    Container(
-                        padding: const EdgeInsets.only(left: 10,right: 10),
-                        decoration: const BoxDecoration(
-                          // borderRadius: BorderRadius.circular(20),
-                          // color: Colors.white,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("LR no:",
-                                style: TextStyle(
-                                  fontFamily: "Poppins_Bold",
-                                  fontSize: 15,
-                                  // fontWeight: FontWeight.bold
-                                )),
-                            Text(ch.lr_number!,
-                                style: TextStyle(
-                                    fontSize: 15, fontFamily: "Poppins"))
-                          ],
-                        )),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 10,right: 10),
+                  Container(
+                      padding: const EdgeInsets.only(left: 10,right: 10),
+                      decoration: const BoxDecoration(
+                        // borderRadius: BorderRadius.circular(20),
+                        // color: Colors.white,
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Vehicle no",
+                          Text("LR no:",
                               style: TextStyle(
                                 fontFamily: "Poppins_Bold",
                                 fontSize: 15,
                                 // fontWeight: FontWeight.bold
                               )),
-                          Text(ch.vehicle_number!,
+                          Text(ch.lr_number!,
                               style: TextStyle(
                                   fontSize: 15, fontFamily: "Poppins"))
                         ],
+                      )),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 10,right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Vehicle no",
+                            style: TextStyle(
+                              fontFamily: "Poppins_Bold",
+                              fontSize: 15,
+                              // fontWeight: FontWeight.bold
+                            )),
+                        Text(ch.vehicle_number!,
+                            style: TextStyle(
+                                fontSize: 15, fontFamily: "Poppins"))
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        // borderRadius: BorderRadius.circular(20),
+                        // color: Colors.white,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                          // borderRadius: BorderRadius.circular(20),
-                          // color: Colors.white,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("Date :",
-                                style: TextStyle(
-                                  fontFamily: "Poppins_Bold",
-                                  fontSize: 15,
-                                  // fontWeight: FontWeight.bold
-                                )),
-                            Text(
-                              or.order_date!,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(" Order Date :",
                               style: TextStyle(
-                                  fontSize: 15, fontFamily: "Poppins"),
-                            )
-                          ],
-                        )),
-                  ])
+                                fontFamily: "Poppins_Bold",
+                                fontSize: 15,
+                                // fontWeight: FontWeight.bold
+                              )),
+                          Text(
+                            or.order_date!,
+                            style: TextStyle(
+                                fontSize: 15, fontFamily: "Poppins"),
+                          )
+                        ],
+                      ))
                 ]),
               ),
               const SizedBox(
@@ -496,7 +492,7 @@ class _ChallanPageState extends State<ChallanPage> {
                   children: [
                     const Text(
                       "Items:",
-                      style: TextStyle(
+                      style: TextStyle( 
                           fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     const SizedBox(
@@ -616,6 +612,7 @@ class _ChallanPageState extends State<ChallanPage> {
               SizedBox(
                 height: 10,
               ),
+
             ])),
       ),
     );

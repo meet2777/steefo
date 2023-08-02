@@ -73,6 +73,8 @@ class DealerDetailState extends State<DealerDetailContent> {
             " " +
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.pincode = responseData["data"][i]["pincode"];
         req.party_name = responseData["data"][i]["partyName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];

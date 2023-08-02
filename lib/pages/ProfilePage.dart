@@ -876,7 +876,6 @@ class _ProfilePageState extends State<ProfileContent> {
               iconStyle: IconStyle.simple,
               opacity: 0.3,
             ),
-
             items: [
               BottomBarItem(
                 icon: const Icon(
@@ -938,7 +937,6 @@ class _ProfilePageState extends State<ProfileContent> {
                     ),
                   );
                 }
-
                 if (index == 2) {
                   Navigator.pushReplacement(
                     context,

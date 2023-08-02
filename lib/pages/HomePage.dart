@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import 'package:quickalert/quickalert.dart';
@@ -31,6 +32,7 @@ import '../Models/order.dart';
 import '../Models/user.dart';
 import 'LoginPage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'OrderPage.dart';
 import 'addItem.dart';
 
 class HomePage extends StatelessWidget {
@@ -64,6 +66,12 @@ class _HomePageState extends State<HomeContent> {
   List<File>? imagesFiles = [];
 
   var user_type;
+
+  Order get order => Order();
+
+  String? get curr_user_id => null;
+
+  get index => null;
   void loadusertype() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     user_type = await prefs.getString('userType');
@@ -98,16 +106,20 @@ class _HomePageState extends State<HomeContent> {
             " " +
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.trailerType = responseData["data"][i]["trailerType"];
         req.party_name = responseData["data"][i]["partyName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
+        // req.loading_type = responseData["data"][i][""];
         req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
+        req.qty_left = responseData["data"][i]["qty_left"];
         req.order_id = responseData["data"][i]["order_id"].toString();
         //print(req);
         if (req.status != "Rejected") {
@@ -351,6 +363,8 @@ class _HomePageState extends State<HomeContent> {
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
         req.org_name = responseData["data"][i]["orgName"];
+        req.trailerType = responseData["data"][i]["trailerType"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.pincode = responseData["data"][i]["pincode"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
@@ -385,32 +399,35 @@ class _HomePageState extends State<HomeContent> {
       decoration: const BoxDecoration(),
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          TextButton(
-            child: Text('send notification'),
-            onPressed: () {
-              notificationServices.getDeviceToken().then((value) async {
-                 var data = {
-                  'to': value.toString(),
-                  'priority': 'high',
-                  'notification': {
-                    'title': 'Parth',
-                    'body': 'You Got An Order',
-                  },
-                  'data': {'type': 'msg', 'id': 'parth1234'},
-                };
-                print(value.toString());
-                await http.post(
-                    Uri.parse('https://fcm.googleapis.com/fcm/send'),
-                    body: jsonEncode(data),
-                    headers: {
-                      'Content-Type': 'application/json; charset=UTF-8',
-                      'Authorization':
-                          'key=AAAA_8-x_z4:APA91bE5c27vN7PgA4BTTOtLcLpxnz3W-Ljjet2YAfwr3b0t10YMXSbgwTX01aJoDZhylqCZjZ3EiuUR9M2KDGcvCfBSBumulrujHHuN7zI_6kN0JIrMCkxiwT63QD5AfNTyE0gxEao7'
-                    });
-              });
-            },
-          ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+          // TextButton(
+          //   child: Text('send notification'),
+          //   onPressed: () {
+          //     notificationServices.getDeviceToken().then((value) async {
+          //        var data = {
+          //         'to': value.toString(),
+          //         'priority': 'high',
+          //         'notification': {
+          //           'title': 'Parth',
+          //           'body': 'You Got An Order',
+          //         },
+          //         'data': {'type': 'msg', 'id': 'parth1234'},
+          //       };
+          //       print(value.toString());
+          //       await http.post(
+          //           Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          //           body: jsonEncode(data),
+          //           headers: {
+          //             'Content-Type': 'application/json; charset=UTF-8',
+          //             'Authorization':
+          //                 'key=AAAA_8-x_z4:APA91bE5c27vN7PgA4BTTOtLcLpxnz3W-Ljjet2YAfwr3b0t10YMXSbgwTX01aJoDZhylqCZjZ3EiuUR9M2KDGcvCfBSBumulrujHHuN7zI_6kN0JIrMCkxiwT63QD5AfNTyE0gxEao7'
+          //           });
+          //     });
+          //   },
+          // ),
+          
           //carousel slider start////////////////////////////////////
           Container(
             decoration: BoxDecoration(
@@ -418,7 +435,7 @@ class _HomePageState extends State<HomeContent> {
               //  color: Colors.grey.shade200,
             ),
             child: LayoutBuilder(builder: (context, constraints) {
-              if (isRes1Loaded) {
+              if (isRes1Loaded && user_type != 'challan') {
                 print(responseData1['images'].length);
                 if (responseData1['images'].length > 0) {
                   return Container(
@@ -431,14 +448,12 @@ class _HomePageState extends State<HomeContent> {
                       itemCount: responseData1['images'].length,
                       options: CarouselOptions(
                         //  scrollPhysics: BouncingScrollPhysics(),
-                        height: 330.0,
-
+                        height: 320.0,
                         enlargeCenterPage: true,
                         autoPlay: true,
                         //  aspectRatio: 18 / 11,
                         //  autoPlayCurve: Curves.bounceIn,
                         enableInfiniteScroll: true,
-
                         autoPlayAnimationDuration: Duration(milliseconds: 300),
                         viewportFraction: 1.0,
                         onPageChanged: (index, reason) {
@@ -453,7 +468,8 @@ class _HomePageState extends State<HomeContent> {
                           // onLongPress: () {
                           //   imagePickerOption();
                           // },
-                          child: Stack(children: [
+                          child: Stack(
+                              children: [
                             ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Center(
@@ -481,9 +497,7 @@ class _HomePageState extends State<HomeContent> {
                                                 "name": responseData1['images']
                                                     [i]['name'],
                                               });
-
                                           responseData1['images'].removeAt(i);
-
                                           setState(() {});
                                         },
                                         icon: Icon(
@@ -513,7 +527,6 @@ class _HomePageState extends State<HomeContent> {
                                         onPressed: () async {
                                           await pickMultipleImage(
                                               ImageSource.gallery);
-
                                           setState(() {
                                             m = id;
                                           });
@@ -564,6 +577,7 @@ class _HomePageState extends State<HomeContent> {
                 } else {
                   return Container();
                 }
+
               } else {
                 return Container();
               }
@@ -648,7 +662,6 @@ class _HomePageState extends State<HomeContent> {
           // FlutterSwitch(
           //   borderRadius: 15,
           //   showOnOff: true,
-
           //   //  toggleSize: 50,
           //   onToggle: (bool value) async {
           //     light = value;
@@ -658,7 +671,6 @@ class _HomePageState extends State<HomeContent> {
           //             "http://urbanwebmobile.in/steffo/setsale.php"),
           //         body: {"status": value.toString()});
           //   },
-
           //   // This bool value toggles the switch.
           //   value: light,
           //   inactiveColor: Colors.black,
@@ -669,7 +681,6 @@ class _HomePageState extends State<HomeContent> {
           // )
           //               ],
           //             )),
-
           //         //enable sales end
           //         //price bar start
 
@@ -685,12 +696,55 @@ class _HomePageState extends State<HomeContent> {
           //     return Container();
           //   }
           // }),
-
           SizedBox(
             height: 10,
           ),
+          LayoutBuilder(builder: (context,constraint){
+            if(user_type == "challan"  ){
+             return Container(
+               child: Column(
+                 children: [
+                   ListView.builder(
+                     reverse: true,
+                     itemCount: salesOrderList.length,
+                     physics: const NeverScrollableScrollPhysics(),
+                     scrollDirection: Axis.vertical,
+                     shrinkWrap: true,
+                     itemBuilder: (context, index) {
+                       print("ordertype${salesOrderList[index].orderType}");
+                       if (salesOrderList[index].orderType == "With Size" ||
+                           salesOrderList[index].orderType == "Use Lumpsum") {
+                         return GestureDetector(
+                             onTap: () {
+                               Navigator.push(
+                                   context,
+                                   MaterialPageRoute(
+                                       builder: (context) => OrderDetails(
+                                           order: salesOrderList[index])));
+                             },
+                             child: orderCard(
+                               context,
+                               salesOrderList[index],
+                               //  qtyandprice[index],
+                               id,
+                             ));
+                       } else
+                         return Container();
+                     },
+                   ),
+                   SizedBox(
+                     height: 50,
+                   ),
+                 ],
+               ),
+             );
+            }else{
+              return Container();
+            }
+          }),
+          
           LayoutBuilder(builder: (context, constraint) {
-            if (isSalesEnabled == 'false' && user_type != 'Manufacturer') {
+            if (isSalesEnabled == 'false' && user_type != 'Manufacturer'&& user_type != 'challan') {
               print('marketisclose');
               return Container(
                 alignment: Alignment.center,
@@ -711,7 +765,7 @@ class _HomePageState extends State<HomeContent> {
                 ),
               );
             } else if (isSalesEnabled == 'true' &&
-                user_type != 'Manufacturer') {
+                user_type != 'Manufacturer'&& user_type != 'challan') {
               return Container(
                 padding: EdgeInsets.only(top: 10, bottom: 5),
                 decoration: BoxDecoration(
@@ -757,6 +811,17 @@ class _HomePageState extends State<HomeContent> {
                         ),
                       ],
                     ),
+                    Divider(
+                      color: Colors.white,
+                    ),
+                    Text(
+                      "North, Central and Rajkot: +200/- \n Surat: +500/-",
+                      style: TextStyle(
+                          letterSpacing: 1,
+                          fontSize: 15 ,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               );
@@ -769,7 +834,7 @@ class _HomePageState extends State<HomeContent> {
           ),
 
           LayoutBuilder(builder: (context, constraints) {
-            if (user_type != "Dealer" && user_type != "Builder") {
+            if (user_type != "Dealer" && user_type != "Builder"&& user_type != 'challan') {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -801,7 +866,8 @@ class _HomePageState extends State<HomeContent> {
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             )
                           ],
-                        )),
+                        )
+                    ),
                   ),
                   // SizedBox(
                   //   height: 10,
@@ -857,7 +923,8 @@ class _HomePageState extends State<HomeContent> {
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             )
                           ],
-                        )),
+                        )
+                    ),
                   ),
                 ],
               );
@@ -1234,12 +1301,16 @@ class _HomePageState extends State<HomeContent> {
   //   });
   // }
 
+  void showDialog(){
+
+  }
+
   void _showmodelbottomsheet() {
     showModalBottomSheet(
       isScrollControlled: false,
       context: context,
       backgroundColor: Color.fromRGBO(19, 59, 78, 1.0),
-      constraints: BoxConstraints.tight(Size.fromHeight(250)),
+      constraints: BoxConstraints.tight(Size.fromHeight(350)),
       builder: (BuildContext context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
@@ -1249,161 +1320,168 @@ class _HomePageState extends State<HomeContent> {
               //  height: 100,
               child: LayoutBuilder(builder: (context, constraints) {
                 if (editPrice == false) {
-                  return Column(
-                    mainAxisAlignment: user_type == "Manufacturer"
-                        ? MainAxisAlignment.spaceBetween
-                        : MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "BASIC RATE PER TON",
-                        style: TextStyle(
-                            letterSpacing: 2,
-                            fontSize: 17,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Divider(
-                        color: Colors.white,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GradientText(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                              Colors.white60,
-                            ],
-                            NumberFormat.simpleCurrency(
-                                    locale: 'hi-IN', decimalDigits: 0)
-                                .format(int.parse(basePrice.toString())),
-                            style: TextStyle(
+                  return SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: user_type == "Manufacturer"
+                          ? MainAxisAlignment.spaceBetween
+                          : MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "BASIC RATE PER TON",
+                          style: TextStyle(
                               letterSpacing: 2,
-                              fontSize: 35,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              fontSize: 17,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Divider(
+                          color: Colors.white,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GradientText(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                                Colors.white60,
+                              ],
+                              NumberFormat.simpleCurrency(
+                                      locale: 'hi-IN', decimalDigits: 0)
+                                  .format(int.parse(basePrice.toString())),
+                              style: TextStyle(
+                                letterSpacing: 2,
+                                fontSize: 35,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "/-",
-                            style: TextStyle(color: Colors.white, fontSize: 35),
-                          ),
-                        ],
-                      ),
-                      Divider(
-                        color: Colors.white,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          user_type == "Manufacturer"
-                              ? FlutterSwitch(
-                                  borderRadius: 15,
-                                  showOnOff: true,
+                            Text(
+                              "/-",
+                              style: TextStyle(color: Colors.white, fontSize: 35),
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          color: Colors.white,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            user_type == "Manufacturer"
+                                ? FlutterSwitch(
+                                    borderRadius: 15,
+                                    showOnOff: true,
 
-                                  //  toggleSize: 50,
-                                  onToggle: (bool value) async {
-                                    setState(() {
-                                      isSalesEnabled = value.toString();
-                                    });
+                                    //  toggleSize: 50,
+                                    onToggle: (bool value) async {
+                                      setState(() {
+                                        isSalesEnabled = value.toString();
+                                      });
 
-                                    var res = await http.post(
-                                        Uri.parse(
-                                            "http://urbanwebmobile.in/steffo/setsale.php"),
-                                        body: {"status": isSalesEnabled});
-                                  },
+                                      var res = await http.post(
+                                          Uri.parse(
+                                              "http://urbanwebmobile.in/steffo/setsale.php"),
+                                          body: {"status": isSalesEnabled});
+                                    },
 
-                                  // This bool value toggles the switch.
-                                  value: bool.parse(isSalesEnabled.toString()),
-                                  inactiveColor: Colors.black,
-                                  activeColor: Colors.white,
-                                  activeToggleColor: Colors.black,
-                                  inactiveTextColor: Colors.white,
-                                  activeTextColor: Colors.black,
-                                )
-                              : Container(),
-                          LayoutBuilder(builder: (context, constraints) {
-                            if (user_type == "Manufacturer") {
-                              return Container(
-                                // width:
-                                //     MediaQuery.of(context).size.width * 0.2,
-                                child: IconButton(
-                                  color: Colors.white,
-                                  onPressed: () {
-                                    setState(() {
-                                      editPrice = true;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons.edit,
+                                    // This bool value toggles the switch.
+                                    value: bool.parse(isSalesEnabled.toString()),
+                                    inactiveColor: Colors.black,
+                                    activeColor: Colors.white,
+                                    activeToggleColor: Colors.black,
+                                    inactiveTextColor: Colors.white,
+                                    activeTextColor: Colors.black,
+                                  )
+                                : Container(),
+                            LayoutBuilder(builder: (context, constraints) {
+                              if (user_type == "Manufacturer") {
+                                return Container(
+                                  // width:
+                                  //     MediaQuery.of(context).size.width * 0.2,
+                                  child: IconButton(
                                     color: Colors.white,
+                                    onPressed: () {
+                                      setState(() {
+                                        editPrice = true;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          }),
-                        ],
-                      )
-                    ],
+                                );
+                              } else {
+                                return Container();
+                              }
+                            }),
+                          ],
+                        )
+                      ],
+                    ),
                   );
                 } else {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        child: TextFormField(
-                          // initialValue: price.toString(),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.done,
-                          controller: newBasePrice,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700),
-                          cursorColor: Colors.white,
-                          decoration: const InputDecoration(
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.white, width: 2.0),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 4.0),
+                  return SingleChildScrollView(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(padding: EdgeInsets.only(top: 20)),
+                        Container(
+                          child: TextFormField(
+                            // initialValue: price.toString(),
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.done,
+                            controller: newBasePrice,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700),
+                            cursorColor: Colors.white,
+                            decoration: const InputDecoration(
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.white, width: 2.0),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 4.0),
+                              ),
                             ),
                           ),
+                          width: MediaQuery.of(context).size.width / 3,
                         ),
-                        width: MediaQuery.of(context).size.width / 3,
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            // print(newBasePrice.text);
-                            setState(() {
-                              editPrice = false;
-                              final numericRegex = RegExp(r'^[0-9]*$');
-                              if (numericRegex.hasMatch(newBasePrice.text) &&
-                                  newBasePrice.text.trim() != "") {
-                                price = int.parse(newBasePrice.text);
-                                http.post(
-                                    Uri.parse(
-                                        "http://urbanwebmobile.in/steffo/setbaseprice.php"),
-                                    body: {
-                                      "basePrice": newBasePrice.text.toString()
-                                    });
-                                basePrice = newBasePrice.text;
-                              }
-                            });
-                          },
-                          child: Text(
-                            "Submit",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.black))
-                    ],
+                        ElevatedButton(
+                            onPressed: () {
+                              // print(newBasePrice.text);
+                              setState(() {
+                                editPrice = false;
+                                final numericRegex = RegExp(r'^[0-9]*$');
+                                if (numericRegex.hasMatch(newBasePrice.text) &&
+                                    newBasePrice.text.trim() != "") {
+                                  price = int.parse(newBasePrice.text);
+                                  http.post(
+                                      Uri.parse(
+                                          "http://urbanwebmobile.in/steffo/setbaseprice.php"),
+                                      body: {
+                                        "basePrice": newBasePrice.text.toString()
+                                      });
+                                  basePrice = newBasePrice.text;
+                                }
+                              });
+                            },
+                            child: SingleChildScrollView(
+                              child: Text(
+                                "Submit",
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black))
+                      ],
+                    ),
                   );
                 }
               }),

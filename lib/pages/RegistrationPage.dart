@@ -186,7 +186,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget FormDetails() {
     List<DropdownMenuItem<String>> dropdownItems = [];
-    List items = ["Distributor", "Dealer", "Builder"];
+    List items = ["Distributor", "Dealer", "Builder","challan"];
     List<DropdownMenuItem<String>> getItems() {
       for (int i = 0; i < items.length; i++) {
         DropdownMenuItem<String> it = DropdownMenuItem(

@@ -180,7 +180,7 @@ class _OTPPageState extends State<OTPContent> {
                                 print(otp.text);
                                 if (await myAuth.verifyOTP(
                                         otp: otp.toString()) ==
-                                    true) {
+                                    false) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                     content: Text("OTP is verified"),

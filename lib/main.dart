@@ -21,6 +21,7 @@ import 'package:stefomobileapp/pages/RegistrationPage.dart';
 import 'package:stefomobileapp/pages/RequestPage.dart';
 import 'package:stefomobileapp/pages/PlaceOrderPage.dart';
 import 'package:stefomobileapp/pages/UserProfilePage.dart';
+import 'package:stefomobileapp/pages/challangenerator.dart';
 import 'package:stefomobileapp/pages/extrahome.dart';
 
 import 'package:stefomobileapp/pages/newPassPage.dart';
@@ -78,6 +79,7 @@ class MyApp extends StatelessWidget {
         '/OTP': (BuildContext context) => OTPPage(),
         '/newPass': (BuildContext context) => NewPassPage(),
         '/profilePage': (BuildContext context) => ProfilePage(),
+        '/challangenerator': (BuildContext context) => ChallangeneratorPage(order: Order(),),
 
         //'/request': (BuildContext context) => UserRequestPage(),
       },

@@ -60,6 +60,7 @@ class _purchasesState extends State<purchases> {
              req.trans_type = responseData["data"][i]["transType"];
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];

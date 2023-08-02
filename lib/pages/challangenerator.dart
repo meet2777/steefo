@@ -16,25 +16,25 @@ import 'GenerateChallanPage.dart';
 import 'GeneratedChallanPage.dart';
 import 'OrderPage.dart';
 
-class OrdersPage extends StatelessWidget {
+class ChallangeneratorPage extends StatelessWidget {
   final Order order;
-  OrdersPage({super.key, required this.order});
+  ChallangeneratorPage({super.key, required this.order});
   @override
   Widget build(BuildContext context) {
-    return OrdersContent(order: order);
+    return ChallangeneratorContent(order: order);
     //  throw UnimplementedError();
   }
 }
 
-class OrdersContent extends StatefulWidget {
+class ChallangeneratorContent extends StatefulWidget {
   final Order order;
-  const OrdersContent({super.key, required this.order});
+  const ChallangeneratorContent({super.key, required this.order});
   final selected = 0;
   @override
-  State<OrdersContent> createState() => _OrdersPageState();
+  State<ChallangeneratorContent> createState() => _OrdersPageState();
 }
 
-class _OrdersPageState extends State<OrdersContent> {
+class _OrdersPageState extends State<ChallangeneratorContent> {
   List<Item> qtyandprice = [];
   loadDatafortotal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -50,7 +50,6 @@ class _OrdersPageState extends State<OrdersContent> {
       final res = await http.post(
         Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
         body: {
-          // "id" : responseData1['data'][i]['id'];
           "order_id": widget.order.order_id,
         },
       );
@@ -111,7 +110,7 @@ class _OrdersPageState extends State<OrdersContent> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appbar("Specific", () {
-        Get.to(HomePage());
+        // Get.to(HomePage());
       }),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -120,7 +119,7 @@ class _OrdersPageState extends State<OrdersContent> {
             selectedTitleColor: Colors.white,
             unSelectedTitleColor: Colors.black,
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             unSelectedCardColor: Colors.white,
             titleStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -175,15 +174,13 @@ class _OrdersPageState extends State<OrdersContent> {
 
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
-        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
-        req.qty_left = responseData["data"][i]["qty_left"];
         req.trans_type = responseData["data"][i]["transType"];
-        req.trailerType = responseData["data"][i]["trailerType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
@@ -239,15 +236,13 @@ class _OrdersPageState extends State<OrdersContent> {
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
-        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
-        req.qty_left = responseData["data"][i]["qty_left"];
         req.trans_type = responseData["data"][i]["transType"];
-        req.trailerType = responseData["data"][i]["trailerType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.order_id = responseData["data"][i]["order_id"].toString();
@@ -382,7 +377,7 @@ class _OrdersPageState extends State<OrdersContent> {
                                   OrderDetails(order: requestList[index])));
                     },
                     child: requestList[index].orderType == "With Size" ||
-                            requestList[index].orderType == "Use Lumpsum"
+                        requestList[index].orderType == "Use Lumpsum"
                         ? orderwidget1(index)
                         : Container());
                 // }
@@ -516,7 +511,7 @@ class _OrdersPageState extends State<OrdersContent> {
                         child: Row(
                           children: [
                             Text(
-                              "Trans Type:",
+                              "TotalPrice:",
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
@@ -525,7 +520,7 @@ class _OrdersPageState extends State<OrdersContent> {
                               width: 7,
                             ),
                             Text(
-                              requestList[index].trans_type.toString(),
+                              requestList[index].totalPrice.toString(),
                               style: TextStyle(color: Colors.grey),
                             ),
                           ],
@@ -575,7 +570,7 @@ class _OrdersPageState extends State<OrdersContent> {
                           "order_id": requestList[index].order_id!
                         },
                       );
-                      () {
+                          () {
                         // orderList.add(requestList[index]);
                         requestList.removeAt(index);
                         id = "none";
@@ -588,7 +583,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     },
                     child: GradientText(
                       style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       colors: [Colors.greenAccent, Colors.greenAccent],
                       "Accept",
                     )),
@@ -603,7 +598,7 @@ class _OrdersPageState extends State<OrdersContent> {
                           "order_id": requestList[index].order_id!
                         },
                       );
-                      () {
+                          () {
                         // orderList.add(requestList[index]);
                         requestList.removeAt(index);
                         id = "none";
@@ -614,7 +609,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     },
                     child: GradientText(
                       style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       colors: [Colors.redAccent, Colors.red],
                       "Decline",
                     ))
@@ -1010,7 +1005,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                       child: LayoutBuilder(builder: (context, constraints) {
                         if (order.status == "Confirmed") {
                           return Container(
-                              // width: 40,
+                            // width: 40,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
                               decoration: BoxDecoration(
@@ -1115,7 +1110,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
                               style: TextStyle(
-                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                // color: Color.fromRGBO(19, 59, 78, 1.0),
                                   color: Colors.grey),
                             ),
                           ],
@@ -1127,17 +1122,17 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                         child: Row(
                           children: [
                             Text(
-                              "Trans. Type:",
+                              "Total Price:",
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
                             ),
                             Text(
-                              order.trans_type.toString(),
+                              order.totalPrice.toString(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
                               style: TextStyle(
-                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                // color: Color.fromRGBO(19, 59, 78, 1.0),
                                   color: Colors.grey),
                             ),
                           ],
@@ -1170,7 +1165,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           style: TextStyle(
-                              // color: Color.fromRGBO(19, 59, 78, 1.0),
+                            // color: Color.fromRGBO(19, 59, 78, 1.0),
                               color: Colors.grey),
                         ),
                       ],
@@ -1352,8 +1347,9 @@ Widget completedorderCard(
       children: [
         Container(
           // height: 130,
+
           // margin: EdgeInsets.only(top: 10),
-          padding: const EdgeInsets.only(bottom: 10),
+          // padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             color: Colors.grey.shade100,
@@ -1433,7 +1429,7 @@ Widget completedorderCard(
                       child: LayoutBuilder(builder: (context, constraints) {
                         if (order.status == "Completed") {
                           return Container(
-                              // width: 40,
+                            // width: 40,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5, vertical: 5),
                               decoration: BoxDecoration(
@@ -1565,7 +1561,7 @@ Widget completedorderCard(
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
                               style: TextStyle(
-                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                // color: Color.fromRGBO(19, 59, 78, 1.0),
                                   color: Colors.grey),
                             ),
                           ],
@@ -1577,17 +1573,17 @@ Widget completedorderCard(
                         child: Row(
                           children: [
                             Text(
-                              "Trans. Type:",
+                              "Total Price:",
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
                             ),
                             Text(
-                              order.trans_type.toString(),
+                              order.totalPrice.toString(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
                               style: TextStyle(
-                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                // color: Color.fromRGBO(19, 59, 78, 1.0),
                                   color: Colors.grey),
                             ),
                           ],
@@ -1620,7 +1616,7 @@ Widget completedorderCard(
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           style: TextStyle(
-                              // color: Color.fromRGBO(19, 59, 78, 1.0),
+                            // color: Color.fromRGBO(19, 59, 78, 1.0),
                               color: Colors.grey),
                         ),
                       ],

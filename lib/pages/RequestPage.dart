@@ -140,12 +140,14 @@ class _RequestPageState extends State<RequestContent> {
         req.status = responseData["data"][i]["orderStatus"];
         req.pincode = responseData["data"][i]["pincode"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
-        req.trans_type = responseData["data"][i]["transType"];
+        req.trans_type = responseData["data"][i]["trans_type"];
         req.order_date = responseData["data"][i]["createdAt"];
+        req.qty_left = responseData["data"][i]["qty_left"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.order_id = responseData["data"][i]["order_id"].toString();
         if (req.status?.trim() == "Pending" && id == req.reciever_id) {

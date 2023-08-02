@@ -43,6 +43,7 @@ class _OrderPageState extends State<OrderPage> {
     if (flag == 0) {
       if (widget.order!.orderType != "Lump-sum") {
         print(widget.order!.order_id);
+        print(widget.order!.PartygstNumber);
         final res = await http.post(
           Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
           body: {
@@ -248,6 +249,27 @@ class _OrderPageState extends State<OrderPage> {
                                             fontSize: 15, fontFamily: "Poppins"))
                                   ],
                                 )),
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("GST No.:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.PartygstNumber.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )),
+
 
                         Container(
                             padding: const EdgeInsets.all(10),

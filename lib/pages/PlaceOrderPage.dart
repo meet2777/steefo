@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/Models/user.dart';
@@ -13,6 +14,7 @@ import 'package:stefomobileapp/notification_services.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import '../Models/grade.dart';
 import '../Models/lumpsum.dart';
+import '../Models/payment.dart';
 import '../Models/region.dart';
 import '../Models/size.dart';
 import '../ui/common.dart';
@@ -34,6 +36,14 @@ class PlaceOrderContent extends StatefulWidget {
 }
 
 class _PlaceOrderPageState extends State<PlaceOrderContent> {
+
+  TextEditingController dateInput = TextEditingController();
+
+  // @override
+  // void initState() {
+  //   dateInput.text = ""; //set the initial value of text field
+  //   super.initState();
+  // }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -153,6 +163,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       selectedSize,
       selectedGrade,
       selectedType,
+      trailerType,
+      selectedpaymentType,
       selectedRegion,
       selectedTransType,
       selectedOrderType;
@@ -167,6 +179,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   TextEditingController deliveryDate = TextEditingController();
   List<Lumpsum> lumpsumList = [];
   bool isInventoryDataLoaded = false;
+
+
   loadLumpsumData() async {
     print("inLoadLumpsumData");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -178,11 +192,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         body: {
           "user_id": user_id,
         });
-
     var responseData = jsonDecode(res.body);
-
     /// var orders = [];
-
     print("lumpsumlist${responseData}");
     for (int i = 0; i < responseData["data"].length; i++) {
       print(responseData['data'][i]['name']);
@@ -204,6 +215,9 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
 
   @override
   void initState() {
+    dateInput.text = ""; //set the initial value of text field
+    super.initState();
+
     loadLumpsumData();
     super.initState();
     focusNode1 = FocusNode();
@@ -291,9 +305,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   }
 
   // List items = ["TMT"];
+
+  List payments = [];
   List grades = [];
   List sizes = [];
   List regions = [];
+  List<Payment> paymentList = [];
   List<Grade> gradeList = [];
   List<Region> regionList = [];
   List<ItemSize> sizeList = [];
@@ -312,7 +329,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         s.value = responseData['data'][i]["sizeValue"];
         sizeList.add(s);
       }
-
       var res1 = await http
           .post(Uri.parse("http://urbanwebmobile.in/steffo/getgrade.php"));
       var responseData1 = jsonDecode(res1.body);
@@ -336,12 +352,28 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         r.cost = responseData2['data'][i]["tCost"];
         regionList.add(r);
       }
+
+      var res3 = await http
+          .post(Uri.parse("http://urbanwebmobile.in/steffo/getpayment.php"));
+      var responseData3 = jsonDecode(res3.body);
+      for (int i = 0; i < responseData3['data'].length; i++) {
+        print(responseData3['data'][i]);
+        payments.add(responseData3['data'][i]["paymentName"]);
+        Payment p = Payment();
+        p.paymentName = responseData3['data'][i]["paymentName"];
+        p.paymentCost = responseData3['data'][i]["paymentCost"];
+        paymentList.add(p);
+      }
+
       setState(() {});
     }
   }
 
+
+  List payment = ["15 Days", "30 Days"];
+  List trailer = ["Streight", "Band"];
   List type = ["Loose", "Bhari"];
-  List transType = ["Ex-Plant", "FOR"];
+  List transType = ["Ex-Work", "FOR"];
   List orderType = ["Lump-sum", "With Size", "Use Lumpsum"];
 
   int itemNum = 1;
@@ -368,12 +400,14 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "shippingAddress": party_address.text,
               "pincode": pincode.text,
               "partyName": party_name.text,
-              "gstNumber": party_pan_no.text,
+              "PartygstNumber": party_pan_no.text,
               "mobileNumber": party_mob_num.text,
               "basePrice": base_price.text,
               "status": "Pending",
+              "trailerType": "None",
               "loadingType": "None",
-              "transportationType": "None",
+              "transType": "None",
+              "paymentTerm": "None",
               "orderType": selectedOrderType,
               "totalQuantity": totalQuantity.toString(),
               "totalPrice": tot_price.toString(),
@@ -386,13 +420,15 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "shippingAddress": party_address.text,
               "pincode": pincode.text,
               "partyName": party_name.text,
-              "gstNumber": party_pan_no.text,
+              "PartygstNumber": party_pan_no.text,
               "mobileNumber": party_mob_num.text,
               "basePrice": base_price.text,
               "status": "Pending",
               "loadingType": selectedType,
               "orderType": selectedOrderType,
-              "transportationType": selectedTransType,
+              "paymentTerm": selectedpaymentType,
+              "trailerType": trailerType,
+              "transType": selectedTransType,
               "totalQuantity": totalQuantity.toString(),
               "totalPrice": tot_price.toString(),
               "deliveryDate": deliveryDate.text,
@@ -474,6 +510,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
     List<DropdownMenuItem<String>> dropdownGrades = [];
     List<DropdownMenuItem<String>> dropdownSize = [];
     List<DropdownMenuItem<String>> dropdownType = [];
+    List<DropdownMenuItem<String>> dropdownTraierType = [];
+    List<DropdownMenuItem<String>> dropdownPaymentType = [];
     List<DropdownMenuItem<String>> dropdownRegion = [];
     List<DropdownMenuItem<String>> dropdownTransType = [];
     List<DropdownMenuItem<String>> dropdownOrderType = [];
@@ -520,6 +558,28 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         dropdownRegion.add(it);
       }
       return dropdownRegion;
+    }
+
+    List<DropdownMenuItem<String>> getTrailerType() {
+      for (int i = 0; i < trailer.length; i++) {
+        DropdownMenuItem<String> it = DropdownMenuItem(
+          value: trailer[i],
+          child: Text(trailer[i]),
+        );
+        dropdownTraierType.add(it);
+      }
+      return dropdownTraierType;
+    }
+
+    List<DropdownMenuItem<String>> getPaymentType() {
+      for (int i = 0; i < payment.length; i++) {
+        DropdownMenuItem<String> it = DropdownMenuItem(
+          value: payment[i],
+          child: Text(payment[i]),
+        );
+        dropdownPaymentType.add(it);
+      }
+      return dropdownPaymentType;
     }
 
     List<DropdownMenuItem<String>> getType() {
@@ -797,7 +857,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                         onChanged: (String? newValue) {
                           setState(() {});
                           selectedOrderType = newValue;
-                          if (selectedOrderType == "Lump-sum") {
+                          if (selectedOrderType == "Use Lumpsum") {
                             //selectedTransType = "None";
                           }
                         },
@@ -815,6 +875,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                 }
               }),
 
+
+
               //--------------------------Loading Type--------------------------
 
               LayoutBuilder(builder: (context, constraints) {
@@ -823,6 +885,64 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     ) {
                   return Column(
                     children: [
+
+                      Container(
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                                hintText: "Payment Term",
+                                hintStyle: TextStyle(fontSize: 20),
+                                filled: true,
+                                fillColor: Color.fromRGBO(
+                                    233, 236, 239, 0.792156862745098),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  // borderRadius: BorderRadius.circular(20)
+                                )),
+                            value: selectedpaymentType,
+                            items: getPaymentType(),
+                            onChanged: (String? newValue) {
+                              selectedpaymentType = newValue;
+                            },
+                            // key: field5Key,
+                            // focusNode: focusNode5,
+                            validator: (selectedValue) {
+                              if (selectedValue == null) {
+                                //return 'Please select a value.';
+                              }
+                              return null;
+                            },
+                          )),
+
+
+                      Container(
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: DropdownButtonFormField(
+                            decoration: const InputDecoration(
+                                hintText: "Select trailer Type",
+                                hintStyle: TextStyle(fontSize: 20),
+                                filled: true,
+                                fillColor: Color.fromRGBO(
+                                    233, 236, 239, 0.792156862745098),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  // borderRadius: BorderRadius.circular(20)
+                                )),
+                            value: trailerType,
+                            items: getTrailerType(),
+                            onChanged: (String? newValue) {
+                              trailerType = newValue;
+                            },
+                            // key: field5Key,
+                            // focusNode: focusNode5,
+                            // validator: (selectedValue) {
+                            //   if (selectedValue == null) {
+                            //     //return 'Please select a value.';
+                            //   }
+                            //   return null;
+                            // },
+                          )),
+
                       Container(
                           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                           child: DropdownButtonFormField(
@@ -975,6 +1095,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             return null;
                           },
                         )),
+
                     LayoutBuilder(builder: (context, constraints) {
                       if (selectedOrderType == "With Size" ||
                           selectedOrderType == "Use Lumpsum") {
@@ -1001,18 +1122,19 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                               },
                               key: field7Key,
                               focusNode: focusNode7,
-                              validator: (selectedValue) {
-                                if (selectedValue == null) {
-                                  // return 'Please select a value.';
-                                }
-                                return null;
-                              },
+                              // validator: (selectedValue) {
+                              //   if (selectedValue == null) {
+                              //     // return 'Please select a value.';
+                              //   }
+                              //   return null;
+                              // },
                             ));
                       } else {
                         selectedSize = " ";
                         return Container();
                       }
                     }),
+
                     Container(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: TextFormField(
@@ -1022,12 +1144,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                         controller: base_price,
                         maxLines: 1,
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter a value.';
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value!.isEmpty) {
+                        //     return 'Please enter a value.';
+                        //   }
+                        //   return null;
+                        // },
                         decoration: const InputDecoration(
                             hintText: "Base Price",
                             hintStyle: TextStyle(fontSize: 20),
@@ -1062,39 +1184,88 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       ),
                     ),
                     //-------------------------deliveryDAte-----------------------
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        textInputAction: TextInputAction.done,
-                        key: field10Key,
-                        focusNode: focusNode10,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter a date.';
-                          }
-                          return null;
-                        },
-                        controller: deliveryDate,
-                        maxLines: 1,
-                        decoration: const InputDecoration(
-                            hintText: "DeliveryDate",
-                            hintStyle: TextStyle(fontSize: 20),
-                            //  hintText: "Name",
-                            // floatingLabelBehavior: FloatingLabelBehavior.never,
-                            border: OutlineInputBorder(
-                                // borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide.none),
-                            filled: true,
-                            fillColor: Color.fromRGBO(233, 236, 239,
-                                0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
 
-                            ),
-                      ),
-                    ),
+                    Container(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        // padding: EdgeInsets.all(15),
+                        // height: MediaQuery.of(context).size.width / 3,
+                        child: Center(
+                            child: TextFormField(
+                              key: field10Key,
+                                  focusNode: focusNode10,
+                              controller: deliveryDate, //editing controller of this TextField
+                              decoration: InputDecoration(
+                                suffixIcon: Icon(Icons.calendar_today,color: Colors.grey,),
+                                  // icon: Icon(Icons.calendar_today,color: Colors.grey,), //icon of text field
+                                  hintText: "Delivery Date",
+                                  hintStyle: TextStyle(fontSize: 20),
+                                border: OutlineInputBorder(
+                                              // borderRadius: BorderRadius.circular(20),
+                                              borderSide: BorderSide.none),
+                                filled: true,
+                                fillColor: Color.fromRGBO(233, 236, 239,
+                                    0.792156862745098),
+                                //label text of field
+                              ),
+                              readOnly: true,
+                              //set it true, so that user will not able to edit text
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    //DateTime.now() - not to allow to choose before today.
+                                    lastDate: DateTime(2100));
+                                if (pickedDate != null) {
+                                  print(
+                                      pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                  String formattedDate =
+                                  DateFormat('dd-MM-yyyy').format(pickedDate);
+                                  print(
+                                      formattedDate); //formatted date output using intl package =>  2021-03-16
+                                  setState(() {
+                                    deliveryDate.text =
+                                        formattedDate; //set output date to TextField value.
+                                  });
+                                } else {}
+                              },
+                            ))),
+
+                    // Container(
+                    //   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    //   child: TextFormField(
+                    //     keyboardType: TextInputType.number,
+                    //     textInputAction: TextInputAction.done,
+                    //     key: field10Key,
+                    //     focusNode: focusNode10,
+                    //     validator: (value) {
+                    //       if (value!.isEmpty) {
+                    //         return 'Please enter a date.';
+                    //       }
+                    //       return null;
+                    //     },
+                    //     controller: deliveryDate,
+                    //     maxLines: 1,
+                    //     decoration: const InputDecoration(
+                    //         hintText: "DeliveryDate",
+                    //         hintStyle: TextStyle(fontSize: 20),
+                    //         //  hintText: "Name",
+                    //         // floatingLabelBehavior: FloatingLabelBehavior.never,
+                    //         border: OutlineInputBorder(
+                    //             // borderRadius: BorderRadius.circular(20),
+                    //             borderSide: BorderSide.none),
+                    //         filled: true,
+                    //         fillColor: Color.fromRGBO(233, 236, 239,
+                    //             0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
+                    //
+                    //         ),
+                    //   ),
+                    // ),
                     Center(
                       child: Text(isItem, style: TextStyle(color: Colors.red)),
                     ),
+
+
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blueGrey,
@@ -1108,12 +1279,18 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           var grdpct, szpct = 0;
                           if (selectedOrderType != "Use Lumpsum") {
                             if (selectedGrade != null &&
+                                // selectedpaymentType != null &&
                                     selectedSize != null &&
                                     qty.text != "" &&
                                     base_price.text != "" &&
                                     selectedRegion != null
                                 // selectedTransType != null
                                 ) {
+                              // for (int i = 0; i < paymentList.length; i++) {
+                              //   if (paymentList[i].paymentName == selectedpaymentType) {
+                              //     prcpct = int.parse(paymentList[i].paymentCost!);
+                              //   }
+                              // }
                               for (int i = 0; i < gradeList.length; i++) {
                                 if (gradeList[i].value == selectedGrade) {
                                   grdpct = int.parse(gradeList[i].price!);
@@ -1136,7 +1313,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                         listOfColumns.elementAt(i)["Qty"]!);
                                     quty = quty + int.parse(qty.text);
 
-                                    num p = selectedTransType == "Ex-Plant" &&
+                                    num p = selectedTransType == "Ex-Work" &&
                                             selectedOrderType != "Lump-sum"
                                         ? (int.parse(base_price.text) +
                                                 grdpct +
@@ -1153,7 +1330,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                         quty.toString();
                                     listOfColumns.elementAt(i)["Price"] =
                                         p.toString();
-
                                     f = 1;
                                   }
                                 }
@@ -1162,7 +1338,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                     "Sr_no": itemNum.toString(),
                                     "Name": "$selectedGrade $selectedSize",
                                     "Qty": qty.text,
-                                    "Price": selectedTransType == "Ex-Plant" &&
+                                    "Price": selectedTransType == "Ex-Work" &&
                                             selectedOrderType != "Lump-sum"
                                         ? ((int.parse(base_price.text) +
                                                     grdpct +
@@ -1175,7 +1351,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                     szpct +
                                                     0) *
                                                 int.parse(qty.text))
-                                            .toString()
+                                             .toString()
                                   });
                                   // print(selectedTransType == "CIF" &&
                                   //         selectedOrderType != "Lump-sum"
@@ -1235,6 +1411,13 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             showDialog(
                               context: context,
                               builder: (context) {
+
+                                // for (int i = 0; i < paymentList.length; i++) {
+                                //   if (paymentList[i].paymentName == selectedpaymentType) {
+                                //     prcpct = int.parse(paymentList[i].paymentCost!);
+                                //   }
+                                // }
+
                                 for (int i = 0; i < gradeList.length; i++) {
                                   if (gradeList[i].value == selectedGrade) {
                                     grdpct = int.parse(gradeList[i].price!);
@@ -1252,15 +1435,14 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                   child: Column(
                                     children: [
                                       Container(
-                                          margin: EdgeInsets.only(
-                                              left: 5, right: 5),
+                                          // margin: EdgeInsets.only(left: 5, right: 5),
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
-                                              color: Colors.blueGrey,
+                                              color: Color.fromRGBO(19, 59, 78, 1.0),
                                               borderRadius:
                                                   BorderRadius.circular(10)),
                                           height: 50,
-                                          width: double.infinity,
+                                          // width: ,
                                           child: Text("Select The Lumpsum",
                                               style: GoogleFonts.poppins(
                                                   textStyle: TextStyle(
@@ -1304,6 +1486,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                     print(
                                                         "status....................${lumpsumList[index].name}");
                                                     print(szpct);
+                                                    // print(prcpct);
+                                                    print(selectedSize);
                                                     return Container(
                                                         margin: EdgeInsets.only(
                                                             top: 10),
@@ -1315,10 +1499,10 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                               "Name":
                                                                   lumpsumList[
                                                                           index]
-                                                                      .name!,
+                                                                      .name.toString()+ selectedSize.toString(),
                                                               "Qty": qty.text,
                                                               "Price": selectedTransType ==
-                                                                          "Ex-Plant" &&
+                                                                          "Ex-Work" &&
                                                                       selectedOrderType !=
                                                                           "Lump-sum"
                                                                   ? (
@@ -1435,7 +1619,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                               )),
                               DataColumn(
                                   label: Expanded(
-                                child: Text(
+                                     child: Text(
                                   'Quantity\n(Tons)',
                                   textAlign: TextAlign.center,
                                 ),
@@ -1520,9 +1704,9 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   width: MediaQuery.of(context).size.width,
                   child: buttonStyle("Submit", () {
-                    if (_formKey.currentState!.validate()) {
+                    // if (_formKey.currentState!.validate()) {
+                    // }
                       onPlaceOrder();
-                    }
                   }))
             ],
           ),

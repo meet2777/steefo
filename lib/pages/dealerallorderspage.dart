@@ -49,7 +49,9 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
             " " +
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
+        req.pincode = responseData["data"][i]["pincode"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.trans_type = responseData["data"][i]["trans_type"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
@@ -305,7 +307,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
                               OrderDetails(order: orderList[index])));
                 },
                 child: orderList[index].status == "Confirmed"
-                    ? orderCard(context, orderList[index], widget.user.id)
+                    ? orderCard(context, orderList[index], id)
                     : Container());
           },
         ),

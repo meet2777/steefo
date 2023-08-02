@@ -87,7 +87,6 @@ class _OrdersPageState extends State<OrdersContent> {
         Order req = Order();
         req.deliveryDate = responseData["data"][i]["deliveryDate"];
         req.totalPrice = responseData["data"][i]["price"];
-        req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
@@ -101,11 +100,13 @@ class _OrdersPageState extends State<OrdersContent> {
         req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
         req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
+        req.qty_left = responseData["data"][i]["qty_left"];
         req.order_id = responseData["data"][i]["order_id"].toString();
         req.date = responseData["data"][i]["dateTime"];
         //print(req);
@@ -162,10 +163,12 @@ class _OrdersPageState extends State<OrdersContent> {
         req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
         req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
+        req.qty_left = responseData["data"][i]["qty_left"];
         req.order_id = responseData["data"][i]["order_id"].toString();
         req.date = responseData["data"][i]["dateTime"];
         if (req.status?.trim() == "Pending" && id1 == req.reciever_id) {
@@ -412,8 +415,8 @@ class _OrdersPageState extends State<OrdersContent> {
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
-                            ),
-                            Text(requestList[index].base_price!)
+                            ),Padding(padding: EdgeInsets.only(left: 5)),
+                            Text(requestList[index].base_price!,style: TextStyle(color: Colors.grey),)
                           ],
                         ),
                       ),
@@ -421,12 +424,12 @@ class _OrdersPageState extends State<OrdersContent> {
                         child: Row(
                           children: [
                             Text(
-                              "Total Price:",
+                              "Trans. Type:",
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
                             ),
-                            Text(requestList[index].totalPrice.toString())
+                            Text(requestList[index].trans_type.toString(), style: TextStyle(color: Colors.grey),)
                           ],
                         ),
                       ),
@@ -979,13 +982,13 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                         child: Row(
                           children: [
                             Text(
-                              "Total Price:",
+                              "Trans. Type:",
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
                             ),
                             Text(
-                              order.totalPrice.toString(),
+                              order.trans_type.toString(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
                               style: TextStyle(

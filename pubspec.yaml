@@ -67,6 +67,10 @@ dependencies:
   simple_gradient_text: ^1.2.4
   intl: ^0.18.1
   app_settings: ^4.2.0
+  dio: ^4.0.6
+  flutter_pdfview: ^1.2.2
+  path_provider: ^2.0.10
+  open_file: ^3.2.1
   
   
 

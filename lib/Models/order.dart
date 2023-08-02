@@ -1,9 +1,11 @@
 import 'item.dart';
 
 class Order {
-  String? order_id,
-  qty_left,
-  user_type,
+  String?
+      order_id,
+      ls_id,
+      qty_left,
+      user_type,
       user_id,
       org_name,
       pincode,
@@ -13,13 +15,14 @@ class Order {
       reciever_id,
       party_name,
       party_address,
-      party_gst_num,
+      PartygstNumber,
       party_mob_num,
       base_price,
       status,
       loading_type,
       order_date,
       orderType,
+      trailerType,
       trans_type,
       date,
       totalPrice,

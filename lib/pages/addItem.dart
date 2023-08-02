@@ -1093,7 +1093,8 @@ class _AddItemPageState extends State<AddItemContent> {
                                               body: {
                                                 "regionName": newRegion.text,
                                                 "tCost": RegionPrice.text,
-                                              });
+                                                }
+                                              );
 
                                           Get.to(HomePage());
                                           Get.showSnackbar(
@@ -1229,36 +1230,56 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                             0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
                                                                       ),
                                                                     ),
-                                                                    TextButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          // final numericRegex =
-                                                                          //     RegExp(r'^[0-9]*$');
-                                                                          // if (numericRegex.hasMatch(newPrice.text) &&
-                                                                          //     newPrice.text.trim() != "") {
-                                                                          // gradeList[ind].price =
-                                                                          //     newPrice.text;
-                                                                          http.post(
-                                                                              Uri.parse("http://urbanwebmobile.in/steffo/updatepayment.php"),
-                                                                              body: {
-                                                                                "paymentName": paymentList[ind].paymentName,
-                                                                                "paymentPrice": editpaymentPrice.text
-                                                                              });
-                                                                          // }
 
-                                                                          Navigator.pop(
-                                                                              context);
+                                                                    ElevatedButton(
+                                                                        style: ButtonStyle(
+                                                                            shape: MaterialStatePropertyAll(ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20))),
+                                                                            backgroundColor: MaterialStatePropertyAll(Colors.lightBlueAccent)),
+                                                                        onPressed: () {
+                                                                          final numericRegex =
+                                                                          RegExp(r'^[0-9]*$');
+                                                                          if (numericRegex.hasMatch(newPaymentPrice.text) &&
+                                                                              newPaymentPrice.text.trim() != "") {
+                                                                            regionList[ind].name = newPaymentPrice.text;
+                                                                            http.post(Uri.parse("http://urbanwebmobile.in/steffo/updatepayment.php"), body: {
+                                                                              "paymentName": paymentList[ind].paymentName,
+                                                                              "paymentPrice": editpaymentPrice.text,
+                                                                            });
+                                                                          }
+                                                                          Navigator.pop(context);
                                                                         },
-                                                                        child:
-                                                                            Container(
-                                                                          padding:
-                                                                              EdgeInsets.only(right: 10),
-                                                                          alignment:
-                                                                              Alignment.bottomRight,
-                                                                          child: Text(
-                                                                              "Submit",
-                                                                              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.greenAccent)),
-                                                                        ))
+                                                                        child: Text("Submit")
+                                                                    ),
+
+                                                                    // TextButton(
+                                                                    //     onPressed:
+                                                                    //         () {
+                                                                    //       // final numericRegex =
+                                                                    //       //     RegExp(r'^[0-9]*$');
+                                                                    //       // if (numericRegex.hasMatch(newPrice.text) &&
+                                                                    //       //     newPrice.text.trim() != "") {
+                                                                    //       // gradeList[ind].price =
+                                                                    //       //     newPrice.text;
+                                                                    //       http.post(
+                                                                    //           Uri.parse("http://urbanwebmobile.in/steffo/updatepayment.php"),
+                                                                    //           body: {
+                                                                    //             "paymentName": paymentList[ind].paymentName,
+                                                                    //             "paymentPrice": editpaymentPrice.text
+                                                                    //           });
+                                                                    //       // }
+                                                                    //       Navigator.pop(
+                                                                    //           context);
+                                                                    //     },
+                                                                    //     child:
+                                                                    //         Container(
+                                                                    //           padding:
+                                                                    //               EdgeInsets.only(right: 10),
+                                                                    //           alignment:
+                                                                    //               Alignment.bottomRight,
+                                                                    //           child: Text(
+                                                                    //               "Submit",
+                                                                    //               style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.greenAccent)),
+                                                                    //     ))
                                                                   ],
                                                                 ),
                                                               ),

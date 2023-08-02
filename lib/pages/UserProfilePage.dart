@@ -6,10 +6,16 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:open_file/open_file.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/validator/validations.dart';
 import '../UI/common.dart';
 import 'package:stefomobileapp/notification_services.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 // import 'package:editable_image/editable_image.dart';
 
 class UserProfilePage extends StatelessWidget {
@@ -37,6 +43,38 @@ class ProfileForm extends StatefulWidget {
 }
 
 class _ProfileFormState extends State<ProfileForm> {
+
+  var responseData1;
+
+  File? _file;
+  getFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      final file = File(result.files.single.path!);
+      _file = file;
+      setState(() {});
+    } else {
+      // User canceled the picker
+      // You can show snackbar or fluttertoast
+      // here like this to show warning to user
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Please select file'),
+      ));
+    }
+  }
+
+  // File? imagepath;
+  // String? imagename;
+  // String? imagedata;
+  //
+  // ImagePicker imagePicker = new ImagePicker();
+
+  // Future<void> getimage() async{
+  //   var getImage= await imagePicker; pickImage(source: )
+  // }
+
   NotificationServices notificationServices = NotificationServices();
 
   final _formKey = GlobalKey<FormState>();
@@ -178,6 +216,8 @@ class _ProfileFormState extends State<ProfileForm> {
     focusNode3.dispose();
     focusNode4.dispose();
     focusNode5.dispose();
+    focusNode6.dispose();
+    focusNode10.dispose();
     super.dispose();
   }
 
@@ -194,6 +234,7 @@ class _ProfileFormState extends State<ProfileForm> {
         "panNumber": panNumber.text,
         "adhNumber": adhNumber.text,
         "address": address.text,
+        "uploadedFile": file,
       },
     );
     validateLoginDetails(AutofillHints.email, AutofillHints.password);
@@ -214,21 +255,21 @@ class _ProfileFormState extends State<ProfileForm> {
 
       //-----------------------FormDetails--------------------------
 
-      SingleChildScrollView(
-          child: Container(
-        child: FormDetails(),
-      )),
+          SingleChildScrollView(
+              child: Container(
+               child: FormDetails(),
+          )),
 
       //----------------------------Submit--------------------------------
 
-      Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-          width: MediaQuery.of(context).size.width,
-          child: buttonStyle("Submit", () {
-            if (_formKey.currentState!.validate()) {
-              onRegister();
-            }
-          })),
+          Container(
+              margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+              width: MediaQuery.of(context).size.width,
+              child: buttonStyle("Submit", () {
+                if (_formKey.currentState!.validate()) {
+                  onRegister();
+                }
+              })),
     ]));
   }
 
@@ -389,7 +430,7 @@ class _ProfileFormState extends State<ProfileForm> {
                       TextFormField(
                         key: field2Key,
                         focusNode: focusNode2,
-                        keyboardType: TextInputType.datetime,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Enter a Date';
@@ -589,27 +630,108 @@ class _ProfileFormState extends State<ProfileForm> {
                 ),
               ),
             ),
-            Container(
-              width: width,
-              padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-              child: ElevatedButton(
-                onPressed: () async {
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles();
+            Column(
+              children: [
+                // Image.file(file),
+                // ElevatedButton(
+                //     onPressed: (){
+                //       // getImage(),
+                //     }, child: Text("choose file")),
+                // ElevatedButton(onPressed: (){}, child: Text("upload")),
+                Container(
+                  width: width,
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  child: ElevatedButton(
+                    key: field10Key,
+                    focusNode: focusNode10,
 
-                  if (result != null) {
-                    print(result.files.single.path);
-                    file = File(result.files.single.path!);
-                  } else {
-                    // User canceled the picker
-                  }
-                },
-                child: Text("Upload"),
-              ),
+                    onPressed: () async {
+                      // var res1 = await http.post(
+                      //     Uri.parse(
+                      //         "http://urbanwebmobile.in/steffo/updatedFiles.php"),
+                      //     body: {
+                      //       "id":
+                      //           .toString(),
+                      //       "name": responseData1['images']
+                      //       [i]['name'],
+                      //     });
+                      getFile();
+
+                      // final result = await FilePicker.platform.pickFiles();
+                      // if(result == null)return;
+                      //
+                      // final file = result.files.first;
+                      //
+                      // print('Name: ${file.name}');
+                      // print('Size: ${file.size}');
+                      //
+                      // final newFile = await saveFilePermanently(file);
+                      //
+                      // openFile(file);
+                      // uploadPdf();
+                      // FilePickerResult? result =
+                      //     await FilePicker.platform.pickFiles();
+                      // if (result != null) {
+                      //   print(result.files.single.path);
+                      //   file = File(result.files.single.path!);
+                      // } else {
+                      //   // User canceled the picker
+                      // }
+                    },
+                    child: Text("Upload"),
+                  ),
+                ),
+                Text(
+                  _file != null ? "File Name:- " : "No file is Selected",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                Text(_file != null ? _file!.path.split("/").last : "",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.black,
+                    )),
+              ],
             )
           ],
         ),
       ),
     );
   }
+  // Future<File> saveFilePermanently(PlatformFile file) async{
+  //   final appstorage = await getApplicationDocumentsDirectory();
+  //   final newFile = File('${appStorage.path}/${file.name}');
+  //
+  //   return File(file.path!).copy(newFile.path)
+  // }
 }
+
+// void openFile(PlatformFile file){
+//   OpenFile.open(file.path!);
+// }
+
+
+// Future uploadPdf()async{
+//   var dio = Dio();
+//
+//   FilePickerResult? result = await FilePicker.platform.pickFiles();
+//
+//   if(result != null){
+//     File file = File(result.files.single.path??"");
+//
+//     String fileName = file.path.split('/').last;
+//     String filePath = file.path;
+//
+//     String path = file.path;
+//     FormData data = FormData.fromMap({
+//       'x-api-key': 'apikey',
+//       'file' : await MultipartFile.fromFile( filePath, filename: fileName)
+//     });
+//
+//     var response = dio.post("", data:data );
+//     onSendProgress(int sent, int total){
+//       print('$sent $total');
+//     }
+//   }
+// }

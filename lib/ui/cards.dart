@@ -339,13 +339,13 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                         child: Row(
                           children: [
                             Text(
-                              "Total Price:",
+                              "Trans. Type:",
                               style: TextStyle(
                                   fontFamily: "Poppins_Bold",
                                   color: Colors.grey),
                             ),
                             Text(
-                              order.totalPrice.toString(),
+                              order.trans_type.toString(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
                               style: TextStyle(
