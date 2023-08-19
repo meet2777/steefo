@@ -8,6 +8,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stefomobileapp/Models/user.dart';
 import 'package:stefomobileapp/pages/DistributorsPage.dart';
 import 'package:stefomobileapp/pages/EditableProfilePage.dart';
 import 'package:stefomobileapp/pages/ForgetPassPage.dart';
@@ -22,9 +23,11 @@ import 'package:stefomobileapp/pages/RequestPage.dart';
 import 'package:stefomobileapp/pages/PlaceOrderPage.dart';
 import 'package:stefomobileapp/pages/UserProfilePage.dart';
 import 'package:stefomobileapp/pages/challangenerator.dart';
+import 'package:stefomobileapp/pages/editorderpage.dart';
 import 'package:stefomobileapp/pages/extrahome.dart';
 
 import 'package:stefomobileapp/pages/newPassPage.dart';
+import 'package:stefomobileapp/pages/pdfView.dart';
 import 'Models/order.dart';
 import 'pages/LRPage.dart';
 import 'UI/common.dart';
@@ -67,6 +70,7 @@ class MyApp extends StatelessWidget {
         '/orderreq': (BuildContext context) => RequestPage(),
         //'/challanlist': (BuildContext context) => ChallanListPage(),
         '/placeorder': (BuildContext context) => PlaceOrderPage(),
+        '/editorder': (BuildContext context) => EditOrderPage(),
         '/orders': (BuildContext context) => OrdersContent(
               order: Order(),
             ),
@@ -79,7 +83,9 @@ class MyApp extends StatelessWidget {
         '/OTP': (BuildContext context) => OTPPage(),
         '/newPass': (BuildContext context) => NewPassPage(),
         '/profilePage': (BuildContext context) => ProfilePage(),
+        '/EmailTest': (BuildContext context) => MyApp(),
         '/challangenerator': (BuildContext context) => ChallangeneratorPage(order: Order(),),
+        '/pdfView': (BuildContext context) => pdfViewPage(user: User(),),
 
         //'/request': (BuildContext context) => UserRequestPage(),
       },

@@ -1,8 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
+
+import '../pages/download_service.dart';
+
+
 
 //--------------------------------LOGO------------------------------------------
 
@@ -65,12 +71,12 @@ Widget buttonStyle(String str, void c()) {
 
 appbar(String txt, void c(), {void Function()? alert}) {
   return AppBar(
-      toolbarHeight: 80,
+      // toolbarHeight: 80,
       elevation: 0.0,
       // shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
       actions: [
         LayoutBuilder(builder: (context, constraints) {
-          if (txt == 'Home') {
+          if (txt ==DateFormat('dd-MM-yyyy').format(DateTime.now())) {
             return IconButton(
                 onPressed: () {
                   alert!();
@@ -106,7 +112,7 @@ appbar(String txt, void c(), {void Function()? alert}) {
             color: Color.fromRGBO(19, 59, 78, 1), fontFamily: "Poppins_Bold"),
       )),
       backgroundColor: Colors.white,
-      leading: txt == 'Home'
+      leading: txt == DateFormat('dd-MM-yyyy').format(DateTime.now())
           ? Image.asset("assets/images/logo_foreground.png")
           : IconButton(
               onPressed: () {
@@ -119,6 +125,64 @@ appbar(String txt, void c(), {void Function()? alert}) {
 
       // Image.asset("assets/images/logo_foreground.png"),
       );
+}
+
+Future<void> _downloadFile(String url) async {
+  DownloadService downloadService = MobileDownloadService();
+  await downloadService.download(url: url);
+}
+
+appbar1(String txt,String fileName, void c(), {void Function()? alert}) {
+  return AppBar(
+      toolbarHeight: 80,
+      elevation: 0.0,
+      // shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      actions: [
+        LayoutBuilder(builder: (context, constraints) {
+          if (txt ==DateFormat('dd-MM-yyyy').format(DateTime.now())) {
+            return IconButton(
+                onPressed: () {
+                  alert!();
+                },
+                icon: const Icon(
+                  Icons.power_settings_new_rounded,
+                  color: Colors.black,
+                ));
+          } else {
+            return Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: GestureDetector(
+                onTap:
+                    () {
+                  _downloadFile('http://steefotmtmobile.com/steefo/uploadedpdf/'+ fileName);
+                },
+                child: Icon(Icons.download_for_offline,color: Colors.black,size: 35,)
+              ),
+            );
+          }
+        })
+      ],
+      title: Center(
+          child: Text(
+            txt,
+            // textAlign: TextAlign.center,
+            style: const TextStyle(
+                color: Color.fromRGBO(19, 59, 78, 1), fontFamily: "Poppins_Bold"),
+          )),
+      backgroundColor: Colors.white,
+      leading: txt == DateFormat('dd-MM-yyyy').format(DateTime.now())
+          ? Image.asset("assets/images/logo_foreground.png")
+          : IconButton(
+          onPressed: () {
+            c();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.black,
+          ))
+
+    // Image.asset("assets/images/logo_foreground.png"),
+  );
 }
 
 Widget buttonWhite(String str, void c()) {

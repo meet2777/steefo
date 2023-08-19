@@ -50,7 +50,7 @@ class _ChallanPageState extends State<ChallanPage> {
   loadChallanData() async {
     if (flag == 0) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/getchallandetails.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/getchallandetails.php"),
         body: {
           "challan_id": widget.challan_id.toString(),
         },
@@ -71,7 +71,7 @@ class _ChallanPageState extends State<ChallanPage> {
       or.order_date = responseData["data"][0]["updatedAt"];
       challanList.add(ch);
       final resp = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/getchallanitemdetails.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/getchallanitemdetails.php"),
         body: {
           "challan_id": widget.challan_id.toString(),
         },

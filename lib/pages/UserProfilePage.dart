@@ -6,7 +6,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/validator/validations.dart';
@@ -45,11 +47,9 @@ class ProfileForm extends StatefulWidget {
 class _ProfileFormState extends State<ProfileForm> {
 
   var responseData1;
-
   File? _file;
   getFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-
     if (result != null) {
       final file = File(result.files.single.path!);
       _file = file;
@@ -116,9 +116,12 @@ class _ProfileFormState extends State<ProfileForm> {
   loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     userType = await prefs.getString('userType');
+    print("Set User Type======>$userType");
     firstName = await prefs.getString('firstName');
+    print("Set First Name======>$firstName");
     lastName = await prefs.getString('lastName');
-    setState(() {});
+    print("Set Last Name======>$lastName");
+
   }
 
   @override
@@ -222,30 +225,55 @@ class _ProfileFormState extends State<ProfileForm> {
   }
 
   onRegister() async {
+    var postUri = Uri.parse("http://steefotmtmobile.com/steefo/updateuser.php");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = await prefs.getString('id');
-    print(selectedValue);
-    var test = await http.post(
-      Uri.parse('http://urbanwebmobile.in/steffo/updateuser.php'),
-      body: {
-        "id": id,
-        "orgName": orgName.text,
-        "gstNumber": gstNumber.text,
-        "panNumber": panNumber.text,
-        "adhNumber": adhNumber.text,
-        "address": address.text,
-        "uploadedFile": file,
-      },
-    );
-    validateLoginDetails(AutofillHints.email, AutofillHints.password);
-    Navigator.of(context).pushNamed("/login");
+      var id = await prefs.getString('id');
+    var request = new http.MultipartRequest("POST", postUri);
+    request.fields['id'] = id!;
+    request.fields['orgName'] = orgName.text;
+    request.fields['gstNumber'] = gstNumber.text;
+    request.fields['panNumber'] = panNumber.text;
+    request.fields['adhNumber'] = adhNumber.text;
+    request.fields['address'] = address.text;
+    request.fields['registeredDate'] = registeredDate.text;
+    request.files.add(new http.MultipartFile.fromBytes('file',  await File.fromUri(Uri.parse(_file!.path)).readAsBytes(), filename: _file!.path.split("/").last, contentType: new MediaType('application', 'pdf')));
+
+    request.send().then((response) {
+      if (response.statusCode == 200) {
+        validateLoginDetails(AutofillHints.email, AutofillHints.password);
+          Navigator.of(context).pushNamed("/login");
+      }
+    });
   }
+
+  // onRegister() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var id = await prefs.getString('id');
+  //   print(selectedValue);
+  //   var test = await http.post(
+  //     Uri.parse('http://steefotmtmobile.com/steefo/updateuser.php'),
+  //     body: {
+  //       "id": id,
+  //       "orgName": orgName.text,
+  //       "gstNumber": gstNumber.text,
+  //       "panNumber": panNumber.text,
+  //       "adhNumber": adhNumber.text,
+  //       "address": address.text,
+  //       "registeredDate": registeredDate.text,
+  //       // "uploadedFile": _file,
+  //     },
+  //   );
+  //   validateLoginDetails(AutofillHints.email, AutofillHints.password);
+  //   Navigator.of(context).pushNamed("/login");
+  // }
 
   TextEditingController orgName = TextEditingController();
   TextEditingController gstNumber = TextEditingController();
   TextEditingController panNumber = TextEditingController();
   TextEditingController adhNumber = TextEditingController();
   TextEditingController address = TextEditingController();
+  TextEditingController registeredDate = TextEditingController();
+  // TextEditingController _file = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -274,6 +302,7 @@ class _ProfileFormState extends State<ProfileForm> {
   }
 
   Widget FormDetails() {
+    print("call metthod");
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -352,6 +381,7 @@ class _ProfileFormState extends State<ProfileForm> {
 //               ],
 //             ),
 
+
             Row(
               children: [
                 Container(
@@ -360,14 +390,14 @@ class _ProfileFormState extends State<ProfileForm> {
                     // mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(userType!,
+                      Text(userType?? "",
                           style: TextStyle(
                             fontFamily: "Poppins_Bold",
                             fontSize: 15,
                             color: Color.fromRGBO(19, 59, 78, 1),
                           )),
                       Text(
-                        firstName! + " " + lastName!,
+                        "${firstName ?? ""}  ${lastName ?? ""}",
                         style: TextStyle(
                           fontFamily: "Poppins_Bold",
                           fontSize: 25,
@@ -427,9 +457,18 @@ class _ProfileFormState extends State<ProfileForm> {
                   padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                   child: Column(
                     children: [
+                      // Container(
+                      //   padding: EdgeInsets.only(left: 20,right: 20,top: 20, bottom: 20),
+                      //   width: 200,
+                      //   color:  Color.fromRGBO(233, 236, 239, 1.0),
+                      //   child: Text(
+                      //       DateFormat('dd-MM-yyyy').format(DateTime.now()),
+                      //   ),
+                      // ),
                       TextFormField(
                         key: field2Key,
                         focusNode: focusNode2,
+                        controller: registeredDate,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -438,9 +477,10 @@ class _ProfileFormState extends State<ProfileForm> {
                           return null;
                         },
                         decoration: const InputDecoration(
-                          counterText: "",
+                          suffixIcon: Icon(Icons.calendar_today,color: Colors.grey,),
+                          // counterText: "fwe",
                           // prefixIcon: Icon(Icons.location_on),
-                          labelText: "Registered at",
+                          hintText: "Date",
                           filled: true,
                           fillColor: Color.fromRGBO(233, 236, 239, 1.0),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -448,6 +488,27 @@ class _ProfileFormState extends State<ProfileForm> {
                             borderSide: BorderSide.none,
                           ),
                         ),
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              // currentDate: DateTime.now(),
+                              //DateTime.now() - not to allow to choose before today.
+                              lastDate: DateTime(2100));
+                          if (pickedDate != null) {
+                            print(
+                                pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                            String formattedDate =
+                            DateFormat('dd-MM-yyyy').format(pickedDate);
+                            print(
+                                formattedDate); //formatted date output using intl package =>  2021-03-16
+                            setState(() {
+                              registeredDate.text =
+                                  formattedDate; //set output date to TextField value.
+                            });
+                          } else {}
+                        },
                       ),
                     ],
                   ),
@@ -642,10 +703,23 @@ class _ProfileFormState extends State<ProfileForm> {
                   width: width,
                   padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                   child: ElevatedButton(
-                    key: field10Key,
-                    focusNode: focusNode10,
-
+                    // key: field10Key,
+                    // focusNode: focusNode10,
                     onPressed: () async {
+                      FilePickerResult? result = await FilePicker.platform.pickFiles();
+                      if (result != null) {
+                        final file = File(result.files.single.path!);
+                        _file = file;
+                        setState(() {});
+                      } else {
+                        // User canceled the picker
+                        // You can show snackbar or fluttertoast
+                        // here like this to show warning to user
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Please select file'),
+                        ));
+                      }
                       // var res1 = await http.post(
                       //     Uri.parse(
                       //         "http://urbanwebmobile.in/steffo/updatedFiles.php"),
@@ -655,8 +729,7 @@ class _ProfileFormState extends State<ProfileForm> {
                       //       "name": responseData1['images']
                       //       [i]['name'],
                       //     });
-                      getFile();
-
+                      // getFile();
                       // final result = await FilePicker.platform.pickFiles();
                       // if(result == null)return;
                       //
@@ -678,7 +751,7 @@ class _ProfileFormState extends State<ProfileForm> {
                       //   // User canceled the picker
                       // }
                     },
-                    child: Text("Upload"),
+                    child: Text("Upload",),
                   ),
                 ),
                 Text(

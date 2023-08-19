@@ -177,7 +177,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
     if (flag == 0) {
       if (widget.order.orderType != "Lump-sum") {
         final res = await http.post(
-          Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
+          Uri.parse("http://steefotmtmobile.com/steefo/getorderdetails.php"),
           body: {
             "order_id": widget.order.order_id,
           },
@@ -191,7 +191,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
         }
       } else {
         final res = await http.post(
-          Uri.parse("http://urbanwebmobile.in/steffo/getlumpsumorder.php"),
+          Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
           body: {
             "order_id": widget.order.order_id,
           },
@@ -214,7 +214,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
   var challan_id;
   onSubmit() async {
     final res = await http.post(
-      Uri.parse("http://urbanwebmobile.in/steffo/addchallan.php"),
+      Uri.parse("http://steefotmtmobile.com/steefo/addchallan.php"),
       body: {
         "order_id": widget.order.order_id,
         "transporter_name": transporter_name.text,
@@ -229,7 +229,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
 
     for (int i = 0; i < listOfColumns.length; i++) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/addtochallan.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/addtochallan.php"),
         body: {
           "challan_id": responseData["data"].toString(),
           "name": listOfColumns[i]["Name"],

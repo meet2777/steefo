@@ -2,25 +2,23 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-
+import 'package:path_provider/path_provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/notification_services.dart';
 import 'package:stefomobileapp/pages/Buyers.dart';
-
 import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stefomobileapp/pages/ProfilePage.dart';
-
 import 'package:stefomobileapp/pages/Withlumpsums.dart';
 import 'package:stefomobileapp/pages/dealerbuyerspage.dart';
 import 'package:stefomobileapp/pages/purchases.dart';
@@ -34,6 +32,9 @@ import 'LoginPage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'OrderPage.dart';
 import 'addItem.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -44,6 +45,9 @@ class HomePage extends StatelessWidget {
 }
 
 class HomeContent extends StatefulWidget {
+  // static const _url =
+  //     'https://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg';
+
   const HomeContent({super.key});
   final selected = 0;
   @override
@@ -90,7 +94,7 @@ class _HomePageState extends State<HomeContent> {
 
     if (m != id3) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id3!},
       );
       var responseData = jsonDecode(res.body);
@@ -141,7 +145,7 @@ class _HomePageState extends State<HomeContent> {
       print("enter");
       var test = await http.post(
         Uri.parse(
-          'http://urbanwebmobile.in/steffo/getrequests.php',
+          'http://steefotmtmobile.com/steefo/getrequests.php',
         ),
       );
       //Navigator.of(context).pushNamed("/home");
@@ -165,6 +169,7 @@ class _HomePageState extends State<HomeContent> {
         u.panNumber = responseData['data'][i]['panNumber'];
         u.adhNumber = responseData['data'][i]['adhNumber'];
         u.address = responseData['data'][i]['address'];
+        u.uploadedFile = responseData['data'][i]['uploadedFile'];
         regReqList.add(u);
         print("enter3");
       }
@@ -206,7 +211,7 @@ class _HomePageState extends State<HomeContent> {
         return false;
       },
       child: Scaffold(
-          appBar: appbar("Home", () {
+          appBar: appbar(DateFormat('dd-MM-yyyy').format(DateTime.now()), () {
             print("Back Pressed");
             Navigator.pop(context);
           }, alert: LogoutAlert),
@@ -320,6 +325,44 @@ class _HomePageState extends State<HomeContent> {
     //  throw UnimplementedError();
   }
 
+
+  Future<void> _saveImage(BuildContext context,int i) async {
+    String? message;
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    try {
+      // Download image
+      final http.Response response = await http.get(Uri.parse("http://steefotmtmobile.com/steefo/carousel/"+
+          responseData1['images'][i]['name']
+      ));
+      // Get temporary directory
+      final dir = await getTemporaryDirectory();
+
+      // Create an image name
+      var filename = '${dir.path}/image.jpg';
+
+      // Save to filesystem
+      final file = File(filename);
+      await file.writeAsBytes(response.bodyBytes);
+
+      // Ask the user to save it
+      final params = SaveFileDialogParams(sourceFilePath: file.path);
+      final finalPath = await FlutterFileDialog.saveFile(params: params);
+
+      if (finalPath != null) {
+        message = 'Image saved to disk';
+      }
+    } catch (e) {
+      message = 'An error occurred while saving the image';
+    }
+
+    if (message != null) {
+      scaffoldMessenger.showSnackBar(SnackBar(content: Text(message)));
+
+    }
+  }
+
+
   String? id = "";
   int currentIndex = 0;
   bool isRes1Loaded = false;
@@ -338,7 +381,7 @@ class _HomePageState extends State<HomeContent> {
       requestList = [];
       orderList = [];
       final res1 = await http
-          .post(Uri.parse("http://urbanwebmobile.in/steffo/getsystemdata.php"));
+          .post(Uri.parse("http://steefotmtmobile.com/steefo/getsystemdata.php"));
       isRes1Loaded = true;
       responseData1 = jsonDecode(res1.body);
 
@@ -347,7 +390,7 @@ class _HomePageState extends State<HomeContent> {
       print(" $isSalesEnabled and $basePrice");
 
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id!},
       );
       var responseData = jsonDecode(res.body);
@@ -401,32 +444,31 @@ class _HomePageState extends State<HomeContent> {
         physics: BouncingScrollPhysics(),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-          // TextButton(
-          //   child: Text('send notification'),
-          //   onPressed: () {
-          //     notificationServices.getDeviceToken().then((value) async {
-          //        var data = {
-          //         'to': value.toString(),
-          //         'priority': 'high',
-          //         'notification': {
-          //           'title': 'Parth',
-          //           'body': 'You Got An Order',
-          //         },
-          //         'data': {'type': 'msg', 'id': 'parth1234'},
-          //       };
-          //       print(value.toString());
-          //       await http.post(
-          //           Uri.parse('https://fcm.googleapis.com/fcm/send'),
-          //           body: jsonEncode(data),
-          //           headers: {
-          //             'Content-Type': 'application/json; charset=UTF-8',
-          //             'Authorization':
-          //                 'key=AAAA_8-x_z4:APA91bE5c27vN7PgA4BTTOtLcLpxnz3W-Ljjet2YAfwr3b0t10YMXSbgwTX01aJoDZhylqCZjZ3EiuUR9M2KDGcvCfBSBumulrujHHuN7zI_6kN0JIrMCkxiwT63QD5AfNTyE0gxEao7'
-          //           });
-          //     });
-          //   },
-          // ),
+          TextButton(
+            child: Text('send notification'),
+            onPressed: () {
+              notificationServices.getDeviceToken().then((value) async {
+                 var data = {
+                  'to': value.toString(),
+                  'priority': 'high',
+                  'notification': {
+                    'title': 'Meet',
+                    'body': 'You Got An Order',
+                  },
+                  'data': {'type': 'msg', 'id': 'parth1234'},
+                };
+                print(value.toString());
+                await http.post(
+                    Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                    body: jsonEncode(data),
+                    headers: {
+                      'Content-Type': 'application/json; charset=UTF-8',
+                      'Authorization':
+                          'key=AAAA_8-x_z4:APA91bE5c27vN7PgA4BTTOtLcLpxnz3W-Ljjet2YAfwr3b0t10YMXSbgwTX01aJoDZhylqCZjZ3EiuUR9M2KDGcvCfBSBumulrujHHuN7zI_6kN0JIrMCkxiwT63QD5AfNTyE0gxEao7'
+                    });
+              });
+            },
+          ),
           
           //carousel slider start////////////////////////////////////
           Container(
@@ -477,9 +519,10 @@ class _HomePageState extends State<HomeContent> {
                                       height: 330,
                                       width: double.infinity,
                                       fit: BoxFit.cover,
-                                      "http://urbanwebmobile.in/steffo/carousel/" +
+                                      "http://steefotmtmobile.com/steefo/carousel/" +
                                           responseData1['images'][i]['name']),
-                                )),
+                                )
+                            ),
                             LayoutBuilder(builder: (context, constraints) {
                               if (user_type == "Manufacturer") {
                                 return Align(
@@ -489,7 +532,7 @@ class _HomePageState extends State<HomeContent> {
                                         onPressed: () async {
                                           var res1 = await http.post(
                                               Uri.parse(
-                                                  "http://urbanwebmobile.in/steffo/delcar.php"),
+                                                  "http://steefotmtmobile.com/steefo/delcar.php"),
                                               body: {
                                                 "id": responseData1['images'][i]
                                                         ['id']
@@ -505,7 +548,7 @@ class _HomePageState extends State<HomeContent> {
                                           size: 25,
                                         ),
                                         color: Colors.black),
-                                    margin: EdgeInsets.all(3),
+                                    margin: EdgeInsets.all(5),
                                     decoration: BoxDecoration(
                                       color: Colors.black12,
                                       shape: BoxShape.circle,
@@ -514,7 +557,52 @@ class _HomePageState extends State<HomeContent> {
                                   alignment: Alignment.bottomLeft,
                                 );
                               } else {
-                                return Container();
+                                return
+                                  Align(
+                                    child: Container(
+                                      // height: 40,
+                                      // margin: EdgeInsets.all(5),
+                                      // decoration: BoxDecoration(
+                                      //   color: Colors.black12,
+                                      //   shape: BoxShape.circle,
+                                      // ),
+                                      // alignment: Alignment.bottomRight,
+                                      child: IconButton(onPressed: () async{
+                                        _saveImage(context, i);
+                                      },
+                                        iconSize: 35,
+                                        color: Colors.black,
+                                        // style: ButtonStyle(iconSize: ),
+                                        icon: Icon(Icons.file_download_outlined,color: Color.fromRGBO(19, 59, 78, 1.0)),
+                                      )),
+                                    alignment: Alignment.bottomRight,
+                                  );
+                                //     Container(
+                                //       alignment: Alignment.topRight,
+                                //       padding: EdgeInsets.only(right: 5),
+                                //       child: ElevatedButton(onPressed: () async{
+                                //         _saveImage(context,i);
+                                //       // String url= "http://urbanwebmobile.in/steffo/carousel/"+
+                                //       //     responseData1['images'][i]['name'];
+                                //       //
+                                //       // final tempDir = await getTemporaryDirectory();
+                                //       // final path = '${tempDir.path}';
+                                //       // await Dio().download(url,path);
+                                //       // await GallerySaver.saveImage(path);
+                                //       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text("downloaded")));
+                                //       } ,
+                                //
+                                //           style: ElevatedButton.styleFrom(
+                                //
+                                //             textStyle: TextStyle(fontSize: 18),
+                                //             primary: Color.fromRGBO(19, 59, 78, 1.0),
+                                //             onPrimary: Colors.white,
+                                //             // backgroundColor: Colors.transparent
+                                //             // onSurface: Colors.amber,
+                                //           ),
+                                //         child: Text("Download")
+                                // ),
+                                //     );
                               }
                             }),
                             LayoutBuilder(builder: (context, constraints) {
@@ -583,9 +671,22 @@ class _HomePageState extends State<HomeContent> {
               }
             }),
           ),
+
           SizedBox(
             height: 0,
           ),
+          
+          // ElevatedButton(onPressed: () async{
+          //   String url= "http://urbanwebmobile.in/steffo/carousel/"+
+          //       responseData1['images'][i]['name'];
+          //
+          //   final tempDir = await getTemporaryDirectory();
+          //   final path = '${tempDir.path}/myfile.jpg';
+          //   await Dio().download(url,path);
+          //
+          //   await GallerySaver.saveImage(path);
+          // } ,
+          //     child: Text("Download")),
 
           // LayoutBuilder(builder: (context, constraints) {
           //   if (imagesFiles!.length > 0) {
@@ -779,7 +880,7 @@ class _HomePageState extends State<HomeContent> {
                       "BASIC RATE PER TON",
                       style: TextStyle(
                           letterSpacing: 2,
-                          fontSize: 17,
+                          fontSize: 15,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
@@ -815,9 +916,9 @@ class _HomePageState extends State<HomeContent> {
                       color: Colors.white,
                     ),
                     Text(
-                      "North, Central and Rajkot: +200/- \n Surat: +500/-",
+                      "North, Central and Rajkot: +200/-  &  Surat: +500/-",
                       style: TextStyle(
-                          letterSpacing: 1,
+                          // letterSpacing: ,
                           fontSize: 15 ,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
@@ -1381,7 +1482,7 @@ class _HomePageState extends State<HomeContent> {
 
                                       var res = await http.post(
                                           Uri.parse(
-                                              "http://urbanwebmobile.in/steffo/setsale.php"),
+                                              "http://steefotmtmobile.com/steefo/setsale.php"),
                                           body: {"status": isSalesEnabled});
                                     },
 
@@ -1463,7 +1564,7 @@ class _HomePageState extends State<HomeContent> {
                                   price = int.parse(newBasePrice.text);
                                   http.post(
                                       Uri.parse(
-                                          "http://urbanwebmobile.in/steffo/setbaseprice.php"),
+                                          "http://steefotmtmobile.com/steefo/setbaseprice.php"),
                                       body: {
                                         "basePrice": newBasePrice.text.toString()
                                       });
@@ -1513,7 +1614,7 @@ class _HomePageState extends State<HomeContent> {
         var imgBytes = imagesTemporary.readAsBytesSync();
         String baseImage = base64Encode(imgBytes);
         var res = await http.post(
-            Uri.parse("http://www.urbanwebmobile.in/steffo/setcarousel.php"),
+            Uri.parse("http://steefotmtmobile.com/steefo/setcarousel.php"),
             body: {"name": image.name, "value": baseImage});
 
         var picUpRes = jsonDecode(res.body);

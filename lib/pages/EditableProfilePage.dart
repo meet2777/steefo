@@ -142,7 +142,7 @@ class _ProfilePageState extends State<ProfileContent> {
     await prefs.setString("address", address.text.toString());
     // print(firstName);
     var test = await http.post(
-      Uri.parse('http://urbanwebmobile.in/steffo/updateprofile.php'),
+      Uri.parse('http://steefotmtmobile.com/steefo/updateprofile.php'),
       body: {
         "id": id.toString(),
         "firstName": firstName.text,

@@ -48,7 +48,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
         widget.order.orderType == "With Size") {
       print(widget.order.order_id);
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/getorderdetails.php"),
         body: {
           "order_id": widget.order.order_id,
         },
@@ -153,7 +153,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
 
     if (m != id) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id!},
       );
       var responseData = jsonDecode(res.body);
@@ -215,7 +215,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
 
     if (m != id1) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id1!},
       );
       var responseData = jsonDecode(res.body);
@@ -564,7 +564,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
                     onPressed: () async {
                       await http.post(
                         Uri.parse(
-                            "http://urbanwebmobile.in/steffo/approveorder.php"),
+                            "http://steefotmtmobile.com/steefo/approveorder.php"),
                         body: {
                           "decision": "Approved",
                           "order_id": requestList[index].order_id!
@@ -592,7 +592,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
                     onPressed: () async {
                       await http.post(
                         Uri.parse(
-                            "http://urbanwebmobile.in/steffo/approveorder.php"),
+                            "http://steefotmtmobile.com/steefo/approveorder.php"),
                         body: {
                           "decision": "Denied",
                           "order_id": requestList[index].order_id!

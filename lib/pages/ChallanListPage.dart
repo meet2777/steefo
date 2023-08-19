@@ -57,7 +57,7 @@ class _ChallanListPageState extends State<ChallanListContent> {
     id = await prefs.getString('id');
     if (flag == 0) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/getchallanlist.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/getchallanlist.php"),
         body: {"order_id": widget.order.order_id},
       );
       var responseData = jsonDecode(res.body);
@@ -172,7 +172,7 @@ class _ChallanListPageState extends State<ChallanListContent> {
           GestureDetector(
             onTap: () async {
               await http.post(
-                Uri.parse("http://urbanwebmobile.in/steffo/approveorder.php"),
+                Uri.parse("http://steefotmtmobile.com/steefo/approveorder.php"),
                 body: {
                   "decision": "Completed",
                   "order_id": widget.order.order_id

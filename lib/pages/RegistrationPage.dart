@@ -107,7 +107,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   onRegister() async {
     print(selectedValue);
     var test = await http.post(
-      Uri.parse('http://urbanwebmobile.in/steffo/register.php'),
+      Uri.parse("http://steefotmtmobile.com/steefo/register.php"),
       // headers: <String, String>{
       //   'Content-Type': 'application/json; charset=UTF-8',
       // },
@@ -115,7 +115,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
         "firstName": first_name.text,
         "lastName": last_name.text,
         "email": email.text,
-        "password": password.text,
+        "regpassword": password.text,
         "mobileNumber": mob_num.text,
         "userType": selectedValue!,
         //  "company": companyname.text,

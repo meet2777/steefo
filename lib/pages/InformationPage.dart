@@ -65,7 +65,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       var id = await prefs.getString('id');
       String uri;
-      uri = "http://urbanwebmobile.in/steffo/getchildren.php";
+      uri = "http://steefotmtmobile.com/steefo/getchildren.php";
 
       var res = await http.post(Uri.parse(uri), body: {
         "id": widget.user.id,
@@ -90,7 +90,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
       }
 
       res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": widget.user.id!},
       );
       responseData = jsonDecode(res.body);

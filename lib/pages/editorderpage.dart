@@ -8,8 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/order.dart';
-import 'package:stefomobileapp/Models/user.dart';
-import 'package:stefomobileapp/notification_services.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import '../Models/dealer.dart';
 import '../Models/grade.dart';
@@ -18,24 +16,25 @@ import '../Models/payment.dart';
 import '../Models/region.dart';
 import '../Models/size.dart';
 import '../ui/common.dart';
+import '../Models/order.dart';
 
-class PlaceOrderPage extends StatelessWidget {
-  const PlaceOrderPage({super.key});
+class EditOrderPage extends StatelessWidget {
+  const EditOrderPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const PlaceOrderContent();
+    return const EditOrderContent();
   }
 }
 
-class PlaceOrderContent extends StatefulWidget {
-  const PlaceOrderContent({super.key});
+class EditOrderContent extends StatefulWidget {
+  const EditOrderContent({super.key});
   final selected = 0;
   @override
-  State<PlaceOrderContent> createState() => _PlaceOrderPageState();
+  State<EditOrderContent> createState() => _EditOrderPageState();
 }
 
-class _PlaceOrderPageState extends State<PlaceOrderContent> {
+class _EditOrderPageState extends State<EditOrderContent> {
 
   TextEditingController dateInput = TextEditingController();
 
@@ -133,7 +132,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
     loadusertype();
 
     return Scaffold(
-      appBar: appbar("Place Order", () {
+      appBar: appbar("Edit Order", () {
         Navigator.pop(context);
       }),
       body: PlaceOrderBody(),
@@ -159,8 +158,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   }
 
   String?
-      // selectedValue,
-      selectedDealer,
+  // selectedValue,
+  selectedDealer,
       selectedSize,
       selectedGrade,
       selectedType,
@@ -170,14 +169,14 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       selectedTransType,
       selectedOrderType;
   TextEditingController qty = TextEditingController();
-  TextEditingController party_name = TextEditingController();
-  TextEditingController party_address = TextEditingController();
-  TextEditingController pincode = TextEditingController();
-  TextEditingController party_pan_no = TextEditingController();
-  TextEditingController party_mob_num = TextEditingController();
-  TextEditingController loading_type = TextEditingController();
-  TextEditingController base_price = TextEditingController();
-  TextEditingController deliveryDate = TextEditingController();
+  // TextEditingController party_name = TextEditingController();
+  // TextEditingController party_address = TextEditingController();
+  // TextEditingController pincode = TextEditingController();
+  // TextEditingController party_pan_no = TextEditingController();
+  // TextEditingController party_mob_num = TextEditingController();
+  // TextEditingController loading_type = TextEditingController();
+  // TextEditingController base_price = TextEditingController();
+  // TextEditingController deliveryDate = TextEditingController();
   List<Lumpsum> lumpsumList = [];
   bool isInventoryDataLoaded = false;
 
@@ -216,9 +215,11 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
 
   @override
   void initState() {
+
     dateInput.text = ""; //set the initial value of text field
     super.initState();
 
+    // selectedSize.sort();
     loadLumpsumData();
     super.initState();
     focusNode1 = FocusNode();
@@ -317,6 +318,11 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   List<Grade> gradeList = [];
   List<Region> regionList = [];
   List<ItemSize> sizeList = [];
+
+
+  // TextEditingController party_name = TextEditingController(text: 'name: ${Order().party_name}');
+
+
   var f = 0;
   num tot_price = 0;
   loadItemData() async {
@@ -326,10 +332,11 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
           .post(Uri.parse("http://steefotmtmobile.com/steefo/getsize.php"));
       var responseData = jsonDecode(res.body);
       for (int i = 0; i < responseData['data'].length; i++) {
-        sizes.add(responseData['data'][i]["sizeValue"].toString());
+        sizes.add(responseData['data'][i]["sizeValue"]);
         ItemSize s = ItemSize();
         s.price = responseData['data'][i]["sizePrice"];
         s.value = responseData['data'][i]["sizeValue"];
+
         sizeList.add(s);
       }
       var res1 = await http
@@ -343,7 +350,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         s.value = responseData1['data'][i]["gradeName"];
         gradeList.add(s);
       }
-
       var res2 = await http
           .post(Uri.parse("http://steefotmtmobile.com/steefo/getregions.php"));
       var responseData2 = jsonDecode(res2.body);
@@ -380,6 +386,34 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         d.userType = responseData4['data'][i]["userType"];
         dealerList.add(d);
       }
+
+      var res5 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"));
+      var responseData5 = jsonDecode(res5.body);
+      for (int i = 0; i < responseData5["data"].length; i++) {
+        Order req = Order();
+        req.reciever_id = responseData["data"][i]["supplier_id"];
+        req.user_id = responseData["data"][i]["user_id"];
+        req.org_name = responseData["data"][i]["orgName"];
+        req.user_mob_num = responseData["data"][i]["mobileNumber"];
+        req.user_name = responseData["data"][i]["firstName"]+" "+responseData["data"][i]["lastName"];
+        req.status = responseData["data"][i]["orderStatus"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.trailerType = responseData["data"][i]["trailerType"];
+        req.party_name = responseData5["data"][i]["partyName"];
+        req.party_address = responseData["data"][i]["shippingAddress"];
+        req.pincode = responseData["data"][i]["pincode"];
+        req.billing_address = responseData["data"][i]["address"];
+        req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
+        req.loading_type = responseData["data"][i]["loadingType"];
+        // req.loading_type = responseData["data"][i][""];
+        req.trans_type = responseData["data"][i]["transType"];
+        req.order_date = responseData["data"][i]["createdAt"];
+        req.base_price = responseData["data"][i]["basePrice"];
+        req.orderType = responseData["data"][i]["orderType"];
+        req.qty_left = responseData["data"][i]["qty_left"];
+        req.order_id = responseData["data"][i]["order_id"].toString();
+        //print(req);
+      }
       setState(() {});
     }
   }
@@ -389,12 +423,20 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   List type = ["Loose", "Bhari(Bundle)"];
   List transType = ["Ex-Work", "FOR"];
   List orderType = ["Lump-sum", "With Size", "Use Lumpsum"];
-
   int itemNum = 1;
   int totalQuantity = 0;
 
   final List<Map<String, String>> listOfColumns = [];
-  onPlaceOrder() async {
+
+  TextEditingController party_name = TextEditingController(text: 'name: ${Order().party_name}');
+  TextEditingController party_address = TextEditingController();
+  TextEditingController pincode = TextEditingController();
+  TextEditingController party_pan_no = TextEditingController();
+  TextEditingController party_mob_num = TextEditingController();
+  TextEditingController loading_type = TextEditingController();
+  TextEditingController base_price = TextEditingController();
+  TextEditingController deliveryDate = TextEditingController();
+  onEditOrder() async {
     if (selectedOrderType == "Use Lumpsum") {
       for (int i = 0; i < reductionData.length; i++) {
         var res = await http.post(
@@ -402,76 +444,128 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             body: {
               "id": reductionData[i]["id"],
               "qty": reductionData[i]["qty"]
-            });
+            }
+            );
       }
     }
-    var res = await http.post(
-      Uri.parse("http://steefotmtmobile.com/steefo/placeOrder.php"),
-      body: selectedOrderType == "Lump-sum"
-          ? {
-              "userId": id!,
-              "supplierId": supplier_id!,
-              "shippingAddress": party_address.text,
-              "pincode": pincode.text,
-              "partyName": party_name.text,
-              "PartygstNumber": party_pan_no.text,
-              "mobileNumber": party_mob_num.text,
-              "basePrice": base_price.text,
-              "status": "Pending",
-              "trailerType": "None",
-              "loadingType": "None",
-              "transType": "None",
-              "paymentTerm": "None",
-              "orderType": selectedOrderType,
-              "totalQuantity": totalQuantity.toString(),
-              "totalPrice": tot_price.toString(),
-              "deliveryDate": deliveryDate.text,
-              "dateTime": DateTime.now().toString(),
-            }
-          : {
-              "userId": id!,
-              "supplierId": supplier_id!,
-              "shippingAddress": party_address.text,
-              "pincode": pincode.text,
-              "partyName": party_name.text,
-              "PartygstNumber": party_pan_no.text,
-              "mobileNumber": party_mob_num.text,
-              "basePrice": base_price.text,
-              "status": "Pending",
-              "loadingType": selectedType,
-              "orderType": selectedOrderType,
-              "paymentTerm": selectedpaymentType,
-              "trailerType": trailerType,
-              "transType": selectedTransType,
-              "totalQuantity": totalQuantity.toString(),
-              "totalPrice": tot_price.toString(),
-              "deliveryDate": deliveryDate.text,
-              "dateTime": DateTime.now().toString(),
-            },
-    );
-    NotificationServices notificationServices = NotificationServices();
-    notificationServices.getDeviceToken().then((value) async {
-      var data = {
-        'to': value.toString(),
-        'priority': 'high',
-        'notification': {
-          'title': '$id',
-          'body': 'You Got An Order',
-        },
-        'data': {'type': 'msg', 'id': id},
-      };
-      print(value.toString());
-      print('notification enter');
-      await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
-          body: jsonEncode(data),
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization':
-                'key=AAAA_8-x_z4:APA91bE5c27vN7PgA4BTTOtLcLpxnz3W-Ljjet2YAfwr3b0t10YMXSbgwTX01aJoDZh'
-                    'ylqCZjZ3EiuUR9M2KDGcvCfBSBumulrujHHuN7zI_6kN0JIrMCkxiwT63QD5AfNTyE0gxEao7'
-          });
+    
+    var res5 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"));
+    var responseData5 = jsonDecode(res5.body);
+    for (int i = 0; i < responseData5["data"].length; i++) {
+      Order req = Order();
+      req.reciever_id = responseData5["data"][i]["supplier_id"];
+      req.user_id = responseData5["data"][i]["user_id"];
+      req.org_name = responseData5["data"][i]["orgName"];
+      req.user_mob_num = responseData5["data"][i]["mobileNumber"];
+      req.user_name = responseData5["data"][i]["firstName"]+" "+responseData5["data"][i]["lastName"];
+      req.status = responseData5["data"][i]["orderStatus"];
+      req.PartygstNumber = responseData5["data"][i]["PartygstNumber"];
+      req.trailerType = responseData5["data"][i]["trailerType"];
+      req.party_name = responseData5["data"][i]["partyName"];
+      req.party_address = responseData5["data"][i]["shippingAddress"];
+      req.pincode = responseData5["data"][i]["pincode"];
+      req.billing_address = responseData5["data"][i]["address"];
+      req.party_mob_num = responseData5["data"][i]["partyMobileNumber"];
+      req.loading_type = responseData5["data"][i]["loadingType"];
+      // req.loading_type = responseData["data"][i][""];
+      req.trans_type = responseData5["data"][i]["transType"];
+      req.order_date = responseData5["data"][i]["createdAt"];
+      req.base_price = responseData5["data"][i]["basePrice"];
+      req.orderType = responseData5["data"][i]["orderType"];
+      req.qty_left = responseData5["data"][i]["qty_left"];
+      req.order_id = responseData5["data"][i]["order_id"].toString();
+      //print(req);
     }
-     );
+
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // var id = await prefs.getString('user_id');
+    // // print(selectedValue);
+    // await prefs.setString('user_id', id.toString());
+    // await prefs.setString('supplier_id', supplier_id.toString());
+    // await prefs.setString("party_name", party_name.text.toString());
+    // await prefs.setString("party_address", party_address.text.toString());
+    // await prefs.setString("pincode", pincode.text.toString());
+    // await prefs.setString("PartygstNumber", party_pan_no.text.toString());
+    // await prefs.setString("mobileNumber", party_mob_num.text.toString());
+    // await prefs.setString("orderType", selectedOrderType.toString());
+    // await prefs.setString("paymentTerm", selectedpaymentType.toString());
+    // await prefs.setString("trailerType", trailerType.toString());
+    // await prefs.setString("loadingType", selectedType.toString());
+    // await prefs.setString("transType", selectedTransType.toString());
+    // await prefs.setString("basePrice", base_price.text.toString());
+    // await prefs.setString("totalQuantity", totalQuantity.toString());
+    // await prefs.setString("totalPrice", tot_price.toString());
+    // await prefs.setString("deliveryDate", deliveryDate.text.toString());
+
+    var res = await http.post(
+      Uri.parse("http://steefotmtmobile.com/steefo/updateOrder.php"),
+      body:
+      // selectedOrderType == "Lump-sum"
+      //     ?
+      // {
+      //   "userId": id!,
+      //   "supplierId": supplier_id!,
+      //   "shippingAddress": party_address.text,
+      //   "pincode": pincode.text,
+      //   "partyName": party_name.text,
+      //   "PartygstNumber": party_pan_no.text,
+      //   "mobileNumber": party_mob_num.text,
+      //   "basePrice": base_price.text,
+      //   "status": "Pending",
+      //   "trailerType": "None",
+      //   "loadingType": "None",
+      //   "transType": "None",
+      //   "paymentTerm": "None",
+      //   "orderType": selectedOrderType,
+      //   "totalQuantity": totalQuantity.toString(),
+      //   "totalPrice": tot_price.toString(),
+      //   "deliveryDate": deliveryDate.text,
+      //   "dateTime": DateTime.now().toString(),
+      // }:
+      {
+        "user_id": id,
+        "supplier_id": supplier_id,
+        "shippingAddress": party_address.text,
+        "pincode": pincode.text,
+        "partyName": party_name.text,
+        "PartygstNumber": party_pan_no.text,
+        "mobileNumber": party_mob_num.text,
+        "basePrice": base_price.text,
+        "status": "Pending",
+        "loadingType": selectedType,
+        "orderType": selectedOrderType,
+        "paymentTerm": selectedpaymentType,
+        "trailerType": trailerType,
+        "transType": selectedTransType,
+        "totalQuantity": totalQuantity.toString(),
+        "totalPrice": tot_price.toString(),
+        "deliveryDate": deliveryDate.text,
+        // "dateTime": DateTime.now().toString(),
+      },
+    );
+
+    // NotificationServices notificationServices = NotificationServices();
+    // notificationServices.getDeviceToken().then((value) async {
+    //   var data = {
+    //     'to': value.toString(),
+    //     'priority': 'high',
+    //     'notification': {
+    //       'title': 'Parth',
+    //       'body': 'You Got An Order',
+    //     },
+    //     'data': {'type': 'msg', 'id': 'parth1234'},
+    //   };
+    //   print(value.toString());
+    //   print('notification enter');
+    //   await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+    //       body: jsonEncode(data),
+    //       headers: {
+    //         'Content-Type': 'application/json; charset=UTF-8',
+    //         'Authorization':
+    //             'key=AAAA_8-x_z4:APA91bE5c27vN7PgA4BTTOtLcLpxnz3W-Ljjet2YAfwr3b0t10YMXSbgwTX01aJoDZhylqCZjZ3EiuUR9M2KDGcvCfBSBumulrujHHuN7zI_6kN0JIrMCkxiwT63QD5AfNTyE0gxEao7'
+    //       });
+    // }
+    //  );
     Fluttertoast.showToast(
         msg: 'Your Order Is Placed',
         toastLength: Toast.LENGTH_SHORT,
@@ -525,7 +619,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
     List<DropdownMenuItem<String>> dropdownSize = [];
     List<DropdownMenuItem<String>> dropdownDealer = [];
     List<DropdownMenuItem<String>> dropdownType = [];
-    List<DropdownMenuItem<String>> dropdownTraierType = [];
+    List<DropdownMenuItem<String>> dropdownTrailerType = [];
     List<DropdownMenuItem<String>> dropdownPaymentType = [];
     List<DropdownMenuItem<String>> dropdownRegion = [];
     List<DropdownMenuItem<String>> dropdownTransType = [];
@@ -592,9 +686,9 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
           value: trailer[i],
           child: Text(trailer[i]),
         );
-        dropdownTraierType.add(it);
+        dropdownTrailerType.add(it);
       }
-      return dropdownTraierType;
+      return dropdownTrailerType;
     }
 
     List<DropdownMenuItem<String>> getPaymentType() {
@@ -645,20 +739,20 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
     loadData();
 
     return Form(
-      key: _formKey,
+      // key: _formKey,
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
-            // gradient: LinearGradient(
-            //
-            //     transform: GradientRotation(1.07),
-            //     colors: [
-            //       Color.fromRGBO(75, 100, 160, 1.0),
-            //       Color.fromRGBO(19, 59, 78, 1.0),
-            //     ]
-            //
-            // )
+          // gradient: LinearGradient(
+          //
+          //     transform: GradientRotation(1.07),
+          //     colors: [
+          //       Color.fromRGBO(75, 100, 160, 1.0),
+          //       Color.fromRGBO(19, 59, 78, 1.0),
+          //     ]
+          //
+          // )
             color: Colors.white),
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -696,14 +790,14 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                 padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
                 child: TextFormField(
                   textInputAction: TextInputAction.next,
-                  key: field1Key,
-                  focusNode: focusNode1,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter a Name.';
-                    }
-                    return null;
-                  },
+                  // key: field1Key,
+                  // focusNode: focusNode1,
+                  // validator: (value) {
+                  //   if (value!.isEmpty) {
+                  //     return 'Please enter a Name.';
+                  //   }
+                  //   return null;
+                  // },
                   controller: party_name,
                   maxLines: 1,
                   decoration: const InputDecoration(
@@ -712,27 +806,28 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       //  hintText: "Name",
                       // floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(
-                          // borderRadius: BorderRadius.circular(20),
+                        // borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide.none),
                       filled: true,
                       fillColor: Color.fromRGBO(233, 236, 239,
                           0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
 
-                      ),
+                  ),
                 ),
               ),
-              //----------------------------Shipping Address--------------------
+              //----------------------------Shipping Address------------------
+
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
-                  key: field2Key,
-                  focusNode: focusNode2,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter an Address.';
-                    }
-                    return null;
-                  },
+                  // key: field2Key,
+                  // focusNode: focusNode2,
+                  // validator: (value) {
+                  //   if (value!.isEmpty) {
+                  //     return 'Please enter an Address.';
+                  //   }
+                  //   return null;
+                  // },
                   controller: party_address,
                   maxLines: 4,
                   textInputAction: TextInputAction.newline,
@@ -742,30 +837,28 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       //  floatingLabelBehavior: FloatingLabelBehavior.never,
                       alignLabelWithHint: true,
                       border: OutlineInputBorder(
-                          // borderRadius: BorderRadius.circular(20),
+                        // borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide.none),
                       filled: true,
                       fillColor: Color.fromRGBO(233, 236, 239,
                           0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
 
-                      ),
+                  ),
                 ),
               ),
-
               //----------------------------Pincode--------------------
-
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
-                  key: field11Key,
-                  focusNode: focusNode11,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter a Pincode.';
-                    }
-                    return null;
-                  },
+                  // key: field11Key,
+                  // focusNode: focusNode11,
+                  // validator: (value) {
+                  //   if (value!.isEmpty) {
+                  //     return 'Please enter a Pincode.';
+                  //   }
+                  //   return null;
+                  // },
                   controller: pincode,
                   // maxLines: 4,
                   textInputAction: TextInputAction.newline,
@@ -775,13 +868,13 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       //  floatingLabelBehavior: FloatingLabelBehavior.never,
                       alignLabelWithHint: true,
                       border: OutlineInputBorder(
-                          // borderRadius: BorderRadius.circular(20),
+                        // borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide.none),
                       filled: true,
                       fillColor: Color.fromRGBO(233, 236, 239,
                           0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
 
-                      ),
+                  ),
                 ),
               ),
               //-------------------------------Region---------------------------
@@ -794,7 +887,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                         hintStyle: TextStyle(fontSize: 20),
                         filled: true,
                         fillColor:
-                            Color.fromRGBO(233, 236, 239, 0.792156862745098),
+                        Color.fromRGBO(233, 236, 239, 0.792156862745098),
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                           // borderRadius: BorderRadius.circular(20)
@@ -806,12 +899,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       var ind = regions.indexOf(selectedRegion);
                       tCost = int.parse(regionList[ind].cost!);
                     },
-                    validator: (selectedValue) {
-                      if (selectedValue == null) {
-                        // return 'Please select a value.';
-                      }
-                      return null;
-                    },
+                    // validator: (selectedValue) {
+                    //   if (selectedValue == null) {
+                    //     // return 'Please select a value.';
+                    //   }
+                    //   return null;
+                    // },
                   )),
 
               //-----------------------------GST Number-------------------------
@@ -820,34 +913,34 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
                   textInputAction: TextInputAction.next,
-                  key: field3Key,
-                  focusNode: focusNode3,
+                  // key: field3Key,
+                  // focusNode: focusNode3,
                   controller: party_pan_no,
                   maxLines: 1,
                   maxLength: 15,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter a value.';
-                    } else if (value.length < 15) {
-                      return 'Please Enter Valid Number';
-                    }
-                    if (value.length > 15) {
-                      return 'Please Enter Valid Number';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value!.isEmpty) {
+                  //     return 'Please enter a value.';
+                  //   } else if (value.length < 15) {
+                  //     return 'Please Enter Valid Number';
+                  //   }
+                  //   if (value.length > 15) {
+                  //     return 'Please Enter Valid Number';
+                  //   }
+                  //   return null;
+                  // },
                   decoration: const InputDecoration(
                       hintText: "GST Number",
                       hintStyle: TextStyle(fontSize: 20),
                       //  floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(
-                          // borderRadius: BorderRadius.circular(20),
+                        // borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide.none),
                       filled: true,
                       fillColor: const Color.fromRGBO(233, 236, 239,
                           0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
 
-                      ),
+                  ),
                 ),
               ),
 
@@ -857,34 +950,34 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
                   textInputAction: TextInputAction.next,
-                  key: field4Key,
-                  focusNode: focusNode4,
+                  // key: field4Key,
+                  // focusNode: focusNode4,
                   controller: party_mob_num,
                   maxLines: 1,
                   keyboardType: TextInputType.number,
                   maxLength: 10,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please Enter a Number.';
-                    } else if (value.length < 10) {
-                      return 'Please Enter Valid Number';
-                    }
-                    if (value.length > 10) {
-                      return 'Please Enter Valid Number';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value!.isEmpty) {
+                  //     return 'Please Enter a Number.';
+                  //   } else if (value.length < 10) {
+                  //     return 'Please Enter Valid Number';
+                  //   }
+                  //   if (value.length > 10) {
+                  //     return 'Please Enter Valid Number';
+                  //   }
+                  //   return null;
+                  // },
                   decoration: const InputDecoration(
                       hintText: "Contact Number",
                       hintStyle: TextStyle(fontSize: 20),
                       // floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(
-                          // borderRadius: BorderRadius.circular(20),
+                        // borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide.none),
                       filled: true,
                       fillColor: Color.fromRGBO(233, 236, 239,
                           0.792156862745098) // Color.fromRGBO(233, 236, 239, 0.792156862745098)
-                      ),
+                  ),
                 ),
               ),
 
@@ -952,7 +1045,10 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                   textStyle: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
-                                                      FontWeight.w600)))),
+                                                      FontWeight.w600)
+                                              )
+                                          )
+                                      ),
                                       SingleChildScrollView(
                                         physics: BouncingScrollPhysics(),
                                         child: Container(
@@ -1069,12 +1165,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                         },
                         // key: field5Key,
                         // focusNode: focusNode5,
-                        validator: (selectedValue) {
-                          if (selectedValue == null) {
-                            return 'Please select a value.';
-                          }
-                          return null;
-                        },
+                        // validator: (selectedValue) {
+                        //   if (selectedValue == null) {
+                        //     return 'Please select a value.';
+                        //   }
+                        //   return null;
+                        // },
                       ));
                 } else {
                   return Container();
@@ -1084,8 +1180,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
 
               LayoutBuilder(builder: (context, constraints) {
                 if (selectedOrderType != "Lump-sum"
-                    // (user_type == "Dealer" || user_type == "Distributor")
-                    ) {
+                // (user_type == "Dealer" || user_type == "Distributor")
+                ) {
                   return Column(
                     children: [
                       Container(
@@ -1108,12 +1204,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             },
                             // key: field5Key,
                             // focusNode: focusNode5,
-                            validator: (selectedValue) {
-                              if (selectedValue == null) {
-                                //return 'Please select a value.';
-                              }
-                              return null;
-                            },
+                            // validator: (selectedValue) {
+                            //   if (selectedValue == null) {
+                            //     //return 'Please select a value.';
+                            //   }
+                            //   return null;
+                            // },
                           )),
 
 
@@ -1131,7 +1227,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                   // borderRadius: BorderRadius.circular(20)
                                 )),
                             value: trailerType,
-                            items: getTrailerType(),
+                             items: getTrailerType(),
                             onChanged: (String? newValue) {
                               trailerType = newValue;
                             },
@@ -1163,14 +1259,14 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             onChanged: (String? newValue) {
                               selectedType = newValue;
                             },
-                            key: field5Key,
-                            focusNode: focusNode5,
-                            validator: (selectedValue) {
-                              if (selectedValue == null) {
-                                //return 'Please select a value.';
-                              }
-                              return null;
-                            },
+                            // key: field5Key,
+                            // focusNode: focusNode5,
+                            // validator: (selectedValue) {
+                            //   if (selectedValue == null) {
+                            //     //return 'Please select a value.';
+                            //   }
+                            //   return null;
+                            // },
                           )),
                       Container(
                           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -1192,12 +1288,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             },
                             // key: field5Key,
                             // focusNode: focusNode5,
-                            validator: (selectedValue) {
-                              if (selectedValue == null) {
-                                return 'Please select a value.';
-                              }
-                              return null;
-                            },
+                            // validator: (selectedValue) {
+                            //   if (selectedValue == null) {
+                            //     return 'Please select a value.';
+                            //   }
+                            //   return null;
+                            // },
                           ))
                     ],
                   );
@@ -1240,8 +1336,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               Container(
                 margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 decoration: const BoxDecoration(
-                    // color: Colors.white, borderRadius: BorderRadius.circular(20)
-                    ),
+                  // color: Colors.white, borderRadius: BorderRadius.circular(20)
+                ),
                 child: Column(
                   children: [
                     // Container(
@@ -1288,14 +1384,14 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           onChanged: (String? newValue) {
                             selectedGrade = newValue;
                           },
-                          key: field8Key,
-                          focusNode: focusNode8,
-                          validator: (selectedValue) {
-                            if (selectedValue == null) {
-                              // return 'Please select a value.';
-                            }
-                            return null;
-                          },
+                          // key: field8Key,
+                          // focusNode: focusNode8,
+                          // validator: (selectedValue) {
+                          //   if (selectedValue == null) {
+                          //     // return 'Please select a value.';
+                          //   }
+                          //   return null;
+                          // },
                         )),
 
                     LayoutBuilder(builder: (context, constraints) {
@@ -1322,8 +1418,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                               onChanged: (String? newValue) {
                                 selectedSize = newValue;
                               },
-                              key: field7Key,
-                              focusNode: focusNode7,
+                              // key: field7Key,
+                              // focusNode: focusNode7,
                               // validator: (selectedValue) {
                               //   if (selectedValue == null) {
                               //     // return 'Please select a value.';
@@ -1341,8 +1437,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: TextFormField(
                         textInputAction: TextInputAction.next,
-                        key: field6Key,
-                        focusNode: focusNode6,
+                        // key: field6Key,
+                        // focusNode: focusNode6,
                         controller: base_price,
                         maxLines: 1,
                         keyboardType: TextInputType.number,
@@ -1357,7 +1453,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             hintStyle: TextStyle(fontSize: 20),
                             //  floatingLabelBehavior: FloatingLabelBehavior.never,
                             border: OutlineInputBorder(
-                                // borderRadius: BorderRadius.circular(20),
+                              // borderRadius: BorderRadius.circular(20),
                                 borderSide: BorderSide.none),
                             filled: true,
                             fillColor: Color.fromRGBO(
@@ -1377,7 +1473,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           hintStyle: TextStyle(fontSize: 20),
                           //  floatingLabelBehavior: FloatingLabelBehavior.never,
                           border: OutlineInputBorder(
-                              // borderRadius: BorderRadius.circular(20),
+                            // borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide.none),
                           filled: true,
                           fillColor: Color.fromRGBO(233, 236, 239,
@@ -1385,7 +1481,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                         ),
                       ),
                     ),
-                    //-------------------------deliveryDAte-----------------------
+                    //-------------------------deliveryDate-----------------------
 
                     Container(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -1393,17 +1489,17 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                         // height: MediaQuery.of(context).size.width / 3,
                         child: Center(
                             child: TextFormField(
-                              key: field10Key,
-                                  focusNode: focusNode10,
+                              // key: field10Key,
+                              // focusNode: focusNode10,
                               controller: deliveryDate, //editing controller of this TextField
                               decoration: InputDecoration(
                                 suffixIcon: Icon(Icons.calendar_today,color: Colors.grey,),
-                                  // icon: Icon(Icons.calendar_today,color: Colors.grey,), //icon of text field
-                                  hintText: "Delivery Date",
-                                  hintStyle: TextStyle(fontSize: 20),
+                                // icon: Icon(Icons.calendar_today,color: Colors.grey,), //icon of text field
+                                hintText: "Delivery Date",
+                                hintStyle: TextStyle(fontSize: 20),
                                 border: OutlineInputBorder(
-                                              // borderRadius: BorderRadius.circular(20),
-                                              borderSide: BorderSide.none),
+                                  // borderRadius: BorderRadius.circular(20),
+                                    borderSide: BorderSide.none),
                                 filled: true,
                                 fillColor: Color.fromRGBO(233, 236, 239,
                                     0.792156862745098),
@@ -1482,12 +1578,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           if (selectedOrderType != "Use Lumpsum") {
                             if (selectedGrade != null &&
                                 // selectedpaymentType != null &&
-                                    selectedSize != null &&
-                                    qty.text != "" &&
-                                    base_price.text != "" &&
-                                    selectedRegion != null
-                                // selectedTransType != null
-                                ) {
+                                selectedSize != null
+                                // qty.text != "" &&
+                                // base_price.text != "" &&
+                                // selectedRegion != null
+                            // selectedTransType != null
+                            ) {
                               // for (int i = 0; i < paymentList.length; i++) {
                               //   if (paymentList[i].paymentName == selectedpaymentType) {
                               //     prcpct = int.parse(paymentList[i].paymentCost!);
@@ -1516,18 +1612,17 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                     quty = quty + int.parse(qty.text);
 
                                     num p = selectedTransType == "Ex-Work" &&
-                                            selectedOrderType != "Lump-sum"
+                                        selectedOrderType != "Lump-sum"
                                         ? (int.parse(base_price.text) +
-                                                grdpct +
-                                                szpct +
-                                                tCost) *
-                                            quty
+                                        grdpct +
+                                        szpct +
+                                        tCost) *
+                                        quty
                                         : (int.parse(base_price.text) +
-                                                grdpct +
-                                                szpct +
-                                                0) *
-                                            quty;
-
+                                        grdpct +
+                                        szpct +
+                                        0) *
+                                        quty;
                                     listOfColumns.elementAt(i)["Qty"] =
                                         quty.toString();
                                     listOfColumns.elementAt(i)["Price"] =
@@ -1538,22 +1633,22 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                 if (f == 0) {
                                   listOfColumns.add({
                                     "Sr_no": itemNum.toString(),
-                                    "Name": "$selectedGrade $selectedSize ",
+                                    "Name": "$selectedGrade $selectedSize",
                                     "Qty": qty.text,
                                     "Price": selectedTransType == "Ex-Work" &&
-                                            selectedOrderType != "Lump-sum"
+                                        selectedOrderType != "Lump-sum"
                                         ? ((int.parse(base_price.text) +
-                                                    grdpct +
-                                                    szpct +
-                                                    tCost) *
-                                                int.parse(qty.text))
-                                            .toString()
+                                        grdpct +
+                                        szpct +
+                                        tCost) *
+                                        int.parse(qty.text))
+                                        .toString()
                                         : ((int.parse(base_price.text) +
-                                                    grdpct +
-                                                    szpct +
-                                                    0) *
-                                                int.parse(qty.text))
-                                             .toString()
+                                        grdpct +
+                                        szpct +
+                                        0) *
+                                        int.parse(qty.text))
+                                        .toString()
                                   });
                                   // print(selectedTransType == "CIF" &&
                                   //         selectedOrderType != "Lump-sum"
@@ -1637,12 +1732,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                   child: Column(
                                     children: [
                                       Container(
-                                          // margin: EdgeInsets.only(left: 5, right: 5),
+                                        // margin: EdgeInsets.only(left: 5, right: 5),
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
                                               color: Color.fromRGBO(19, 59, 78, 1.0),
                                               borderRadius:
-                                                  BorderRadius.circular(10)),
+                                              BorderRadius.circular(10)),
                                           height: 50,
                                           // width: ,
                                           child: Text("Select The Lumpsum",
@@ -1650,13 +1745,13 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                   textStyle: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
-                                                          FontWeight.w600)))),
+                                                      FontWeight.w600)))),
                                       SingleChildScrollView(
                                         physics: BouncingScrollPhysics(),
                                         child: Container(
                                           height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
+                                              .size
+                                              .height /
                                               1.24,
                                           child: ListView.builder(
                                               reverse: true,
@@ -1676,13 +1771,13 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                 return LayoutBuilder(builder:
                                                     (context, constraints) {
                                                   if (lumpsumList[index]
-                                                              .status
-                                                              .toString() ==
-                                                          "Confirmed"
+                                                      .status
+                                                      .toString() ==
+                                                      "Confirmed"
 
-                                                      // lumpsumList[index].name ==
-                                                      //       "$selectedGrade" &&
-                                                      ) {
+                                                  // lumpsumList[index].name ==
+                                                  //       "$selectedGrade" &&
+                                                  ) {
                                                     print(
                                                         "entrance............");
                                                     print(
@@ -1699,42 +1794,42 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                               "Sr_no": itemNum
                                                                   .toString(),
                                                               "Name":
-                                                                  lumpsumList[
-                                                                          index]
-                                                                      .name.toString()+ selectedSize.toString(),
+                                                              lumpsumList[
+                                                              index]
+                                                                  .name.toString()+ selectedSize.toString(),
                                                               "Qty": qty.text,
                                                               "Price": selectedTransType ==
-                                                                          "Ex-Work" &&
-                                                                      selectedOrderType !=
-                                                                          "Lump-sum"
+                                                                  "Ex-Work" &&
+                                                                  selectedOrderType !=
+                                                                      "Lump-sum"
                                                                   ? (
                                                                   (int.parse(lumpsumList[index].basePrice!) +
-                                                                              tCost + szpct) *
-                                                                          int.parse(qty
-                                                                              .text))
-                                                                      .toString()
+                                                                      tCost + szpct) *
+                                                                      int.parse(qty
+                                                                          .text))
+                                                                  .toString()
                                                                   : ((int.parse(lumpsumList[index]
-                                                                              .basePrice!)) *
-                                                                          int.parse(
-                                                                              qty.text))
-                                                                      .toString()
+                                                                  .basePrice!)) *
+                                                                  int.parse(
+                                                                      qty.text))
+                                                                  .toString()
                                                             });
                                                             lumpsumList[index]
                                                                 .qty = (int.parse(
-                                                                        lumpsumList[index]
-                                                                            .qty!) -
-                                                                    int.parse(qty
-                                                                        .text))
+                                                                lumpsumList[index]
+                                                                    .qty!) -
+                                                                int.parse(qty
+                                                                    .text))
                                                                 .toString();
 
                                                             reductionData.add({
                                                               "id": lumpsumList[
-                                                                      index]
+                                                              index]
                                                                   .id,
                                                               "qty":
-                                                                  lumpsumList[
-                                                                          index]
-                                                                      .qty
+                                                              lumpsumList[
+                                                              index]
+                                                                  .qty
                                                             });
                                                             totalQuantity =
                                                                 totalQuantity +
@@ -1749,7 +1844,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                           child: InventoryCard(
                                                               context,
                                                               lumpsumList[
-                                                                  index],Order(),id ),
+                                                              index],Order(),id ),
                                                         ));
                                                   } else {
                                                     return Container();
@@ -1794,11 +1889,13 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                           // borderRadius: BorderRadius.circular(20)
                         ),
                         child: SingleChildScrollView(
-                          child: DataTable(
+                          child:
+
+                          DataTable(
                             border: TableBorder.all(
                                 width: 1, color: Colors.black26),
                             columnSpacing:
-                                MediaQuery.of(context).size.width / 20,
+                            MediaQuery.of(context).size.width / 20,
                             //border: TableBorder.all(borderRadius: BorderRadius.circular(20)),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20)),
@@ -1814,33 +1911,32 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                   numeric: true),
                               DataColumn(
                                   label: Expanded(
-                                child: Text(
-                                  'HSN/Name',
-                                  textAlign: TextAlign.center,
-                                ),
-                              )),
+                                    child: Text(
+                                      'HSN/Name',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )),
                               DataColumn(
                                   label: Expanded(
-                                     child: Text(
-                                  'Quantity\n(Tons)',
-                                  textAlign: TextAlign.center,
-                                ),
-                              )),
+                                    child: Text(
+                                      'Quantity\n(Tons)',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )),
                               DataColumn(
                                   label: Expanded(
-                                child: Text(
-                                  'Price',
-                                  textAlign: TextAlign.center,
-                                ),
-                              )),
+                                    child: Text(
+                                      'Price',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )),
                               DataColumn(label: Text(' '))
                             ],
                             rows:
-                                listOfColumns // Loops through dataColumnText, each iteration assigning the value to element
-                                    .map(
-                              (element) {
+                            listOfColumns // Loops through dataColumnText, each iteration assigning the value to element
+                                .map(
+                                  (element) {
                                 int i;
-
                                 for (i = 0; i < listOfColumns.length; i++) {
                                   if (listOfColumns.elementAt(i)["Name"] ==
                                       element["Name"]!) {
@@ -1903,13 +1999,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               ),
               Container(
                   margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   width: MediaQuery.of(context).size.width,
                   child: buttonStyle("Submit", () {
-
                     // if (_formKey.currentState!.validate()) {
                     // }
-                      onPlaceOrder();
+                    onEditOrder();
                   }))
             ],
           ),

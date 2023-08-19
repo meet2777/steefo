@@ -77,7 +77,7 @@ class _OrdersPageState extends State<OrdersContent> {
 
     if (m != id) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id!},
       );
       var responseData = jsonDecode(res.body);
@@ -138,7 +138,7 @@ class _OrdersPageState extends State<OrdersContent> {
 
     if (m != id1) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id1!},
       );
       var responseData = jsonDecode(res.body);
@@ -464,7 +464,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     onPressed: () async {
                       await http.post(
                         Uri.parse(
-                            "http://urbanwebmobile.in/steffo/approveorder.php"),
+                            "http://steefotmtmobile.com/steefo/approveorder.php"),
                         body: {
                           "decision": "Approved",
                           "order_id": requestList[index].order_id!
@@ -493,7 +493,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     onPressed: () async {
                       await http.post(
                         Uri.parse(
-                            "http://urbanwebmobile.in/steffo/approveorder.php"),
+                            "http://steefotmtmobile.com/steefo/approveorder.php"),
                         body: {
                           "decision": "Denied",
                           "order_id": requestList[index].order_id!

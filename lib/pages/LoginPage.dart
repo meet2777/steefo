@@ -70,16 +70,15 @@ class _loginPageState extends State<LoginContent> {
   bool rememberMe = true;
   onLogin(String email, String pw) async {
     var test = await http.post(
-      Uri.parse('http://urbanwebmobile.in/steffo/login.php'),
+      Uri.parse("http://steefotmtmobile.com/steefo/login.php"),
       body: {
         "email": email,
-        "password": pw,
+        "regpassword": pw,
       },
     );
     //Navigator.of(context).pushNamed("/home");
 
     var responseData = json.decode(test.body);
-
     print(responseData);
     if (responseData["status"] == "200") {
       userValid = true;

@@ -57,7 +57,7 @@ class _NewPassPageState extends State<NewPasscontent> {
 
   onClick(String password, String confirmPass) async {
     var test = await http.post(
-      Uri.parse('http://urbanwebmobile.in/steffo/updatepassword.php'),
+      Uri.parse('http://steefotmtmobile.com/steefo/updatepassword.php'),
       // headers: <String, String>{
       //   'Content-Type': 'application/json; charset=UTF-8',
       // },

@@ -6,11 +6,15 @@ import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/pages/ChallanListPage.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
+import 'EditableProfilePage.dart';
+import 'PlaceOrderPage.dart';
+import 'editorderpage.dart';
 
 // ignore: must_be_immutable
 class OrderDetailsforpurchases extends StatelessWidget {
@@ -45,7 +49,7 @@ class _OrderPageState extends State<OrderPage> {
         print(widget.order!.order_id);
         print(widget.order!.PartygstNumber);
         final res = await http.post(
-          Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
+          Uri.parse("http://steefotmtmobile.com/steefo/getorderdetails.php"),
           body: {
             "order_id": widget.order!.order_id,
           },
@@ -73,7 +77,7 @@ class _OrderPageState extends State<OrderPage> {
         });
       } else {
         final res = await http.post(
-          Uri.parse("http://urbanwebmobile.in/steffo/getlumpsumorder.php"),
+          Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
           body: {
             "order_id": widget.order!.order_id,
           },
@@ -135,8 +139,6 @@ class _OrderPageState extends State<OrderPage> {
                       padding: const EdgeInsets.all(10),
                       width: MediaQuery.of(context).size.width - 10,
                       child: Column(
-
-
                           children: [
                         Container(
                           alignment: Alignment.center,
@@ -148,7 +150,7 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                             color: Color.fromRGBO(19, 59, 78, 1.0),
                           ),
-                          child: Text(widget.order!.user_name!.toUpperCase(),
+                          child: Text(widget.order!.org_name!.toUpperCase(),
                               style: const TextStyle(
                                   fontSize: 20,
                                   fontFamily: "Poppins_bold",
@@ -454,7 +456,7 @@ class _OrderPageState extends State<OrderPage> {
                                     onPressed: () async {
                                       await http.post(
                                         Uri.parse(
-                                            "http://urbanwebmobile.in/steffo/approveorder.php"),
+                                            "http://steefotmtmobile.com/steefo/approveorder.php"),
                                         body: {
                                           "decision": "Approved",
                                           "order_id": widget.order!.order_id!
@@ -481,7 +483,7 @@ class _OrderPageState extends State<OrderPage> {
                                   onPressed: () async {
                                     await http.post(
                                       Uri.parse(
-                                          "http://urbanwebmobile.in/steffo/approveorder.php"),
+                                          "http://steefotmtmobile.com/steefo/approveorder.php"),
                                       body: {
                                         "decision": "Denied",
                                         "order_id": widget.order!.order_id!
@@ -570,9 +572,115 @@ class _OrderPageState extends State<OrderPage> {
                         return (Container());
                       }
                     }
-                  })
+                  }),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Get.to(EditableProfilePage());
+                  //   },
+                  //   child: Align(
+                  //     alignment: Alignment.topRight,
+                  //     child: Container(
+                  //       // padding: EdgeInsets.only(right: 10),
+                  //       // margin: const EdgeInsets.only(top: 20),
+                  //       alignment: Alignment.center,
+                  //       // height: 40,
+                  //       decoration: BoxDecoration(
+                  //           // color: Color.fromARGB(255, 216, 229, 248),
+                  //           borderRadius: BorderRadius.only(
+                  //               topLeft: Radius.circular(10),
+                  //               bottomLeft: Radius.circular(10))),
+                  //       // child: ElevatedButton(
+                  //       //     onPressed: () {
+                  //       //       onRegister();
+                  //       //     },
+                  //       //     child: Icon(Icons.edit)),
+                  //       child: buttonStyle("Edit Order", () {
+                  //         loadData();
+                  //       })
+                  //       // Icon(
+                  //       //   Icons.edit_rounded,
+                  //       //   color: Colors.black,
+                  //       // ),
+                  //     ),
+                  //   ),
+                  // ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(EditOrderPage());
+                    },
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        // color:Color.fromRGBO(19, 59, 78, 1),
+                        //   padding: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(top: 10,bottom: 10),
+                          alignment: Alignment.center,
+                          height: 50,
+                          width: MediaQuery.of(context).size.width/2,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(colors: [
+                              Color.fromRGBO(75, 100, 160, 1.0),
+                              Color.fromRGBO(19, 59, 78, 1.0),
+                              //add more colors
+                            ]),
+                          // color: Color.fromRGBO(19, 59, 78, 1),
+                            borderRadius: BorderRadius.all(Radius.circular(10)
+                            )
+                        ),
+                        // child: ElevatedButton(
+                        //     onPressed: () {
+                        //       onRegister();
+                        //     },
+                        //     child: Icon(Icons.edit)),
+                        child: Text("Edit Order",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
+                        // ElevatedButton(onPressed: () {
+                        //
+                        //   Navigator.of(context).pushNamed("/placeorder");
+                        // },
+                        //   child: Text("Edit Order"),
+                        // )
+                        // Icon(
+                        //   Icons.edit_rounded,
+                        //   color: Colors.black,
+                        // ),
+                      ),
+                    ),
+                  ),
+
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Get.to(PlaceOrderPage());
+                  //   },
+                  //   child: Align(
+                  //     alignment: Alignment.topRight,
+                  //     child:
+                  //     Container(
+                  //       padding: EdgeInsets.only(right: 10),
+                  //       margin: const EdgeInsets.only(top: 20),
+                  //       alignment: Alignment.center,
+                  //       // height: 40,
+                  //       width: MediaQuery.of(context).size.width,
+                  //       decoration: BoxDecoration(
+                  //           // color: Color.fromARGB(255, 216, 229, 248),
+                  //           borderRadius: BorderRadius.only(
+                  //               topLeft: Radius.circular(10),
+                  //               bottomLeft: Radius.circular(10))),
+                  //       // child: ElevatedButton(
+                  //       //     onPressed: () {
+                  //       //       onRegister();
+                  //       //     },
+                  //       //     child: Icon(Icons.edit)),
+                  //       child: buttonStyle("Edit Order", () {})
+                  //       // Icon(
+                  //       //   Icons.edit_rounded,
+                  //       //   color: Colors.black,
+                  //       // ),
+                  //     ),
+                  //   ),
+                  // ),
                 ])),
           ),
-        ));
+        ),
+    );
   }
 }

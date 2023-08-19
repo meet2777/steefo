@@ -38,7 +38,7 @@ class _purchasesState extends State<purchases> {
 
     if (m != id) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id!},
       );
       var responseData = jsonDecode(res.body);
@@ -54,6 +54,7 @@ class _purchasesState extends State<purchases> {
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
+        req.org_name = responseData["data"][i]["orgName"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];

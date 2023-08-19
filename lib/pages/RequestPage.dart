@@ -123,7 +123,7 @@ class _RequestPageState extends State<RequestContent> {
 
     if (m != id) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id!},
       );
       var responseData = jsonDecode(res.body);
@@ -396,7 +396,7 @@ class _RequestPageState extends State<RequestContent> {
       print("enter");
       var test = await http.post(
         Uri.parse(
-          'http://urbanwebmobile.in/steffo/getrequests.php',
+          'http://steefotmtmobile.com/steefo/getrequests.php',
         ),
       );
       //Navigator.of(context).pushNamed("/home");
@@ -407,7 +407,7 @@ class _RequestPageState extends State<RequestContent> {
       for (int i = 0; i < responseData['data'].length; i++) {
         print("enter2");
         User u = User();
-        u.date=responseData['data'][i]['createdAt'];
+        u.date=responseData['data'][i]['registeredDate'];
         u.id = responseData['data'][i]['id'];
         u.firstName = responseData['data'][i]['firstName'];
         u.lastName = responseData['data'][i]['lastName'];
@@ -421,6 +421,7 @@ class _RequestPageState extends State<RequestContent> {
         u.panNumber = responseData['data'][i]['panNumber'];
         u.adhNumber = responseData['data'][i]['adhNumber'];
         u.address = responseData['data'][i]['address'];
+        u.uploadedFile = responseData['data'][i]['uploadedFile'];
         regReqList.add(u);
         print("enter3");
       }
@@ -510,10 +511,10 @@ Widget orderRequestCard(context, Order order, c()) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                child: Text(
-                  "Organization Name:",
-                  style: TextStyle(fontWeight: FontWeight.w700),
-                ),
+                // child: Text(
+                //   "Organization Name:",
+                //   style: TextStyle(fontWeight: FontWeight.w700),
+                // ),
                 padding: EdgeInsets.symmetric(vertical: 5),
               ),
               Text(
@@ -562,7 +563,7 @@ Widget orderRequestCard(context, Order order, c()) {
                 onPressed: () async {
                   await http.post(
                     Uri.parse(
-                        "http://urbanwebmobile.in/steffo/approveorder.php"),
+                        "http://steefotmtmobile.com/steefo/approveorder.php"),
                     body: {"decision": "Approved", "order_id": order.order_id!},
                   );
                   c();
@@ -577,8 +578,7 @@ Widget orderRequestCard(context, Order order, c()) {
             TextButton(
                 onPressed: () async {
                   await http.post(
-                    Uri.parse(
-                        "http://urbanwebmobile.in/steffo/approveorder.php"),
+                    Uri.parse("http://steefotmtmobile.com/steefo/approveorder.php"),
                     body: {"decision": "Denied", "order_id": order.order_id!},
                   );
                   c();
@@ -599,33 +599,38 @@ Widget orderRequestCard(context, Order order, c()) {
 
 Widget RegistrationRequestCard(context, index, User user, c()) {
   return Container(
-    decoration: BoxDecoration(
-        color: Colors.grey.shade100, borderRadius: BorderRadius.circular(10)),
-    padding: EdgeInsets.all(10),
+    // padding: EdgeInsets.all(10),
     // margin: EdgeInsets.all(5),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
+            padding: EdgeInsets.only(left: 10, top: 10, right: 10),
+            width: MediaQuery.of(context).size.width,
+            // color: Colors.red,
+            decoration: BoxDecoration(
+                color: Color.fromRGBO(19, 59, 78, 1.0),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10))),
             child: Text(
           user.userType!.toUpperCase(),
           textAlign: TextAlign.left,
           style: GoogleFonts.poppins(
               textStyle: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 22)),
         )),
-        Divider(
-          color: Colors.amber,
-        ),
+        SizedBox(height: 10,),
         Container(
+          padding: EdgeInsets.only(left: 10,right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 child: Text(
-                  "Organization Name:",
+                  "Org. Name:",
                   style: TextStyle(fontFamily: "Poppins_Bold"),
                 ),
                 // padding: EdgeInsets.symmetric(vertical: 5),
@@ -641,17 +646,18 @@ Widget RegistrationRequestCard(context, index, User user, c()) {
           ),
         ),
         Container(
+          padding: EdgeInsets.only(left: 10, right:10),
           margin: EdgeInsets.symmetric(vertical: 5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Region:",
+                "Contact No.:",
                 style: TextStyle(fontFamily: "Poppins_Bold"),
               ),
               Expanded(
                   child: Text(
-                user.address!,
+                user.mobileNumber!,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
                 textAlign: TextAlign.right,

@@ -13,6 +13,9 @@ import '../Models/lumpsum.dart';
 import '../Models/lumpsum.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 // ignore: must_be_immutable
 class OrderDetails extends StatelessWidget {
@@ -92,7 +95,7 @@ class _OrderPageState extends State<OrderPage> {
       if (widget.order!.orderType != "Lump-sum") {
         print('insize');
         final res = await http.post(
-          Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
+          Uri.parse("http://steefotmtmobile.com/steefo/getorderdetails.php"),
           body: {
             "order_id": widget.order!.order_id,
             // "qty_left": widget.order!.qty_left,
@@ -125,7 +128,7 @@ class _OrderPageState extends State<OrderPage> {
       } else {
         print("inlumpsum");
         final res = await http.post(
-          Uri.parse("http://urbanwebmobile.in/steffo/getlumpsumorder.php"),
+          Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
           body: {
             // "qty_left" : responseData["data"][i]["qty_left"],
             "order_id": widget.order!.order_id,
@@ -165,6 +168,8 @@ class _OrderPageState extends State<OrderPage> {
     }
   }
 
+
+
   // void initState() {
   //   loadData();
   //   super.initState();
@@ -191,7 +196,7 @@ class _OrderPageState extends State<OrderPage> {
                       child: Column(
                           children: [
                         Container(
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           width: double.infinity,
                           padding: const EdgeInsets.all(10),
                           decoration: const BoxDecoration(
@@ -200,12 +205,24 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                             color: Color.fromRGBO(19, 59, 78, 1.0),
                           ),
-                          child: Text(
-                              widget.order!.org_name.toString().toUpperCase(),
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: "Poppins_bold",
-                                  color: Colors.white)
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                  widget.order!.org_name.toString().toUpperCase(),
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: "Poppins_bold",
+                                      color: Colors.white)
+                              ),
+                              Text(
+                                  widget.order!.order_id.toString().toUpperCase(),
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: "Poppins_bold",
+                                      color: Colors.white)
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(
@@ -229,7 +246,8 @@ class _OrderPageState extends State<OrderPage> {
                                     style: const TextStyle(
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
-                            )),
+                            )
+                        ),
 
                         Container(
                             padding: const EdgeInsets.all(10),
@@ -376,8 +394,6 @@ class _OrderPageState extends State<OrderPage> {
                                 )
                             ),
 
-
-
                         Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
@@ -395,7 +411,8 @@ class _OrderPageState extends State<OrderPage> {
                                     style: const TextStyle(
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
-                            )),
+                            )
+                        ),
 
                             Container(
                                 padding: const EdgeInsets.all(10),
@@ -415,9 +432,7 @@ class _OrderPageState extends State<OrderPage> {
                                             fontSize: 15, fontFamily: "Poppins"))
                                   ],
                                 )),
-                        // const SizedBox(
-                        //   height: 10.0,
-                        // ),
+
                         Container(
                             padding: const EdgeInsets.all(10),
                             decoration: const BoxDecoration(
@@ -436,9 +451,7 @@ class _OrderPageState extends State<OrderPage> {
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
                             )),
-                        // const SizedBox(
-                        //   height: 10.0,
-                        // ),
+
                         Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
@@ -457,9 +470,7 @@ class _OrderPageState extends State<OrderPage> {
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
                             )),
-                        // SizedBox(
-                        //   height: 10,
-                        // ),
+
                         Container(
                             // margin: EdgeInsets.only(top: 10),
                             padding: const EdgeInsets.all(10),
@@ -480,6 +491,7 @@ class _OrderPageState extends State<OrderPage> {
                               ],
                             )
                         ),
+
                         Container(
                             // margin: EdgeInsets.only(top: 10),
                             padding: const EdgeInsets.all(10),
@@ -521,7 +533,7 @@ class _OrderPageState extends State<OrderPage> {
                               ],
                             )
                         ),
-                      ]
+                       ]
                       )
                   ),
                   const SizedBox(
@@ -583,6 +595,9 @@ class _OrderPageState extends State<OrderPage> {
                           )),
                     ),
                   ),
+
+
+
                   SizedBox(
                     height: 10,
                   ),
@@ -600,7 +615,7 @@ class _OrderPageState extends State<OrderPage> {
                                     onPressed: () async {
                                       await http.post(
                                         Uri.parse(
-                                            "http://urbanwebmobile.in/steffo/approveorder.php"),
+                                            "http://steefotmtmobile.com/steefo/approveorder.php"),
                                         body: {
                                           "decision": "Approved",
                                           "order_id": widget.order!.order_id!
@@ -630,7 +645,7 @@ class _OrderPageState extends State<OrderPage> {
                                   onPressed: () async {
                                     await http.post(
                                       Uri.parse(
-                                          "http://urbanwebmobile.in/steffo/approveorder.php"),
+                                          "http://steefotmtmobile.com/steefo/approveorder.php"),
                                       body: {
                                         "decision": "Denied",
                                         "order_id": widget.order!.order_id!
@@ -674,7 +689,7 @@ class _OrderPageState extends State<OrderPage> {
                               onTap: () async {
                                 await http.post(
                                   Uri.parse(
-                                      "http://urbanwebmobile.in/steffo/approveorder.php"),
+                                      "http://steefotmtmobile.com/steefo/approveorder.php"),
                                   body: {
                                     "decision": "Canceled",
                                     "order_id": widget.order!.order_id!
@@ -735,9 +750,23 @@ class _OrderPageState extends State<OrderPage> {
                         );
                       }
                     }
-                  })
-                ])),
+                  }),
+
+
+                ]
+                ),
+
+            ),
           ),
-        ));
+        ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: (){
+      //     Navigator.of(context).push(MaterialPageRoute(builder: (context){
+      //       return  Container();
+      //     }));
+      //   },
+      //   child: const Icon(Icons.picture_as_pdf_sharp),
+      // ),
+    );
   }
 }

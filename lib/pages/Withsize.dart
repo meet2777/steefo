@@ -48,7 +48,7 @@ class _OrdersPageState extends State<OrdersContent> {
         widget.order.orderType == "With Size") {
       print(widget.order.order_id);
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/getorderdetails.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/getorderdetails.php"),
         body: {
           // "id" : responseData1['data'][i]['id'];
           "order_id": widget.order.order_id,
@@ -57,14 +57,12 @@ class _OrdersPageState extends State<OrdersContent> {
       var responseData1 = jsonDecode(res.body);
       for (int i = 0; i < responseData1["data"].length; i++) {
         Item i = Item();
-
         i.name = responseData1['data'][i]['id'];
         i.price = responseData1['data'][i]['price'];
         i.qty = responseData1['data'][i]['qty'];
         qtyandprice.add(i);
       }
       print(qtyandprice);
-
       // flag = 1;
       setState(() {});
     }
@@ -154,7 +152,7 @@ class _OrdersPageState extends State<OrdersContent> {
 
     if (m != id) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id!},
       );
       var responseData = jsonDecode(res.body);
@@ -218,7 +216,7 @@ class _OrdersPageState extends State<OrdersContent> {
 
     if (m != id1) {
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id1!},
       );
       var responseData = jsonDecode(res.body);
@@ -402,7 +400,7 @@ class _OrdersPageState extends State<OrdersContent> {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Container(
-        margin: EdgeInsets.only(top: 10),
+        // margin: EdgeInsets.only(top: 10),
         // padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
@@ -475,6 +473,7 @@ class _OrdersPageState extends State<OrdersContent> {
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
                 style: GoogleFonts.poppins(
+                  color: Color.fromRGBO(19, 59, 78, 1.0),
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -569,7 +568,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     onPressed: () async {
                       await http.post(
                         Uri.parse(
-                            "http://urbanwebmobile.in/steffo/approveorder.php"),
+                            "http://steefotmtmobile.com/steefo/approveorder.php"),
                         body: {
                           "decision": "Approved",
                           "order_id": requestList[index].order_id!
@@ -597,7 +596,7 @@ class _OrdersPageState extends State<OrdersContent> {
                     onPressed: () async {
                       await http.post(
                         Uri.parse(
-                            "http://urbanwebmobile.in/steffo/approveorder.php"),
+                            "http://steefotmtmobile.com/steefo/approveorder.php"),
                         body: {
                           "decision": "Denied",
                           "order_id": requestList[index].order_id!
@@ -1190,149 +1189,8 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                   // )
                 ],
               ),
-
-              // TextButton(
-              //             onPressed: () async {
-              //               await http.post(
-              //                 Uri.parse(
-              //                     "http://urbanwebmobile.in/steffo/approveorder.php"),
-              //                 body: {
-              //                   "decision": "Approved",
-              //                   "order_id": requestList[index].order_id!
-              //                 },
-              //               );
-              //               () {
-              //                 // orderList.add(requestList[index]);
-              //                 // requestList.removeAt(index);
-              //                 id = "none";
-              //                 setState(() {
-              //                   print('setstate');
-              //                   //  loadData();
-              //                 });
-              //               }();
-              //               // Get.to(RequestPage());
-              //             },
-              //             child: GradientText(
-              //               style:
-              //                   TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              //               colors: [Colors.greenAccent, Colors.grey],
-              //               "Accept",
-              //             )),
-
-              // TextButton(
-              //     onPressed: () async {
-              //       await http.post(
-              //         Uri.parse(
-              //             "http://urbanwebmobile.in/steffo/approveorder.php"),
-              //         body: {
-              //           "decision": "Denied",
-              //           "order_id": requestList[index].order_id!
-              //         },
-              //       );
-              //       () {
-              //         // orderList.add(requestList[index]);
-              //         // requestList.removeAt(index);
-              //         id = "none";
-              //         loadData();
-              //         setState(() {});
-              //         // Get.to(RequestPage());
-              //       }();
-              //     },
-              //     child: GradientText(
-              //       style:
-              //           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              //       colors: [Colors.redAccent, Colors.grey],
-              //       "Decline",
-              //     ))
             ],
           ),
-          // Container(
-          //   child: Text("data"),
-          // )
-
-          // Column(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     Container(
-          //       padding: EdgeInsets.only(top: 5, bottom: 5),
-          //       child: Text(
-          //         order.user_name!.toUpperCase(),
-          //         style: GoogleFonts.poppins(
-          //             textStyle: TextStyle(
-          //                 color: Colors.black,
-          //                 fontWeight: FontWeight.bold,
-          //                 fontSize: 20)),
-          //       ),
-          //     ),
-          //     // LayoutBuilder(builder: (context, constraints) {
-          //     //   if (curr_user_id == order.reciever_id) {
-          //     //     return Container(
-          //     //         padding:
-          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-          //     //         decoration: BoxDecoration(
-          //     //             color: Colors.blue,
-          //     //             borderRadius: BorderRadius.circular(20)),
-          //     //         child: Text(
-          //     //           "Sales",
-          //     //         ));
-          //     //   } else {
-          //     //     return Container(
-          //     //         padding:
-          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-          //     //         decoration: BoxDecoration(
-          //     //             color: Colors.green,
-          //     //             borderRadius: BorderRadius.circular(20)),
-          //     //         child: Text("Purchase"));
-          //     //   }
-          //     // })
-          //     Divider(
-          //       color: Colors.greenAccent,
-          //     ),
-          //
-          //     Container(
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Container(
-          //             child: Text(
-          //               "Org Name:",
-          //               style: TextStyle(fontFamily: "Poppins_Bold"),
-          //             ),
-          //             padding: EdgeInsets.only(bottom: 5, right: 5),
-          //           ),
-          //           Text(
-          //             order.party_name!,
-          //             overflow: TextOverflow.ellipsis,
-          //             maxLines: 3,
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     Container(
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-          //           Padding(
-          //             padding: const EdgeInsets.only(left: 35.0),
-          //             child: Text(order.status!),
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     Container(
-          //       padding: EdgeInsets.symmetric(vertical: 5),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Text("Order Date: ",
-          //               style: TextStyle(fontFamily: "Poppins_Bold")),
-          //           Text(order.order_date!.substring(0, 10))
-          //         ],
-          //       ),
-          //     )
-          //   ],
-          // ),
         ),
         SizedBox(
           height: 10,

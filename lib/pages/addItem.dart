@@ -67,7 +67,7 @@ class _AddItemPageState extends State<AddItemContent> {
     final user_id = await prefs.getString('id');
 
     var res1 = await http
-        .post(Uri.parse("http://urbanwebmobile.in/steffo/getgrade.php"));
+        .post(Uri.parse("http://steefotmtmobile.com/steefo/getgrade.php"));
     var responseData1 = jsonDecode(res1.body);
     for (int i = 0; i < responseData1['data'].length; i++) {
       print(responseData1['data'][i]);
@@ -78,7 +78,7 @@ class _AddItemPageState extends State<AddItemContent> {
       gradeList.add(g);
     }
     var res2 = await http
-        .post(Uri.parse("http://urbanwebmobile.in/steffo/getsize.php"));
+        .post(Uri.parse("http://steefotmtmobile.com/steefo/getsize.php"));
     var responseData2 = jsonDecode(res2.body);
     for (int i = 0; i < responseData2['data'].length; i++) {
       sizes.add(responseData2['data'][i]["sizeValue"].toString());
@@ -89,7 +89,7 @@ class _AddItemPageState extends State<AddItemContent> {
     }
 
     var res3 = await http
-        .post(Uri.parse("http://urbanwebmobile.in/steffo/getregions.php"));
+        .post(Uri.parse("http://steefotmtmobile.com/steefo/getregions.php"));
     var responseData3 = jsonDecode(res3.body);
     for (int i = 0; i < responseData3['data'].length; i++) {
       print(responseData3['data'][i]);
@@ -100,11 +100,11 @@ class _AddItemPageState extends State<AddItemContent> {
       regionList.add(r);
     }
     var res4 = await http
-        .post(Uri.parse("http://urbanwebmobile.in/steffo/getpayment.php"));
+        .post(Uri.parse("http://steefotmtmobile.com/steefo/getpayment.php"));
     var responseData4 = jsonDecode(res4.body);
     for (int i = 0; i < responseData4['data'].length; i++) {
       print(responseData4['data'][i]);
-      //payment.add(responseData4['data'][i]["regionName"]);
+      payment.add(responseData4['data'][i]["payment Name"]);
       Payment p = Payment();
       p.paymentName = responseData4['data'][i]["paymentName"];
       p.paymentCost = responseData4['data'][i]["paymentPrice"];
@@ -112,7 +112,7 @@ class _AddItemPageState extends State<AddItemContent> {
     }
 
     var res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/getinventory.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/getinventory.php"),
         body: {
           "user_id": user_id,
         });
@@ -274,7 +274,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                               newPrice.text.trim() != "") {
                                                                             gradeList[ind].price =
                                                                                 newPrice.text;
-                                                                            http.post(Uri.parse("http://urbanwebmobile.in/steffo/updategrade.php"), body: {
+                                                                            http.post(Uri.parse("http://steefotmtmobile.com/steefo/updategrade.php"), body: {
                                                                               "gradeName": gradeList[ind].value,
                                                                               "price": newPrice.text
                                                                             });
@@ -330,7 +330,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                         () async {
                                                           await http.post(
                                                               Uri.parse(
-                                                                  "http://urbanwebmobile.in/steffo/deletegrade.php"),
+                                                                  "http://steefotmtmobile.com/steefo/deletegrade.php"),
                                                               body: {
                                                                 "gradeName":
                                                                     gradeList[
@@ -454,7 +454,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                         if (_formKey.currentState!.validate()) {
                                           await http.post(
                                               Uri.parse(
-                                                  "http://urbanwebmobile.in/steffo/addgrade.php"),
+                                                  "http://steefotmtmobile.com/steefo/addgrade.php"),
                                               body: {
                                                 "gradeName": newGrade.text,
                                                 "gradePrice": Price.text,
@@ -603,7 +603,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                             if (numericRegex.hasMatch(newPrice.text) &&
                                                                                 newPrice.text.trim() != "") {
                                                                               sizeList[ind].price = newPrice.text;
-                                                                              http.post(Uri.parse("http://urbanwebmobile.in/steffo/updatesize.php"), body: {
+                                                                              http.post(Uri.parse("http://steefotmtmobile.com/steefo/updatesize.php"), body: {
                                                                                 "sizeName": sizeList[ind].value,
                                                                                 "price": newPrice.text
                                                                               });
@@ -657,7 +657,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                           () async {
                                                             await http.post(
                                                                 Uri.parse(
-                                                                    "http://urbanwebmobile.in/steffo/deletesize.php"),
+                                                                    "http://steefotmtmobile.com/steefo/deletesize.php"),
                                                                 body: {
                                                                   "sizeName":
                                                                       sizeList[
@@ -783,7 +783,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                         if (_formKey.currentState!.validate()) {
                                           await http.post(
                                               Uri.parse(
-                                                  "http://urbanwebmobile.in/steffo/addsize.php"),
+                                                  "http://steefotmtmobile.com/steefo/addsize.php"),
                                               body: {
                                                 "sizeName": newSize.text,
                                                 "sizePrice": newSizeprice.text,
@@ -919,7 +919,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                             if (numericRegex.hasMatch(newRegionPrice.text) &&
                                                                                 newRegionPrice.text.trim() != "") {
                                                                               regionList[ind].cost = newRegionPrice.text;
-                                                                              http.post(Uri.parse("http://urbanwebmobile.in/steffo/updateregion.php"), body: {
+                                                                              http.post(Uri.parse("http://steefotmtmobile.com/steefo/updateregion.php"), body: {
                                                                                 "regionName": regionList[ind].name,
                                                                                 "price": newRegionPrice.text
                                                                               });
@@ -963,7 +963,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                       () async {
                                                         await http.post(
                                                             Uri.parse(
-                                                                "http://urbanwebmobile.in/steffo/deleteregion.php"),
+                                                                "http://steefotmtmobile.com/steefo/deleteregion.php"),
                                                             body: {
                                                               "regionName":
                                                                   regions[ind]
@@ -1089,7 +1089,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                         if (_formKey.currentState!.validate()) {
                                           await http.post(
                                               Uri.parse(
-                                                  "http://urbanwebmobile.in/steffo/addregion.php"),
+                                                  "http://steefotmtmobile.com/steefo/addregion.php"),
                                               body: {
                                                 "regionName": newRegion.text,
                                                 "tCost": RegionPrice.text,
@@ -1208,7 +1208,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                       maxLines:
                                                                           1,
                                                                       controller:
-                                                                          editpaymentPrice,
+                                                                          newPaymentPrice,
                                                                       keyboardType:
                                                                           TextInputType
                                                                               .number,
@@ -1230,7 +1230,6 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                             0.792156862745098), //Color.fromRGBO(233, 236, 239, 0.792156862745098)
                                                                       ),
                                                                     ),
-
                                                                     ElevatedButton(
                                                                         style: ButtonStyle(
                                                                             shape: MaterialStatePropertyAll(ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20))),
@@ -1240,16 +1239,34 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                           RegExp(r'^[0-9]*$');
                                                                           if (numericRegex.hasMatch(newPaymentPrice.text) &&
                                                                               newPaymentPrice.text.trim() != "") {
-                                                                            regionList[ind].name = newPaymentPrice.text;
-                                                                            http.post(Uri.parse("http://urbanwebmobile.in/steffo/updatepayment.php"), body: {
+                                                                            paymentList[ind].paymentCost = newPaymentPrice.text;
+                                                                            http.post(Uri.parse("http://steefotmtmobile.com/steefo/updatepayment.php"), body: {
                                                                               "paymentName": paymentList[ind].paymentName,
-                                                                              "paymentPrice": editpaymentPrice.text,
+                                                                              "paymentPrice": newPaymentPrice.text,
                                                                             });
                                                                           }
                                                                           Navigator.pop(context);
                                                                         },
                                                                         child: Text("Submit")
                                                                     ),
+                                                                    // ElevatedButton(
+                                                                    //     style: ButtonStyle(
+                                                                    //         shape: MaterialStatePropertyAll(ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20))),
+                                                                    //         backgroundColor: MaterialStatePropertyAll(Colors.lightBlueAccent)),
+                                                                    //     onPressed: () {
+                                                                    //       final numericRegex =
+                                                                    //       RegExp(r'^[0-9]*$');
+                                                                    //       if (numericRegex.hasMatch(newRegionPrice.text) &&
+                                                                    //           newRegionPrice.text.trim() != "") {
+                                                                    //         regionList[ind].cost = newRegionPrice.text;
+                                                                    //         http.post(Uri.parse("http://steefotmtmobile.com/steefo/updateregion.php"), body: {
+                                                                    //           "regionName": regionList[ind].name,
+                                                                    //           "price": newRegionPrice.text
+                                                                    //         });
+                                                                    //       }
+                                                                    //       Navigator.pop(context);
+                                                                    //     },
+                                                                    //     child: Text("Submit"))
 
                                                                     // TextButton(
                                                                     //     onPressed:
@@ -1318,7 +1335,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                                         () async {
                                                           await http.post(
                                                               Uri.parse(
-                                                                  "http://urbanwebmobile.in/steffo/deletepayment.php"),
+                                                                  "http://steefotmtmobile.com/steefo/deletepayment.php"),
                                                               body: {
                                                                 "paymentName":
                                                                     paymentList[
@@ -1442,7 +1459,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                         if (_formKey.currentState!.validate()) {
                                           await http.post(
                                               Uri.parse(
-                                                  "http://urbanwebmobile.in/steffo/addpayment.php"),
+                                                  "http://steefotmtmobile.com/steefo/addpayment.php"),
                                               body: {
                                                 "paymentName":
                                                     newPaymentname.text,

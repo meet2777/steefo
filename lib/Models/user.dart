@@ -15,5 +15,6 @@ class User {
       adhNumber,
       gstNumber,
       address,
+      uploadedFile,
       date;
 }

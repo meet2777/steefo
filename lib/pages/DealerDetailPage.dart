@@ -54,7 +54,7 @@ class DealerDetailState extends State<DealerDetailContent> {
       id = await prefs.getString('id');
       orderList = [];
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": widget.user.id},
       );
       print("${widget.user.id}widgetuserid");

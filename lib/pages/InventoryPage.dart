@@ -44,7 +44,7 @@ class _InventoryPageState extends State<InventoryContent> {
     final user_id = await prefs.getString('id');
 
     var res1 = await http
-        .post(Uri.parse("http://urbanwebmobile.in/steffo/getgrade.php"));
+        .post(Uri.parse("http://steefotmtmobile.com/steefo/getgrade.php"));
     var responseData1 = jsonDecode(res1.body);
     for (int i = 0; i < responseData1['data'].length; i++) {
       print(responseData1['data'][i]);
@@ -67,7 +67,7 @@ class _InventoryPageState extends State<InventoryContent> {
     }
 
     var res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/getinventory.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/getinventory.php"),
         body: {
           "user_id": user_id,
         });

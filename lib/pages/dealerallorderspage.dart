@@ -30,7 +30,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
       id = await prefs.getString('id');
       orderList = [];
       final res = await http.post(
-        Uri.parse("http://urbanwebmobile.in/steffo/vieworder.php"),
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": widget.user.id},
       );
       print("${widget.user.id}widgetuserid");
@@ -51,7 +51,9 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
         req.status = responseData["data"][i]["orderStatus"];
         req.pincode = responseData["data"][i]["pincode"];
         req.party_name = responseData["data"][i]["partyName"];
-        req.trans_type = responseData["data"][i]["trans_type"];
+        req.trans_type = responseData["data"][i]["transType"];
+        req.trailerType = responseData["data"][i]["trailerType"];
+        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
