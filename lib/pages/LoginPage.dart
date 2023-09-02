@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/ui/common.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../notification_services.dart';
 
 void main() {
   runApp(LoginPage());
@@ -42,9 +45,39 @@ class _loginPageState extends State<LoginContent> {
   bool userValid = true;
   bool _isPWVisible = true;
 
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  late String token1;
+
+  void firebaseCloudMessaging_Listeners(){
+
+    // FirebaseMessaging.onMessage.listen((message) {
+    //   print('Got a message whilst in the foreground!');
+    //
+    //   if (message.notification != null) {
+    //
+    //     final snackBar = SnackBar(
+    //
+    //       content: Text(message.notification?.title ?? '', maxLines: 2),
+    //     );
+    //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    //   }
+    // });
+
+
+    _firebaseMessaging.getToken().then((token){
+      print("token is"+ token!);
+      // token1= token;
+      setState(() {token1=token;});
+    }
+    );
+  }
+
+
   @override
   void initState() {
+
     super.initState();
+    firebaseCloudMessaging_Listeners();
     focusNode1 = FocusNode();
     focusNode2 = FocusNode();
 
@@ -68,7 +101,23 @@ class _loginPageState extends State<LoginContent> {
   }
 
   bool rememberMe = true;
-  onLogin(String email, String pw) async {
+   onLogin(String email, String pw) async {
+
+    //  print("before login ");
+    // if(token1 != null){
+    //   print("api token ==>"+ token1);
+    //   var response = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/notificationNew.php"),
+    //       // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
+    //       body: {"token": token1}
+    //   );
+    //   print(response.body);
+    //   return jsonEncode(response.body);
+    // }
+    // else{
+    //   print("Token is null");
+    // }
+
+
     var test = await http.post(
       Uri.parse("http://steefotmtmobile.com/steefo/login.php"),
       body: {

@@ -6,6 +6,7 @@ class Order {
       ls_id,
       qty_left,
       user_type,
+      userType,
       user_id,
       org_name,
       pincode,
@@ -13,15 +14,20 @@ class Order {
       user_mob_num,
       billing_address,
       reciever_id,
+      dealerName,
       party_name,
+      consignee_name,
       party_address,
+      address,
       PartygstNumber,
+      gstNumber,
       party_mob_num,
       base_price,
       status,
       loading_type,
       order_date,
       orderType,
+      orderStatus,
       trailerType,
       trans_type,
       date,
@@ -30,6 +36,7 @@ class Order {
       totalQuantity;
 
   List<Item> items = [];
+
 }
 
 

@@ -24,6 +24,7 @@ class _purchasesState extends State<purchases> {
   List<Order> salesOrderList = [];
   String? id = "";
 
+  Order order = Order();
   var user_type;
   void loadusertype() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -35,6 +36,7 @@ class _purchasesState extends State<purchases> {
     var m = id;
     id = await prefs.getString('id');
     print("sss" + "${id}");
+
 
     if (m != id) {
       final res = await http.post(
@@ -49,6 +51,7 @@ class _purchasesState extends State<purchases> {
         req.deliveryDate = responseData["data"][i]["deliveryDate"];
         req.date = responseData["data"][i]["dateTime"];
         req.totalPrice = responseData["data"][i]["totalPrice"];
+        req.userType = responseData["data"][i]["userType"];
         req.pincode = responseData["data"][i]["pincode"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
@@ -61,6 +64,8 @@ class _purchasesState extends State<purchases> {
              req.trans_type = responseData["data"][i]["transType"];
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.dealerName = responseData["data"][i]["dealerName"];
+        req.consignee_name = responseData["data"][i]["consigneeName"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.billing_address = responseData["data"][i]["address"];
@@ -69,6 +74,7 @@ class _purchasesState extends State<purchases> {
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
+        req.orderStatus = responseData["data"][i]["orderStatus"];
         req.order_id = responseData["data"][i]["order_id"].toString();
 
         //  print(purchaseOrderList);
@@ -139,7 +145,8 @@ class _purchasesState extends State<purchases> {
                                     order: purchaseOrderList[index])));
                       },
                       child: purchaseOrderList[index].orderType ==
-                                  "With Size" &&
+                                  "With Size" || purchaseOrderList[index].orderType ==
+                          "Use Lumpsum" &&
                               (purchaseOrderList[index].status == "Confirmed" ||
                                   purchaseOrderList[index].status == "Pending")
                           ? orderCard(context, purchaseOrderList[index], id)

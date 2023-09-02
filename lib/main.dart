@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
         '/orderreq': (BuildContext context) => RequestPage(),
         //'/challanlist': (BuildContext context) => ChallanListPage(),
         '/placeorder': (BuildContext context) => PlaceOrderPage(),
-        '/editorder': (BuildContext context) => EditOrderPage(),
+        '/editorder': (BuildContext context) => EditOrderPage(order: Order(),),
         '/orders': (BuildContext context) => OrdersContent(
               order: Order(),
             ),

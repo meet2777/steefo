@@ -109,6 +109,7 @@ appbar(String txt, void c(), {void Function()? alert}) {
         txt,
         // textAlign: TextAlign.center,
         style: const TextStyle(
+
             color: Color.fromRGBO(19, 59, 78, 1), fontFamily: "Poppins_Bold"),
       )),
       backgroundColor: Colors.white,

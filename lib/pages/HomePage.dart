@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dio/dio.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quickalert/quickalert.dart';
@@ -20,13 +20,16 @@ import 'package:stefomobileapp/pages/Buyers.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stefomobileapp/pages/ProfilePage.dart';
 import 'package:stefomobileapp/pages/Withlumpsums.dart';
+import 'package:stefomobileapp/pages/consigneePage.dart';
 import 'package:stefomobileapp/pages/dealerbuyerspage.dart';
 import 'package:stefomobileapp/pages/purchases.dart';
 import 'package:stefomobileapp/ui/common.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:http/http.dart' as http;
+import '../Models/lumpsum.dart';
 import '../Models/order.dart';
+import '../Models/qty.dart';
 import '../Models/user.dart';
 import 'LoginPage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -72,10 +75,13 @@ class _HomePageState extends State<HomeContent> {
   var user_type;
 
   Order get order => Order();
+  Lumpsum get lumpsum => Lumpsum();
 
   String? get curr_user_id => null;
 
   get index => null;
+
+  get order_id => null;
   void loadusertype() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     user_type = await prefs.getString('userType');
@@ -86,7 +92,7 @@ class _HomePageState extends State<HomeContent> {
   List<Order> purchaseOrderList = [];
 //load request list length
 
-  String? id3 = "";
+  String? id3 = " ";
   Future<void> loadorderlength() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var m = id3;
@@ -105,21 +111,28 @@ class _HomePageState extends State<HomeContent> {
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.org_name = responseData["data"][i]["orgName"];
+        req.userType = responseData["data"][i]["userType"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.gstNumber = responseData["data"][i]["gstNumber"];
         req.trailerType = responseData["data"][i]["trailerType"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.dealerName = responseData["data"][i]["dealerName"];
+        req.consignee_name = responseData["data"][i]["consigneeName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
+        // req.party_address = responseData["data"][i]["shippingAddress"];
+        req.address = responseData["data"][i]["address"];
         req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
         // req.loading_type = responseData["data"][i][""];
         req.trans_type = responseData["data"][i]["transType"];
+        req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
@@ -137,6 +150,35 @@ class _HomePageState extends State<HomeContent> {
       }
       setState(() {});
     }
+
+    final res = await http.post(
+      Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
+      body: {"order_id": id3},
+    );
+    var responseData = jsonDecode(res.body);
+    //print(responseData);
+
+    for (int i = 0; i < responseData["data"].length; i++) {
+      Lumpsum lumpsum = Lumpsum();
+      lumpsum.order_id = responseData["data"][i]["order_id"];
+      lumpsum.name = responseData["data"][i]["name"];
+      lumpsum.qty = responseData["data"][i]["qty"];
+      lumpsum.qty_left = responseData["data"][i]["qty_left"];
+      lumpsum.basePrice = responseData["data"][i]["basePrice"];
+      lumpsum.price = responseData["data"][i]["price"];
+      lumpsum.status = responseData["data"][i]["orderStatus"];
+      print("remaining qty"+ lumpsum.qty_left.toString());
+      //print(req);
+      // if (req.status != "Rejected") {
+      //   if (id3 == req.user_id) {
+      //     purchaseOrderList.add(req);
+      //   }
+      //   if (id3 == req.reciever_id) {
+      //     salesOrderList.add(req);
+      //   }
+      // }
+    }
+
   }
 
   var flag = 0;
@@ -151,6 +193,7 @@ class _HomePageState extends State<HomeContent> {
       //Navigator.of(context).pushNamed("/home");
 
       var responseData = jsonDecode(test.body);
+      // print("remaining qty"+ qty.qty_left.toString());
       print("enter1");
       print(responseData);
       for (int i = 0; i < responseData['data'].length; i++) {
@@ -405,10 +448,14 @@ class _HomePageState extends State<HomeContent> {
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.dealerName = responseData["data"][i]["dealerName"];
+        req.consignee_name = responseData["data"][i]["consigneeName"];
         req.org_name = responseData["data"][i]["orgName"];
         req.trailerType = responseData["data"][i]["trailerType"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.gstNumber = responseData["data"][i]["gstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
+        req.address = responseData["data"][i]["address"];
         req.pincode = responseData["data"][i]["pincode"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
@@ -437,38 +484,39 @@ class _HomePageState extends State<HomeContent> {
     // print(NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
     //     .format(1000000000));
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10),
+      padding: EdgeInsets.only(left: 10, right: 10,),
       //  height: MediaQuery.of(context).size.height,
       decoration: const BoxDecoration(),
       child: SingleChildScrollView(
+         padding: EdgeInsets.only(bottom:40),
         physics: BouncingScrollPhysics(),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-          TextButton(
-            child: Text('send notification'),
-            onPressed: () {
-              notificationServices.getDeviceToken().then((value) async {
-                 var data = {
-                  'to': value.toString(),
-                  'priority': 'high',
-                  'notification': {
-                    'title': 'Meet',
-                    'body': 'You Got An Order',
-                  },
-                  'data': {'type': 'msg', 'id': 'parth1234'},
-                };
-                print(value.toString());
-                await http.post(
-                    Uri.parse('https://fcm.googleapis.com/fcm/send'),
-                    body: jsonEncode(data),
-                    headers: {
-                      'Content-Type': 'application/json; charset=UTF-8',
-                      'Authorization':
-                          'key=AAAA_8-x_z4:APA91bE5c27vN7PgA4BTTOtLcLpxnz3W-Ljjet2YAfwr3b0t10YMXSbgwTX01aJoDZhylqCZjZ3EiuUR9M2KDGcvCfBSBumulrujHHuN7zI_6kN0JIrMCkxiwT63QD5AfNTyE0gxEao7'
-                    });
-              });
-            },
-          ),
+          // TextButton(
+          //   child: Text('send notification'),
+          //   onPressed: () {
+          //     notificationServices.getDeviceToken().then((value) async {
+          //        var data = {
+          //         'to': value.toString(),
+          //         'priority': 'high',
+          //         'notification': {
+          //           'title': 'Meet',
+          //           'body': 'You Got An Order',
+          //         },
+          //         'data': {'type': 'msg', 'id': 'parth1234'},
+          //       };
+          //       print(value.toString());
+          //       await http.post(
+          //           Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          //           body: jsonEncode(data),
+          //           headers: {
+          //             'Content-Type': 'application/json; charset=UTF-8',
+          //             'Authorization':
+          //                 'key=AAAA_8-x_z4:APA91bE5c27vN7PgA4BTTOtLcLpxnz3W-Ljjet2YAfwr3b0t10YMXSbgwTX01aJoDZhylqCZjZ3EiuUR9M2KDGcvCfBSBumulrujHHuN7zI_6kN0JIrMCkxiwT63QD5AfNTyE0gxEao7'
+          //           });
+          //     });
+          //   },
+          // ),
           
           //carousel slider start////////////////////////////////////
           Container(
@@ -1077,6 +1125,44 @@ class _HomePageState extends State<HomeContent> {
                 } else
                   return SizedBox();
               }),
+
+              LayoutBuilder(builder: (context, constraints) {
+                if (user_type != "Manufacturer") {
+                  return GestureDetector(
+                      onTap: () {
+                        Get.to(consigneePage());
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 3.2,
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/employee.png",
+                              height: 60,
+                              width: 60,
+                              //  color: Colors.blueGrey,
+                            ),
+                            // Icon(
+                            //   Icons.settings_sharp,
+                            //   color: Colors.blue,
+                            //   size: 60,
+                            // ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Consignee",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            )
+                          ],
+                        ),
+                      ));
+                } else
+                  return Container();
+              }),
+
+
               LayoutBuilder(builder: (context, constraints) {
                 if (user_type == "Distributor") {
                   return GestureDetector(
@@ -1112,14 +1198,14 @@ class _HomePageState extends State<HomeContent> {
                 } else
                   return Container();
               }),
-              LayoutBuilder(builder: (context, constraints) {
-                if (user_type != "Manufacturer") {
-                  return Container(
-                    width: MediaQuery.of(context).size.width / 3.2,
-                  );
-                } else
-                  return Container();
-              }),
+              // LayoutBuilder(builder: (context, constraints) {
+              //   if (user_type != "Manufacturer") {
+              //     return Container(
+              //       width: MediaQuery.of(context).size.width / 3.2,
+              //     );
+              //   } else
+              //     return Container();
+              // }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

@@ -39,6 +39,7 @@ class _OrderPageState extends State<OrderPage> {
   var listOfColumns = [];
   var id;
   num tot_price = 0;
+  num tot_qty = 0;
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id');
@@ -66,11 +67,12 @@ class _OrderPageState extends State<OrderPage> {
             "Price": responseData["data"][i]["price"]
           });
           tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
+          tot_qty = tot_qty + int.parse(responseData["data"][i]["qty"]);
         }
         listOfColumns.add({
           "Sr_no": " ",
-          "Name": " ",
-          "Qty": "Total:",
+          "Name": "Total: ",
+          "Qty": tot_qty.toString(),
           "Price": tot_price.toString()
           // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
           //     .format(int.parse(tot_price.toString())),
@@ -94,12 +96,13 @@ class _OrderPageState extends State<OrderPage> {
             "Price": responseData["data"][i]["price"]
           });
           tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
+          tot_qty = tot_qty + int.parse(responseData["data"][i]["qty"]);
         }
 
         listOfColumns.add({
           "Sr_no": " ",
-          "Name": " ",
-          "Qty": "Total:",
+          "Name": "Total: ",
+          "Qty": tot_qty.toString(),
           "Price": tot_price.toString()
           // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
           //     .format(int.parse(tot_price.toString())),
@@ -110,6 +113,7 @@ class _OrderPageState extends State<OrderPage> {
       //       .format(int.parse(tot_price.toString())),
       // );
       print(listOfColumns);
+      print("usertype"+widget.order!.userType.toString());
       flag = 1;
       setState(() {});
     }
@@ -140,25 +144,118 @@ class _OrderPageState extends State<OrderPage> {
                       width: MediaQuery.of(context).size.width - 10,
                       child: Column(
                           children: [
-                        Container(
-                          alignment: Alignment.center,
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
+                            Container(
+                              padding: EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                    color: Color.fromRGBO(19, 59, 78, 1.0),
+                                  ),
+                              // color: Color.fromRGBO(19, 59, 78, 1.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(widget.order!.org_name!.toUpperCase(),
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: "Poppins_bold",
+                                          color: Colors.white)),
+                                  Text(widget.order!.order_id!.toUpperCase(),
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: "Poppins_bold",
+                                          color: Colors.white)),
+                                ],
+                              ),
                             ),
-                            color: Color.fromRGBO(19, 59, 78, 1.0),
-                          ),
-                          child: Text(widget.order!.org_name!.toUpperCase(),
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: "Poppins_bold",
-                                  color: Colors.white)),
-                        ),
+                        // Container(
+                        //   alignment: Alignment.center,
+                        //   width: double.infinity,
+                        //   padding: const EdgeInsets.all(10),
+                        //   decoration: const BoxDecoration(
+                        //     borderRadius: BorderRadius.all(
+                        //       Radius.circular(10),
+                        //     ),
+                        //     color: Color.fromRGBO(19, 59, 78, 1.0),
+                        //   ),
+                        //   child: Text(widget.order!.org_name!.toUpperCase(),
+                        //       style: const TextStyle(
+                        //           fontSize: 20,
+                        //           fontFamily: "Poppins_bold",
+                        //           color: Colors.white)),
+                        // ),
                         SizedBox(
                           height: 10,
                         ),
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Dealer Name:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.dealerName.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )
+                            ),
+
+
+                            LayoutBuilder(builder: (context, constraints) {
+                              if(widget.order!.user_type == "Distributor"){
+                                return Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      // borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text("Party Name:",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontFamily: "Poppins_Bold")),
+                                        Text(widget.order!.party_name.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 15, fontFamily: "Poppins"))
+                                      ],
+                                    )
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                              // child: Container(
+                              //     padding: const EdgeInsets.all(10),
+                              //     decoration: BoxDecoration(
+                              //       // borderRadius: BorderRadius.circular(10),
+                              //       color: Colors.white,
+                              //     ),
+                              //     child: Row(
+                              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //       children: [
+                              //         const Text("Party Name:",
+                              //             style: TextStyle(
+                              //                 fontSize: 15,
+                              //                 fontFamily: "Poppins_Bold")),
+                              //         Text(widget.order!.party_name.toString(),
+                              //             style: const TextStyle(
+                              //                 fontSize: 15, fontFamily: "Poppins"))
+                              //       ],
+                              //     )
+                              // ),
+                            ),
+
                             Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
@@ -169,11 +266,11 @@ class _OrderPageState extends State<OrderPage> {
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text("Party Name:",
+                                    const Text("Consignee Name:",
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontFamily: "Poppins_Bold")),
-                                    Text(widget.order!.party_name!,
+                                    Text(widget.order!.consignee_name.toString(),
                                         style: const TextStyle(
                                             fontSize: 15, fontFamily: "Poppins"))
                                   ],
@@ -606,7 +703,7 @@ class _OrderPageState extends State<OrderPage> {
                   // ),
                   GestureDetector(
                     onTap: () {
-                      Get.to(EditOrderPage());
+                      Get.to(EditOrderPage(order: widget.order));
                     },
                     child: Align(
                       alignment: Alignment.center,
@@ -632,7 +729,8 @@ class _OrderPageState extends State<OrderPage> {
                         //       onRegister();
                         //     },
                         //     child: Icon(Icons.edit)),
-                        child: Text("Edit Order",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
+                        child: Text("Edit Order",
+                          style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
                         // ElevatedButton(onPressed: () {
                         //
                         //   Navigator.of(context).pushNamed("/placeorder");
@@ -646,6 +744,20 @@ class _OrderPageState extends State<OrderPage> {
                       ),
                     ),
                   ),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                    child: buttonStyle("View Challan", () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChallanListPage(
+                                order: widget.order!,
+                              )));
+                    }),
+                  )
 
                   // GestureDetector(
                   //   onTap: () {

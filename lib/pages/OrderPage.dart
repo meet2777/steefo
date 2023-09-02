@@ -21,7 +21,6 @@ import 'package:printing/printing.dart';
 class OrderDetails extends StatelessWidget {
   Order order;
   OrderDetails({super.key, required this.order});
-
   @override
   Widget build(BuildContext context) {
     return OrderPage(order: order);
@@ -36,7 +35,13 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
-
+  String? id,
+          orderId,
+          name,
+          qty,
+          qty_left,
+          basePrice,
+          price;
 
   List<Lumpsum> lumpsumList = [];
   bool isInventoryDataLoaded = false;
@@ -72,11 +77,15 @@ class _OrderPageState extends State<OrderPage> {
   //   setState(() {});
   // }
 
-  Lumpsum get lumpsum => Lumpsum();
+  // Lumpsum get lumpsum => Lumpsum();
+  // User user = User();
+  Lumpsum lumpsum = Lumpsum();
   int flag = 0;
   var listOfColumns = [];
-  var id;
+  // var id;
+  var f = 0;
   num tot_price = 0;
+  num tot_qty = 0;
   loadData() async {
     print(
         "${widget.order!.order_id.toString()}");
@@ -84,6 +93,7 @@ class _OrderPageState extends State<OrderPage> {
         "${widget.order!.orderType.toString()}");
     print(
         "${widget.order!.trans_type.toString()}");
+    print("usertype"+ widget.order!.userType.toString());
 
     print("inLoadLumpsumData");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -116,11 +126,12 @@ class _OrderPageState extends State<OrderPage> {
             "Price": responseData["data"][i]["price"]
           });
           tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
+          tot_qty = tot_qty + int.parse(responseData["data"][i]["qty"]);
         }
         listOfColumns.add({
           "Sr_no": " ",
-          "Name": " ",
-          "Qty": "Total:",
+          "Name": "Total:",
+          "Qty": tot_qty.toString(),
           "Price": tot_price.toString()
           // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
           //     .format(int.parse(tot_price.toString())),
@@ -145,11 +156,12 @@ class _OrderPageState extends State<OrderPage> {
             "Price": responseData["data"][i]["price"]
           });
           tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
+          tot_qty = tot_qty + int.parse(responseData["data"][i]["qty"]);
         }
         listOfColumns.add({
           "Sr_no": " ",
-          "Name": " ",
-          "Qty": "Total:",
+          "Name": "Total: ",
+          "Qty": tot_qty.toString(),
           "Price": tot_price.toString()
           // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
           //     .format(int.parse(tot_price.toString())),
@@ -161,12 +173,61 @@ class _OrderPageState extends State<OrderPage> {
       // );
 
       print(listOfColumns);
-      print(widget.order!.qty_left);
+      print('usertype'+widget.order!.userType.toString());
+      print(lumpsum.qty_left);
       //  print("${widget.order!.order_id.toString()}order id");
       flag = 1;
       setState(() {});
     }
+      // if (f == 0) {
+      //   SharedPreferences prefs = await SharedPreferences.getInstance();
+      //   lumpsum.ls_id = await prefs.getString('ls_id');
+      //   lumpsum.order_id = await prefs.getString('order_id');
+      //   lumpsum.name = await prefs.getString("name");
+      //   lumpsum.qty = await prefs.getString("qty");
+      //   lumpsum.qty_left = await prefs.getString("qty_left");
+      //   lumpsum.basePrice = await prefs.getString("basePrice");
+      //   lumpsum.price = await prefs.getString("price");
+      //   // user.orgName = await prefs.getString("orgName");
+      //   // user.gstNumber = await prefs.getString("gstNumber");
+      //   // user.panNumber = await prefs.getString("panNumber");
+      //   // user.adhNumber = await prefs.getString("adhNumber");
+      //   // user.address = await prefs.getString("address");
+      //   f = 1;
+      //   // isDataLoaded = true;
+      //   setState(() {});
+      // }
+
+
+    // final res = await http.post(
+    //   Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
+    //   // body: {"order_id": orderId},
+    // );
+    // var responseData = jsonDecode(res.body);
+    // print(responseData);
+    // print(lumpsum.id);
+    // for (int i = 0; i < responseData["data"].length; i++) {
+    //   Lumpsum req = Lumpsum();
+    //   req.id = responseData["data"][i]["ls_id"];
+    //   req.orderId = responseData["data"][i]["order_id"];
+    //   req.name = responseData["data"][i]["name"];
+    //   req.qty = responseData["data"][i]["qty"];
+    //   req.qty_left = responseData["data"][i]["qty_left"];
+    //   req.basePrice = responseData["data"][i]["basePrice"];
+    //   req.price = responseData["data"][i]["price"];
+    //   //print(req);
+    //   // if (req.status != "Rejected") {
+    //   //   if (id3 == req.user_id) {
+    //   //     purchaseOrderList.add(req);
+    //   //   }
+    //   //   if (id3 == req.reciever_id) {
+    //   //     salesOrderList.add(req);
+    //   //   }
+    //   // }
+    // }
+
   }
+
 
 
 
@@ -177,6 +238,7 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context,) {
+
     loadData();
     //  print("orderpage${widget.order!.items.toString()}");
     return Scaffold(
@@ -205,23 +267,43 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                             color: Color.fromRGBO(19, 59, 78, 1.0),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Column(
                             children: [
-                              Text(
-                                  widget.order!.org_name.toString().toUpperCase(),
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: "Poppins_bold",
-                                      color: Colors.white)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                      widget.order!.org_name.toString().toUpperCase(),
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: "Poppins_bold",
+                                          color: Colors.white)
+                                  ),
+                                  Text(
+                                      widget.order!.order_id.toString().toUpperCase(),
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: "Poppins_bold",
+                                          color: Colors.white)
+                                  ),
+                                ],
                               ),
-                              Text(
-                                  widget.order!.order_id.toString().toUpperCase(),
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: "Poppins_bold",
+                              
+                              Row(
+                                children: [
+                                  Text("GST No. ",
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: "Poppins_bold",
+                                          color: Colors.white)),
+                                  Text(widget.order!.gstNumber.toString(),
+                                      style: const TextStyle(
+                                      fontSize: 15,
+                                      // fontFamily: "Poppins_bold",
                                       color: Colors.white)
-                              ),
+                                  )
+                                ],
+                              )
                             ],
                           ),
                         ),
@@ -229,25 +311,139 @@ class _OrderPageState extends State<OrderPage> {
                           height: 10,
                         ),
 
-                        Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              // borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
+
+                            LayoutBuilder(builder: (context, constraints) {
+                              if(widget.order!.user_type == "Dealer"){
+                                return Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      // borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text("Dealer Name:",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontFamily: "Poppins_Bold")),
+                                        Text(widget.order!.dealerName.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 15, fontFamily: "Poppins"))
+                                      ],
+                                    )
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                              // child: Container(
+                              //     padding: const EdgeInsets.all(10),
+                              //     decoration: BoxDecoration(
+                              //       // borderRadius: BorderRadius.circular(10),
+                              //       color: Colors.white,
+                              //     ),
+                              //     child: Row(
+                              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //       children: [
+                              //         const Text("Party Name:",
+                              //             style: TextStyle(
+                              //                 fontSize: 15,
+                              //                 fontFamily: "Poppins_Bold")),
+                              //         Text(widget.order!.party_name.toString(),
+                              //             style: const TextStyle(
+                              //                 fontSize: 15, fontFamily: "Poppins"))
+                              //       ],
+                              //     )
+                              // ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Party Name:",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "Poppins_Bold")),
-                                Text(widget.order!.party_name.toString(),
-                                    style: const TextStyle(
-                                        fontSize: 15, fontFamily: "Poppins"))
-                              ],
-                            )
+
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Dealer Name:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.dealerName.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )
+                            ),
+
+                        LayoutBuilder(builder: (context, constraints) {
+                          if(widget.order?.user_type == "Distributor"){
+                            return Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Party Name:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.party_name.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                          // child: Container(
+                          //     padding: const EdgeInsets.all(10),
+                          //     decoration: BoxDecoration(
+                          //       // borderRadius: BorderRadius.circular(10),
+                          //       color: Colors.white,
+                          //     ),
+                          //     child: Row(
+                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //       children: [
+                          //         const Text("Party Name:",
+                          //             style: TextStyle(
+                          //                 fontSize: 15,
+                          //                 fontFamily: "Poppins_Bold")),
+                          //         Text(widget.order!.party_name.toString(),
+                          //             style: const TextStyle(
+                          //                 fontSize: 15, fontFamily: "Poppins"))
+                          //       ],
+                          //     )
+                          // ),
                         ),
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Consignee Name:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.consignee_name.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )
+                            ),
 
                         Container(
                             padding: const EdgeInsets.all(10),
@@ -513,26 +709,26 @@ class _OrderPageState extends State<OrderPage> {
                             )
                         ),
 
-                         Container(
-                            // margin: EdgeInsets.only(top: 10),
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              // borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Remaining Qty: ",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "Poppins_Bold")),
-                                Text(lumpsum.qty_left.toString(),
-                                    style: const TextStyle(
-                                        fontSize: 15, fontFamily: "Poppins"))
-                              ],
-                            )
-                        ),
+                        //  Container(
+                        //     // margin: EdgeInsets.only(top: 10),
+                        //     padding: const EdgeInsets.all(10),
+                        //     decoration: const BoxDecoration(
+                        //       // borderRadius: BorderRadius.circular(20),
+                        //       color: Colors.white,
+                        //     ),
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //       children: [
+                        //         const Text("Remaining Qty: ",
+                        //             style: TextStyle(
+                        //                 fontSize: 15,
+                        //                 fontFamily: "Poppins_Bold")),
+                        //         Text(lumpsum.qty_left.toString(),
+                        //             style: const TextStyle(
+                        //                 fontSize: 15, fontFamily: "Poppins"))
+                        //       ],
+                        //     )
+                        // ),
                        ]
                       )
                   ),
@@ -579,7 +775,6 @@ class _OrderPageState extends State<OrderPage> {
                                                 DataCell(
                                                     Text(element["Name"]!)),
                                                 DataCell(Text(element["Qty"]!)),
-
                                                 DataCell(Text(
                                                   NumberFormat.simpleCurrency(
                                                           locale: 'hi-IN',

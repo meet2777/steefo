@@ -8,6 +8,7 @@ import 'package:stefomobileapp/Models/challan.dart';
 import "package:http/http.dart" as http;
 import 'package:stefomobileapp/pages/HomePage.dart';
 import '../Models/order.dart';
+import '../Models/user.dart';
 import '../ui/common.dart';
 import 'GenerateChallanPage.dart';
 import 'GeneratedChallanPage.dart';
@@ -34,6 +35,8 @@ class ChallanListContent extends StatefulWidget {
 class _ChallanListPageState extends State<ChallanListContent> {
   var _selected = 0;
 
+  User u = User();
+
   @override
   Widget build(BuildContext context) {
     print("${widget.order.items}orderitems  ");
@@ -49,11 +52,10 @@ class _ChallanListPageState extends State<ChallanListContent> {
 
   int flag = 0;
   String? id;
-  String? userType;
+  // String? userType;
   List<Challan> challanList = [];
   loadChallanList() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     id = await prefs.getString('id');
     if (flag == 0) {
       final res = await http.post(
@@ -70,10 +72,44 @@ class _ChallanListPageState extends State<ChallanListContent> {
         ch.transporter_name = responseData["data"][i]["transporter_name"];
         ch.vehicle_number = responseData["data"][i]["vehicle_number"];
         ch.lr_number = responseData["data"][i]["lr_number"];
+        ch.deliveryChallan = responseData["data"][i]["deliveryChallan"];
         challanList.add(ch);
       }
       flag = 1;
       setState(() {});
+    }
+
+    var test = await http.post(
+      Uri.parse(
+        'http://steefotmtmobile.com/steefo/getrequests.php',
+      ),
+    );
+    //Navigator.of(context).pushNamed("/home");
+
+    var responseData = jsonDecode(test.body);
+    // print("remaining qty"+ qty.qty_left.toString());
+    print("enter1");
+    print(responseData);
+    for (int i = 0; i < responseData['data'].length; i++) {
+      print("enter2");
+      User u = User();
+      u.id = responseData['data'][i]['id'];
+      u.firstName = responseData['data'][i]['firstName'];
+      u.lastName = responseData['data'][i]['lastName'];
+      u.email = responseData['data'][i]['email'];
+      u.mobileNumber = responseData['data'][i]['mobileNumber'];
+      u.parentId = responseData['data'][i]['parentId'];
+      u.userType = responseData['data'][i]['userType'];
+      u.userStatus = responseData['data'][i]['userStatus'];
+      u.orgName = responseData['data'][i]['orgName'];
+      u.gstNumber = responseData['data'][i]['gstNumber'];
+      u.panNumber = responseData['data'][i]['panNumber'];
+      u.adhNumber = responseData['data'][i]['adhNumber'];
+      u.address = responseData['data'][i]['address'];
+      u.uploadedFile = responseData['data'][i]['uploadedFile'];
+      // regReqList.add(u);
+      print("enter3");
+      print(widget.order.userType.toString());
     }
   }
 
@@ -83,7 +119,8 @@ class _ChallanListPageState extends State<ChallanListContent> {
     loadChallanList();
     return SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             // height: 40,
@@ -131,7 +168,7 @@ class _ChallanListPageState extends State<ChallanListContent> {
           Container(
             height: MediaQuery.of(context).size.height * 0.6,
             child: ListView.builder(
-              reverse: true,
+              // reverse: true,
               itemCount: challanList.length,
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -150,68 +187,88 @@ class _ChallanListPageState extends State<ChallanListContent> {
               },
             ),
           ),
-          Container(child: LayoutBuilder(builder: (context, constraints) {
-            return Container(
-                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-                width: MediaQuery.of(context).size.width,
-                child: buttonStyle("Generate Challan", () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => GenerateChallanPage(
-                                order: widget.order,
-                              )));
-                }));
-            // } else {
-            //   return Container();
-            // }
-          })),
+          LayoutBuilder(builder: (context, constraints) {
+            if (widget.order.userType != "Dealer") {
+              return Container(
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  child: buttonStyle("Generate Challan", () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                GenerateChallanPage(
+                                  order: widget.order,
+                                )));
+                  }));
+              // } else {
+              //   return Container();
+              // }
+            }else{
+              return Container();
+            }
+          }
+            ),
           SizedBox(
             height: 10,
           ),
-          GestureDetector(
-            onTap: () async {
-              await http.post(
-                Uri.parse("http://steefotmtmobile.com/steefo/approveorder.php"),
-                body: {
-                  "decision": "Completed",
-                  "order_id": widget.order.order_id
+          LayoutBuilder(builder: (context, constraints) {
+            if (widget.order.orderStatus == "Confirmed") {
+              return GestureDetector(
+                onTap: () async {
+                  await http.post(
+                    Uri.parse(
+                        "http://steefotmtmobile.com/steefo/approveorder.php"),
+                    body: {
+                      "decision": "Completed",
+                      "order_id": widget.order.order_id
+                    },
+                  );
+                      () {
+                    // orderList.add(requestList[index]);
+                    // requestList.removeAt(index);
+                    // id = "none";
+                    // requestList.removeAt(index);
+                    // loadData();
+                    setState(() {});
+                    Get.to(HomePage());
+                  }();
                 },
-              );
-              () {
-                // orderList.add(requestList[index]);
-                // requestList.removeAt(index);
-                // id = "none";
-                // requestList.removeAt(index);
-                // loadData();
-                setState(() {});
-                Get.to(HomePage());
-              }();
-            },
-            child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(left: 10, right: 10),
-                height: 55,
-                width: MediaQuery.of(context).size.width / 1.123,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    gradient: LinearGradient(colors: [
-                      Color.fromRGBO(75, 100, 160, 1.0),
-                      Color.fromRGBO(19, 59, 78, 1.0),
+                child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(left: 10, right: 10),
+                    height: 55,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 1.123,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        gradient: LinearGradient(colors: [
+                          Color.fromRGBO(75, 100, 160, 1.0),
+                          Color.fromRGBO(19, 59, 78, 1.0),
 
-                      //add more colors
-                    ])),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    top: 18,
-                    bottom: 18,
-                  ),
-                  child: Text(
-                    "Complete Order",
-                    style: const TextStyle(
-                        fontFamily: 'Poppins_Bold', color: Colors.white),
-                  ),
-                )),
+                          //add more colors
+                        ])),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 18,
+                        bottom: 18,
+                      ),
+                      child: Text(
+                        "Complete Order",
+                        style: const TextStyle(
+                            fontFamily: 'Poppins_Bold', color: Colors.white),
+                      ),
+                    )),
+              );
+          }else{
+              return Container();
+            }
+          }
           ),
           SizedBox(
             height: 10,

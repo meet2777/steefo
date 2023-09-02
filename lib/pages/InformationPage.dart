@@ -115,7 +115,9 @@ class DistributorDetailState extends State<DistributorDetailContent> {
         req.pincode = responseData["data"][i]["pincode"];
         req.trans_type = responseData["data"][i]["transType"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.gstNumber = responseData["data"][i]["gstNumber"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.consignee_name = responseData["data"][i]["consigneeName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];

@@ -88,12 +88,15 @@ dependencies:
   firebase_auth:
   cloud_firestore:
 #  firebase_messaging: ^5.0.2
+#  enough_mail: ^2.0.0
+#  firebase_messaging: ^8.0.0-dev.14
+#  firebase_core: any
+#  enough_mail:
+#  html_editor_enhanced: ^1.4.0
+#  file_picker: ^3.0.2+2
+
   
   
-
-
-
-
 
 
 dev_dependencies:

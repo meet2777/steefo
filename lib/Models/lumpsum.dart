@@ -1,3 +1,3 @@
 class Lumpsum {
-  String? id, orderId, status, name, qty,qty_left, price, date,basePrice, partyname;
+  String? user_id,ls_id, order_id, status, name, qty,qty_left, price, date,basePrice, partyname;
 }

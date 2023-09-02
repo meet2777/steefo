@@ -51,9 +51,11 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
         req.status = responseData["data"][i]["orderStatus"];
         req.pincode = responseData["data"][i]["pincode"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.consignee_name = responseData["data"][i]["consigneeName"];
         req.trans_type = responseData["data"][i]["transType"];
         req.trailerType = responseData["data"][i]["trailerType"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.gstNumber = responseData["data"][i]["gstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];

@@ -71,10 +71,8 @@ class _InventoryPageState extends State<InventoryContent> {
         body: {
           "user_id": user_id,
         });
-
     var responseData = jsonDecode(res.body);
     var orders = [];
-
     print(responseData);
     for (int i = 0; i < responseData["data"].length; i++) {
       print(responseData['data'][i]['name']);
@@ -88,9 +86,10 @@ class _InventoryPageState extends State<InventoryContent> {
       }
       //print(gradeList[ind].value! + " " + gradeList[ind].qty.toString());
       Lumpsum l = Lumpsum();
-      l.orderId = responseData["data"][i]["order_id"];
+      l.order_id = responseData["data"][i]["order_id"];
       l.name = responseData["data"][i]["name"];
-      l.qty = responseData["data"][i]["qty_left"];
+      l.qty = responseData["data"][i]["qty"];
+      l.qty_left = responseData["data"][i]["qty_left"];
       l.price = responseData["data"][i]["price"];
       l.basePrice = responseData["data"][i]["basePrice"];
       l.status = responseData["data"][i]["orderStatus"];

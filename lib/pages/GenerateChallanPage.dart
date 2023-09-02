@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:stefomobileapp/Models/lumpsum.dart';
 import 'package:stefomobileapp/pages/GeneratedChallanPage.dart';
 import '../Models/order.dart';
 import 'package:http/http.dart' as http;
@@ -91,6 +92,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
     super.dispose();
   }
 
+  Lumpsum lumpsum = Lumpsum();
   var _selected = 0;
   List listOfColumns = [];
   List items = [];
@@ -187,7 +189,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
         for (int i = 0; i < responseData["data"].length; i++) {
           items.add(responseData["data"][i]["name"]);
           itemDtls[responseData["data"][i]["name"]] =
-              int.parse(responseData["data"][i]["qty_left"]);
+              int.parse(responseData["data"][i]["qty"]);
         }
       } else {
         final res = await http.post(

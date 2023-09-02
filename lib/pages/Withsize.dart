@@ -45,7 +45,7 @@ class _OrdersPageState extends State<OrdersContent> {
     print(widget.order.order_id);
 
     if (widget.order.orderType != "Lump-sum" &&
-        widget.order.orderType == "With Size") {
+        widget.order.orderType == "With Size" ) {
       print(widget.order.order_id);
       final res = await http.post(
         Uri.parse("http://steefotmtmobile.com/steefo/getorderdetails.php"),
@@ -170,10 +170,12 @@ class _OrdersPageState extends State<OrdersContent> {
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
-
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.dealerName = responseData["data"][i]["dealerName"];
+        req.consignee_name = responseData["data"][i]["consigneeName"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.gstNumber = responseData["data"][i]["gstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];
@@ -185,6 +187,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
+        req.orderStatus = responseData["data"][i]["orderStatus"];
         req.order_id = responseData["data"][i]["order_id"].toString();
         req.date = responseData["data"][i]["dateTime"];
         //print(req);
@@ -228,6 +231,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.totalPrice = responseData["data"][i]["totalPrice"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.orderType = responseData["data"][i]["orderType"];
+        req.orderStatus = responseData["data"][i]["orderStatus"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
@@ -237,7 +241,10 @@ class _OrdersPageState extends State<OrdersContent> {
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.dealerName = responseData["data"][i]["dealerName"];
+        req.consignee_name = responseData["data"][i]["consigneeName"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.gstNumber = responseData["data"][i]["gstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];

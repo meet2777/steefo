@@ -8,6 +8,7 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/Withsize.dart';
 
+import '../Models/lumpsum.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
 import '../ui/cards.dart';
@@ -82,7 +83,6 @@ class _OrdersPageState extends State<OrdersContent> {
       );
       var responseData = jsonDecode(res.body);
       //print(responseData);
-
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
         req.deliveryDate = responseData["data"][i]["deliveryDate"];
@@ -95,12 +95,16 @@ class _OrdersPageState extends State<OrdersContent> {
             " " +
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
+        req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.dealerName = responseData["data"][i]["dealerName"];
+        req.consignee_name = responseData["data"][i]["consigneeName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.gstNumber = responseData["data"][i]["gstNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
         req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
@@ -159,11 +163,14 @@ class _OrdersPageState extends State<OrdersContent> {
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.dealerName = responseData["data"][i]["dealerName"];
+        req.consignee_name = responseData["data"][i]["consigneeName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.pincode = responseData["data"][i]["pincode"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.gstNumber = responseData["data"][i]["gstNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
         req.trans_type = responseData["data"][i]["transType"];
         req.order_date = responseData["data"][i]["createdAt"];
@@ -175,11 +182,43 @@ class _OrdersPageState extends State<OrdersContent> {
           print(req.loading_type);
           print(req.trans_type);
           requestList.add(req);
+
+          print("lumpsum quantity"+req.totalQuantity.toString());
         }
       }
       setState(() {});
       print(requestList.length);
+
+
+
     }
+
+    final res = await http.post(
+      Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
+      // body: {"order_id": orderId},
+    );
+    var responseData = jsonDecode(res.body);
+    //print(responseData);
+
+    for (int i = 0; i < responseData["data"].length; i++) {
+      Lumpsum req = Lumpsum();
+      req.name = responseData["data"][i]["name"];
+      req.qty = responseData["data"][i]["qty"];
+      req.qty_left = responseData["data"][i]["qty_left"];
+      req.basePrice = responseData["data"][i]["basePrice"];
+      req.price = responseData["data"][i]["price"];
+      req.status = responseData["data"][i]["orderStatus"];
+      //print(req);
+      // if (req.status != "Rejected") {
+      //   if (id3 == req.user_id) {
+      //     purchaseOrderList.add(req);
+      //   }
+      //   if (id3 == req.reciever_id) {
+      //     salesOrderList.add(req);
+      //   }
+      // }
+    }
+
   }
 
   Widget OrdersPageBody() {

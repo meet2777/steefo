@@ -40,12 +40,10 @@ class _DealerPageState extends State<DealerContent2> {
     userType = await prefs.getString('userType');
     String uri;
     uri = "http://steefotmtmobile.com/steefo/getchildren.php";
-
     var res = await http.post(Uri.parse(uri), body: {
       "id": id,
     });
     print(id);
-
     var responseData = json.decode(res.body);
     print(responseData['data'].length);
     for (int i = 0; i < responseData['data'].length; i++) {

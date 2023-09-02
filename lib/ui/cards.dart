@@ -358,25 +358,50 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                       ),
                     ],
                   ),
-                  Container(
-                    child: Row(
-                      children: [
-                        Text(
-                          "Quantity:",
-                          style: TextStyle(
-                              fontFamily: "Poppins_Bold", color: Colors.grey),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Row(
+                          children: [
+                            Text(
+                              "Quantity:",
+                              style: TextStyle(
+                                  fontFamily: "Poppins_Bold", color: Colors.grey),
+                            ),
+                            Text(
+                              order.totalQuantity.toString(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: TextStyle(
+                                  // color: Color.fromRGBO(19, 59, 78, 1.0),
+                                  color: Colors.grey),
+                            ),
+                          ],
                         ),
-                        Text(
-                          order.totalQuantity.toString(),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                          style: TextStyle(
-                              // color: Color.fromRGBO(19, 59, 78, 1.0),
-                              color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                    //padding: EdgeInsets.only(right: 5),
+                        //padding: EdgeInsets.only(right: 5),
+                      ),
+
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          if(order.orderType=="Use Lumpsum"){
+                            return  Container(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Ordered from lumpsum",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                              //padding: EdgeInsets.only(right: 5),
+                            );
+                            }else{return Container();}
+                            }
+                      )
+
+                    ],
                   ),
 
                   // Container(
@@ -879,7 +904,7 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? c
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 15))),
-                  Text(lumpsum.orderId.toString(),
+                  Text(lumpsum.order_id.toString(),
                       style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                               color: Colors.white,

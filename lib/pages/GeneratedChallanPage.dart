@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:stefomobileapp/Models/challan.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
+import 'package:stefomobileapp/pages/deliveryChallanPage.dart';
+import 'package:stefomobileapp/pages/pdfView.dart';
 //import '../Models/gen_item_list.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
@@ -18,7 +20,7 @@ import '../ui/common.dart';
 
 class GeneratedChallan extends StatelessWidget {
   final String challan_id;
-
+  // final Order order;
   const GeneratedChallan(
       {super.key, required this.challan_id});
 
@@ -31,8 +33,7 @@ class GeneratedChallan extends StatelessWidget {
 
 class ChallanPage extends StatefulWidget {
   final String challan_id;
-
-
+  // final Order order;
   const ChallanPage(
       {super.key, required this.challan_id});
 
@@ -55,7 +56,6 @@ class _ChallanPageState extends State<ChallanPage> {
           "challan_id": widget.challan_id.toString(),
         },
       );
-
       responseData = jsonDecode(res.body);
       print(responseData);
       ch.order_id = responseData["data"][0]["order_id"];
@@ -65,11 +65,15 @@ class _ChallanPageState extends State<ChallanPage> {
       ch.challan_id = responseData["data"][0]["challan_id"];
       or.party_address = responseData["data"][0]["shippingAddress"];
       or.party_name = responseData["data"][0]["partyName"];
+      or.order_id = responseData["data"][0]["order_id"];
+      or.dealerName = responseData["data"][0]["dealerName"];
+      or.consignee_name = responseData["data"][0]["consigneeName"];
       or.party_mob_num = responseData["data"][0]["partyMobileNumber"];
       or.loading_type = responseData["data"][0]["loadingType"];
       or.trans_type = responseData["data"][0]["transType"];
       or.order_date = responseData["data"][0]["updatedAt"];
       challanList.add(ch);
+      print("order id=======>${or.order_id}");
       final resp = await http.post(
         Uri.parse("http://steefotmtmobile.com/steefo/getchallanitemdetails.php"),
         body: {
@@ -245,6 +249,7 @@ class _ChallanPageState extends State<ChallanPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+
                             Container(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 decoration: BoxDecoration(
@@ -255,19 +260,93 @@ class _ChallanPageState extends State<ChallanPage> {
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Party Name:",
+                                    Text("Order ID:",
                                         style: TextStyle(
                                           fontFamily: "Poppins_Bold",
                                           fontSize: 15,
                                           // fontWeight: FontWeight.bold
                                         )),
-                                    Text(or.party_name!,
+                                    Text(or.order_id!,
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontFamily: "Poppins"))
                                   ],
                                 )
                             ),
+
+                            Container(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(20),
+                                  // color: Colors.white.withOpacity(0.85),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Dealer Name:",
+                                        style: TextStyle(
+                                          fontFamily: "Poppins_Bold",
+                                          fontSize: 15,
+                                          // fontWeight: FontWeight.bold
+                                        )),
+                                    Text(or.dealerName??"",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins"))
+                                  ],
+                                )
+                            ),
+
+
+                            Container(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(20),
+                                  // color: Colors.white.withOpacity(0.85),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Consignee Name:",
+                                        style: TextStyle(
+                                          fontFamily: "Poppins_Bold",
+                                          fontSize: 15,
+                                          // fontWeight: FontWeight.bold
+                                        )),
+                                    Text(or.consignee_name!,
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins"))
+                                  ],
+                                )
+                            ),
+
+
+                            // Container(
+                            //     padding: const EdgeInsets.only(bottom: 10),
+                            //     decoration: BoxDecoration(
+                            //       // borderRadius: BorderRadius.circular(20),
+                            //       // color: Colors.white.withOpacity(0.85),
+                            //     ),
+                            //     child: Row(
+                            //       mainAxisAlignment:
+                            //       MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         Text("Party Name:",
+                            //             style: TextStyle(
+                            //               fontFamily: "Poppins_Bold",
+                            //               fontSize: 15,
+                            //               // fontWeight: FontWeight.bold
+                            //             )),
+                            //         Text(or.party_name!,
+                            //             style: TextStyle(
+                            //                 fontSize: 15,
+                            //                 fontFamily: "Poppins"))
+                            //       ],
+                            //     )
+                            // ),
                             Text(
                               "Shipping Address",
                               style: TextStyle(
@@ -613,8 +692,49 @@ class _ChallanPageState extends State<ChallanPage> {
                 height: 10,
               ),
 
+              Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                width: MediaQuery.of(context).size.width,
+                child: buttonStyle("Download Challan",(){
+                  // print("Press View Download===>${challan.deliveryChallan!}");
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => deliveryChallanPage(order: or,
+
+                                 )));
+
+                    // Navigator.of(context).pushNamed("/pdfView");
+
+                }),
+              ),
+
+              // Container(
+              //     margin:
+              //     const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              //     width: MediaQuery.of(context).size.width,
+              //     child: buttonStyle("Download Challan", () {
+              //       _executePhpPage();
+              //
+              //       // if (_formKey.currentState!.validate()) {
+              //       // }
+              //
+              //     }))
+
             ])),
       ),
     );
+  }
+  Future<void> _executePhpPage() async {
+    final response = await http.get(Uri.parse("http://steefotmtmobile.com/steefo/download_challan.php?id=${or.order_id}"));
+    if (response.statusCode == 200) {
+      // Successful response
+      print('PHP page executed successfully.');
+    } else {
+      // Error handling
+      print('Error executing PHP page: ${response.statusCode}');
+    }
   }
 }

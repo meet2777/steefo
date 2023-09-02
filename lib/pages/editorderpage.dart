@@ -7,36 +7,43 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stefomobileapp/Models/order.dart';
+// import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/ui/cards.dart';
+import '../Models/consignee.dart';
 import '../Models/dealer.dart';
 import '../Models/grade.dart';
 import '../Models/lumpsum.dart';
 import '../Models/payment.dart';
 import '../Models/region.dart';
 import '../Models/size.dart';
+import '../Models/user.dart';
 import '../ui/common.dart';
 import '../Models/order.dart';
 
 class EditOrderPage extends StatelessWidget {
-  const EditOrderPage({super.key});
-
+  Order? order;
+  EditOrderPage({super.key,required this.order});
   @override
   Widget build(BuildContext context) {
-    return const EditOrderContent();
+    return EditOrderContent(order: order);
   }
 }
 
 class EditOrderContent extends StatefulWidget {
-  const EditOrderContent({super.key});
-  final selected = 0;
+  EditOrderContent({Key? key,this.order}): super(key: key);
+  final Order? order;
+  // final selected = 0;
   @override
   State<EditOrderContent> createState() => _EditOrderPageState();
 }
 
 class _EditOrderPageState extends State<EditOrderContent> {
 
+  late TextEditingController party_name;
+  late TextEditingController party_pan_no;
+
   TextEditingController dateInput = TextEditingController();
+  // TextEditingController party_name = TextEditingController(text: widget.order?.party_name);
 
   // @override
   // void initState() {
@@ -70,7 +77,11 @@ class _EditOrderPageState extends State<EditOrderContent> {
   final field11Key = GlobalKey<FormFieldState>();
   var idfortoken;
   var user_type;
+
   void loadusertype() async {
+
+    print("ckecking data"+ widget.order!.dealerName.toString());
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     user_type = await prefs.getString('userType');
 
@@ -128,8 +139,23 @@ class _EditOrderPageState extends State<EditOrderContent> {
 
   @override
   Widget build(BuildContext context) {
+
+    party_name = TextEditingController(text: "${widget.order?.dealerName}");
+    party_address = TextEditingController(text: "${widget.order?.party_address}");
+    pincode = TextEditingController(text: "${widget.order?.pincode}");
+    party_pan_no = TextEditingController(text: "${widget.order?.PartygstNumber}");
+    party_mob_num = TextEditingController(text: "${widget.order?.party_mob_num}");
+    base_price = TextEditingController(text: "${widget.order?.base_price}");
+    qty = TextEditingController(text: "${widget.order?.totalQuantity}");
+    deliveryDate = TextEditingController(text: "${widget.order?.deliveryDate}");
+
+
+
+    print("${widget.order?.dealerName} order items");
     //  getRegReqs();
     loadusertype();
+
+    // party_name = TextEditingController(text: "${widget.order?.party_name}");
 
     return Scaffold(
       appBar: appbar("Edit Order", () {
@@ -142,6 +168,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
   String? id, supplier_id;
   var f1 = 0;
   Future<void> loadData() async {
+
     if (f1 == 0) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       id = await prefs.getString('id');
@@ -157,6 +184,9 @@ class _EditOrderPageState extends State<EditOrderContent> {
     //print("is setstate on loop");
   }
 
+  Consignee?
+  selectedconsignee;
+
   String?
   // selectedValue,
   selectedDealer,
@@ -169,7 +199,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
       selectedTransType,
       selectedOrderType;
   TextEditingController qty = TextEditingController();
-  // TextEditingController party_name = TextEditingController();
+  // TextEditingController party_name = TextEditingController(text: "${widget.order}");
   // TextEditingController party_address = TextEditingController();
   // TextEditingController pincode = TextEditingController();
   // TextEditingController party_pan_no = TextEditingController();
@@ -199,13 +229,13 @@ class _EditOrderPageState extends State<EditOrderContent> {
       print(responseData['data'][i]['name']);
       Lumpsum l = Lumpsum();
       l.partyname = responseData["data"][i]["partyName"];
-      l.orderId = responseData["data"][i]["order_id"];
+      l.order_id = responseData["data"][i]["order_id"];
       l.name = responseData["data"][i]["name"];
       l.basePrice = responseData["data"][i]["basePrice"];
       l.qty = responseData["data"][i]["qty_left"];
       l.price = responseData["data"][i]["price"];
       l.status = responseData["data"][i]["orderStatus"];
-      l.id = responseData['data'][i]["ls_id"];
+      l.ls_id = responseData['data'][i]["ls_id"];
       l.date = responseData["data"][i]["createdAt"];
       lumpsumList.add(l);
     }
@@ -215,7 +245,6 @@ class _EditOrderPageState extends State<EditOrderContent> {
 
   @override
   void initState() {
-
     dateInput.text = ""; //set the initial value of text field
     super.initState();
 
@@ -308,16 +337,20 @@ class _EditOrderPageState extends State<EditOrderContent> {
 
   // List items = ["TMT"];
 
+  List users = [];
   List dealers = [];
   List payments = [];
   List grades = [];
   List sizes = [];
   List regions = [];
+  List consignee = [];
   List<Dealer> dealerList = [];
   List<Payment> paymentList = [];
   List<Grade> gradeList = [];
   List<Region> regionList = [];
   List<ItemSize> sizeList = [];
+  List<Consignee> consigneeList = [];
+  List<User> userList = [];
 
 
   // TextEditingController party_name = TextEditingController(text: 'name: ${Order().party_name}');
@@ -350,6 +383,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
         s.value = responseData1['data'][i]["gradeName"];
         gradeList.add(s);
       }
+
       var res2 = await http
           .post(Uri.parse("http://steefotmtmobile.com/steefo/getregions.php"));
       var responseData2 = jsonDecode(res2.body);
@@ -387,33 +421,84 @@ class _EditOrderPageState extends State<EditOrderContent> {
         dealerList.add(d);
       }
 
-      var res5 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"));
+      String uri;
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      var id1 = await pref.getString('id');
+      uri = "http://steefotmtmobile.com/steefo/getconsignee.php";
+      var res5 = await http.post(Uri.parse(uri), body: {
+        "id": id1,
+      });
       var responseData5 = jsonDecode(res5.body);
-      for (int i = 0; i < responseData5["data"].length; i++) {
-        Order req = Order();
-        req.reciever_id = responseData["data"][i]["supplier_id"];
-        req.user_id = responseData["data"][i]["user_id"];
-        req.org_name = responseData["data"][i]["orgName"];
-        req.user_mob_num = responseData["data"][i]["mobileNumber"];
-        req.user_name = responseData["data"][i]["firstName"]+" "+responseData["data"][i]["lastName"];
-        req.status = responseData["data"][i]["orderStatus"];
-        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
-        req.trailerType = responseData["data"][i]["trailerType"];
-        req.party_name = responseData5["data"][i]["partyName"];
-        req.party_address = responseData["data"][i]["shippingAddress"];
-        req.pincode = responseData["data"][i]["pincode"];
-        req.billing_address = responseData["data"][i]["address"];
-        req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
-        req.loading_type = responseData["data"][i]["loadingType"];
-        // req.loading_type = responseData["data"][i][""];
-        req.trans_type = responseData["data"][i]["transType"];
-        req.order_date = responseData["data"][i]["createdAt"];
-        req.base_price = responseData["data"][i]["basePrice"];
-        req.orderType = responseData["data"][i]["orderType"];
-        req.qty_left = responseData["data"][i]["qty_left"];
-        req.order_id = responseData["data"][i]["order_id"].toString();
-        //print(req);
+      print(responseData5['data']);
+      for (int i = 0; i < responseData5['data'].length; i++) {
+        print(responseData5['data'][i]);
+        consignee.add(responseData5['data'][i]["userName"]);
+        Consignee c = Consignee();
+        // c.cons_id = responseData5['data'][i]["cons_id"];
+        // consDtls[responseData5["data"][i]["userName"]];
+        c.id = responseData5['data'][i]["id"];
+        c.userName = responseData5['data'][i]["userName"];
+        c.userContact = responseData5['data'][i]["userContact"];
+        c.userGST = responseData5['data'][i]["userGST"];
+        c.userAddress = responseData5['data'][i]["userAddress"];
+        consigneeList.add(c);
       }
+
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      var id = await prefs.getString('id');
+      // userType = await prefs.getString('userType');
+      uri = "http://steefotmtmobile.com/steefo/getchildren.php";
+      var res6 = await http.post(Uri.parse(uri), body: {
+        "id": id,
+      });
+      print(id);
+      var responseData6 = json.decode(res6.body);
+      print(responseData4['data']);
+      for (int i = 0; i < responseData6['data'].length; i++) {
+        users.add(responseData6['data'][i]["orgName"]);
+        User u = User();
+        u.id = responseData6['data'][i]["id"];
+        u.userType = responseData6['data'][i]["userType"];
+        u.orgName = responseData6['data'][i]["orgName"];
+        u.address = responseData6['data'][i]["address"];
+        u.email = responseData6['data'][i]["email"];
+        u.mobileNumber = responseData6['data'][i]["mobileNumber"];
+        u.gstNumber = responseData6['data'][i]["gstNumber"];
+        u.panNumber = responseData6['data'][i]["panNumber"];
+        u.adhNumber = responseData6['data'][i]["adhNumber"];
+        userList.add(u);
+        print(u);
+        // child.add(u);
+      }
+
+      // var res5 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"));
+      // var responseData5 = jsonDecode(res5.body);
+      // for (int i = 0; i < responseData5["data"].length; i++) {
+      //   Order req = Order();
+      //   req.reciever_id = responseData["data"][i]["supplier_id"];
+      //   req.user_id = responseData["data"][i]["user_id"];
+      //   req.org_name = responseData["data"][i]["orgName"];
+      //   req.user_mob_num = responseData["data"][i]["mobileNumber"];
+      //   req.user_name = responseData["data"][i]["firstName"]+" "+responseData["data"][i]["lastName"];
+      //   req.status = responseData["data"][i]["orderStatus"];
+      //   req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+      //   req.trailerType = responseData["data"][i]["trailerType"];
+      //   req.party_name = responseData5["data"][i]["partyName"];
+      //   req.party_address = responseData["data"][i]["shippingAddress"];
+      //   req.pincode = responseData["data"][i]["pincode"];
+      //   req.billing_address = responseData["data"][i]["address"];
+      //   req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
+      //   req.loading_type = responseData["data"][i]["loadingType"];
+      //   // req.loading_type = responseData["data"][i][""];
+      //   req.trans_type = responseData["data"][i]["transType"];
+      //   req.order_date = responseData["data"][i]["createdAt"];
+      //   req.base_price = responseData["data"][i]["basePrice"];
+      //   req.orderType = responseData["data"][i]["orderType"];
+      //   req.qty_left = responseData["data"][i]["qty_left"];
+      //   req.order_id = responseData["data"][i]["order_id"].toString();
+      //   //print(req);
+      // }
       setState(() {});
     }
   }
@@ -428,15 +513,19 @@ class _EditOrderPageState extends State<EditOrderContent> {
 
   final List<Map<String, String>> listOfColumns = [];
 
-  TextEditingController party_name = TextEditingController(text: 'name: ${Order().party_name}');
+  // String? str_party_name = widget.order?.party_name;
+
+  // TextEditingController party_name = TextEditingController();
   TextEditingController party_address = TextEditingController();
   TextEditingController pincode = TextEditingController();
-  TextEditingController party_pan_no = TextEditingController();
+  // TextEditingController party_pan_no = TextEditingController();
   TextEditingController party_mob_num = TextEditingController();
   TextEditingController loading_type = TextEditingController();
   TextEditingController base_price = TextEditingController();
   TextEditingController deliveryDate = TextEditingController();
+
   onEditOrder() async {
+
     if (selectedOrderType == "Use Lumpsum") {
       for (int i = 0; i < reductionData.length; i++) {
         var res = await http.post(
@@ -448,34 +537,34 @@ class _EditOrderPageState extends State<EditOrderContent> {
             );
       }
     }
-    
-    var res5 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"));
-    var responseData5 = jsonDecode(res5.body);
-    for (int i = 0; i < responseData5["data"].length; i++) {
-      Order req = Order();
-      req.reciever_id = responseData5["data"][i]["supplier_id"];
-      req.user_id = responseData5["data"][i]["user_id"];
-      req.org_name = responseData5["data"][i]["orgName"];
-      req.user_mob_num = responseData5["data"][i]["mobileNumber"];
-      req.user_name = responseData5["data"][i]["firstName"]+" "+responseData5["data"][i]["lastName"];
-      req.status = responseData5["data"][i]["orderStatus"];
-      req.PartygstNumber = responseData5["data"][i]["PartygstNumber"];
-      req.trailerType = responseData5["data"][i]["trailerType"];
-      req.party_name = responseData5["data"][i]["partyName"];
-      req.party_address = responseData5["data"][i]["shippingAddress"];
-      req.pincode = responseData5["data"][i]["pincode"];
-      req.billing_address = responseData5["data"][i]["address"];
-      req.party_mob_num = responseData5["data"][i]["partyMobileNumber"];
-      req.loading_type = responseData5["data"][i]["loadingType"];
-      // req.loading_type = responseData["data"][i][""];
-      req.trans_type = responseData5["data"][i]["transType"];
-      req.order_date = responseData5["data"][i]["createdAt"];
-      req.base_price = responseData5["data"][i]["basePrice"];
-      req.orderType = responseData5["data"][i]["orderType"];
-      req.qty_left = responseData5["data"][i]["qty_left"];
-      req.order_id = responseData5["data"][i]["order_id"].toString();
-      //print(req);
-    }
+
+    // var res5 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"));
+    // var responseData5 = jsonDecode(res5.body);
+    // for (int i = 0; i < responseData5["data"].length; i++) {
+    //   Order req = Order();
+    //   req.reciever_id = responseData5["data"][i]["supplier_id"];
+    //   req.user_id = responseData5["data"][i]["user_id"];
+    //   req.org_name = responseData5["data"][i]["orgName"];
+    //   req.user_mob_num = responseData5["data"][i]["mobileNumber"];
+    //   req.user_name = responseData5["data"][i]["firstName"]+" "+responseData5["data"][i]["lastName"];
+    //   req.status = responseData5["data"][i]["orderStatus"];
+    //   req.PartygstNumber = responseData5["data"][i]["PartygstNumber"];
+    //   req.trailerType = responseData5["data"][i]["trailerType"];
+    //   req.party_name = responseData5["data"][i]["partyName"];
+    //   req.party_address = responseData5["data"][i]["shippingAddress"];
+    //   req.pincode = responseData5["data"][i]["pincode"];
+    //   req.billing_address = responseData5["data"][i]["address"];
+    //   req.party_mob_num = responseData5["data"][i]["partyMobileNumber"];
+    //   req.loading_type = responseData5["data"][i]["loadingType"];
+    //   // req.loading_type = responseData["data"][i][""];
+    //   req.trans_type = responseData5["data"][i]["transType"];
+    //   req.order_date = responseData5["data"][i]["createdAt"];
+    //   req.base_price = responseData5["data"][i]["basePrice"];
+    //   req.orderType = responseData5["data"][i]["orderType"];
+    //   req.qty_left = responseData5["data"][i]["qty_left"];
+    //   req.order_id = responseData5["data"][i]["order_id"].toString();
+    //   //print(req);
+    // }
 
     // final SharedPreferences prefs = await SharedPreferences.getInstance();
     // var id = await prefs.getString('user_id');
@@ -497,53 +586,58 @@ class _EditOrderPageState extends State<EditOrderContent> {
     // await prefs.setString("totalPrice", tot_price.toString());
     // await prefs.setString("deliveryDate", deliveryDate.text.toString());
 
-    var res = await http.post(
+    var resorder = await http.post(
       Uri.parse("http://steefotmtmobile.com/steefo/updateOrder.php"),
       body:
-      // selectedOrderType == "Lump-sum"
-      //     ?
-      // {
-      //   "userId": id!,
-      //   "supplierId": supplier_id!,
-      //   "shippingAddress": party_address.text,
-      //   "pincode": pincode.text,
-      //   "partyName": party_name.text,
-      //   "PartygstNumber": party_pan_no.text,
-      //   "mobileNumber": party_mob_num.text,
-      //   "basePrice": base_price.text,
-      //   "status": "Pending",
-      //   "trailerType": "None",
-      //   "loadingType": "None",
-      //   "transType": "None",
-      //   "paymentTerm": "None",
-      //   "orderType": selectedOrderType,
-      //   "totalQuantity": totalQuantity.toString(),
-      //   "totalPrice": tot_price.toString(),
-      //   "deliveryDate": deliveryDate.text,
-      //   "dateTime": DateTime.now().toString(),
-      // }:
+      selectedOrderType == "Lump-sum"
+          ?
       {
-        "user_id": id,
-        "supplier_id": supplier_id,
+        "userId": id!,
+        "supplierId": supplier_id!,
         "shippingAddress": party_address.text,
         "pincode": pincode.text,
+        "region": selectedRegion??"",
+        "dealerName": selectedDealer??"",
+        "consigneeName": selectedconsignee?.userName?? "",
         "partyName": party_name.text,
         "PartygstNumber": party_pan_no.text,
         "mobileNumber": party_mob_num.text,
         "basePrice": base_price.text,
         "status": "Pending",
-        "loadingType": selectedType,
-        "orderType": selectedOrderType,
-        "paymentTerm": selectedpaymentType,
-        "trailerType": trailerType,
-        "transType": selectedTransType,
+        "trailerType": "None",
+        "loadingType": "None",
+        "transType": "None",
+        "paymentTerm": "None",
+        "orderType": selectedOrderType??"",
         "totalQuantity": totalQuantity.toString(),
         "totalPrice": tot_price.toString(),
         "deliveryDate": deliveryDate.text,
-        // "dateTime": DateTime.now().toString(),
+        "dateTime": DateTime.now().toString(),
+      }:
+      {
+        "user_id": id!,
+        "supplier_id": supplier_id!,
+        "shippingAddress": party_address.text,
+        "pincode": pincode.text,
+        "partyName": party_name.text,
+        "region": selectedRegion,
+        "dealerName": selectedDealer??"",
+        "consigneeName": selectedconsignee?.userName?? "",
+        "PartygstNumber": party_pan_no.text,
+        "mobileNumber": party_mob_num.text,
+        "basePrice": base_price.text,
+        "status": "Pending",
+        "loadingType": selectedType?? "",
+        "orderType": selectedOrderType?? "",
+        "paymentTerm": selectedpaymentType?? "",
+        "trailerType": trailerType?? "",
+        "transType": selectedTransType?? "",
+        "totalQuantity": totalQuantity.toString(),
+        "totalPrice": tot_price.toString(),
+        "deliveryDate": deliveryDate.text,
+        "dateTime": DateTime.now().toString(),
       },
     );
-
     // NotificationServices notificationServices = NotificationServices();
     // notificationServices.getDeviceToken().then((value) async {
     //   var data = {
@@ -566,22 +660,21 @@ class _EditOrderPageState extends State<EditOrderContent> {
     //       });
     // }
     //  );
-    Fluttertoast.showToast(
-        msg: 'Your Order Is Placed',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.blueAccent,
-        textColor: Colors.white);
-    Navigator.of(context).pushNamed("/home");
+    // Fluttertoast.showToast(
+    //     msg: 'Your Order Is Placed',
+    //     toastLength: Toast.LENGTH_SHORT,
+    //     gravity: ToastGravity.BOTTOM,
+    //     timeInSecForIosWeb: 1,
+    //     backgroundColor: Colors.blueAccent,
+    //     textColor: Colors.white);
+    // Navigator.of(context).pushNamed("/home");
+    // print(responseData["value"].toString());
 
-    var responseData = json.decode(res.body);
-    print(responseData["value"].toString());
-
+    var responseData = json.decode(resorder.body);
     if (responseData["status"] == '200' && selectedOrderType != "Lump-sum") {
       for (int i = 0; i < listOfColumns.length; i++) {
         http.post(
-          Uri.parse("http://steefotmtmobile.com/steefo/setorder.php"),
+          Uri.parse("http://steefotmtmobile.com/steefo/updatewithsize.php"),
           body: {
             "order_id": responseData["value"].toString(),
             "name": listOfColumns[i]["Name"],
@@ -595,7 +688,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
     } else {
       for (int i = 0; i < listOfColumns.length; i++) {
         http.post(
-          Uri.parse("http://steefotmtmobile.com/steefo/addlumpsum.php"),
+          Uri.parse("http://steefotmtmobile.com/steefo/updatelumpsum.php"),
           body: {
             "order_id": responseData["value"].toString(),
             "name": listOfColumns[i]["Name"],
@@ -607,6 +700,29 @@ class _EditOrderPageState extends State<EditOrderContent> {
         //  tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
       }
     }
+
+    print("response data"+ resorder.body);
+    print(responseData["value"].toString());
+
+    if(responseData["status"] == '200'){
+      Fluttertoast.showToast(
+          msg: 'Your Order Is Placed',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.blueAccent,
+          textColor: Colors.white);
+      Future.delayed(Duration(seconds: 1)).then((value) => {Navigator.of(context).pushNamed("/home")});
+      // Navigator.of(context).pushNamed("/home");
+    }else{
+      Fluttertoast.showToast(
+          msg: responseData["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.blueAccent,
+          textColor: Colors.white);
+    }
     // print(listOfColumns[0]['Name']);
   }
 
@@ -615,6 +731,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
   Widget PlaceOrderBody() {
     loadItemData();
     // List<DropdownMenuItem<String>> dropdownItems = [];
+    List<DropdownMenuItem<String>> dropdownUser = [];
     List<DropdownMenuItem<String>> dropdownGrades = [];
     List<DropdownMenuItem<String>> dropdownSize = [];
     List<DropdownMenuItem<String>> dropdownDealer = [];
@@ -624,6 +741,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
     List<DropdownMenuItem<String>> dropdownRegion = [];
     List<DropdownMenuItem<String>> dropdownTransType = [];
     List<DropdownMenuItem<String>> dropdownOrderType = [];
+    List<DropdownMenuItem<Consignee>> dropdownConsigneeType = [];
     // List<DropdownMenuItem<String>> getItems() {
     //   for (int i = 0; i < items.length; i++) {
     //     DropdownMenuItem<String> it = DropdownMenuItem(
@@ -645,6 +763,29 @@ class _EditOrderPageState extends State<EditOrderContent> {
       }
 
       return dropdownGrades;
+    }
+
+    List<DropdownMenuItem<Consignee>> getConsignee() {
+      for (int i = 0; i < consigneeList.length; i++) {
+        print(consigneeList[i].id.toString());
+        DropdownMenuItem<Consignee> it = DropdownMenuItem(
+          value: consigneeList[i],
+          child: Text(consigneeList[i].userName??" "),
+        );
+        dropdownConsigneeType.add(it);
+      }
+      return dropdownConsigneeType;
+    }
+
+    List<DropdownMenuItem<String>> getUser() {
+      for (int i = 0; i < users.length; i++) {
+        DropdownMenuItem<String> it = DropdownMenuItem(
+          value: users[i],
+          child: Text(users[i]),
+        );
+        dropdownUser.add(it);
+      }
+      return dropdownUser;
     }
 
     List<DropdownMenuItem<String>> getDealer() {
@@ -758,6 +899,92 @@ class _EditOrderPageState extends State<EditOrderContent> {
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
+              //-------------------------Consignee Dropdown------------------------------------
+
+              LayoutBuilder(builder: (context, constraints){
+                if(user_type == "Distributor" || user_type == "Dealer"){
+                  return Container(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                            hintText: "Select Consignee",
+                            hintStyle: TextStyle(fontSize: 20),
+                            filled: true,
+                            fillColor:
+                            Color.fromRGBO(233, 236, 239, 0.792156862745098),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              // borderRadius: BorderRadius.circular(20)
+                            )),
+                        value: selectedconsignee,
+                        items: getConsignee(),
+                        // onChanged: (Consignee newValue) {
+                        //   selectedconsignee = newValue;
+                        //   // var selectedconsignee = consigneeList.firstWhere()
+                        //   print('consignee ==> ${selectedconsignee}');
+                        //   party_address.text= consDtls[selectedconsignee].toString();
+                        //   party_mob_num.text= consDtls[selectedconsignee].toString();
+                        //   // var ind = dealers.indexOf(selectedDealer);
+                        //
+                        //   // tCost = int.parse(regionList[ind].cost!);
+                        // },
+                        validator: (selectedValue) {
+                          if (selectedValue == null) {
+                            // return 'Please select a value.';
+                          }
+                          return null;
+                        }, onChanged: (Consignee? value) {
+                        selectedconsignee = value;
+                        party_address.text= value!.userAddress.toString();
+                        party_mob_num.text= value!.userContact.toString();
+                        party_pan_no.text = value!.userGST.toString();
+                      },
+                      ));
+                }else{
+                  return Container();
+                }
+              },
+              ),
+
+              //-------------------------Dealer Dropdown------------------------------------
+
+              LayoutBuilder(builder: (context, constraints){
+                if(user_type == "Distributor"){
+                  return Container(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                            hintText: "Select dealer",
+                            hintStyle: TextStyle(fontSize: 20),
+                            filled: true,
+                            fillColor:
+                            Color.fromRGBO(233, 236, 239, 0.792156862745098),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              // borderRadius: BorderRadius.circular(20)
+                            )),
+                        value: selectedDealer,
+                        items: getUser(),
+                        onChanged: (String? newValue) {
+                          selectedDealer = newValue;
+                          // var ind = dealers.indexOf(selectedDealer);
+
+                          // tCost = int.parse(regionList[ind].cost!);
+                        },
+                        validator: (selectedValue) {
+                          if (selectedValue == null) {
+                            // return 'Please select a value.';
+                          }
+                          return null;
+                        },
+                      ));
+                }else{
+                  return Container();
+                }
+              },
+              ),
+
+
               // LayoutBuilder(builder: (context, constraints){
               //   if(user_type == "Distributor"){
               //     return Container(
@@ -786,35 +1013,35 @@ class _EditOrderPageState extends State<EditOrderContent> {
               // }
               // ),
               //-----------------------------------------------Name--------------------------------------------------------
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
-                child: TextFormField(
-                  textInputAction: TextInputAction.next,
-                  // key: field1Key,
-                  // focusNode: focusNode1,
-                  // validator: (value) {
-                  //   if (value!.isEmpty) {
-                  //     return 'Please enter a Name.';
-                  //   }
-                  //   return null;
-                  // },
-                  controller: party_name,
-                  maxLines: 1,
-                  decoration: const InputDecoration(
-                      hintText: "Name",
-                      hintStyle: TextStyle(fontSize: 20),
-                      //  hintText: "Name",
-                      // floatingLabelBehavior: FloatingLabelBehavior.never,
-                      border: OutlineInputBorder(
-                        // borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide.none),
-                      filled: true,
-                      fillColor: Color.fromRGBO(233, 236, 239,
-                          0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
-
-                  ),
-                ),
-              ),
+              // Container(
+              //   padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+              //   child: TextFormField(
+              //     textInputAction: TextInputAction.next,
+              //     // key: field1Key,
+              //     // focusNode: focusNode1,
+              //     // validator: (value) {
+              //     //   if (value!.isEmpty) {
+              //     //     return 'Please enter a Name.';
+              //     //   }
+              //     //   return null;
+              //     // },
+              //     controller: party_name,
+              //     maxLines: 1,
+              //     decoration: const InputDecoration(
+              //         hintText: "Name",
+              //         hintStyle: TextStyle(fontSize: 20),
+              //         //  hintText: "Name",
+              //         // floatingLabelBehavior: FloatingLabelBehavior.never,
+              //         border: OutlineInputBorder(
+              //           // borderRadius: BorderRadius.circular(20),
+              //             borderSide: BorderSide.none),
+              //         filled: true,
+              //         fillColor: Color.fromRGBO(233, 236, 239,
+              //             0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
+              //
+              //     ),
+              //   ),
+              // ),
               //----------------------------Shipping Address------------------
 
               Container(
@@ -981,6 +1208,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
                 ),
               ),
 
+              //-------------------------Order Type------------------------------------
+
               LayoutBuilder(builder: (context, constraints) {
                 if (user_type == "Distributor" ||
                     user_type == "Dealer" ||
@@ -1127,7 +1356,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                                             reductionData.add({
                                                               "id": lumpsumList[
                                                               index]
-                                                                  .id,
+                                                                  .ls_id,
                                                               "qty":
                                                               lumpsumList[
                                                               index]
@@ -1176,7 +1405,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
                   return Container();
                 }
               }),
-              //--------------------------Loading Type--------------------------
+
+              //--------------------------Payment Term--------------------------
 
               LayoutBuilder(builder: (context, constraints) {
                 if (selectedOrderType != "Lump-sum"
@@ -1212,6 +1442,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                             // },
                           )),
 
+                      //-------------------------Trailer Type------------------------------------
 
                       Container(
                           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -1241,6 +1472,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
                             // },
                           )),
 
+                      //-------------------------Loading Type------------------------------------
+
                       Container(
                           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                           child: DropdownButtonFormField(
@@ -1268,6 +1501,9 @@ class _EditOrderPageState extends State<EditOrderContent> {
                             //   return null;
                             // },
                           )),
+
+                      //-------------------------Transportation Type------------------------------------
+
                       Container(
                           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                           child: DropdownButtonFormField(
@@ -1366,6 +1602,9 @@ class _EditOrderPageState extends State<EditOrderContent> {
                     //         return null;
                     //       },
                     //     )),
+
+                    //------------------------- Grade ------------------------------------
+
                     Container(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                         child: DropdownButtonFormField(
@@ -1393,6 +1632,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
                           //   return null;
                           // },
                         )),
+
+                    //-------------------------Select Size------------------------------------
 
                     LayoutBuilder(builder: (context, constraints) {
                       if (selectedOrderType == "With Size" ||
@@ -1433,6 +1674,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
                       }
                     }),
 
+                    //-------------------------Base Price------------------------------------
+
                     Container(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: TextFormField(
@@ -1460,7 +1703,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                 233, 236, 239, 0.792156862745098)),
                       ),
                     ),
-
+                    //-------------------------Quantity------------------------------------
                     Container(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: TextFormField(
@@ -1481,7 +1724,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
                         ),
                       ),
                     ),
-                    //-------------------------deliveryDate-----------------------
+
+                    //-------------------------deliveryDate------------------------------------
 
                     Container(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -1825,7 +2069,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                                             reductionData.add({
                                                               "id": lumpsumList[
                                                               index]
-                                                                  .id,
+                                                                  .ls_id,
                                                               "qty":
                                                               lumpsumList[
                                                               index]
@@ -1844,8 +2088,9 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                                           child: InventoryCard(
                                                               context,
                                                               lumpsumList[
-                                                              index],Order(),id ),
-                                                        ));
+                                                              index],Order(), id ),
+                                                        )
+                                                    );
                                                   } else {
                                                     return Container();
                                                   }
