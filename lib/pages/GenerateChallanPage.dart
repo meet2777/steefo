@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:stefomobileapp/Models/lumpsum.dart';
 import 'package:stefomobileapp/pages/GeneratedChallanPage.dart';
@@ -29,6 +28,20 @@ class GenerateChallanContent extends StatefulWidget {
 }
 
 class _GenerateChallanPageState extends State<GenerateChallanContent> {
+
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  String? token1;
+
+  void firebaseCloudMessaging_Listeners(){
+    _firebaseMessaging.getToken().then((token){
+      print("token is"+ token!);
+      // token1 = token;
+      token = token1;
+      setState(() {});
+    }
+    );
+  }
+
   final _formKey = GlobalKey<FormState>();
   late FocusNode focusNode1;
   late FocusNode focusNode2;
@@ -51,6 +64,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
   TextEditingController transporter_name = TextEditingController();
   TextEditingController vehicle_number = TextEditingController();
   TextEditingController lr_number = TextEditingController();
+  TextEditingController ch_number = TextEditingController();
   TextEditingController qty = TextEditingController();
 
   @override
@@ -93,10 +107,10 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
   }
 
   Lumpsum lumpsum = Lumpsum();
-  var _selected = 0;
+  // var _selected = 0;
   List listOfColumns = [];
   List items = [];
-  final Map<String, int> itemDtls = {};
+  final Map<String, double> itemDtls = {};
   String? selectedValue;
   int itemNum = 1;
 
@@ -189,7 +203,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
         for (int i = 0; i < responseData["data"].length; i++) {
           items.add(responseData["data"][i]["name"]);
           itemDtls[responseData["data"][i]["name"]] =
-              int.parse(responseData["data"][i]["qty"]);
+              double.parse(responseData["data"][i]["qty_left"]);
         }
       } else {
         final res = await http.post(
@@ -203,7 +217,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
         for (int i = 0; i < responseData["data"].length; i++) {
           items.add(responseData["data"][i]["name"]);
           itemDtls[responseData["data"][i]["name"]] =
-              int.parse(responseData["data"][i]["qty_left"]);
+              double.parse(responseData["data"][i]["qty_left"]);
         }
       }
 
@@ -221,12 +235,12 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
         "order_id": widget.order.order_id,
         "transporter_name": transporter_name.text,
         "vehicle_number": vehicle_number.text,
-        "lr_number": lr_number.text
+        "lr_number": lr_number.text,
+        "ch_number": ch_number.text,
       },
     );
     var responseData = jsonDecode(res.body);
-    if (responseData["status"] == "200") {
-      print(responseData["data"]);
+    if (responseData["status"] == "200") {print(responseData["data"]);
     }
 
     for (int i = 0; i < listOfColumns.length; i++) {
@@ -242,12 +256,32 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
       );
     }
 
+    // if (resorder.statusCode == 200) {
+      // if(token1 != null){
+      var response = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/challanNotification.php"),
+          // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
+          body: {"token": token1.toString(),
+            "challan_id": challan_id.toString(),
+            // "order_id": widget.order.order_id
+      }
+      );
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => GeneratedChallan(
-                  challan_id: responseData['data'].toString(),
-                )));
+              challan_id: responseData['data'].toString(),
+            )));
+      // Future.delayed(Duration(seconds: 1)).then((value) => {Navigator.of(context).pushNamed("/home")});
+      print(response.body);
+      return jsonEncode(response.body);
+      // }
+      // else{
+      //   print(response.request);
+      //   print("Token is null");
+      // }
+    // }
+
+
   }
 
   Widget GenerateChallanPageBody() {
@@ -325,11 +359,17 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                     textAlign: TextAlign.left,
                     key: field2Key,
                     focusNode: focusNode2,
+                    // textCapitalization: TextCapitalization.characters,
                     validator: (value) {
                       if (value!.isEmpty || value == null) {
                         return 'Please enter a Vehicle Number.';
                       }
                       return null;
+                    },
+                    onChanged: (value){
+                      vehicle_number.value=TextEditingValue(
+                        text: value.toUpperCase(),
+                      );
                     },
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.fire_truck_rounded),
@@ -373,6 +413,37 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                     )),
               ),
 
+              Container(
+                //margin: EdgeInsets.fromLTRB(20, 20,20,0),
+
+                width: width,
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: TextFormField(
+                    controller: ch_number,
+                    textAlign: TextAlign.left,
+                    // key: field3Key,
+                    // focusNode: focusNode3,
+                    validator: (value) {
+                      if (value!.isEmpty || value == null) {
+                        return 'Please enter a lr Number.';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      // prefixIcon: Icon(Icons.numbers),
+                      filled: true,
+                      fillColor: Color.fromRGBO(233, 236, 239, 1.0),
+                      labelText: "Challan No.",
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        // borderRadius: BorderRadius.circular(20.0)
+                      ),
+                    )),
+              ),
+
+
+
               Column(
                 children: [
                   Container(
@@ -401,6 +472,10 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                         Container(
                           padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: TextFormField(
+                            keyboardType: TextInputType.numberWithOptions(
+                              decimal: true,
+                              signed: false
+                            ),
                             maxLines: 1,
                             controller: qty,
                             key: field4Key,
@@ -448,23 +523,24 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                                     side: BorderSide.none),
                                 minimumSize: const Size(190, 40)),
                             onPressed: () {
-                              if (selectedValue != null &&
-                                  qty.text.trim() != "" &&
-                                  int.parse(qty.text) > 0 &&
-                                  int.parse(qty.text) <=
-                                      itemDtls[selectedValue]!) {
+                              if (selectedValue != null
+                                  // qty.text.trim() != "" &&
+                                  // int.parse(qty.toString()) > 0 &&
+                                  // int.parse(qty.toString()) <=
+                                  //     itemDtls[selectedValue]!
+                              ) {
                                 listOfColumns.add({
                                   "Sr_no": itemNum.toString(),
                                   "Name": "$selectedValue",
                                   "Qty": qty.text
                                 });
 
-                                int quty = itemDtls[selectedValue]!;
-                                quty = quty - int.parse(qty.text);
-                                itemDtls[selectedValue!] = quty;
-                                print(itemDtls[selectedValue]);
-                                itemNum = itemNum + 1;
-                                selectedValue = null;
+                                // int quty = itemDtls[selectedValue]!;
+                                // quty = quty - int.parse(qty.text);
+                                // itemDtls[selectedValue!] = quty;
+                                // print(itemDtls[selectedValue]);
+                                // itemNum = itemNum + 1;
+                                // selectedValue = null;
                                 //  qty.text = "";
 
                                 setState(() {});
@@ -510,7 +586,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                                   ),
 
                                   columns: const [
-                                    DataColumn(label: Text('Sr\nNo')),
+                                    DataColumn(label: Text('Sr No')),
                                     DataColumn(label: Text('HSN/Name')),
                                     DataColumn(label: Text('Quantity(Tons)')),
                                   ],
@@ -524,9 +600,10 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                                                     DataCell(
                                                         Text(element["Name"]!)),
                                                     DataCell(
-                                                        Text(element["Qty"]!)),
+                                                        Text(element["Qty"])),
                                                   ],
-                                                )),
+                                                )
+                                            ),
                                           )
                                           .toList(),
                                 ),

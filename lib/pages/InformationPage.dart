@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/UI/common.dart';
 import 'package:http/http.dart' as http;
-import 'package:stefomobileapp/pages/InventoryPage.dart';
+import '../Models/lumpsum.dart';
 import '../Models/order.dart';
 import '../Models/user.dart';
 import '../ui/cards.dart';
@@ -398,7 +396,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     OrderDetails(
-                                                      order: orderList[index],
+                                                      order: orderList[index],lumpsum: Lumpsum()
                                                     )));
                                       },
                                       child: orderList[index].user_type ==

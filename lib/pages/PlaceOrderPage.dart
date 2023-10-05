@@ -42,12 +42,13 @@ class PlaceOrderContent extends StatefulWidget {
 class _PlaceOrderPageState extends State<PlaceOrderContent> {
 
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  late String token1;
+  String? token1;
 
   void firebaseCloudMessaging_Listeners(){
     _firebaseMessaging.getToken().then((token){
       print("token is"+ token!);
-      token1= token;
+      // token1 = token;
+      token = token1;
       setState(() {});
     }
     );
@@ -60,7 +61,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   //   dateInput.text = ""; //set the initial value of text field
   //   super.initState();
   // }
-
   final _formKey = GlobalKey<FormState>();
 
   late FocusNode focusNode1;
@@ -198,6 +198,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   TextEditingController loading_type = TextEditingController();
   TextEditingController base_price = TextEditingController();
   TextEditingController deliveryDate = TextEditingController();
+  TextEditingController orderid = TextEditingController();
   List<Lumpsum> lumpsumList = [];
   bool isInventoryDataLoaded = false;
 
@@ -345,6 +346,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   var f = 0;
   num tot_price = 0;
   final Map<String,int> consDtls = {};
+  final Map<String, double> itemDtls = {};
 
   // List<User> child = [];
   loadItemData() async {
@@ -384,7 +386,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         regionList.add(r);
       }
 
-
       // var res5 = await http
       //     .post(Uri.parse("http://steefotmtmobile.com/steefo/getconsignee.php"));
       // var responseData5 = jsonDecode(res5.body);
@@ -399,7 +400,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       //   consigneeList.add(c);
       // }
 
-
       var res3 = await http
           .post(Uri.parse("http://steefotmtmobile.com/steefo/getpayment.php"));
       var responseData3 = jsonDecode(res3.body);
@@ -408,8 +408,9 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         payments.add(responseData3['data'][i]["paymentName"]);
         Payment p = Payment();
         p.paymentName = responseData3['data'][i]["paymentName"];
-        p.paymentCost = responseData3['data'][i]["paymentCost"];
+        p.paymentCost = responseData3['data'][i]["paymentPrice"];
         paymentList.add(p);
+        print("payment list"+ paymentList.toString());
       }
 
       // child = [];
@@ -482,6 +483,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
     }
   }
 
+  List defaultgrade = ["FE-500"];
   List payment = ["15 Days", "30 Days"];
   List trailer = ["Streight", "Band"];
   List type = ["Loose", "Bhari(Bundle)"];
@@ -489,7 +491,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
   List orderType = ["Lump-sum", "With Size", "Use Lumpsum"];
 
   int itemNum = 1;
-  int totalQuantity = 0;
+  double totalQuantity = 0;
 
   final List<Map<String, String>> listOfColumns = [];
   Future onPlaceOrder() async {
@@ -519,6 +521,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "consigneeName": selectedconsignee?.userName?? "",
               "PartygstNumber": party_pan_no.text,
               "mobileNumber": party_mob_num.text,
+              "orderid": orderid.text,
               "basePrice": base_price.text,
               "status": "Pending",
               "trailerType": "None",
@@ -543,6 +546,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               "consigneeName": selectedconsignee?.userName ?? "",
               "PartygstNumber": party_pan_no.text,
               "mobileNumber": party_mob_num.text,
+              "orderid": orderid.text,
               "basePrice": base_price.text,
               "status": "Pending",
               // "dealer":selectedDealer,
@@ -604,6 +608,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             "order_id": responseData["value"].toString(),
             "name": listOfColumns[i]["Name"],
             "qty": listOfColumns[i]["Qty"],
+            "qty_left": listOfColumns[i]["Qty"],
             "price": listOfColumns[i]["Price"]
           },
         );
@@ -626,10 +631,47 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       }
     }
 
+    // request.send().then((response) async {
+    // if (resorder.statusCode == 200) {
+    //   // if(token1 != null){
+    //   var response = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/ordernotification.php"),
+    //     // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
+    //     body: {"token": token1.toString(),
+    //             "parentId": supplier_id}
+    //   );
+    // Future.delayed(Duration(seconds: 1)).then((value) => {Navigator.of(context).pushNamed("/home")});
+    //   print(response.body);
+    //   return jsonEncode(response.body);
+    //   // }
+    //   // else{
+    //   //   print(response.request);
+    //   //   print("Token is null");
+    //   // }
+    // }
+    // }
+
     print("response data"+ resorder.body);
     print(responseData["value"].toString());
 
     if(responseData["status"] == '200'){
+
+      if (resorder.statusCode == 200) {
+        // if(token1 != null){
+        var response = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/ordernotification.php"),
+            // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
+            body: {"token": token1.toString(),
+              "parentId": supplier_id}
+        );
+        Future.delayed(Duration(seconds: 1)).then((value) => {Navigator.of(context).pushNamed("/home")});
+        print(response.body);
+        return jsonEncode(response.body);
+        // }
+        // else{
+        //   print(response.request);
+        //   print("Token is null");
+        // }
+      }
+
       Fluttertoast.showToast(
           msg: 'Your Order Is Placed',
           toastLength: Toast.LENGTH_SHORT,
@@ -637,7 +679,10 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.blueAccent,
           textColor: Colors.white);
-      Future.delayed(Duration(seconds: 1)).then((value) => {Navigator.of(context).pushNamed("/home")});
+
+      // ------------ Navigation to home page ---------------------------------------------
+
+      // Future.delayed(Duration(seconds: 1)).then((value) => {Navigator.of(context).pushNamed("/home")});
       // Navigator.of(context).pushNamed("/home");
     }else{
       Fluttertoast.showToast(
@@ -648,28 +693,32 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
           backgroundColor: Colors.blueAccent,
           textColor: Colors.white);
     }
-    if(token1 != null){
-      var response = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/notificationNew.php"),
-          // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
-          body: {"token": token1}
-      );
-      return jsonEncode(response.body);
-    }
-    else{
-      print("Token is null");
-    }
+
+
+
+    // if(token1 != null){
+    //   var response = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/notificationNew.php"),
+    //       // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
+    //       body: {"token": token1}
+    //   );
+    //   return jsonEncode(response.body);
+    // }
+    // else{
+    //   print("Token is null");
+    // }
     // print(listOfColumns[0]['Name']);
   }
 
 
-
   num tCost = 0;
+  num pCost = 0;
   var reductionData = [];
   Widget PlaceOrderBody() {
     loadItemData();
     // List<DropdownMenuItem<String>> dropdownItems = [];
     List<DropdownMenuItem<String>> dropdownUser = [];
     List<DropdownMenuItem<String>> dropdownGrades = [];
+    List<DropdownMenuItem<String>> dropdowndefaultGrades = [];
     List<DropdownMenuItem<String>> dropdownSize = [];
     List<DropdownMenuItem<String>> dropdownDealer = [];
     List<DropdownMenuItem<String>> dropdownType = [];
@@ -711,6 +760,18 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
       }
       return dropdownGrades;
     }
+
+    List<DropdownMenuItem<String>> getdefaultGrade() {
+      for (int i = 0; i < defaultgrade.length; i++) {
+        DropdownMenuItem<String> it = DropdownMenuItem(
+          value: defaultgrade[i],
+          child: Text(defaultgrade[i]),
+        );
+        dropdowndefaultGrades.add(it);
+      }
+      return dropdowndefaultGrades;
+    }
+
 
     List<DropdownMenuItem<String>> getDealer() {
       for (int i = 0; i < dealers.length; i++) {
@@ -769,10 +830,10 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
     }
 
     List<DropdownMenuItem<String>> getPaymentType() {
-      for (int i = 0; i < payment.length; i++) {
+      for (int i = 0; i < payments.length; i++) {
         DropdownMenuItem<String> it = DropdownMenuItem(
-          value: payment[i],
-          child: Text(payment[i]),
+          value: payments[i],
+          child: Text(payments[i] + " Days"),
         );
         dropdownPaymentType.add(it);
       }
@@ -1342,6 +1403,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                       selectedRegion = newValue;
                       var ind = regions.indexOf(selectedRegion);
                       tCost = int.parse(regionList[ind].cost!);
+                      print("region cost "+ tCost.toString());
                     },
                     validator: (selectedValue) {
                       if (selectedValue == null) {
@@ -1459,38 +1521,28 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                             top: 10),
                                                         child: InkWell(
                                                           onTap: () {
-                                                            listOfColumns.add({
-                                                              "Sr_no": itemNum
-                                                                  .toString(),
-                                                              "Name":
-                                                              lumpsumList[
-                                                              index]
-                                                                  .name.toString()+ selectedSize.toString(),
-                                                              "Qty": qty.text,
-                                                              "Price": selectedTransType ==
-                                                                  "Ex-Work" &&
-                                                                  selectedOrderType !=
-                                                                      "Lump-sum"
-                                                                  ? (
-                                                                  (int.parse(lumpsumList[index].basePrice!) +
-                                                                      tCost + szpct) *
-                                                                      int.parse(qty
-                                                                          .text))
-                                                                  .toString()
-                                                                  : ((int.parse(lumpsumList[index]
-                                                                  .basePrice!)) *
-                                                                  int.parse(
-                                                                      qty.text))
-                                                                  .toString()
-                                                            });
-                                                            lumpsumList[index]
-                                                                .qty = (int.parse(
-                                                                lumpsumList[index]
-                                                                    .qty!) -
-                                                                int.parse(qty
-                                                                    .text))
-                                                                .toString();
 
+
+                                                            // listOfColumns.add({
+                                                            //   "Sr_no": itemNum
+                                                            //       .toString(),
+                                                            //   "Name":
+                                                            //   lumpsumList[
+                                                            //   index]
+                                                            //       .name.toString()+ selectedSize.toString(),
+                                                            //   "Qty": qty.text,
+                                                            //   "Price": selectedTransType ==
+                                                            //       "Ex-Work" && selectedOrderType != "Lump-sum"
+                                                            //       ? ((int.parse(lumpsumList[index].basePrice!) + tCost + szpct) * int.parse(qty.text)).toString()
+                                                            //       : ((int.parse(lumpsumList[index].basePrice!)) * int.parse(qty.text)).toString()
+                                                            // });
+                                                            // lumpsumList[index]
+                                                            //     .qty = (int.parse(
+                                                            //     lumpsumList[index]
+                                                            //         .qty!) -
+                                                            //     int.parse(qty
+                                                            //         .text))
+                                                            //     .toString();
                                                             reductionData.add({
                                                               "id": lumpsumList[
                                                               index]
@@ -1500,12 +1552,21 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                               index]
                                                                   .qty
                                                             });
-                                                            totalQuantity =
-                                                                totalQuantity +
-                                                                    int.parse(qty
-                                                                        .text);
+                                                            // totalQuantity =
+                                                            //     totalQuantity +
+                                                            //         int.parse(qty
+                                                            //             .text);
+
+                                                            itemDtls[lumpsumList[index].name.toString()] =
+                                                                double.parse(lumpsumList[index].basePrice.toString());
+                                                            print("base rate========>> ");
+                                                            print(lumpsumList[index].basePrice);
+                                                            base_price.text = lumpsumList[index].basePrice!;
+                                                            orderid.text = lumpsumList[index].order_id!;
+
                                                             itemNum =
                                                                 itemNum + 1;
+
                                                             setState(() {});
                                                             Navigator.pop(
                                                                 context);
@@ -1543,7 +1604,35 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                   return Container();
                 }
               }),
-              //--------------------------Loading Type--------------------------
+
+              LayoutBuilder(builder: (context, constraints){
+                if(selectedOrderType == "Use Lumpsum"){
+                  return Container(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      // key: field4Key,
+                      // focusNode: focusNode4,
+                      controller: orderid,
+                      maxLines: 1,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          hintText: "Order Id of lumpsum",
+                          hintStyle: TextStyle(fontSize: 20),
+                          // floatingLabelBehavior: FloatingLabelBehavior.never,
+                          border: OutlineInputBorder(
+                            // borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide.none),
+                          filled: true,
+                          fillColor: Color.fromRGBO(233, 236, 239,
+                              0.792156862745098) // Color.fromRGBO(233, 236, 239, 0.792156862745098)
+                      ),
+                    ),
+                  );
+                }else{
+                  return Container();
+                }
+              },),
 
               LayoutBuilder(builder: (context, constraints) {
                 if (selectedOrderType != "Lump-sum"
@@ -1568,6 +1657,9 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             items: getPaymentType(),
                             onChanged: (String? newValue) {
                               selectedpaymentType = newValue;
+                              var pay = payments.indexOf(selectedpaymentType);
+                              pCost = int.parse(paymentList[pay].paymentCost!);
+                              print("payment cost "+pCost.toString());
                             },
                             // key: field5Key,
                             // focusNode: focusNode5,
@@ -1733,33 +1825,73 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     //         return null;
                     //       },
                     //     )),
-                    Container(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                        child: DropdownButtonFormField(
-                          decoration: const InputDecoration(
-                              hintText: "Select The Grade",
-                              hintStyle: TextStyle(fontSize: 20),
-                              filled: true,
-                              fillColor: Color.fromRGBO(
-                                  233, 236, 239, 0.792156862745098),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                // borderRadius: BorderRadius.circular(20)
-                              )),
-                          value: selectedGrade,
-                          items: getGrade(),
-                          onChanged: (String? newValue) {
-                            selectedGrade = newValue;
-                          },
-                          key: field8Key,
-                          focusNode: focusNode8,
-                          validator: (selectedValue) {
-                            if (selectedValue == null) {
-                              // return 'Please select a value.';
-                            }
-                            return null;
-                          },
-                        )),
+
+
+                    // --------------------for lumpsum order ----------------------------
+
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        if(selectedOrderType == "Lump-sum"){
+                          return Container(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              child: DropdownButtonFormField(
+                                decoration: const InputDecoration(
+                                    hintText: "Select The Grade",
+                                    hintStyle: TextStyle(fontSize: 20),
+                                    filled: true,
+                                    fillColor: Color.fromRGBO(
+                                        233, 236, 239, 0.792156862745098),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      // borderRadius: BorderRadius.circular(20)
+                                    )),
+                                value: selectedGrade,
+                                items: getdefaultGrade(),
+                                onChanged: (String? newValue) {
+                                  selectedGrade = newValue;
+                                },
+                                // key: field8Key,
+                                // focusNode: focusNode8,
+                                validator: (selectedValue) {
+                                  if (selectedValue == null) {
+                                    // return 'Please select a value.';
+                                  }
+                                  return null;
+                                },
+                              ));
+                        }else {
+                          return Container(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              child: DropdownButtonFormField(
+                                decoration: const InputDecoration(
+                                    hintText: "Select The Grade",
+                                    hintStyle: TextStyle(fontSize: 20),
+                                    filled: true,
+                                    fillColor: Color.fromRGBO(
+                                        233, 236, 239, 0.792156862745098),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      // borderRadius: BorderRadius.circular(20)
+                                    )),
+                                value: selectedGrade,
+                                items: getGrade(),
+                                onChanged: (String? newValue) {
+                                  selectedGrade = newValue;
+                                },
+                                key: field8Key,
+                                focusNode: focusNode8,
+                                validator: (selectedValue) {
+                                  if (selectedValue == null) {
+                                    // return 'Please select a value.';
+                                  }
+                                  return null;
+                                },
+                              ));
+                        }
+                      },
+                    ),
+
+
 
                     LayoutBuilder(builder: (context, constraints) {
                       if (selectedOrderType == "With Size" ||
@@ -1831,6 +1963,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: TextFormField(
+
                         textInputAction: TextInputAction.next,
                         maxLines: 1,
                         controller: qty,
@@ -1850,51 +1983,59 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     ),
                     //-------------------------deliveryDAte-----------------------
 
-                    Container(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                        // padding: EdgeInsets.all(15),
-                        // height: MediaQuery.of(context).size.width / 3,
-                        child: Center(
-                            child: TextFormField(
-                              key: field10Key,
-                                  focusNode: focusNode10,
-                              controller: deliveryDate, //editing controller of this TextField
-                              decoration: InputDecoration(
-                                suffixIcon: Icon(Icons.calendar_today,color: Colors.grey,),
-                                  // icon: Icon(Icons.calendar_today,color: Colors.grey,), //icon of text field
-                                  hintText: "Delivery Date",
-                                  hintStyle: TextStyle(fontSize: 20),
-                                border: OutlineInputBorder(
-                                              // borderRadius: BorderRadius.circular(20),
-                                              borderSide: BorderSide.none),
-                                filled: true,
-                                fillColor: Color.fromRGBO(233, 236, 239,
-                                    0.792156862745098),
-                                //label text of field
-                              ),
-                              readOnly: true,
-                              //set it true, so that user will not able to edit text
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
-                                    //DateTime.now() - not to allow to choose before today.
-                                    lastDate: DateTime(2100));
-                                if (pickedDate != null) {
-                                  print(
-                                      pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                  String formattedDate =
-                                  DateFormat('dd-MM-yyyy').format(pickedDate);
-                                  print(
-                                      formattedDate); //formatted date output using intl package =>  2021-03-16
-                                  setState(() {
-                                    deliveryDate.text =
-                                        formattedDate; //set output date to TextField value.
-                                  });
-                                } else {}
-                              },
-                            ))),
+                    LayoutBuilder(
+                      builder: (context, constraints){
+                        if(selectedOrderType != "Lump-sum"){
+                          return Container(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              // padding: EdgeInsets.all(15),
+                              // height: MediaQuery.of(context).size.width / 3,
+                              child: Center(
+                                  child: TextFormField(
+                                    key: field10Key,
+                                    focusNode: focusNode10,
+                                    controller: deliveryDate, //editing controller of this TextField
+                                    decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.calendar_today,color: Colors.grey,),
+                                      // icon: Icon(Icons.calendar_today,color: Colors.grey,), //icon of text field
+                                      hintText: "Delivery Date",
+                                      hintStyle: TextStyle(fontSize: 20),
+                                      border: OutlineInputBorder(
+                                        // borderRadius: BorderRadius.circular(20),
+                                          borderSide: BorderSide.none),
+                                      filled: true,
+                                      fillColor: Color.fromRGBO(233, 236, 239,
+                                          0.792156862745098),
+                                      //label text of field
+                                    ),
+                                    readOnly: true,
+                                    //set it true, so that user will not able to edit text
+                                    onTap: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          //DateTime.now() - not to allow to choose before today.
+                                          lastDate: DateTime(2100));
+                                      if (pickedDate != null) {
+                                        print(
+                                            pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                        String formattedDate =
+                                        DateFormat('dd-MM-yyyy').format(pickedDate);
+                                        print(
+                                            formattedDate); //formatted date output using intl package =>  2021-03-16
+                                        setState(() {
+                                          deliveryDate.text =
+                                              formattedDate; //set output date to TextField value.
+                                        });
+                                      } else {}
+                                    },
+                                  )
+                              )
+                          );
+                        }else{return Container();}
+                      },
+                    ),
 
                     // Container(
                     //   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -1929,8 +2070,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                     Center(
                       child: Text(isItem, style: TextStyle(color: Colors.red)),
                     ),
-
-
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blueGrey,
@@ -1941,7 +2080,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             ),
                             minimumSize: const Size(190, 40)),
                         onPressed: () {
-                          var grdpct, szpct = 0;
+                          var grdpct, szpct= 0;
+                          var przpct = 0;
                           if (selectedOrderType != "Use Lumpsum") {
                             if (selectedGrade != null &&
                                 // selectedpaymentType != null &&
@@ -1951,11 +2091,11 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                     selectedRegion != null
                                 // selectedTransType != null
                                 ) {
-                              // for (int i = 0; i < paymentList.length; i++) {
-                              //   if (paymentList[i].paymentName == selectedpaymentType) {
-                              //     prcpct = int.parse(paymentList[i].paymentCost!);
-                              //   }
-                              // }
+                              for (int i = 0; i < paymentList.length; i++) {
+                                if (paymentList[i].paymentName == selectedpaymentType) {
+                                  przpct = int.parse(paymentList[i].paymentCost!);
+                                }
+                              }
                               for (int i = 0; i < gradeList.length; i++) {
                                 if (gradeList[i].value == selectedGrade) {
                                   grdpct = int.parse(gradeList[i].price!);
@@ -1982,12 +2122,12 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                             selectedOrderType != "Lump-sum"
                                         ? (int.parse(base_price.text) +
                                                 grdpct +
-                                                szpct +
+                                                szpct + przpct +
                                                 tCost) *
                                             quty
                                         : (int.parse(base_price.text) +
                                                 grdpct +
-                                                szpct +
+                                                szpct + przpct +
                                                 0) *
                                             quty;
 
@@ -2007,15 +2147,15 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                             selectedOrderType != "Lump-sum"
                                         ? ((int.parse(base_price.text) +
                                                     grdpct +
-                                                    szpct +
+                                                    szpct + przpct +
                                                     tCost) *
-                                                int.parse(qty.text))
+                                                double.parse(qty.text))
                                             .toString()
                                         : ((int.parse(base_price.text) +
                                                     grdpct +
-                                                    szpct +
+                                                    szpct + przpct +
                                                     0) *
-                                                int.parse(qty.text))
+                                                double.parse(qty.text))
                                              .toString()
                                   });
                                   // print(selectedTransType == "CIF" &&
@@ -2066,7 +2206,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                               //             .toString());
 
                               totalQuantity =
-                                  totalQuantity + int.parse(qty.text);
+                                  totalQuantity + double.parse(qty.text);
                               // print(tot_price);
                             } else {
                               isItem = "Please Enter All of the above fields";
@@ -2077,11 +2217,11 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                               context: context,
                               builder: (context) {
 
-                                // for (int i = 0; i < paymentList.length; i++) {
-                                //   if (paymentList[i].paymentName == selectedpaymentType) {
-                                //     prcpct = int.parse(paymentList[i].paymentCost!);
-                                //   }
-                                // }
+                                for (int i = 0; i < paymentList.length; i++) {
+                                  if (paymentList[i].paymentName == selectedpaymentType) {
+                                    przpct = int.parse(paymentList[i].paymentCost!);
+                                  }
+                                }
 
                                 for (int i = 0; i < gradeList.length; i++) {
                                   if (gradeList[i].value == selectedGrade) {
@@ -2161,10 +2301,11 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                             listOfColumns.add({
                                                               "Sr_no": itemNum
                                                                   .toString(),
-                                                              "Name":
-                                                                  lumpsumList[
-                                                                          index]
-                                                                      .name.toString()+ selectedSize.toString(),
+                                                              "Name":selectedGrade.toString()
+                                                                  // lumpsumList[
+                                                                  //         index]
+                                                                  //     .name.toString()
+                                                                      + selectedSize.toString(),
                                                               "Qty": qty.text,
                                                               "Price": selectedTransType ==
                                                                           "Ex-Work" &&
@@ -2172,7 +2313,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                                           "Lump-sum"
                                                                   ? (
                                                                   (int.parse(lumpsumList[index].basePrice!) +
-                                                                              tCost + szpct) *
+                                                                              tCost + szpct + przpct + grdpct) *
                                                                           int.parse(qty
                                                                               .text))
                                                                       .toString()
@@ -2181,9 +2322,10 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                                           int.parse(
                                                                               qty.text))
                                                                       .toString()
+
                                                             });
                                                             lumpsumList[index]
-                                                                .qty = (int.parse(
+                                                                .qty = (double.parse(
                                                                         lumpsumList[index]
                                                                             .qty!) -
                                                                     int.parse(qty
@@ -2335,8 +2477,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                         onPressed: () {
                                           setState(() {
                                             listOfColumns.remove(element);
-                                            totalQuantity = totalQuantity -
-                                                int.parse(element["Qty"]!);
+                                            totalQuantity = (totalQuantity -
+                                                double.parse(element["Qty"]!));
                                           });
                                         },
                                       ),

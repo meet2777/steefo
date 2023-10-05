@@ -7,7 +7,9 @@ class Order {
       qty_left,
       user_type,
       userType,
+      region,
       user_id,
+      orderid,
       org_name,
       pincode,
       user_name,
@@ -31,8 +33,10 @@ class Order {
       trailerType,
       trans_type,
       date,
+      paymentTerm,
       totalPrice,
       deliveryDate,
+      qty,
       totalQuantity;
 
   List<Item> items = [];

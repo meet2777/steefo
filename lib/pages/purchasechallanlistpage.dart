@@ -1,21 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/challan.dart';
 import "package:http/http.dart" as http;
-import 'package:stefomobileapp/pages/HomePage.dart';
+// import 'package:stefomobileapp/pages/HomePage.dart';
 import '../Models/order.dart';
 import '../Models/user.dart';
 import '../ui/common.dart';
-import 'GenerateChallanPage.dart';
+// import 'GenerateChallanPage.dart';
 import 'GeneratedChallanPage.dart';
 
-class ChallanListPage extends StatelessWidget {
+class PurchaseChallanListPage extends StatelessWidget {
   final Order order;
-  ChallanListPage({super.key, required this.order});
+  PurchaseChallanListPage({super.key, required this.order});
   @override
   Widget build(BuildContext context) {
     return ChallanListContent(
@@ -33,7 +31,7 @@ class ChallanListContent extends StatefulWidget {
 }
 
 class _ChallanListPageState extends State<ChallanListContent> {
-  var _selected = 0;
+  // var _selected = 0;
 
   User u = User();
 
@@ -46,54 +44,16 @@ class _ChallanListPageState extends State<ChallanListContent> {
         Navigator.pop(context);
       }),
       body: ChallanListBody(),
-     
+
     );
   }
 
-
-  String? id,
-      firstName,
-      lastName,
-      email,
-      userType,
-      mobileNumber,
-      address,
-      orgName,
-      adhNumber,
-      gstNumber,
-      panNumber;
-  var f = 0;
-  bool isDataLoaded = false;
-  User user = User();
   int flag = 0;
-  // String? id;
+  String? id;
   // String? userType;
   List<Challan> challanList = [];
   loadChallanList() async {
-
-    if (f == 0) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      user.id = await prefs.getString('id');
-      user.firstName = await prefs.getString('firstName');
-      user.lastName = await prefs.getString("lastName");
-      user.email = await prefs.getString("email");
-      user.mobileNumber = await prefs.getString("mobileNumber");
-      user.orgName = await prefs.getString("orgName");
-      user.gstNumber = await prefs.getString("gstNumber");
-      user.panNumber = await prefs.getString("panNumber");
-      user.adhNumber = await prefs.getString("adhNumber");
-      user.address = await prefs.getString("address");
-      user.userType = await prefs.getString("userType");
-
-      print("user type"+user.userType.toString());
-      f = 1;
-      isDataLoaded = true;
-      setState(() {});
-
-
-
-
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     id = await prefs.getString('id');
     if (flag == 0) {
       final res = await http.post(
@@ -102,6 +62,7 @@ class _ChallanListPageState extends State<ChallanListContent> {
       );
       var responseData = jsonDecode(res.body);
       print(responseData);
+
       for (int i = 0; i < responseData["data"].length; i++) {
         Challan ch = Challan();
         ch.order_id = responseData["data"][i]["order_id"];
@@ -114,7 +75,6 @@ class _ChallanListPageState extends State<ChallanListContent> {
       }
       flag = 1;
       setState(() {});
-    }
     }
 
     var test = await http.post(
@@ -147,7 +107,7 @@ class _ChallanListPageState extends State<ChallanListContent> {
       u.uploadedFile = responseData['data'][i]['uploadedFile'];
       // regReqList.add(u);
       print("enter3");
-      print(u.userType);
+      print(widget.order.userType.toString());
     }
   }
 
@@ -185,7 +145,7 @@ class _ChallanListPageState extends State<ChallanListContent> {
                 Text(
                   "ORDER ID:",
                   style: TextStyle(
-                      //fontFamily: "Poppins_Bold",
+                    //fontFamily: "Poppins_Bold",
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
@@ -218,101 +178,97 @@ class _ChallanListPageState extends State<ChallanListContent> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => GeneratedChallan(
-                                    challan_id: challanList[index].challan_id!,
-                                  )));
+                                challan_id: challanList[index].challan_id!,
+                              )));
                     },
                     child: ChallanCard(context, challanList[index]));
               },
             ),
           ),
 
-          LayoutBuilder(builder: (context, constraints) {
-            if (user.userType != "Dealer" && widget.order.orderType != "Lump-sum") {
-              return Container(
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  child: buttonStyle("Generate Challan", () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                GenerateChallanPage(
-                                  order: widget.order,
-                                )
-                        )
-                    );
-                  }
-                  )
-              );
-              // } else {
-              //   return Container();
-              // }
-            }else{
-              return Container();
-            }
-          }
-            ),
+          // LayoutBuilder(builder: (context, constraints) {
+          //   if (widget.order.userType != "Dealer") {
+          //     return Container(
+          //         margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+          //         width: MediaQuery
+          //             .of(context)
+          //             .size
+          //             .width,
+          //         child: buttonStyle("Generate Challan", () {
+          //           Navigator.push(
+          //               context,
+          //               MaterialPageRoute(
+          //                   builder: (context) =>
+          //                       GenerateChallanPage(
+          //                         order: widget.order,
+          //                       )));
+          //         }));
+          //     // } else {
+          //     //   return Container();
+          //     // }
+          //   }else{
+          //     return Container();
+          //   }
+          // }
+          // ),
           SizedBox(
             height: 10,
           ),
-          LayoutBuilder(builder: (context, constraints) {
-            if (user.userType!= "Dealer" && widget.order?.status!="Completed") {
-              return GestureDetector(
-                onTap: () async {
-                  await http.post(
-                    Uri.parse(
-                        "http://steefotmtmobile.com/steefo/approveorder.php"),
-                    body: {
-                      "decision": "Completed",
-                      "order_id": widget.order.order_id
-                    },
-                  );
-                      () {
-                    // orderList.add(requestList[index]);
-                    // requestList.removeAt(index);
-                    // id = "none";
-                    // requestList.removeAt(index);
-                    // loadData();
-                    setState(() {});
-                    Get.to(HomePage());
-                  }();
-                },
-                child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 10, right: 10),
-                    height: 55,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 1.123,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        gradient: LinearGradient(colors: [
-                          Color.fromRGBO(75, 100, 160, 1.0),
-                          Color.fromRGBO(19, 59, 78, 1.0),
-
-                          //add more colors
-                        ])),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 18,
-                        bottom: 18,
-                      ),
-                      child: Text(
-                        "Complete Order",
-                        style: const TextStyle(
-                            fontFamily: 'Poppins_Bold', color: Colors.white),
-                      ),
-                    )),
-              );
-          }else{
-              return Container();
-            }
-          }
-          ),
+          // LayoutBuilder(builder: (context, constraints) {
+          //   if (widget.order.userType != "Dealer") {
+          //     return GestureDetector(
+          //       onTap: () async {
+          //         await http.post(
+          //           Uri.parse(
+          //               "http://steefotmtmobile.com/steefo/approveorder.php"),
+          //           body: {
+          //             "decision": "Completed",
+          //             "order_id": widget.order.order_id
+          //           },
+          //         );
+          //             () {
+          //           // orderList.add(requestList[index]);
+          //           // requestList.removeAt(index);
+          //           // id = "none";
+          //           // requestList.removeAt(index);
+          //           // loadData();
+          //           setState(() {});
+          //           Get.to(HomePage());
+          //         }();
+          //       },
+          //       child: Container(
+          //           alignment: Alignment.center,
+          //           margin: EdgeInsets.only(left: 10, right: 10),
+          //           height: 55,
+          //           width: MediaQuery
+          //               .of(context)
+          //               .size
+          //               .width / 1.123,
+          //           decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.all(Radius.circular(10)),
+          //               gradient: LinearGradient(colors: [
+          //                 Color.fromRGBO(75, 100, 160, 1.0),
+          //                 Color.fromRGBO(19, 59, 78, 1.0),
+          //
+          //                 //add more colors
+          //               ])),
+          //           child: Padding(
+          //             padding: const EdgeInsets.only(
+          //               top: 18,
+          //               bottom: 18,
+          //             ),
+          //             child: Text(
+          //               "Complete Order",
+          //               style: const TextStyle(
+          //                   fontFamily: 'Poppins_Bold', color: Colors.white),
+          //             ),
+          //           )),
+          //     );
+          //   }else{
+          //     return Container();
+          //   }
+          // }
+          // ),
           SizedBox(
             height: 10,
           ),
@@ -324,7 +280,7 @@ class _ChallanListPageState extends State<ChallanListContent> {
   //----------------------------SingleChallanCard-------------------------------
 
   Widget ChallanCard(context, Challan challan) {
-    String trp_name = "XY Transporter";
+    // String trp_name = "XY Transporter";
 
     return Container(
       margin: EdgeInsets.all(10.0),
@@ -341,10 +297,10 @@ class _ChallanListPageState extends State<ChallanListContent> {
             children: [
               Container(
                   child: const Text(
-                "Challan No:",
-                textAlign: TextAlign.left,
-                style: TextStyle(fontFamily: "Poppins_Bold"),
-              )),
+                    "Challan No:",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontFamily: "Poppins_Bold"),
+                  )),
               Container(
                   padding: EdgeInsets.only(left: 65),
                   child: Text(

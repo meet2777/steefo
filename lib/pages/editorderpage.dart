@@ -40,6 +40,7 @@ class EditOrderContent extends StatefulWidget {
 class _EditOrderPageState extends State<EditOrderContent> {
 
   late TextEditingController party_name;
+  late TextEditingController consignee_name;
   late TextEditingController party_pan_no;
 
   TextEditingController dateInput = TextEditingController();
@@ -140,6 +141,17 @@ class _EditOrderPageState extends State<EditOrderContent> {
   @override
   Widget build(BuildContext context) {
 
+    selectedDealer = widget.order?.dealerName.toString();
+    // selectedRegion = widget.order?.region.toString();
+    selectedOrderType = widget.order?.orderType.toString();
+    selectedTransType = widget.order?.trans_type.toString();
+    selectedType = widget.order?.loading_type.toString();
+    selectedconsignee?.userName = widget.order!.consignee_name.toString();
+    trailerType = widget.order?.trailerType.toString();
+    selectedRegion = widget.order?.region.toString();
+    selectedpaymentType = widget.order?.paymentTerm.toString();
+
+    // consignee_name = TextEditingController(text: "${widget.order?.consignee_name}");
     party_name = TextEditingController(text: "${widget.order?.dealerName}");
     party_address = TextEditingController(text: "${widget.order?.party_address}");
     pincode = TextEditingController(text: "${widget.order?.pincode}");
@@ -148,10 +160,10 @@ class _EditOrderPageState extends State<EditOrderContent> {
     base_price = TextEditingController(text: "${widget.order?.base_price}");
     qty = TextEditingController(text: "${widget.order?.totalQuantity}");
     deliveryDate = TextEditingController(text: "${widget.order?.deliveryDate}");
+    // selectedconsignee= TextEditingController(text: "${widget.order?.consignee_name}") as Consignee?;
 
 
-
-    print("${widget.order?.dealerName} order items");
+    print("${widget.order?.consignee_name} consignee name");
     //  getRegReqs();
     loadusertype();
 
@@ -168,7 +180,6 @@ class _EditOrderPageState extends State<EditOrderContent> {
   String? id, supplier_id;
   var f1 = 0;
   Future<void> loadData() async {
-
     if (f1 == 0) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       id = await prefs.getString('id');
@@ -189,7 +200,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
 
   String?
   // selectedValue,
-  selectedDealer,
+  //     seletedconsignee,
+      selectedDealer,
       selectedSize,
       selectedGrade,
       selectedType,
@@ -352,28 +364,92 @@ class _EditOrderPageState extends State<EditOrderContent> {
   List<Consignee> consigneeList = [];
   List<User> userList = [];
 
-
   // TextEditingController party_name = TextEditingController(text: 'name: ${Order().party_name}');
 
-
+  num tot_qty = 0;
+  var listOfColumns = [];
   var f = 0;
   num tot_price = 0;
   loadItemData() async {
+
+    // if (widget.order!.orderType != "Lump-sum") {
+    //   print('insize');
+    //   final res = await http.post(
+    //     Uri.parse("http://steefotmtmobile.com/steefo/getorderdetails.php"),
+    //     body: {
+    //       "order_id": widget.order!.order_id,
+    //       // "qty_left": widget.order!.qty_left,
+    //       // "id": widget.order!.id,
+    //     },
+    //   );
+    //   var responseData = jsonDecode(res.body);
+    //   // print(
+    //   //     "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd${responseData}");
+    //   //print(responseData);
+    //   listOfColumns = [];
+    //
+    //   for (int i = 0; i < responseData["data"].length; i++) {
+    //     listOfColumns.add({
+    //       "Sr_no": (i + 1).toString(),
+    //       "Name": responseData["data"][i]["name"],
+    //       "Qty": responseData["data"][i]["qty"],
+    //       "Price": responseData["data"][i]["price"]
+    //     });
+    //     // tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
+    //     // tot_qty = tot_qty + int.parse(responseData["data"][i]["qty"]);
+    //   }
+    //   listOfColumns.add({
+    //     "Sr_no": " ",
+    //     "Name": " ",
+    //     "Qty": " ",
+    //     "Price": " "
+    //     // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
+    //     //     .format(int.parse(tot_price.toString())),
+    //   });
+    // } else {
+    //   print("inlumpsum");
+    //   final res = await http.post(
+    //     Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
+    //     body: {
+    //       // "qty_left" : responseData["data"][i]["qty_left"],
+    //       "order_id": widget.order?.order_id,
+    //     },
+    //   );
+    //   var responseData = jsonDecode(res.body);
+    //   // print("ddddddddddd");
+    //   listOfColumns = [];
+    //   for (int i = 0; i < responseData["data"].length; i++) {
+    //     listOfColumns.add({
+    //       "Sr_no": (i + 1).toString(),
+    //       "Name": responseData["data"][i]["name"],
+    //       "Qty": responseData["data"][i]["qty"],
+    //       "Price": responseData["data"][i]["price"]
+    //     });
+    //     // tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
+    //     // tot_qty = tot_qty + int.parse(responseData["data"][i]["qty"]);
+    //   }
+    //   listOfColumns.add({
+    //     "Sr_no": " ",
+    //     "Name": " ",
+    //     "Qty": " ",
+    //     "Price": " "
+    //     // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
+    //     //     .format(int.parse(tot_price.toString())),
+    //   });
+    // }
+
     if (f == 0) {
       f = 1;
-      var res = await http
-          .post(Uri.parse("http://steefotmtmobile.com/steefo/getsize.php"));
+      var res = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/getsize.php"));
       var responseData = jsonDecode(res.body);
       for (int i = 0; i < responseData['data'].length; i++) {
         sizes.add(responseData['data'][i]["sizeValue"]);
         ItemSize s = ItemSize();
         s.price = responseData['data'][i]["sizePrice"];
         s.value = responseData['data'][i]["sizeValue"];
-
         sizeList.add(s);
       }
-      var res1 = await http
-          .post(Uri.parse("http://steefotmtmobile.com/steefo/getgrade.php"));
+      var res1 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/getgrade.php"));
       var responseData1 = jsonDecode(res1.body);
       for (int i = 0; i < responseData1['data'].length; i++) {
         print(responseData1['data'][i]);
@@ -384,8 +460,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
         gradeList.add(s);
       }
 
-      var res2 = await http
-          .post(Uri.parse("http://steefotmtmobile.com/steefo/getregions.php"));
+      var res2 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/getregions.php"));
       var responseData2 = jsonDecode(res2.body);
       for (int i = 0; i < responseData2['data'].length; i++) {
         print(responseData2['data'][i]);
@@ -396,8 +471,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
         regionList.add(r);
       }
 
-      var res3 = await http
-          .post(Uri.parse("http://steefotmtmobile.com/steefo/getpayment.php"));
+      var res3 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/getpayment.php"));
       var responseData3 = jsonDecode(res3.body);
       for (int i = 0; i < responseData3['data'].length; i++) {
         print(responseData3['data'][i]);
@@ -408,18 +482,18 @@ class _EditOrderPageState extends State<EditOrderContent> {
         paymentList.add(p);
       }
 
-      var res4 = await http
-          .post(Uri.parse("http://steefotmtmobile.com/steefo/getdealer.php"));
-      var responseData4 = jsonDecode(res4.body);
-      for (int i = 0; i < responseData4['data'].length; i++) {
-        print(responseData4['data'][i]);
-        dealers.add(responseData4['data'][i]["orgName"]);
-        Dealer d = Dealer();
-        d.parentId = responseData4['data'][i]["parentId "];
-        d.orgName = responseData4['data'][i]["orgName"];
-        d.userType = responseData4['data'][i]["userType"];
-        dealerList.add(d);
-      }
+      // var res4 = await http
+      //     .post(Uri.parse("http://steefotmtmobile.com/steefo/getdealer.php"));
+      // var responseData4 = jsonDecode(res4.body);
+      // for (int i = 0; i < responseData4['data'].length; i++) {
+      //   print(responseData4['data'][i]);
+      //   dealers.add(responseData4['data'][i]["orgName"]);
+      //   Dealer d = Dealer();
+      //   d.parentId = responseData4['data'][i]["parentId "];
+      //   d.orgName = responseData4['data'][i]["orgName"];
+      //   d.userType = responseData4['data'][i]["userType"];
+      //   dealerList.add(d);
+      // }
 
       String uri;
       final SharedPreferences pref = await SharedPreferences.getInstance();
@@ -454,7 +528,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
       });
       print(id);
       var responseData6 = json.decode(res6.body);
-      print(responseData4['data']);
+      print(responseData6['data']);
       for (int i = 0; i < responseData6['data'].length; i++) {
         users.add(responseData6['data'][i]["orgName"]);
         User u = User();
@@ -509,9 +583,9 @@ class _EditOrderPageState extends State<EditOrderContent> {
   List transType = ["Ex-Work", "FOR"];
   List orderType = ["Lump-sum", "With Size", "Use Lumpsum"];
   int itemNum = 1;
-  int totalQuantity = 0;
+  num totalQuantity = 0;
 
-  final List<Map<String, String>> listOfColumns = [];
+  // final List<Map<String, String>> listOfColumns = [];
 
   // String? str_party_name = widget.order?.party_name;
 
@@ -589,9 +663,9 @@ class _EditOrderPageState extends State<EditOrderContent> {
     var resorder = await http.post(
       Uri.parse("http://steefotmtmobile.com/steefo/updateOrder.php"),
       body:
-      selectedOrderType == "Lump-sum"
-          ?
+      selectedOrderType == "Lump-sum" ?
       {
+        "order_id": widget.order?.order_id,
         "userId": id!,
         "supplierId": supplier_id!,
         "shippingAddress": party_address.text,
@@ -599,7 +673,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
         "region": selectedRegion??"",
         "dealerName": selectedDealer??"",
         "consigneeName": selectedconsignee?.userName?? "",
-        "partyName": party_name.text,
+        "partyName": "",
         "PartygstNumber": party_pan_no.text,
         "mobileNumber": party_mob_num.text,
         "basePrice": base_price.text,
@@ -609,18 +683,19 @@ class _EditOrderPageState extends State<EditOrderContent> {
         "transType": "None",
         "paymentTerm": "None",
         "orderType": selectedOrderType??"",
-        "totalQuantity": totalQuantity.toString(),
+        "totalQuantity": qty.text,
         "totalPrice": tot_price.toString(),
         "deliveryDate": deliveryDate.text,
         "dateTime": DateTime.now().toString(),
       }:
       {
-        "user_id": id!,
-        "supplier_id": supplier_id!,
+        "order_id": widget.order?.order_id,
+        "userId": id!,
+        "supplierId": supplier_id!,
         "shippingAddress": party_address.text,
         "pincode": pincode.text,
-        "partyName": party_name.text,
-        "region": selectedRegion,
+        "partyName": "",
+        "region": selectedRegion??"",
         "dealerName": selectedDealer??"",
         "consigneeName": selectedconsignee?.userName?? "",
         "PartygstNumber": party_pan_no.text,
@@ -632,11 +707,11 @@ class _EditOrderPageState extends State<EditOrderContent> {
         "paymentTerm": selectedpaymentType?? "",
         "trailerType": trailerType?? "",
         "transType": selectedTransType?? "",
-        "totalQuantity": totalQuantity.toString(),
+        "totalQuantity": qty.text,
         "totalPrice": tot_price.toString(),
         "deliveryDate": deliveryDate.text,
         "dateTime": DateTime.now().toString(),
-      },
+      }
     );
     // NotificationServices notificationServices = NotificationServices();
     // notificationServices.getDeviceToken().then((value) async {
@@ -670,20 +745,23 @@ class _EditOrderPageState extends State<EditOrderContent> {
     // Navigator.of(context).pushNamed("/home");
     // print(responseData["value"].toString());
 
-    var responseData = json.decode(resorder.body);
+    print("body"+resorder.request.toString());
+    var responseData = jsonDecode(resorder.body);
+
+    print("body"+resorder.body);
     if (responseData["status"] == '200' && selectedOrderType != "Lump-sum") {
       for (int i = 0; i < listOfColumns.length; i++) {
         http.post(
           Uri.parse("http://steefotmtmobile.com/steefo/updatewithsize.php"),
           body: {
-            "order_id": responseData["value"].toString(),
+            "order_id": widget.order?.order_id,
             "name": listOfColumns[i]["Name"],
             "qty": listOfColumns[i]["Qty"],
             "price": listOfColumns[i]["Price"]
           },
         );
         //  print("${listOfColumns[i]["Price"]}...................");
-        //tot_price = tot_price + num.parse(listOfColumns[i]["Price"]);
+        tot_price = tot_price + num.parse(listOfColumns[i]["Price"]);
       }
     } else {
       for (int i = 0; i < listOfColumns.length; i++) {
@@ -700,6 +778,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
         //  tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
       }
     }
+
+
 
     print("response data"+ resorder.body);
     print(responseData["value"].toString());
@@ -723,6 +803,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
           backgroundColor: Colors.blueAccent,
           textColor: Colors.white);
     }
+
+
     // print(listOfColumns[0]['Name']);
   }
 
@@ -833,10 +915,10 @@ class _EditOrderPageState extends State<EditOrderContent> {
     }
 
     List<DropdownMenuItem<String>> getPaymentType() {
-      for (int i = 0; i < payment.length; i++) {
+      for (int i = 0; i < payments.length; i++) {
         DropdownMenuItem<String> it = DropdownMenuItem(
-          value: payment[i],
-          child: Text(payment[i]),
+          value: payments[i],
+          child: Text("${payments[i]} Days"),
         );
         dropdownPaymentType.add(it);
       }
@@ -1229,169 +1311,170 @@ class _EditOrderPageState extends State<EditOrderContent> {
                             )),
                         value: selectedOrderType,
                         items: getOrderType(),
-                        onChanged: (String? newValue) {
-                          setState(() {});
-                          selectedOrderType = newValue;
-                          if (selectedOrderType == "Use Lumpsum") {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-
-                                // for (int i = 0; i < paymentList.length; i++) {
-                                //   if (paymentList[i].paymentName == selectedpaymentType) {
-                                //     prcpct = int.parse(paymentList[i].paymentCost!);
-                                //   }
-                                // }
-                                var grdpct, szpct = 0;
-
-                                for (int i = 0; i < gradeList.length; i++) {
-                                  if (gradeList[i].value == selectedGrade) {
-                                    grdpct = int.parse(gradeList[i].price!);
-                                  }
-                                }
-                                for (int i = 0; i < sizeList.length; i++) {
-                                  if (sizeList[i].value == selectedSize) {
-                                    szpct = int.parse(sizeList[i].price!);
-                                  }
-                                }
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  elevation: 16,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        // margin: EdgeInsets.only(left: 5, right: 5),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: Color.fromRGBO(19, 59, 78, 1.0),
-                                              borderRadius:
-                                              BorderRadius.circular(10)),
-                                          height: 50,
-                                          // width: ,
-                                          child: Text("Select The Lumpsum",
-                                              style: GoogleFonts.poppins(
-                                                  textStyle: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                      FontWeight.w600)
-                                              )
-                                          )
-                                      ),
-                                      SingleChildScrollView(
-                                        physics: BouncingScrollPhysics(),
-                                        child: Container(
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .height /
-                                              1.24,
-                                          child: ListView.builder(
-                                              reverse: true,
-                                              physics: BouncingScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount: lumpsumList.length,
-                                              itemBuilder: (context, index) {
-                                                print(lumpsumList[index]
-                                                    .name
-                                                    .toString());
-                                                // print(
-                                                //     "lumpsumlistlength${lumpsumList[index].name}selectedlist${selectedGrade}");
-                                                // print(int.parse(
-                                                //         lumpsumList[index]
-                                                //             .qty!) >=
-                                                //     int.parse(qty.text));
-                                                return LayoutBuilder(builder:
-                                                    (context, constraints) {
-                                                  if (lumpsumList[index]
-                                                      .status
-                                                      .toString() ==
-                                                      "Confirmed"
-                                                  // lumpsumList[index].name ==
-                                                  //       "$selectedGrade" &&
-                                                  ) {
-                                                    print(
-                                                        "entrance............");
-                                                    print(
-                                                        "status....................${lumpsumList[index].name}");
-                                                    print(szpct);
-                                                    // print(prcpct);
-                                                    print(selectedSize);
-                                                    return Container(
-                                                        margin: EdgeInsets.only(
-                                                            top: 10),
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            listOfColumns.add({
-                                                              "Sr_no": itemNum
-                                                                  .toString(),
-                                                              "Name":
-                                                              lumpsumList[
-                                                              index]
-                                                                  .name.toString()+ selectedSize.toString(),
-                                                              "Qty": qty.text,
-                                                              "Price": selectedTransType ==
-                                                                  "Ex-Work" &&
-                                                                  selectedOrderType !=
-                                                                      "Lump-sum"
-                                                                  ? (
-                                                                  (int.parse(lumpsumList[index].basePrice!) +
-                                                                      tCost + szpct) *
-                                                                      int.parse(qty
-                                                                          .text))
-                                                                  .toString()
-                                                                  : ((int.parse(lumpsumList[index]
-                                                                  .basePrice!)) *
-                                                                  int.parse(
-                                                                      qty.text))
-                                                                  .toString()
-                                                            });
-                                                            lumpsumList[index]
-                                                                .qty = (int.parse(
-                                                                lumpsumList[index]
-                                                                    .qty!) -
-                                                                int.parse(qty
-                                                                    .text))
-                                                                .toString();
-
-                                                            reductionData.add({
-                                                              "id": lumpsumList[
-                                                              index]
-                                                                  .ls_id,
-                                                              "qty":
-                                                              lumpsumList[
-                                                              index]
-                                                                  .qty
-                                                            });
-                                                            totalQuantity =
-                                                                totalQuantity +
-                                                                    int.parse(qty
-                                                                        .text);
-                                                            itemNum =
-                                                                itemNum + 1;
-                                                            setState(() {});
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: InventoryCard(
-                                                              context,
-                                                              lumpsumList[
-                                                              index],Order(),id ),
-                                                        ));
-                                                  } else {
-                                                    return Container();
-                                                  }
-                                                });
-                                              }),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                            //selectedTransType = "None";
-                          }
-                        },
+                        onChanged: null,
+                        //     (String? newValue) {
+                        //   setState(() {});
+                        //   // selectedOrderType = newValue;
+                        //   // if (selectedOrderType == "Use Lumpsum") {
+                        //   //   showDialog(
+                        //   //     context: context,
+                        //   //     builder: (context) {
+                        //   //
+                        //   //       // for (int i = 0; i < paymentList.length; i++) {
+                        //   //       //   if (paymentList[i].paymentName == selectedpaymentType) {
+                        //   //       //     prcpct = int.parse(paymentList[i].paymentCost!);
+                        //   //       //   }
+                        //   //       // }
+                        //   //       var grdpct, szpct = 0;
+                        //   //
+                        //   //       for (int i = 0; i < gradeList.length; i++) {
+                        //   //         if (gradeList[i].value == selectedGrade) {
+                        //   //           grdpct = int.parse(gradeList[i].price!);
+                        //   //         }
+                        //   //       }
+                        //   //       for (int i = 0; i < sizeList.length; i++) {
+                        //   //         if (sizeList[i].value == selectedSize) {
+                        //   //           szpct = int.parse(sizeList[i].price!);
+                        //   //         }
+                        //   //       }
+                        //   //       return Dialog(
+                        //   //         shape: RoundedRectangleBorder(
+                        //   //             borderRadius: BorderRadius.circular(10)),
+                        //   //         elevation: 16,
+                        //   //         child: Column(
+                        //   //           children: [
+                        //   //             Container(
+                        //   //               // margin: EdgeInsets.only(left: 5, right: 5),
+                        //   //                 alignment: Alignment.center,
+                        //   //                 decoration: BoxDecoration(
+                        //   //                     color: Color.fromRGBO(19, 59, 78, 1.0),
+                        //   //                     borderRadius:
+                        //   //                     BorderRadius.circular(10)),
+                        //   //                 height: 50,
+                        //   //                 // width: ,
+                        //   //                 child: Text("Select The Lumpsum",
+                        //   //                     style: GoogleFonts.poppins(
+                        //   //                         textStyle: TextStyle(
+                        //   //                             color: Colors.white,
+                        //   //                             fontWeight:
+                        //   //                             FontWeight.w600)
+                        //   //                     )
+                        //   //                 )
+                        //   //             ),
+                        //   //             SingleChildScrollView(
+                        //   //               physics: BouncingScrollPhysics(),
+                        //   //               child: Container(
+                        //   //                 height: MediaQuery.of(context)
+                        //   //                     .size
+                        //   //                     .height /
+                        //   //                     1.24,
+                        //   //                 child: ListView.builder(
+                        //   //                     reverse: true,
+                        //   //                     physics: BouncingScrollPhysics(),
+                        //   //                     shrinkWrap: true,
+                        //   //                     itemCount: lumpsumList.length,
+                        //   //                     itemBuilder: (context, index) {
+                        //   //                       print(lumpsumList[index]
+                        //   //                           .name
+                        //   //                           .toString());
+                        //   //                       // print(
+                        //   //                       //     "lumpsumlistlength${lumpsumList[index].name}selectedlist${selectedGrade}");
+                        //   //                       // print(int.parse(
+                        //   //                       //         lumpsumList[index]
+                        //   //                       //             .qty!) >=
+                        //   //                       //     int.parse(qty.text));
+                        //   //                       return LayoutBuilder(builder:
+                        //   //                           (context, constraints) {
+                        //   //                         if (lumpsumList[index]
+                        //   //                             .status
+                        //   //                             .toString() ==
+                        //   //                             "Confirmed"
+                        //   //                         // lumpsumList[index].name ==
+                        //   //                         //       "$selectedGrade" &&
+                        //   //                         ) {
+                        //   //                           print(
+                        //   //                               "entrance............");
+                        //   //                           print(
+                        //   //                               "status....................${lumpsumList[index].name}");
+                        //   //                           print(szpct);
+                        //   //                           // print(prcpct);
+                        //   //                           print(selectedSize);
+                        //   //                           return Container(
+                        //   //                               margin: EdgeInsets.only(
+                        //   //                                   top: 10),
+                        //   //                               child: InkWell(
+                        //   //                                 onTap: () {
+                        //   //                                   listOfColumns.add({
+                        //   //                                     "Sr_no": itemNum
+                        //   //                                         .toString(),
+                        //   //                                     "Name":
+                        //   //                                     lumpsumList[
+                        //   //                                     index]
+                        //   //                                         .name.toString()+ selectedSize.toString(),
+                        //   //                                     "Qty": qty.text,
+                        //   //                                     "Price": selectedTransType ==
+                        //   //                                         "Ex-Work" &&
+                        //   //                                         selectedOrderType !=
+                        //   //                                             "Lump-sum"
+                        //   //                                         ? (
+                        //   //                                         (int.parse(lumpsumList[index].basePrice!) +
+                        //   //                                             tCost + szpct) *
+                        //   //                                             int.parse(qty
+                        //   //                                                 .text))
+                        //   //                                         .toString()
+                        //   //                                         : ((int.parse(lumpsumList[index]
+                        //   //                                         .basePrice!)) *
+                        //   //                                         int.parse(
+                        //   //                                             qty.text))
+                        //   //                                         .toString()
+                        //   //                                   });
+                        //   //                                   lumpsumList[index]
+                        //   //                                       .qty = (int.parse(
+                        //   //                                       lumpsumList[index]
+                        //   //                                           .qty!) -
+                        //   //                                       int.parse(qty
+                        //   //                                           .text))
+                        //   //                                       .toString();
+                        //   //
+                        //   //                                   reductionData.add({
+                        //   //                                     "id": lumpsumList[
+                        //   //                                     index]
+                        //   //                                         .ls_id,
+                        //   //                                     "qty":
+                        //   //                                     lumpsumList[
+                        //   //                                     index]
+                        //   //                                         .qty
+                        //   //                                   });
+                        //   //                                   totalQuantity =
+                        //   //                                       totalQuantity +
+                        //   //                                           int.parse(qty
+                        //   //                                               .text);
+                        //   //                                   itemNum =
+                        //   //                                       itemNum + 1;
+                        //   //                                   setState(() {});
+                        //   //                                   Navigator.pop(
+                        //   //                                       context);
+                        //   //                                 },
+                        //   //                                 child: InventoryCard(
+                        //   //                                     context,
+                        //   //                                     lumpsumList[
+                        //   //                                     index],Order(),id ),
+                        //   //                               ));
+                        //   //                         } else {
+                        //   //                           return Container();
+                        //   //                         }
+                        //   //                       });
+                        //   //                     }),
+                        //   //               ),
+                        //   //             )
+                        //   //           ],
+                        //   //         ),
+                        //   //       );
+                        //   //     },
+                        //   //   );
+                        //   //   //selectedTransType = "None";
+                        //   // }
+                        // },
                         // key: field5Key,
                         // focusNode: focusNode5,
                         // validator: (selectedValue) {
@@ -1679,6 +1762,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: TextFormField(
+                        enableInteractiveSelection: false,
                         textInputAction: TextInputAction.next,
                         // key: field6Key,
                         // focusNode: focusNode6,
@@ -1891,7 +1975,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                         grdpct +
                                         szpct +
                                         0) *
-                                        int.parse(qty.text))
+                                        double.parse(qty.text))
                                         .toString()
                                   });
                                   // print(selectedTransType == "CIF" &&
@@ -2054,15 +2138,15 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                                                   .toString()
                                                                   : ((int.parse(lumpsumList[index]
                                                                   .basePrice!)) *
-                                                                  int.parse(
+                                                                  double.parse(
                                                                       qty.text))
                                                                   .toString()
                                                             });
                                                             lumpsumList[index]
-                                                                .qty = (int.parse(
+                                                                .qty = (double.parse(
                                                                 lumpsumList[index]
                                                                     .qty!) -
-                                                                int.parse(qty
+                                                                double.parse(qty
                                                                     .text))
                                                                 .toString();
 
@@ -2077,7 +2161,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                                             });
                                                             totalQuantity =
                                                                 totalQuantity +
-                                                                    int.parse(qty
+                                                                    double.parse(qty
                                                                         .text);
                                                             itemNum =
                                                                 itemNum + 1;
@@ -2188,7 +2272,6 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                     break;
                                   }
                                 }
-
                                 //listOfColumns.indexWhere((element) => false);
                                 return DataRow(
                                   cells: <DataCell>[
@@ -2211,16 +2294,31 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                         icon: Icon(Icons.delete_rounded,
                                             color: Colors.red),
                                         onPressed: () {
+                                          // () async {
+                                          //   await http.post(
+                                          //       Uri.parse(
+                                          //           "http://steefotmtmobile.com/steefo/deleteitem.php"),
+                                          //       body: {
+                                          //         // "gradeName": gradeList[ind].value.toString(),
+                                          //         "order_id" : widget.order?.order_id,
+                                          //         "Name": listOfColumns[element].value.toString(),
+                                          //         "qty": listOfColumns[element].value.toString(),
+                                          //         "price": listOfColumns[element].value.toString(),
+                                          //       });
+                                          //   listOfColumns
+                                          //       .remove(element);
+                                          //   setState(() {});
+                                          // };
+
                                           setState(() {
                                             listOfColumns.remove(element);
-                                            totalQuantity = totalQuantity -
-                                                int.parse(element["Qty"]!);
+                                            // totalQuantity = totalQuantity -
+                                            //     int.parse(element["Qty"]);
                                           });
                                         },
                                       ),
                                       width: 25,
                                     )),
-
                                     // DataCell(Icon(element["Action"]!))
                                   ],
                                 );

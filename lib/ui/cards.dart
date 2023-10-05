@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path/path.dart';
+// import 'package:path/path.dart';
 import 'package:stefomobileapp/Models/size.dart';
 
 import '../Models/grade.dart';
@@ -130,7 +130,8 @@ import '../Models/user.dart';
 //   } else
 //     return Container();
 // }
-Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
+
+Widget orderCard(BuildContext context, Order order,id) {
   return Column(
     children: [
       Container(
@@ -385,7 +386,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
 
                       LayoutBuilder(
                         builder: (context, constraints) {
-                          if(order.orderType=="Use Lumpsum"){
+                          if(order.orderType == "Use Lumpsum"){
                             return  Container(
                               child: Row(
                                 children: [
@@ -877,7 +878,8 @@ Widget DealerCard(User user, BuildContext context) {
     return Container();
 }
 
-Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? curr_user_id) {
+
+Widget InventoryCard1(BuildContext context, Lumpsum lumpsum,Order order,String? curr_user_id) {
   print('object');
   return Container(
     decoration: BoxDecoration(
@@ -887,7 +889,7 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? c
     child: Column(
       children: [
         Container(
-          padding: EdgeInsets.only(left: 5, right: 5),
+          padding: EdgeInsets.only(left: 5, right: 5,top: 5,bottom: 5),
           //  margin: EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -912,23 +914,23 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? c
                               fontSize: 15))),
                 ],
               ),
-              RichText(
-                text: TextSpan(style: TextStyle(), children: [
-                  TextSpan(
-                      text: "Party Name: ",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: MediaQuery.of(context).size.width / 28)),
-                  TextSpan(
-                      text: lumpsum.partyname,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: MediaQuery.of(context).size.width / 28,
-                      ))
-                ]),
-              ),
+              // RichText(
+              //   text: TextSpan(style: TextStyle(), children: [
+              //     TextSpan(
+              //         text: "Party Name: ",
+              //         style: TextStyle(
+              //             color: Colors.white,
+              //             fontWeight: FontWeight.w600,
+              //             fontSize: MediaQuery.of(context).size.width / 28)),
+              //     TextSpan(
+              //         text: order.consignee_name.toString(),
+              //         style: TextStyle(
+              //           color: Colors.white,
+              //           fontWeight: FontWeight.w600,
+              //           fontSize: MediaQuery.of(context).size.width / 28,
+              //         ))
+              //   ]),
+              // ),
             ],
           ),
         ),
@@ -970,7 +972,172 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? c
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Quantity Left: ",
+              Text("Remaining Qty: ",
+                  style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.qty.toString(),
+                  style: TextStyle(
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Base Price: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.basePrice.toString(),
+                  style: TextStyle(
+                    color: Colors.black,
+                  )
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Status: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.status.toString(),
+                  style: TextStyle(
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+        ),
+
+        // Container(
+        //   width: MediaQuery.of(context).size.width - 20,
+        //   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        //   child: DataTable(
+        //       columnSpacing: double.minPositive,
+        //       headingTextStyle: const TextStyle(
+        //           fontWeight: FontWeight.bold, color: Colors.black),
+        //       columns: const [
+        //         // DataColumn(
+        //         //     label: Text(
+        //         //   "Sr No",
+        //         //   textAlign: TextAlign.center,
+        //         // )),
+        //         DataColumn(label: Text("Item name")),
+        //         DataColumn(label: Text("Quantity (Tons)"))
+        //       ],
+        //       rows: [
+        //         DataRow(
+        //           cells: <DataCell>[
+        //             // DataCell(Text("1")), //Extracting from Map element the value
+
+        //             DataCell(Text(lumpsum.name!)),
+        //             DataCell(Text(lumpsum.qty!))
+        //           ],
+        //         )
+        //       ]),
+        // ),
+      ],
+    ),
+  );
+}
+
+
+
+
+Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? curr_user_id) {
+  print('object');
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      color: Colors.grey.shade100,
+    ),
+    child: Column(
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 5, right: 5,top: 5,bottom: 5),
+          //  margin: EdgeInsets.only(top: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color.fromRGBO(19, 59, 78, 1.0),
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("ORDER ID: ",
+                      style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15))),
+                  Text(lumpsum.order_id.toString(),
+                      style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15))),
+                ],
+              ),
+              // RichText(
+              //   text: TextSpan(style: TextStyle(), children: [
+              //     TextSpan(
+              //         text: "Party Name: ",
+              //         style: TextStyle(
+              //             color: Colors.white,
+              //             fontWeight: FontWeight.w600,
+              //             fontSize: MediaQuery.of(context).size.width / 28)),
+              //     TextSpan(
+              //         text: order.consignee_name.toString(),
+              //         style: TextStyle(
+              //           color: Colors.white,
+              //           fontWeight: FontWeight.w600,
+              //           fontSize: MediaQuery.of(context).size.width / 28,
+              //         ))
+              //   ]),
+              // ),
+            ],
+          ),
+        ),
+
+        SizedBox(
+          height: 5,
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Order Date: ",
+                  style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.date!.substring(0, 10),
+                  style: TextStyle(
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Grade: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text(lumpsum.name!,
+                  style: TextStyle(
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Remaining Qty: ",
                   style: TextStyle(fontFamily: "Poppins_Bold")),
               Text(lumpsum.qty.toString(),
                   style: TextStyle(

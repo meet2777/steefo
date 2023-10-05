@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dots_indicator/dots_indicator.dart';
+// import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -17,6 +17,7 @@ import 'package:stefomobileapp/ui/common.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:http/http.dart' as http;
+import '../Models/lumpsum.dart';
 import '../Models/order.dart';
 import '../ui/cards.dart';
 import 'LoginPage.dart';
@@ -146,7 +147,7 @@ class _HomePageState extends State<HomeContent> {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) =>
-                          InventoryPage(),
+                          InventoryPage(order: Order(),),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -735,7 +736,7 @@ class _HomePageState extends State<HomeContent> {
                                                   builder: (context) =>
                                                       OrderDetails(
                                                           order: orderList[
-                                                              index])));
+                                                              index],lumpsum: Lumpsum())));
                                         },
                                         child: orderCard(
                                             context, orderList[index], id));
@@ -763,7 +764,7 @@ class _HomePageState extends State<HomeContent> {
                                                     builder: (context) =>
                                                         OrderDetails(
                                                             order: orderList[
-                                                                index])));
+                                                                index],lumpsum: Lumpsum())));
                                           },
                                           child: orderCard(
                                               context, orderList[index], id));
@@ -832,7 +833,7 @@ class _HomePageState extends State<HomeContent> {
                                                           builder: (context) =>
                                                               OrderDetails(
                                                                   order: requestList[
-                                                                      index])));
+                                                                      index],lumpsum: Lumpsum())));
                                                 },
                                                 child: orderRequestCard(
                                                     context, requestList[index],

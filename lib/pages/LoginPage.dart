@@ -52,9 +52,7 @@ class _loginPageState extends State<LoginContent> {
 
     // FirebaseMessaging.onMessage.listen((message) {
     //   print('Got a message whilst in the foreground!');
-    //
     //   if (message.notification != null) {
-    //
     //     final snackBar = SnackBar(
     //
     //       content: Text(message.notification?.title ?? '', maxLines: 2),
@@ -62,20 +60,17 @@ class _loginPageState extends State<LoginContent> {
     //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     //   }
     // });
-
-
     _firebaseMessaging.getToken().then((token){
       print("token is"+ token!);
-      // token1= token;
-      setState(() {token1=token;});
+      token1= token;
+      token = token1;
+      setState(() {});
     }
     );
   }
 
-
   @override
   void initState() {
-
     super.initState();
     firebaseCloudMessaging_Listeners();
     focusNode1 = FocusNode();
@@ -118,6 +113,7 @@ class _loginPageState extends State<LoginContent> {
     // }
 
 
+
     var test = await http.post(
       Uri.parse("http://steefotmtmobile.com/steefo/login.php"),
       body: {
@@ -125,8 +121,8 @@ class _loginPageState extends State<LoginContent> {
         "regpassword": pw,
       },
     );
-    //Navigator.of(context).pushNamed("/home");
 
+    //Navigator.of(context).pushNamed("/home");
     var responseData = json.decode(test.body);
     print(responseData);
     if (responseData["status"] == "200") {
@@ -200,6 +196,17 @@ class _loginPageState extends State<LoginContent> {
       userValid = false;
       setState(() {});
     }
+
+    http.post(
+      Uri.parse("http://steefotmtmobile.com/steefo/updatetoken.php"),
+      body: {
+        "email": email,
+        "token": token1,
+      },
+    );
+    // var responseData1 = json.decode(res.body);
+    // print(" token check "+responseData1);
+
   }
 
   @override

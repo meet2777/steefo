@@ -1,19 +1,15 @@
 import 'dart:convert';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/Models/item.dart';
-import 'package:stefomobileapp/pages/HomePage.dart';
+import 'package:stefomobileapp/Models/lumpsum.dart';
 import '../Models/challan.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
-import '../ui/cards.dart';
 import '../ui/custom_tabbar.dart';
-import 'GenerateChallanPage.dart';
-import 'GeneratedChallanPage.dart';
 import 'OrderPage.dart';
 
 class ChallangeneratorPage extends StatelessWidget {
@@ -284,7 +280,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => OrderDetails(
-                                    order: salesOrderList[index])));
+                                    order: salesOrderList[index],lumpsum: Lumpsum(),)));
                       },
                       child: orderCard(
                         context,
@@ -328,7 +324,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => OrderDetails(
-                                    order: salesOrderList[index])));
+                                    order: salesOrderList[index],lumpsum: Lumpsum())));
                       },
                       child: completedorderCard(
                         context,
@@ -374,7 +370,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  OrderDetails(order: requestList[index])));
+                                  OrderDetails(order: requestList[index],lumpsum: Lumpsum())));
                     },
                     child: requestList[index].orderType == "With Size" ||
                         requestList[index].orderType == "Use Lumpsum"

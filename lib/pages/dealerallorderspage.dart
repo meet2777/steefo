@@ -12,6 +12,8 @@ import 'package:stefomobileapp/pages/OrderPage.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import 'package:http/http.dart' as http;
 
+import '../Models/lumpsum.dart';
+
 class dealerallorderpage extends StatefulWidget {
   User user;
   dealerallorderpage({super.key, required this.user});
@@ -212,7 +214,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              OrderDetails(order: orderList[index])));
+                              OrderDetails(order: orderList[index],lumpsum: Lumpsum())));
                 },
                 child: orderList[index].status == "Pending"
                     ? orderCard(context, orderList[index], widget.user.id)
@@ -244,7 +246,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              OrderDetails(order: orderList[index])));
+                              OrderDetails(order: orderList[index],lumpsum: Lumpsum())));
                 },
                 child: orderList[index].status == "Denied"
                     ? orderCard(context, orderList[index], widget.user.id)
@@ -276,7 +278,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              OrderDetails(order: orderList[index])));
+                              OrderDetails(order: orderList[index],lumpsum: Lumpsum())));
                 },
                 child: orderList[index].status == "Canceled"
                     ? orderCard(context, orderList[index], widget.user.id)
@@ -308,7 +310,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              OrderDetails(order: orderList[index])));
+                              OrderDetails(order: orderList[index],lumpsum: Lumpsum())));
                 },
                 child: orderList[index].status == "Confirmed"
                     ? orderCard(context, orderList[index], id)
@@ -340,7 +342,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              OrderDetails(order: orderList[index])));
+                              OrderDetails(order: orderList[index],lumpsum: Lumpsum())));
                 },
                 child: orderList[index].status == "Completed"
                     ? orderCard(context, orderList[index], widget.user.id)

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stefomobileapp/Models/lumpsum.dart';
 import 'package:stefomobileapp/Models/order.dart';
 import 'package:http/http.dart' as http;
 import 'package:stefomobileapp/pages/HomePage.dart';
@@ -25,6 +26,7 @@ class _purchasesState extends State<purchases> {
   String? id = "";
 
   Order order = Order();
+  // Lumpsum lumpsum = Lumpsum();
   var user_type;
   void loadusertype() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -56,6 +58,7 @@ class _purchasesState extends State<purchases> {
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
+        req.orderid = responseData["data"][i]["orderid"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
         req.org_name = responseData["data"][i]["orgName"];
         req.user_name = responseData["data"][i]["firstName"] +
@@ -63,6 +66,8 @@ class _purchasesState extends State<purchases> {
             responseData["data"][i]["lastName"];
              req.trans_type = responseData["data"][i]["transType"];
         req.status = responseData["data"][i]["orderStatus"];
+        req.region = responseData["data"][i]["region"];
+        req.paymentTerm = responseData["data"][i]["paymentTerm"];
         req.party_name = responseData["data"][i]["partyName"];
         req.dealerName = responseData["data"][i]["dealerName"];
         req.consignee_name = responseData["data"][i]["consigneeName"];
@@ -71,13 +76,14 @@ class _purchasesState extends State<purchases> {
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
+        req.trailerType = responseData["data"][i]["trailerType"];
         req.order_date = responseData["data"][i]["createdAt"];
         req.base_price = responseData["data"][i]["basePrice"];
         req.orderType = responseData["data"][i]["orderType"];
         req.orderStatus = responseData["data"][i]["orderStatus"];
         req.order_id = responseData["data"][i]["order_id"].toString();
 
-        //  print(purchaseOrderList);
+         // print(purchaseOrderList);
         if (req.status != "Rejected") {
           if (id == req.user_id) {
             purchaseOrderList.add(req);
@@ -123,6 +129,7 @@ class _purchasesState extends State<purchases> {
   }
 
   Widget withsize() {
+    // loadData();
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
@@ -144,11 +151,8 @@ class _purchasesState extends State<purchases> {
                                 builder: (context) => OrderDetailsforpurchases(
                                     order: purchaseOrderList[index])));
                       },
-                      child: purchaseOrderList[index].orderType ==
-                                  "With Size" || purchaseOrderList[index].orderType ==
-                          "Use Lumpsum" &&
-                              (purchaseOrderList[index].status == "Confirmed" ||
-                                  purchaseOrderList[index].status == "Pending")
+                      child: purchaseOrderList[index].orderType == "With Size" || purchaseOrderList[index].orderType == "Use Lumpsum"
+                          && (purchaseOrderList[index].status == "Confirmed" || purchaseOrderList[index].status == "Pending")
                           ? orderCard(context, purchaseOrderList[index], id)
                           : Container());
                 }),
@@ -175,7 +179,7 @@ class _purchasesState extends State<purchases> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                print(purchaseOrderList[index].orderType);
+                print(purchaseOrderList[index].order_id);
                 //  if (purchaseOrderList[index].orderType == "Lump-sum") {}
                 return InkWell(
                     onTap: () {

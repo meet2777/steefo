@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/Models/user.dart';
 import 'package:stefomobileapp/pages/DistributorsPage.dart';
 import 'package:stefomobileapp/pages/DistributorsPage.dart';
@@ -29,7 +30,7 @@ class _buyerspageState extends State<buyerspage> {
 
     userType = await prefs.getString('userType');
     setState(() {});
-    print(userType);
+    // print(userType);
   }
 
   @override
@@ -66,8 +67,13 @@ class _buyerspageState extends State<buyerspage> {
               selectedIcon: const Icon(Icons.home_filled, color: Colors.black),
             ),
             BottomBarItem(
-                icon: const Icon(
-                  Icons.inventory_2_rounded,
+                icon: LayoutBuilder(builder: (context, constraints) {
+                  if(userType == "Manufacturer"){
+                    return const Icon(
+                      Icons.inventory_2_rounded,
+                    );
+                    }else{return Container();}
+                    },
                 ),
                 title: const Text('Safety'),
                 backgroundColor: Colors.grey,
@@ -112,7 +118,7 @@ class _buyerspageState extends State<buyerspage> {
                   context,
                   PageRouteBuilder(
                     pageBuilder: (context, animation1, animation2) =>
-                        InventoryPage(),
+                        InventoryPage(order: Order(),),
                     transitionDuration: Duration.zero,
                     reverseTransitionDuration: Duration.zero,
                   ),

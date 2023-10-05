@@ -1,12 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:stefomobileapp/Models/challan.dart';
-import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/deliveryChallanPage.dart';
-import 'package:stefomobileapp/pages/pdfView.dart';
 //import '../Models/gen_item_list.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
@@ -73,7 +70,7 @@ class _ChallanPageState extends State<ChallanPage> {
       or.trans_type = responseData["data"][0]["transType"];
       or.order_date = responseData["data"][0]["updatedAt"];
       challanList.add(ch);
-      print("order id=======>${or.order_id}");
+      // print("order id=======>${ch.challan_id}");
       final resp = await http.post(
         Uri.parse("http://steefotmtmobile.com/steefo/getchallanitemdetails.php"),
         body: {
@@ -461,7 +458,7 @@ class _ChallanPageState extends State<ChallanPage> {
                                     fontSize: 15,
                                     // fontWeight: FontWeight.bold
                                   )),
-                              Text(ch.challan_id!,
+                              Text(ch.challan_id.toString(),
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontFamily: "Poppins"))
@@ -702,7 +699,7 @@ class _ChallanPageState extends State<ChallanPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => deliveryChallanPage(order: or,
+                            builder: (context) => deliveryChallanPage(order: or, challan: ch
 
                                  )));
 

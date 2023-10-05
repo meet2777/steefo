@@ -47,7 +47,6 @@ class UserRequestPage extends StatelessWidget {
                               color: Color.fromRGBO(19, 59, 78, 1),
                             )),
                         Container(
-
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 5),
                             decoration: BoxDecoration(
@@ -63,7 +62,8 @@ class UserRequestPage extends StatelessWidget {
                                         fontSize: 17,
                                         color: Colors.white,
                                       )
-                            ))
+                            )
+                        )
 
                         //
                         // Text(user.userType!,

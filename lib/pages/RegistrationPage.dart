@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,11 +14,12 @@ class RegistrationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SizedBox(
-      child: SingleChildScrollView(child: RegistrationForm()),
+          child: SingleChildScrollView(child: RegistrationForm()),
     ));
     
   }
 }
+
 
 class RegistrationForm extends StatefulWidget {
   const RegistrationForm({super.key});
@@ -27,6 +29,22 @@ class RegistrationForm extends StatefulWidget {
 }
 
 class _RegistrationFormState extends State<RegistrationForm> {
+
+  // FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  // late String token1;
+  //
+  // void firebaseCloudMessaging_Listeners(){
+  //   _firebaseMessaging.getToken().then((token){
+  //     print("token is"+ token!);
+  //     token1 = token;
+  //     token = token1;
+  //     setState(() {});
+  //   }
+  //   );
+  // }
+
+
+
   final _formKey = GlobalKey<FormState>();
 //  late FocusNode focusNode0;
   late FocusNode focusNode1;
@@ -48,12 +66,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
   TextEditingController mob_num = TextEditingController();
   TextEditingController user_type = TextEditingController();
   TextEditingController password = TextEditingController();
+  // TextEditingController token1 = TextEditingController();
 //  TextEditingController companyname = TextEditingController();
 
   bool _isPWVisible = true;
 
   @override
   void initState() {
+    // firebaseCloudMessaging_Listeners();
     super.initState();
     // focusNode0 = FocusNode();
     focusNode1 = FocusNode();
@@ -117,10 +137,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
         "email": email.text,
         "regpassword": password.text,
         "mobileNumber": mob_num.text,
+        // "token": token1,
         "userType": selectedValue!,
         //  "company": companyname.text,
       },
     );
+    var responseData1 = jsonEncode(test.body);
+
     Fluttertoast.showToast(
         msg: 'Registered Successfully',
         toastLength: Toast.LENGTH_SHORT,
@@ -128,8 +151,24 @@ class _RegistrationFormState extends State<RegistrationForm> {
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.blueAccent,
         textColor: Colors.white);
-    validateLoginDetails(AutofillHints.email, AutofillHints.password);
+
+
+    print(" api check" + responseData1);
     Navigator.of(context).pushNamed("/login");
+
+    // if(token1 != null){
+    //   var response = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/notificationNew.php"),
+    //       // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
+    //       body: {"token": token1}
+    //   );
+    //   return jsonEncode(response.body);
+    // }
+    // else{
+    //   print("Token is null");
+    // }
+    validateLoginDetails(AutofillHints.email, AutofillHints.password);
+
+
   }
 
   @override

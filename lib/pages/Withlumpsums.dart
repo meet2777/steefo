@@ -16,21 +16,24 @@ import '../ui/custom_tabbar.dart';
 import 'OrderPage.dart';
 
 class lumpsumsOrdersPage extends StatelessWidget {
+  Lumpsum lumpsum;
+  lumpsumsOrdersPage({super.key, required this.lumpsum});
   @override
   Widget build(BuildContext context) {
-    return OrdersContent();
+    return LumpsumContent(lumpsum:lumpsum);
     //  throw UnimplementedError();
   }
 }
 
-class OrdersContent extends StatefulWidget {
-  const OrdersContent({super.key});
+class LumpsumContent extends StatefulWidget {
+  final Lumpsum lumpsum;
+  const LumpsumContent({super.key, required this.lumpsum});
   final selected = 0;
   @override
-  State<OrdersContent> createState() => _OrdersPageState();
+  State<LumpsumContent> createState() => _OrdersPageState();
 }
 
-class _OrdersPageState extends State<OrdersContent> {
+class _OrdersPageState extends State<LumpsumContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +70,8 @@ class _OrdersPageState extends State<OrdersContent> {
 
   String? id = "";
 
+  Lumpsum lumpsum= Lumpsum();
+  // Lumpsum lumpsum = Lumpsum();
   List<Order> salesOrderList = [];
   List<Order> purchaseOrderList = [];
 
@@ -91,6 +96,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
         req.org_name = responseData["data"][i]["orgName"];
+        req.userType = responseData["data"][i]["userType"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
@@ -126,6 +132,52 @@ class _OrdersPageState extends State<OrdersContent> {
       //  print(salesOrderList);
       setState(() {});
     }
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final user_id = await pref.getString('id');
+    print('${user_id}ddddd');
+    var res = await http.post(
+        Uri.parse("http://steefotmtmobile.com/steefo/getinventory.php"),
+        body: {
+          "user_id": user_id,
+        });
+    var responseData = jsonDecode(res.body);
+    /// var orders = [];
+    print("lumpsumlist${responseData}");
+    for (int i = 0; i < responseData["data"].length; i++) {
+      print(responseData['data'][i]['name']);
+      Lumpsum l = Lumpsum();
+      l.partyname = responseData["data"][i]["partyName"];
+      l.order_id = responseData["data"][i]["order_id"];
+      l.name = responseData["data"][i]["name"];
+      l.basePrice = responseData["data"][i]["basePrice"];
+      l.qty = responseData["data"][i]["qty_left"];
+      l.price = responseData["data"][i]["price"];
+      l.status = responseData["data"][i]["orderStatus"];
+      l.ls_id = responseData['data'][i]["ls_id"];
+      l.date = responseData["data"][i]["createdAt"];
+      // lumpsumList.add(l);
+    }
+
+    // final res2 = await http.post(
+    //   Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
+    //   body: {"order_id": id},
+    // );
+    // var responseData2 = jsonDecode(res2.body);
+    // // print("lumpsum order"+responseData2);
+    // for (int i = 0; i < responseData2["data"].length; i++) {
+    //   Lumpsum lumpsum = Lumpsum();
+    //   lumpsum.ls_id = responseData2["data"][i]["ls_id"];
+    //   lumpsum.order_id = responseData2["data"][i]["order_id"];
+    //   lumpsum.name = responseData2["data"][i]["name"];
+    //   lumpsum.qty = responseData2["data"][i]["qty"];
+    //   lumpsum.qty_left = responseData2["data"][i]["qty_left"];
+    //   lumpsum.basePrice = responseData2["data"][i]["basePrice"];
+    //   lumpsum.price = responseData2["data"][i]["price"];
+    //   lumpsum.status = responseData2["data"][i]["orderStatus"];
+    //   print("remaining qty "+ widget.lumpsum.order_id.toString());
+    // }
+
   }
 
   String? id1 = "";
@@ -158,6 +210,7 @@ class _OrdersPageState extends State<OrdersContent> {
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
         req.org_name = responseData["data"][i]["orgName"];
+        req.userType = responseData["data"][i]["userType"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
@@ -188,37 +241,33 @@ class _OrdersPageState extends State<OrdersContent> {
       }
       setState(() {});
       print(requestList.length);
-
-
-
     }
 
-    final res = await http.post(
-      Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
-      // body: {"order_id": orderId},
-    );
-    var responseData = jsonDecode(res.body);
-    //print(responseData);
 
-    for (int i = 0; i < responseData["data"].length; i++) {
-      Lumpsum req = Lumpsum();
-      req.name = responseData["data"][i]["name"];
-      req.qty = responseData["data"][i]["qty"];
-      req.qty_left = responseData["data"][i]["qty_left"];
-      req.basePrice = responseData["data"][i]["basePrice"];
-      req.price = responseData["data"][i]["price"];
-      req.status = responseData["data"][i]["orderStatus"];
-      //print(req);
-      // if (req.status != "Rejected") {
-      //   if (id3 == req.user_id) {
-      //     purchaseOrderList.add(req);
-      //   }
-      //   if (id3 == req.reciever_id) {
-      //     salesOrderList.add(req);
-      //   }
-      // }
-    }
-
+    // final res = await http.post(
+    //   Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
+    //   // body: {"order_id": orderId},
+    // );
+    // var responseData = jsonDecode(res.body);
+    // //print(responseData);
+    // for (int i = 0; i < responseData["data"].length; i++) {
+    //   Lumpsum lumpsum = Lumpsum();
+    //   lumpsum.name = responseData["data"][i]["name"];
+    //   lumpsum.qty = responseData["data"][i]["qty"];
+    //   lumpsum.qty_left = responseData["data"][i]["qty_left"];
+    //   lumpsum.basePrice = responseData["data"][i]["basePrice"];
+    //   lumpsum.price = responseData["data"][i]["price"];
+    //   lumpsum.status = responseData["data"][i]["orderStatus"];
+    //   //print(req);
+    //   // if (req.status != "Rejected") {
+    //   //   if (id3 == req.user_id) {
+    //   //     purchaseOrderList.add(req);
+    //   //   }
+    //   //   if (id3 == req.reciever_id) {
+    //   //     salesOrderList.add(req);
+    //   //   }
+    //   // }
+    // }
   }
 
   Widget OrdersPageBody() {
@@ -245,7 +294,7 @@ class _OrdersPageState extends State<OrdersContent> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => OrderDetails(
-                                    order: salesOrderList[index])));
+                                    order: salesOrderList[index],lumpsum: lumpsum)));
                       },
                       child: orderCard(
                         context,
@@ -333,7 +382,7 @@ class _OrdersPageState extends State<OrdersContent> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  OrderDetails(order: requestList[index])));
+                                  OrderDetails(order: requestList[index],lumpsum: lumpsum)));
                     },
                     child: requestList[index].orderType == "Lump-sum"
                         ? orderwidget1(index)
@@ -664,7 +713,7 @@ class _OrdersPageState extends State<OrdersContent> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => OrderDetails(
-                                    order: salesOrderList[index])));
+                                    order: salesOrderList[index],lumpsum: lumpsum,)));
                       },
                       child: completedorderCard(
                         context,

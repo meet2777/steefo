@@ -10,6 +10,7 @@ import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/pages/ChallanListPage.dart';
+import 'package:stefomobileapp/pages/purchasechallanlistpage.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
 import 'EditableProfilePage.dart';
@@ -37,14 +38,17 @@ class OrderPage extends StatefulWidget {
 class _OrderPageState extends State<OrderPage> {
   int flag = 0;
   var listOfColumns = [];
+  var remaininglist = [];
   var id;
   num tot_price = 0;
-  num tot_qty = 0;
+  double tot_qty = 0;
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id');
     print(widget.order!.orderType);
     print(widget.order!.loading_type);
+
+
     if (flag == 0) {
       if (widget.order!.orderType != "Lump-sum") {
         print(widget.order!.order_id);
@@ -67,7 +71,7 @@ class _OrderPageState extends State<OrderPage> {
             "Price": responseData["data"][i]["price"]
           });
           tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
-          tot_qty = tot_qty + int.parse(responseData["data"][i]["qty"]);
+          tot_qty = tot_qty + double.parse(responseData["data"][i]["qty"]);
         }
         listOfColumns.add({
           "Sr_no": " ",
@@ -107,6 +111,37 @@ class _OrderPageState extends State<OrderPage> {
           // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
           //     .format(int.parse(tot_price.toString())),
         });
+
+        remaininglist = [];
+        final res1 = await http.post(
+          Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
+          body: {
+            // "qty_left" : responseData["data"][i]["qty_left"],
+            "order_id": widget.order?.order_id,
+          },
+        );
+        var responseData1 = jsonDecode(res1.body);
+        // print("ddddddddddd");
+        remaininglist = [];
+        for (int i = 0; i < responseData1["data"].length; i++) {
+          remaininglist.add({
+            "Sr_no": (i + 1).toString(),
+            "Name": responseData1["data"][i]["name"],
+            "Qty": responseData1["data"][i]["qty_left"],
+            // "Price": responseData["data"][i]["price"]
+          });
+          // tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
+          // tot_qty = tot_qty + int.parse(responseData["data"][i]["qty"]);
+        }
+        remaininglist.add({
+          "Sr_no": " ",
+          "Name": " ",
+          "Qty": " ",
+          // "Price": tot_price.toString()
+          // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
+          //     .format(int.parse(tot_price.toString())),
+        });
+
       }
       // print(
       //   NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
@@ -359,6 +394,26 @@ class _OrderPageState extends State<OrderPage> {
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                                   children: [
+                                    const Text("Region:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.region.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )),
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
                                     const Text("GST No.:",
                                         style: TextStyle(
                                             fontSize: 15,
@@ -367,7 +422,29 @@ class _OrderPageState extends State<OrderPage> {
                                         style: const TextStyle(
                                             fontSize: 15, fontFamily: "Poppins"))
                                   ],
-                                )),
+                                )
+                            ),
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Payment Term:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text("${widget.order!.paymentTerm.toString()} Days",
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )
+                            ),
 
 
                         Container(
@@ -389,6 +466,26 @@ class _OrderPageState extends State<OrderPage> {
                                         fontSize: 15, fontFamily: "Poppins"))
                               ],
                             )),
+
+                            Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Trailer Type:",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: "Poppins_Bold")),
+                                    Text(widget.order!.trailerType.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 15, fontFamily: "Poppins"))
+                                  ],
+                                )),
+
 
                         Container(
                             padding: const EdgeInsets.all(10),
@@ -536,6 +633,85 @@ class _OrderPageState extends State<OrderPage> {
                           )),
                     ),
                   ),
+
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      if( widget.order?.orderType == "Lump-sum"){
+                        return Container(
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.only(top: 10,bottom: 10),
+                          child: Column(
+                            children: [
+                              Text("Remaining Qty. ",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17
+                                ),),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Card(
+                                  margin: EdgeInsets.only(left: 20, right: 20),
+                                  elevation: 2,
+                                  child: Container(
+                                    // height: 250,
+                                      width: MediaQuery.of(context).size.width - 20,
+                                      padding: const EdgeInsets.only(
+                                          top: 10, bottom: 10, left: 10, right: 10),
+                                      decoration: BoxDecoration(
+                                        // color: Colors.grey.withOpacity(0.20),
+                                        // borderRadius: BorderRadius.circular(20.0)
+                                      ),
+                                      // alignment: Alignment.center,
+                                      // padding: const EdgeInsets.only(top: 20),
+                                      child: SingleChildScrollView(
+                                        physics: BouncingScrollPhysics(),
+                                        child: DataTable(
+                                          horizontalMargin: 2,
+                                          headingTextStyle: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                          columnSpacing: 10,
+                                          columns: const [
+                                            DataColumn(label: Text("Sr.\nNo.")),
+                                            DataColumn(label: Text("Item name")),
+                                            DataColumn(label: Text("Quantity\n(Tons)")),
+                                            // DataColumn(label: Text("Price"))
+                                          ],
+                                          rows:
+                                          remaininglist // Loops through dataColumnText, each iteration assigning the value to element
+                                              .map(
+                                            ((element) => DataRow(
+                                              cells: <DataCell>[
+                                                DataCell(Text(element[
+                                                "Sr_no"]!)), //Extracting from Map element the value
+                                                DataCell(
+                                                    Text(element["Name"]!)),
+                                                DataCell(Text(element["Qty"]!)),
+                                                // DataCell(Text(
+                                                //   NumberFormat.simpleCurrency(
+                                                //       locale: 'hi-IN',
+                                                //       decimalDigits: 0)
+                                                //       .format(int.parse(
+                                                //       element["Price"]!)),
+                                                // )),
+                                              ],
+                                            )),
+                                          )
+                                              .toList(),
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }else{
+                        return Container();
+                      }
+                    },
+
+                  ),
                   SizedBox(
                     height: 10,
                   ),
@@ -596,7 +772,8 @@ class _OrderPageState extends State<OrderPage> {
                                         fontWeight: FontWeight.bold),
                                     colors: [Colors.redAccent, Colors.grey],
                                   ),
-                                )),
+                                )
+                            ),
                           ],
                         ),
                       );
@@ -701,62 +878,73 @@ class _OrderPageState extends State<OrderPage> {
                   //     ),
                   //   ),
                   // ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(EditOrderPage(order: widget.order));
-                    },
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        // color:Color.fromRGBO(19, 59, 78, 1),
-                        //   padding: EdgeInsets.only(right: 10),
-                          margin: const EdgeInsets.only(top: 10,bottom: 10),
-                          alignment: Alignment.center,
-                          height: 50,
-                          width: MediaQuery.of(context).size.width/2,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Color.fromRGBO(75, 100, 160, 1.0),
-                              Color.fromRGBO(19, 59, 78, 1.0),
-                              //add more colors
-                            ]),
-                          // color: Color.fromRGBO(19, 59, 78, 1),
-                            borderRadius: BorderRadius.all(Radius.circular(10)
-                            )
-                        ),
-                        // child: ElevatedButton(
-                        //     onPressed: () {
-                        //       onRegister();
-                        //     },
-                        //     child: Icon(Icons.edit)),
-                        child: Text("Edit Order",
-                          style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
-                        // ElevatedButton(onPressed: () {
-                        //
-                        //   Navigator.of(context).pushNamed("/placeorder");
-                        // },
-                        //   child: Text("Edit Order"),
-                        // )
-                        // Icon(
-                        //   Icons.edit_rounded,
-                        //   color: Colors.black,
-                        // ),
-                      ),
-                    ),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      if(widget.order?.userType == "Manufacturer" || widget.order?.status == "Pending"){
+                        return GestureDetector(
+                          onTap: () {
+                            Get.to(EditOrderPage(order: widget.order));
+                          },
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              // color:Color.fromRGBO(19, 59, 78, 1),
+                              //   padding: EdgeInsets.only(right: 10),
+                                margin: const EdgeInsets.only(top: 10,bottom: 10),
+                                alignment: Alignment.center,
+                                height: 50,
+                                width: MediaQuery.of(context).size.width/2,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                      Color.fromRGBO(75, 100, 160, 1.0),
+                                      Color.fromRGBO(19, 59, 78, 1.0),
+                                      //add more colors
+                                    ]),
+                                    // color: Color.fromRGBO(19, 59, 78, 1),
+                                    borderRadius: BorderRadius.all(Radius.circular(10)
+                                    )
+                                ),
+                                // child: ElevatedButton(
+                                //     onPressed: () {
+                                //       onRegister();
+                                //     },
+                                //     child: Icon(Icons.edit)),
+                                child: Text("Edit Order",
+                                  style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
+                              // ElevatedButton(onPressed: () {
+                              //
+                              //   Navigator.of(context).pushNamed("/placeorder");
+                              // },
+                              //   child: Text("Edit Order"),
+                              // )
+                              // Icon(
+                              //   Icons.edit_rounded,
+                              //   color: Colors.black,
+                              // ),
+                            ),
+                          ),
+                        );
+                      }else {return Container();}
+                    }
                   ),
 
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    child: buttonStyle("View Challan", () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChallanListPage(
-                                order: widget.order!,
-                              )));
-                    }),
+                  LayoutBuilder(builder: (context, constraints) {
+                    if(widget.order?.orderType != "Lump-sum"){
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        child: buttonStyle("View Challan", () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PurchaseChallanListPage(
+                                    order: widget.order!,
+                                  )));
+                        }),
+                      );
+                    }else {return Container();}
+                  },
                   )
 
                   // GestureDetector(

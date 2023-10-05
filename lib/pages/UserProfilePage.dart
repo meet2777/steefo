@@ -1,19 +1,25 @@
 // import 'dart:html';
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:intl/intl.dart';
+import 'package:mailer/smtp_server.dart';
 import 'package:open_file/open_file.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/validator/validations.dart';
 import '../UI/common.dart';
 import 'package:stefomobileapp/notification_services.dart';
+import 'package:mailer/mailer.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
@@ -45,6 +51,23 @@ class ProfileForm extends StatefulWidget {
 }
 
 class _ProfileFormState extends State<ProfileForm> {
+
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  String? token1;
+
+  void firebaseCloudMessaging_Listeners(){
+    _firebaseMessaging.getToken().then((token){
+      print("token is"+ token!);
+      // token1 = token;
+      token = token1;
+      setState(() {});
+    }
+    );
+  }
+
+  // Future<void> sendingmail()async {
+  //
+  // }
 
 
   var responseData1;
@@ -127,6 +150,7 @@ class _ProfileFormState extends State<ProfileForm> {
 
   @override
   void initState() {
+    firebaseCloudMessaging_Listeners();
     loadData();
     super.initState();
     focusNode1 = FocusNode();
@@ -224,8 +248,48 @@ class _ProfileFormState extends State<ProfileForm> {
     focusNode10.dispose();
     super.dispose();
   }
+  List<String> attachments = [];
+  bool isHTML = false;
+  final _recipientController = TextEditingController(
+    text: 'meet.prajapati2777@gmail.com',
+  );
+
+  final _subjectController = TextEditingController(text: 'New user request');
+
+  final _bodyController = TextEditingController(
+    text: 'PDF Document of user',
+  );
 
   onRegister() async {
+
+    // Future<void> send() async {
+    //   final Email email = Email(
+    //     body: _bodyController.text,
+    //     subject: _subjectController.text,
+    //     recipients: [_recipientController.text],
+    //     // attachmentPaths: attachments,
+    //     // isHTML: isHTML,
+    //   );
+    //
+    //   String platformResponse;
+    //
+    //   try {
+    //     await FlutterEmailSender.send(email);
+    //     platformResponse = 'success';
+    //   } catch (error) {
+    //     print(error);
+    //     platformResponse = error.toString();
+    //   }
+    //
+    //   if (!mounted) return;
+    //
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       content: Text(platformResponse),
+    //     ),
+    //   );
+    // }
+
     var postUri = Uri.parse("http://steefotmtmobile.com/steefo/updateuser.php");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
       var id = await prefs.getString('id');
@@ -236,16 +300,34 @@ class _ProfileFormState extends State<ProfileForm> {
     request.fields['panNumber'] = panNumber.text;
     request.fields['adhNumber'] = adhNumber.text;
     request.fields['address'] = address.text;
+    request.fields['token'] = token1.toString();
     request.fields['registeredDate'] = registeredDate.text;
     request.files.add(new http.MultipartFile.fromBytes('file',  await File.fromUri(Uri.parse(_file!.path)).readAsBytes(), filename: _file!.path.split("/").last, contentType: new MediaType('application', 'pdf')));
 
-    request.send().then((response) {
+    request.send().then((response) async {
       if (response.statusCode == 200) {
+        // if(token1 != null){
+          var response = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/notificationNew.php"),
+              // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
+              body: {"token": token1.toString()}
+          );
+          print(response.body);
+          return jsonEncode(response.body);
+        // }
+        // else{
+        //   print(response.request);
+        //   print("Token is null");
+        // }
+
+      }
+    }
+    );
+
         validateLoginDetails(AutofillHints.email, AutofillHints.password);
           Navigator.of(context).pushNamed("/login");
-      }
-    });
   }
+
+
 
   // onRegister() async {
   //   final SharedPreferences prefs = await SharedPreferences.getInstance();

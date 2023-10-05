@@ -1,15 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:carousel_slider/carousel_slider.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-
 import 'package:get/get.dart';
-
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quickalert/quickalert.dart';
@@ -29,7 +26,6 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:http/http.dart' as http;
 import '../Models/lumpsum.dart';
 import '../Models/order.dart';
-import '../Models/qty.dart';
 import '../Models/user.dart';
 import 'LoginPage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -37,7 +33,6 @@ import 'OrderPage.dart';
 import 'addItem.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -58,6 +53,18 @@ class HomeContent extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomeContent> {
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  String? token1;
+
+  void firebaseCloudMessaging_Listeners() {
+    _firebaseMessaging.getToken().then((token) {
+      print("token is" + token!);
+      // token1 = token;
+      token = token1;
+      setState(() {});
+    });
+  }
+
   var _selected = 0;
 
   var fabLoc;
@@ -105,11 +112,11 @@ class _HomePageState extends State<HomeContent> {
       );
       var responseData = jsonDecode(res.body);
       //print(responseData);
-
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
+        req.orderid = responseData["data"][i]["orderid"];
         req.org_name = responseData["data"][i]["orgName"];
         req.userType = responseData["data"][i]["userType"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
@@ -119,6 +126,8 @@ class _HomePageState extends State<HomeContent> {
         req.status = responseData["data"][i]["orderStatus"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.gstNumber = responseData["data"][i]["gstNumber"];
+        req.region = responseData["data"][i]["region"];
+        req.paymentTerm = responseData["data"][i]["paymentTerm"];
         req.trailerType = responseData["data"][i]["trailerType"];
         req.party_name = responseData["data"][i]["partyName"];
         req.dealerName = responseData["data"][i]["dealerName"];
@@ -151,34 +160,33 @@ class _HomePageState extends State<HomeContent> {
       setState(() {});
     }
 
-    final res = await http.post(
-      Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
-      body: {"order_id": id3},
-    );
-    var responseData = jsonDecode(res.body);
-    //print(responseData);
-
-    for (int i = 0; i < responseData["data"].length; i++) {
-      Lumpsum lumpsum = Lumpsum();
-      lumpsum.order_id = responseData["data"][i]["order_id"];
-      lumpsum.name = responseData["data"][i]["name"];
-      lumpsum.qty = responseData["data"][i]["qty"];
-      lumpsum.qty_left = responseData["data"][i]["qty_left"];
-      lumpsum.basePrice = responseData["data"][i]["basePrice"];
-      lumpsum.price = responseData["data"][i]["price"];
-      lumpsum.status = responseData["data"][i]["orderStatus"];
-      print("remaining qty"+ lumpsum.qty_left.toString());
-      //print(req);
-      // if (req.status != "Rejected") {
-      //   if (id3 == req.user_id) {
-      //     purchaseOrderList.add(req);
-      //   }
-      //   if (id3 == req.reciever_id) {
-      //     salesOrderList.add(req);
-      //   }
-      // }
-    }
-
+    // final res = await http.post(
+    //   Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
+    //   body: {"order_id": id3},
+    // );
+    // var responseData = jsonDecode(res.body);
+    // //print(responseData);
+    //
+    // for (int i = 0; i < responseData["data"].length; i++) {
+    //   Lumpsum lumpsum = Lumpsum();
+    //   lumpsum.order_id = responseData["data"][i]["order_id"];
+    //   lumpsum.name = responseData["data"][i]["name"];
+    //   lumpsum.qty = responseData["data"][i]["qty"];
+    //   lumpsum.qty_left = responseData["data"][i]["qty_left"];
+    //   lumpsum.basePrice = responseData["data"][i]["basePrice"];
+    //   lumpsum.price = responseData["data"][i]["price"];
+    //   lumpsum.status = responseData["data"][i]["orderStatus"];
+    //   print("remaining qty"+ lumpsum.qty_left.toString());
+    //   //print(req);
+    //   // if (req.status != "Rejected") {
+    //   //   if (id3 == req.user_id) {
+    //   //     purchaseOrderList.add(req);
+    //   //   }
+    //   //   if (id3 == req.reciever_id) {
+    //   //     salesOrderList.add(req);
+    //   //   }
+    //   // }
+    // }
   }
 
   var flag = 0;
@@ -191,7 +199,6 @@ class _HomePageState extends State<HomeContent> {
         ),
       );
       //Navigator.of(context).pushNamed("/home");
-
       var responseData = jsonDecode(test.body);
       // print("remaining qty"+ qty.qty_left.toString());
       print("enter1");
@@ -214,7 +221,9 @@ class _HomePageState extends State<HomeContent> {
         u.address = responseData['data'][i]['address'];
         u.uploadedFile = responseData['data'][i]['uploadedFile'];
         regReqList.add(u);
+        print(u.email);
         print("enter3");
+        print(lumpsum.qty_left);
       }
       setState(() {});
       flag = 1;
@@ -240,7 +249,22 @@ class _HomePageState extends State<HomeContent> {
     notificationServices.isTokenRefresh();
     notificationServices.setupInteractMessage(context);
     super.initState();
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    //   DeviceOrientation.portraitDown,
+    //   DeviceOrientation.landscapeLeft,
+    //   DeviceOrientation.landscapeRight
+    // ]);
   }
+
+  // @override
+  // dispose() {
+  //   SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.portraitUp,
+  //     DeviceOrientation.portraitDown,
+  //   ]);
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -298,16 +322,32 @@ class _HomePageState extends State<HomeContent> {
                     const Icon(Icons.home_filled, color: Colors.black),
               ),
               BottomBarItem(
-                  icon: const Icon(
-                    Icons.inventory_2_rounded,
+                  icon: LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (user_type == "Manufacturer") {
+                        return const Icon(
+                          Icons.inventory_2_rounded,
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
                   ),
                   title: const Text('Safety'),
                   backgroundColor: Colors.grey,
                   selectedIcon: const Icon(Icons.inventory_2_rounded,
                       color: Colors.blueAccent)),
               BottomBarItem(
-                  icon: const Icon(
-                    Icons.warehouse_rounded,
+                  icon: LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (user_type == "Manufacturer") {
+                        return const Icon(
+                          Icons.warehouse_rounded,
+                        );
+                      } else {
+                        return Padding(padding: EdgeInsets.only());
+                      }
+                    },
                   ),
                   title: const Text('Safety'),
                   //  backgroundColor: Colors.orange,
@@ -332,7 +372,9 @@ class _HomePageState extends State<HomeContent> {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) =>
-                          InventoryPage(),
+                          InventoryPage(
+                        order: Order(),
+                      ),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -350,6 +392,7 @@ class _HomePageState extends State<HomeContent> {
                     ),
                   );
                 }
+
                 if (index == 3) {
                   Navigator.pushReplacement(
                     context,
@@ -368,16 +411,15 @@ class _HomePageState extends State<HomeContent> {
     //  throw UnimplementedError();
   }
 
-
-  Future<void> _saveImage(BuildContext context,int i) async {
+  Future<void> _saveImage(BuildContext context, int i) async {
     String? message;
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     try {
       // Download image
-      final http.Response response = await http.get(Uri.parse("http://steefotmtmobile.com/steefo/carousel/"+
-          responseData1['images'][i]['name']
-      ));
+      final http.Response response = await http.get(Uri.parse(
+          "http://steefotmtmobile.com/steefo/carousel/" +
+              responseData1['images'][i]['name']));
       // Get temporary directory
       final dir = await getTemporaryDirectory();
 
@@ -401,10 +443,8 @@ class _HomePageState extends State<HomeContent> {
 
     if (message != null) {
       scaffoldMessenger.showSnackBar(SnackBar(content: Text(message)));
-
     }
   }
-
 
   String? id = "";
   int currentIndex = 0;
@@ -423,8 +463,8 @@ class _HomePageState extends State<HomeContent> {
     if (m != id) {
       requestList = [];
       orderList = [];
-      final res1 = await http
-          .post(Uri.parse("http://steefotmtmobile.com/steefo/getsystemdata.php"));
+      final res1 = await http.post(
+          Uri.parse("http://steefotmtmobile.com/steefo/getsystemdata.php"));
       isRes1Loaded = true;
       responseData1 = jsonDecode(res1.body);
 
@@ -432,6 +472,7 @@ class _HomePageState extends State<HomeContent> {
       basePrice = responseData1['data'][1]['value'];
       print(" $isSalesEnabled and $basePrice");
 
+      print("remaining qty" + lumpsum.qty_left.toString());
       final res = await http.post(
         Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
         body: {"id": id!},
@@ -442,7 +483,9 @@ class _HomePageState extends State<HomeContent> {
         Order req = Order();
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
+        req.orderid = responseData["data"][i]["orderid"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
+        req.userType = responseData["data"][i]["userType"];
         req.user_name = responseData["data"][i]["firstName"] +
             " " +
             responseData["data"][i]["lastName"];
@@ -452,7 +495,9 @@ class _HomePageState extends State<HomeContent> {
         req.consignee_name = responseData["data"][i]["consigneeName"];
         req.org_name = responseData["data"][i]["orgName"];
         req.trailerType = responseData["data"][i]["trailerType"];
+        req.paymentTerm = responseData["data"][i]["paymentTerm"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+        req.region = responseData["data"][i]["region"];
         req.gstNumber = responseData["data"][i]["gstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.address = responseData["data"][i]["address"];
@@ -472,6 +517,53 @@ class _HomePageState extends State<HomeContent> {
           print("Added to req list");
         }
       }
+
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      final user_id = await pref.getString('id');
+      print('${user_id}ddddd');
+      var resp = await http.post(
+          Uri.parse("http://steefotmtmobile.com/steefo/getinventory.php"),
+          body: {
+            "user_id": user_id,
+          });
+      var responseData2 = jsonDecode(resp.body);
+
+      /// var orders = [];
+      print("lumpsumlist${responseData2}");
+      for (int i = 0; i < responseData2["data"].length; i++) {
+        print(responseData2['data'][i]['name']);
+        Lumpsum l = Lumpsum();
+        l.partyname = responseData2["data"][i]["partyName"];
+        l.order_id = responseData2["data"][i]["order_id"];
+        l.name = responseData2["data"][i]["name"];
+        l.basePrice = responseData2["data"][i]["basePrice"];
+        l.qty = responseData2["data"][i]["qty_left"];
+        l.qty_left = responseData2["data"][i]["qty_left"];
+        l.price = responseData2["data"][i]["price"];
+        l.status = responseData2["data"][i]["orderStatus"];
+        l.ls_id = responseData2['data'][i]["ls_id"];
+        l.date = responseData2["data"][i]["createdAt"];
+        // lumpsumList.add(l);
+      }
+
+      // final res2 = await http.post(
+      //   Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
+      //   body: {"order_id": id!},
+      // );
+      // var responseData2 = jsonDecode(res2.body);
+      // // print("lumpsum order"+responseData2);
+      // for (int i = 0; i < responseData2["data"].length; i++) {
+      //   Lumpsum lumpsum = Lumpsum();
+      //   lumpsum.ls_id = responseData2["data"][i]["ls_id"];
+      //   lumpsum.order_id = responseData2["data"][i]["order_id"];
+      //   lumpsum.name = responseData2["data"][i]["name"];
+      //   lumpsum.qty = responseData2["data"][i]["qty"];
+      //   lumpsum.qty_left = responseData2["data"][i]["qty_left"];
+      //   lumpsum.basePrice = responseData2["data"][i]["basePrice"];
+      //   lumpsum.price = responseData2["data"][i]["price"];
+      //   lumpsum.status = responseData2["data"][i]["orderStatus"];
+      //   print("remaining qty"+ lumpsum.ls_id.toString());
+      // }
       setState(() {});
     }
   }
@@ -484,14 +576,16 @@ class _HomePageState extends State<HomeContent> {
     // print(NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
     //     .format(1000000000));
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10,),
+      padding: EdgeInsets.only(
+        left: 10,
+        right: 10,
+      ),
       //  height: MediaQuery.of(context).size.height,
       decoration: const BoxDecoration(),
       child: SingleChildScrollView(
-         padding: EdgeInsets.only(bottom:40),
+        padding: EdgeInsets.only(bottom: 40),
         physics: BouncingScrollPhysics(),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           // TextButton(
           //   child: Text('send notification'),
           //   onPressed: () {
@@ -517,7 +611,7 @@ class _HomePageState extends State<HomeContent> {
           //     });
           //   },
           // ),
-          
+
           //carousel slider start////////////////////////////////////
           Container(
             decoration: BoxDecoration(
@@ -558,8 +652,7 @@ class _HomePageState extends State<HomeContent> {
                           // onLongPress: () {
                           //   imagePickerOption();
                           // },
-                          child: Stack(
-                              children: [
+                          child: Stack(children: [
                             ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Center(
@@ -569,8 +662,7 @@ class _HomePageState extends State<HomeContent> {
                                       fit: BoxFit.cover,
                                       "http://steefotmtmobile.com/steefo/carousel/" +
                                           responseData1['images'][i]['name']),
-                                )
-                            ),
+                                )),
                             LayoutBuilder(builder: (context, constraints) {
                               if (user_type == "Manufacturer") {
                                 return Align(
@@ -605,9 +697,8 @@ class _HomePageState extends State<HomeContent> {
                                   alignment: Alignment.bottomLeft,
                                 );
                               } else {
-                                return
-                                  Align(
-                                    child: Container(
+                                return Align(
+                                  child: Container(
                                       // height: 40,
                                       // margin: EdgeInsets.all(5),
                                       // decoration: BoxDecoration(
@@ -615,16 +706,18 @@ class _HomePageState extends State<HomeContent> {
                                       //   shape: BoxShape.circle,
                                       // ),
                                       // alignment: Alignment.bottomRight,
-                                      child: IconButton(onPressed: () async{
-                                        _saveImage(context, i);
-                                      },
-                                        iconSize: 35,
-                                        color: Colors.black,
-                                        // style: ButtonStyle(iconSize: ),
-                                        icon: Icon(Icons.file_download_outlined,color: Color.fromRGBO(19, 59, 78, 1.0)),
-                                      )),
-                                    alignment: Alignment.bottomRight,
-                                  );
+                                      child: IconButton(
+                                    onPressed: () async {
+                                      _saveImage(context, i);
+                                    },
+                                    iconSize: 35,
+                                    color: Colors.black,
+                                    // style: ButtonStyle(iconSize: ),
+                                    icon: Icon(Icons.file_download_outlined,
+                                        color: Color.fromRGBO(19, 59, 78, 1.0)),
+                                  )),
+                                  alignment: Alignment.bottomRight,
+                                );
                                 //     Container(
                                 //       alignment: Alignment.topRight,
                                 //       padding: EdgeInsets.only(right: 5),
@@ -713,7 +806,6 @@ class _HomePageState extends State<HomeContent> {
                 } else {
                   return Container();
                 }
-
               } else {
                 return Container();
               }
@@ -723,7 +815,7 @@ class _HomePageState extends State<HomeContent> {
           SizedBox(
             height: 0,
           ),
-          
+
           // ElevatedButton(onPressed: () async{
           //   String url= "http://urbanwebmobile.in/steffo/carousel/"+
           //       responseData1['images'][i]['name'];
@@ -848,53 +940,56 @@ class _HomePageState extends State<HomeContent> {
           SizedBox(
             height: 10,
           ),
-          LayoutBuilder(builder: (context,constraint){
-            if(user_type == "challan"  ){
-             return Container(
-               child: Column(
-                 children: [
-                   ListView.builder(
-                     reverse: true,
-                     itemCount: salesOrderList.length,
-                     physics: const NeverScrollableScrollPhysics(),
-                     scrollDirection: Axis.vertical,
-                     shrinkWrap: true,
-                     itemBuilder: (context, index) {
-                       print("ordertype${salesOrderList[index].orderType}");
-                       if (salesOrderList[index].orderType == "With Size" ||
-                           salesOrderList[index].orderType == "Use Lumpsum") {
-                         return GestureDetector(
-                             onTap: () {
-                               Navigator.push(
-                                   context,
-                                   MaterialPageRoute(
-                                       builder: (context) => OrderDetails(
-                                           order: salesOrderList[index])));
-                             },
-                             child: orderCard(
-                               context,
-                               salesOrderList[index],
-                               //  qtyandprice[index],
-                               id,
-                             ));
-                       } else
-                         return Container();
-                     },
-                   ),
-                   SizedBox(
-                     height: 50,
-                   ),
-                 ],
-               ),
-             );
-            }else{
+          LayoutBuilder(builder: (context, constraint) {
+            if (user_type == "challan") {
+              return Container(
+                child: Column(
+                  children: [
+                    ListView.builder(
+                      reverse: true,
+                      itemCount: salesOrderList.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        print("ordertype${salesOrderList[index].orderType}");
+                        if (salesOrderList[index].orderType == "With Size" ||
+                            salesOrderList[index].orderType == "Use Lumpsum") {
+                          return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => OrderDetails(
+                                            order: salesOrderList[index],
+                                            lumpsum: Lumpsum())));
+                              },
+                              child: orderCard(
+                                context,
+                                salesOrderList[index],
+                                //  qtyandprice[index],
+                                id,
+                              ));
+                        } else
+                          return Container();
+                      },
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
+                ),
+              );
+            } else {
               return Container();
             }
           }),
-          
+
           LayoutBuilder(builder: (context, constraint) {
-            if (isSalesEnabled == 'false' && user_type != 'Manufacturer'&& user_type != 'challan') {
-              print('marketisclose');
+            if (isSalesEnabled == 'false' &&
+                user_type != 'Manufacturer' &&
+                user_type != 'challan') {
+              print('market is close');
               return Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.only(top: 10, bottom: 5),
@@ -908,13 +1003,14 @@ class _HomePageState extends State<HomeContent> {
                   "Market is closed ",
                   style: TextStyle(
                       letterSpacing: 2,
-                      fontSize: 17,
+                      fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),
               );
             } else if (isSalesEnabled == 'true' &&
-                user_type != 'Manufacturer'&& user_type != 'challan') {
+                user_type != 'Manufacturer' &&
+                user_type != 'challan') {
               return Container(
                 padding: EdgeInsets.only(top: 10, bottom: 5),
                 decoration: BoxDecoration(
@@ -942,7 +1038,7 @@ class _HomePageState extends State<HomeContent> {
                           colors: [
                             Colors.white,
                             Colors.white,
-                            Colors.white60,
+                            Colors.white,
                           ],
                           NumberFormat.simpleCurrency(
                                   locale: 'hi-IN', decimalDigits: 0)
@@ -967,7 +1063,7 @@ class _HomePageState extends State<HomeContent> {
                       "North, Central and Rajkot: +200/-  &  Surat: +500/-",
                       style: TextStyle(
                           // letterSpacing: ,
-                          fontSize: 15 ,
+                          fontSize: 15,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
@@ -983,7 +1079,9 @@ class _HomePageState extends State<HomeContent> {
           ),
 
           LayoutBuilder(builder: (context, constraints) {
-            if (user_type != "Dealer" && user_type != "Builder"&& user_type != 'challan') {
+            if (user_type != "Dealer" &&
+                user_type != "Builder" &&
+                user_type != 'challan') {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -1015,8 +1113,7 @@ class _HomePageState extends State<HomeContent> {
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             )
                           ],
-                        )
-                    ),
+                        )),
                   ),
                   // SizedBox(
                   //   height: 10,
@@ -1025,7 +1122,8 @@ class _HomePageState extends State<HomeContent> {
                     width: MediaQuery.of(context).size.width / 3.2,
                     child: GestureDetector(
                         onTap: () {
-                          Get.to(lumpsumsOrdersPage());
+                          Navigator.of(context).pushNamed('/lumpsumorders');
+                          // Get.to(lumpsumsOrdersPage());
                         },
                         child: Column(
                           children: [
@@ -1072,8 +1170,7 @@ class _HomePageState extends State<HomeContent> {
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             )
                           ],
-                        )
-                    ),
+                        )),
                   ),
                 ],
               );
@@ -1162,7 +1259,6 @@ class _HomePageState extends State<HomeContent> {
                   return Container();
               }),
 
-
               LayoutBuilder(builder: (context, constraints) {
                 if (user_type == "Distributor") {
                   return GestureDetector(
@@ -1239,6 +1335,7 @@ class _HomePageState extends State<HomeContent> {
                                         height: 5,
                                       ),
                                       Text(
+                                        textAlign: TextAlign.center,
                                         "Product Control",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
@@ -1488,9 +1585,7 @@ class _HomePageState extends State<HomeContent> {
   //   });
   // }
 
-  void showDialog(){
-
-  }
+  void showDialog() {}
 
   void _showmodelbottomsheet() {
     showModalBottomSheet(
@@ -1545,7 +1640,8 @@ class _HomePageState extends State<HomeContent> {
                             ),
                             Text(
                               "/-",
-                              style: TextStyle(color: Colors.white, fontSize: 35),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 35),
                             ),
                           ],
                         ),
@@ -1573,7 +1669,8 @@ class _HomePageState extends State<HomeContent> {
                                     },
 
                                     // This bool value toggles the switch.
-                                    value: bool.parse(isSalesEnabled.toString()),
+                                    value:
+                                        bool.parse(isSalesEnabled.toString()),
                                     inactiveColor: Colors.black,
                                     activeColor: Colors.white,
                                     activeToggleColor: Colors.black,
@@ -1652,8 +1749,29 @@ class _HomePageState extends State<HomeContent> {
                                       Uri.parse(
                                           "http://steefotmtmobile.com/steefo/setbaseprice.php"),
                                       body: {
-                                        "basePrice": newBasePrice.text.toString()
+                                        "basePrice":
+                                            newBasePrice.text.toString()
                                       });
+                                  http.post(
+                                      Uri.parse(
+                                          "http://steefotmtmobile.com/steefo/ratenotification.php"),
+                                      // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
+                                      body: {"token": token1.toString()});
+
+                                  // if (resorder.statusCode == 200) {
+                                  //   // if(token1 != null){
+                                  //   var response = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/ordernotification.php"),
+                                  //     // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
+                                  //     // body: {"token": token1.toString()}
+                                  //   );
+                                  //   print(response.body);
+                                  //   return jsonEncode(response.body);
+                                  //   // }
+                                  //   // else{
+                                  //   //   print(response.request);
+                                  //   //   print("Token is null");
+                                  //   // }
+                                  // }
                                   basePrice = newBasePrice.text;
                                 }
                               });

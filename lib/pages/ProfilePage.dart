@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/pages/Buyers.dart';
 import 'package:stefomobileapp/pages/EditableProfilePage.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
@@ -41,8 +42,12 @@ class _ProfilePageState extends State<ProfileContent> {
   var f = 0;
   bool isDataLoaded = false;
   User user = User();
+  var user_type;
 
   loadData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    user_type = await prefs.getString('userType');
+
     if (f == 0) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       user.id = await prefs.getString('id');
@@ -887,18 +892,30 @@ class _ProfilePageState extends State<ProfileContent> {
                     const Icon(Icons.home_filled, color: Colors.blueAccent),
               ),
               BottomBarItem(
-                  icon: const Icon(
-                    Icons.inventory_2_rounded,
+                  icon: LayoutBuilder(builder: (context, constraints){
+                    if(user_type=="Manufacturer"){
+                      return const Icon(
+                        Icons.inventory_2_rounded,
+                      );
+                    }else{return Container();}
+                  },
                   ),
                   title: const Text('Safety'),
                   backgroundColor: Colors.grey,
                   selectedIcon: const Icon(Icons.inventory_2_rounded,
                       color: Colors.blueAccent)),
               BottomBarItem(
-                  icon: const Icon(
-                    Icons.warehouse_rounded,
+                  icon: LayoutBuilder(builder: (context, constraints){
+                    if(user_type=="Manufacturer"){
+                      return const Icon(
+                        Icons.warehouse_rounded,
+                      );
+                    }else{return Container();}
+                  },
                   ),
+
                   title: const Text('Safety'),
+                  //  backgroundColor: Colors.orange,
                   selectedIcon: const Icon(Icons.warehouse_rounded,
                       color: Colors.blueAccent)),
               BottomBarItem(
@@ -931,7 +948,7 @@ class _ProfilePageState extends State<ProfileContent> {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) =>
-                          InventoryPage(),
+                          InventoryPage(order: Order(),),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),

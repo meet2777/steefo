@@ -5,27 +5,31 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/lumpsum.dart';
-import 'package:stefomobileapp/Models/order.dart';
+// import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/pages/Buyers.dart';
-import 'package:stefomobileapp/pages/DistributorsPage.dart';
+// import 'package:stefomobileapp/pages/DistributorsPage.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/ProfilePage.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-
 import '../Models/grade.dart';
+import '../Models/order.dart';
 import '../ui/common.dart';
 
+
 class InventoryPage extends StatelessWidget {
+  Order order;
+  InventoryPage({super.key, required this.order});
   @override
   Widget build(BuildContext context) {
-    return InventoryContent();
+    return InventoryContent(order:order);
   }
 }
 
 class InventoryContent extends StatefulWidget {
-  InventoryContent({super.key});
+  InventoryContent({super.key,required this.order});
+  final Order order;
   final selected = 0;
   @override
   State<InventoryContent> createState() => _InventoryPageState();
@@ -47,6 +51,7 @@ class _InventoryPageState extends State<InventoryContent> {
         .post(Uri.parse("http://steefotmtmobile.com/steefo/getgrade.php"));
     var responseData1 = jsonDecode(res1.body);
     for (int i = 0; i < responseData1['data'].length; i++) {
+      print("Grade");
       print(responseData1['data'][i]);
       Grade g = Grade();
       g.value = responseData1['data'][i]['gradeName'];
@@ -80,7 +85,7 @@ class _InventoryPageState extends State<InventoryContent> {
         var ind = gradeList.indexWhere((element) =>
             element.value?.trim() == responseData['data'][i]['name'].trim());
         gradeList[ind].qty = gradeList[ind].qty! +
-            int.parse(responseData['data'][i]['qty_left']);
+            double.parse(responseData['data'][i]['qty_left']);
       } catch (e) {
         print(e);
       }
@@ -95,10 +100,8 @@ class _InventoryPageState extends State<InventoryContent> {
       l.status = responseData["data"][i]["orderStatus"];
       l.date = responseData["data"][i]["createdAt"];
       l.partyname = responseData["data"][i]["partyName"];
-
       lumpsums.add(l);
     }
-
     isDataLoaded = true;
     setState(() {});
   }
@@ -138,25 +141,16 @@ class _InventoryPageState extends State<InventoryContent> {
           }),
           body: LayoutBuilder(builder: (context, constraints) {
             if (isDataLoaded) {
-              return Container();
+              return InventoryPageBody();
               // return InventoryPageBody();
             } else {
-              return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(color: Colors.indigo),
-                      SizedBox(height: 10,),
-                      Text("Loading Inventory",style: TextStyle(color: Colors.indigo,fontSize: 15),)
-                ],
-              ));
+              return Container();
             }
           }),
           bottomNavigationBar: StylishBottomBar(
             option: AnimatedBarOptions(
               iconSize: 30,
               barAnimation: BarAnimation.fade,
-
               //barAnimation: BarAnimation.liquid,
               iconStyle: IconStyle.simple,
               opacity: 0.3,
@@ -244,151 +238,153 @@ class _InventoryPageState extends State<InventoryContent> {
     );
   }
 
+  Widget InventoryPageBody() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          // SizedBox(
+          //   height: 10,
+          // ),
+          Container(
+            margin: EdgeInsets.only(left: 10, right: 10),
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                // color: Colors.white,
+                // color : Color(0xffEB6440),
+                // color : Color(0xff497174),
+                color: Color.fromARGB(255, 216, 229, 248),
+                boxShadow: []),
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  // width: MediaQuery.of(context).size.width / 2.5,
+                  child: Flexible(
+                    child: ListView.builder(
+                      itemCount: gradeList1.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, ind) {
+                        return Container(
+                            child: Column(
+                              children: [
+                                LumpSumTotal(context, gradeList1[ind]),
+                             ],
+                         )
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 110,
+                  child: Row(
+                    children: [
+                      VerticalDivider(
+                        color: Colors.grey,
+                        thickness: 2.0,
+                        width: 20,
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  // flex: 1,
+                  child: Container(
+                    child: ListView.builder(
+                      itemCount: gradeList2.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, ind) {
+                        return Container(
+                            alignment: Alignment.topLeft,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                LumpSumTotal(context, gradeList2[ind]),
+                              ],
+                            ));
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              //   color: Colors.black,
+              margin: EdgeInsets.only(left: 10),
+              height: 60,
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                "abc ",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
 
 
-  // Widget InventoryPageBody() {
-  //   return Container(
-  //     width: MediaQuery.of(context).size.width,
-  //     child: Column(
-  //       children: [
-  //         SizedBox(
-  //           height: 10,
-  //         ),
-  //         Container(
-  //           margin: EdgeInsets.only(left: 10, right: 10),
-  //           width: MediaQuery.of(context).size.width,
-  //           decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.circular(10.0),
-  //               // color: Colors.white,
-  //               // color : Color(0xffEB6440),
-  //               // color : Color(0xff497174),
-  //               color: Color.fromARGB(255, 216, 229, 248),
-  //               boxShadow: []),
-  //           padding: EdgeInsets.all(10.0),
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Container(
-  //                 // width: MediaQuery.of(context).size.width / 2.5,
-  //                 child: Flexible(
-  //                   child: ListView.builder(
-  //                     itemCount: gradeList1.length,
-  //                     physics: const NeverScrollableScrollPhysics(),
-  //                     scrollDirection: Axis.vertical,
-  //                     shrinkWrap: true,
-  //                     itemBuilder: (context, ind) {
-  //                       return Container(
-  //                           child: Column(
-  //                         children: [
-  //                           LumpSumTotal(context, gradeList1[ind]),
-  //                         ],
-  //                       ));
-  //                     },
-  //                   ),
-  //                 ),
-  //               ),
-  //               Container(
-  //                 height: 110,
-  //                 child: Row(
-  //                   children: [
-  //                     VerticalDivider(
-  //                       color: Colors.grey,
-  //                       thickness: 2.0,
-  //                       width: 20,
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //               Expanded(
-  //                 // flex: 1,
-  //                 child: Container(
-  //                   child: ListView.builder(
-  //                     itemCount: gradeList2.length,
-  //                     physics: const NeverScrollableScrollPhysics(),
-  //                     scrollDirection: Axis.vertical,
-  //                     shrinkWrap: true,
-  //                     itemBuilder: (context, ind) {
-  //                       return Container(
-  //                           alignment: Alignment.topLeft,
-  //                           child: Column(
-  //                             mainAxisAlignment: MainAxisAlignment.start,
-  //                             children: [
-  //                               LumpSumTotal(context, gradeList2[ind]),
-  //                             ],
-  //                           ));
-  //                     },
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         SizedBox(
-  //           height: 10,
-  //         ),
-  //         Align(
-  //           alignment: Alignment.topLeft,
-  //           child: Container(
-  //             //   color: Colors.black,
-  //             margin: EdgeInsets.only(left: 10),
-  //             height: 60,
-  //             padding: EdgeInsets.only(top: 20),
-  //             child: Text(
-  //               "Purchase History ",
-  //               style: TextStyle(
-  //                 fontWeight: FontWeight.bold,
-  //                 fontSize: 25,
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //         SizedBox(
-  //           height: 10,
-  //         ),
-  //         Container(
-  //           //color: Colors.amber,
-  //           child: Expanded(
-  //             child: SingleChildScrollView(
-  //               physics: BouncingScrollPhysics(),
-  //               child: Column(children: [
-  //                 ListView.builder(
-  //                   itemCount: lumpsums.length,
-  //                   physics: const NeverScrollableScrollPhysics(),
-  //                   // scrollDirection: Axis.vertical,
-  //                   shrinkWrap: true,
-  //                   itemBuilder: (context, index) {
-  //                     return InkWell(
-  //                         onTap: () {
-  //                           // Navigator.push(context,
-  //                           //     MaterialPageRoute(
-  //                           //         builder: (context) => OrderDetails(order: salesOrderList[index]))
-  //                           // );
-  //                         },
-  //                         child: Container(
-  //                             margin: EdgeInsets.all(10.0),
-  //                             padding: const EdgeInsets.all(8.0),
-  //                             decoration: BoxDecoration(
-  //                               // gradient: LinearGradient(colors: [
-  //                               //   Color.fromARGB(255, 228, 245, 181),
-  //                               //   Color.fromARGB(255, 242, 255, 64)
-  //                               // ]),
-  //
-  //                               borderRadius: BorderRadius.circular(10.0),
-  //                               //  border: Border.all(color: Colors.black),
-  //                               // border: Border.all(color: Colors.black),
-  //                               color: Colors.grey.shade100,
-  //                             ),
-  //                             // width: 200,
-  //                             child: InventoryCard(context, lumpsums[index],Order(),id)));
-  //                   },
-  //                 ),
-  //               ]),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+
+          // Container(
+          //   //color: Colors.amber,
+          //   child: Expanded(
+          //     child: SingleChildScrollView(
+          //       physics: BouncingScrollPhysics(),
+          //       child: Column(children: [
+          //         ListView.builder(
+          //           itemCount: lumpsums.length,
+          //           physics: const NeverScrollableScrollPhysics(),
+          //           // scrollDirection: Axis.vertical,
+          //           shrinkWrap: true,
+          //           itemBuilder: (context, index) {
+          //             return InkWell(
+          //                 onTap: () {
+          //                   // Navigator.push(context,
+          //                   //     MaterialPageRoute(
+          //                   //         builder: (context) => OrderDetails(order: salesOrderList[index]))
+          //                   // );
+          //                 },
+          //                 child: Container(
+          //                     margin: EdgeInsets.all(10.0),
+          //                     padding: const EdgeInsets.all(8.0),
+          //                     decoration: BoxDecoration(
+          //                       // gradient: LinearGradient(colors: [
+          //                       //   Color.fromARGB(255, 228, 245, 181),
+          //                       //   Color.fromARGB(255, 242, 255, 64)
+          //                       // ]),
+          //
+          //                       borderRadius: BorderRadius.circular(10.0),
+          //                       //  border: Border.all(color: Colors.black),
+          //                       // border: Border.all(color: Colors.black),
+          //                       color: Colors.grey.shade100,
+          //                     ),
+          //                     // width: 200,
+          //                     child: InventoryCard(context, lumpsums[index],Order(),id)));
+          //           },
+          //         ),
+          //       ]),
+          //     ),
+          //   ),
+          // ),
+        ],
+      ),
+    );
+  }
 }
