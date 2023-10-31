@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
@@ -190,6 +191,7 @@ class _HomePageState extends State<HomeContent> {
   }
 
   var flag = 0;
+
   getRegReqs() async {
     if (flag == 0) {
       print("enter");
@@ -266,6 +268,9 @@ class _HomePageState extends State<HomeContent> {
   //   super.dispose();
   // }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     loadusertype();
@@ -283,9 +288,18 @@ class _HomePageState extends State<HomeContent> {
             Navigator.pop(context);
           }, alert: LogoutAlert),
           backgroundColor: Colors.white,
-          body: HomePageBody(),
+          body:
+          // responseData1.isEmpty
+          //     ? const Center(child: CircularProgressIndicator())
+          //     :
+        RefreshIndicator(
+                onRefresh: refresh,
+
+                child:
+                HomePageBody(),
+          ),
           floatingActionButton: LayoutBuilder(builder: (context, constraints) {
-            if (user_type != "Manufacturer" && isSalesEnabled == "true") {
+            if (user_type != "Manufacturer") {
               //fabLoc = FloatingActionButtonLocation.centerDocked;
               return FloatingActionButton(
                 onPressed: () {
@@ -455,6 +469,25 @@ class _HomePageState extends State<HomeContent> {
   List<Order> orderList = [];
   String? isSalesEnabled, basePrice = "0";
   var m;
+
+  Future refresh() async{
+    timeDilation;
+    setState(() =>
+        responseData1.toString()
+    );
+    // loadData();
+    final res1 = await http.post(
+        Uri.parse("http://steefotmtmobile.com/steefo/getsystemdata.php"));
+    isRes1Loaded = true;
+    responseData1 = jsonDecode(res1.body);
+
+    isSalesEnabled = responseData1['data'][0]['value'];
+    basePrice = responseData1['data'][1]['value'];
+    print(" $isSalesEnabled and $basePrice");
+
+
+  }
+
   Future<void> loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     m = id;
@@ -537,7 +570,7 @@ class _HomePageState extends State<HomeContent> {
         l.order_id = responseData2["data"][i]["order_id"];
         l.name = responseData2["data"][i]["name"];
         l.basePrice = responseData2["data"][i]["basePrice"];
-        l.qty = responseData2["data"][i]["qty_left"];
+        l.qty = responseData2["data"][i]["qty"];
         l.qty_left = responseData2["data"][i]["qty_left"];
         l.price = responseData2["data"][i]["price"];
         l.status = responseData2["data"][i]["orderStatus"];
@@ -567,6 +600,9 @@ class _HomePageState extends State<HomeContent> {
       setState(() {});
     }
   }
+  double timeDeletion = 1.0;
+
+
 
   var price = 999;
   bool light = true;
@@ -1000,7 +1036,7 @@ class _HomePageState extends State<HomeContent> {
                 height: 80,
                 // height: 80,
                 child: Text(
-                  "Market is closed ",
+                  "Booking is closed",
                   style: TextStyle(
                       letterSpacing: 2,
                       fontSize: 20,

@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -14,7 +15,7 @@ import '../Models/order.dart';
 import '../Models/user.dart';
 import '../ui/cards.dart';
 import '../ui/common.dart';
-import 'package:pdf/widgets.dart' as pw;
+// import 'package:pdf/widgets.dart' as pw;
 
 // ignore: must_be_immutable
 class OrderDetails extends StatelessWidget {
@@ -111,16 +112,16 @@ class _OrderPageState extends State<OrderPage> {
 
   var reductionData = [];
   Future onClick() async{
-    // if (widget.order?.orderType == "Use Lumpsum") {
-    //   for (int i = 0; i < reductionData.length; i++) {
-    //     var res = await http.post(
-    //         Uri.parse("http://steefotmtmobile.com/steefo/updateinventory.php"),
-    //         body: {
-    //           "id": reductionData[i]["id"],
-    //           "qty": reductionData[i]["qty"]
-    //         });
-    //   }
-    // }
+    if (widget.order?.orderType == "Use Lumpsum") {
+      for (int i = 0; i < reductionData.length; i++) {
+        var res = await http.post(
+            Uri.parse("http://steefotmtmobile.com/steefo/updateinventory.php"),
+            body: {
+              "id": reductionData[i]["id"],
+              "qty": reductionData[i]["qty"]
+            });
+      }
+    }
   }
 
   var m;
@@ -150,7 +151,8 @@ class _OrderPageState extends State<OrderPage> {
       l.order_id = responseData1["data"][i]["order_id"];
       l.name = responseData1["data"][i]["name"];
       l.basePrice = responseData1["data"][i]["basePrice"];
-      l.qty = responseData1["data"][i]["qty_left"];
+      l.qty = responseData1["data"][i]["qty"];
+      l.qty_left = responseData1["data"][i]["qty_left"];
       l.price = responseData1["data"][i]["price"];
       l.status = responseData1["data"][i]["orderStatus"];
       l.ls_id = responseData1['data'][i]["ls_id"];
@@ -271,10 +273,10 @@ class _OrderPageState extends State<OrderPage> {
       setState(() {});
       flag = 1;
       print(listOfColumns);
-      print('usertype' + widget.order!.userType.toString());
-      print('usertype =======>>>>>' + user.userType.toString());
-      // print(lumpsum.qty_left);
-      print(widget.lumpsum?.order_id.toString());
+      // print('usertype' + widget.order!.userType.toString());
+      // print('usertype =======>>>>>' + user.userType.toString());
+      // // print(lumpsum.qty_left);
+      // print(widget.lumpsum?.order_id.toString());
       //  print("${widget.order!.order_id.toString()}order id");
     }
 
@@ -347,6 +349,7 @@ class _OrderPageState extends State<OrderPage> {
       req.billing_address = responseData["data"][i]["address"];
       req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
       req.loading_type = responseData["data"][i]["loadingType"];
+      req.region = responseData["data"][i]["region"];
       req.qty_left = responseData["data"][i]["qty_left"];
       req.trans_type = responseData["data"][i]["transType"];
       req.trailerType = responseData["data"][i]["trailerType"];
@@ -484,7 +487,7 @@ class _OrderPageState extends State<OrderPage> {
                                   style: const TextStyle(
                                       fontSize: 15,
                                       // fontFamily: "Poppins_bold",
-                                      color: Colors.white))
+                                      color: Colors.white)),
                             ],
                           )
                         ],
@@ -800,7 +803,7 @@ class _OrderPageState extends State<OrderPage> {
                             const Text("Payment Term:",
                                 style: TextStyle(
                                     fontSize: 15, fontFamily: "Poppins_Bold")),
-                            Text("${widget.order!.paymentTerm.toString()}",
+                            Text("${widget.order!.paymentTerm.toString()} Day",
                                 style: const TextStyle(
                                     fontSize: 15, fontFamily: "Poppins"))
                           ],
@@ -1103,7 +1106,9 @@ class _OrderPageState extends State<OrderPage> {
               LayoutBuilder(builder: (context, constraints) {
                 if (widget.order!.status == "Pending" &&
                     id == widget.order!.reciever_id &&
-                    user.userType == "Distributor") {
+                    user.userType == "Distributor" &&
+                    widget.order?.orderType != "Lump-sum"
+                ) {
                   return Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     width: MediaQuery.of(context).size.width,
@@ -1204,9 +1209,9 @@ class _OrderPageState extends State<OrderPage> {
                                                                     () async {
                                                                   onClick();
                                                                       lumpsumList[index]
-                                                                          .qty = (double.parse(
+                                                                          .qty_left = (double.parse(
                                                                           lumpsumList[index]
-                                                                              .qty!) -
+                                                                              .qty_left!) -
                                                                           double.parse(widget.order!.totalQuantity.toString()))
                                                                           .toString();
 
@@ -1217,7 +1222,7 @@ class _OrderPageState extends State<OrderPage> {
                                                                         "qty":
                                                                         lumpsumList[
                                                                         index]
-                                                                            .qty
+                                                                            .qty_left
                                                                       });
 
                                                                   // totalQuantity =
@@ -1520,7 +1525,9 @@ class _OrderPageState extends State<OrderPage> {
                                     Colors.greenAccent
                                   ],
                                   "Accept",
-                                ))),
+                                )
+                            )
+                        ),
                         const SizedBox(
                           width: 10,
                         ),
@@ -1555,7 +1562,8 @@ class _OrderPageState extends State<OrderPage> {
 
                 else if (widget.order!.status == "Pending" &&
                     id == widget.order!.reciever_id &&
-                    user.userType == "Manufacturer") {
+                    user.userType == "Manufacturer"
+                ) {
                   return Container(
                     padding: EdgeInsets.only(left: 15,right: 15),
                     child: Row(
@@ -1600,7 +1608,16 @@ class _OrderPageState extends State<OrderPage> {
                                 },
                               );
                               widget.order!.status = "Denied";
-                              setState(() {});
+                              setState(() {
+                                Navigator.of(context).pushNamed('/home');
+                                Fluttertoast.showToast(
+                                    msg: 'Order is Cancelled',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 3,
+                                    backgroundColor: Colors.blueAccent,
+                                    textColor: Colors.white);
+                              });
                             },
                             child: GradientText(
                               style: TextStyle(

@@ -1,13 +1,16 @@
 import 'dart:convert';
+
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:http/http.dart' as http;
+// import 'package:stefomobileapp/Models/user.dart';
 import 'package:stefomobileapp/ui/common.dart';
 import 'package:stefomobileapp/validator/validations.dart';
 // import '../UI/common.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+// import '../Models/user.dart';
 
 class RegistrationPage extends StatelessWidget {
   @override
@@ -16,18 +19,14 @@ class RegistrationPage extends StatelessWidget {
         body: SizedBox(
           child: SingleChildScrollView(child: RegistrationForm()),
     ));
-    
   }
 }
 
-
 class RegistrationForm extends StatefulWidget {
   const RegistrationForm({super.key});
-
   @override
   State<RegistrationForm> createState() => _RegistrationFormState();
 }
-
 class _RegistrationFormState extends State<RegistrationForm> {
 
   // FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -42,7 +41,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
   //   }
   //   );
   // }
-
 
 
   final _formKey = GlobalKey<FormState>();
@@ -225,7 +223,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget FormDetails() {
     List<DropdownMenuItem<String>> dropdownItems = [];
-    List items = ["Distributor", "Dealer", "Builder","challan"];
+    List items = ["Distributor", "Dealer", "Builder"];
     List<DropdownMenuItem<String>> getItems() {
       for (int i = 0; i < items.length; i++) {
         DropdownMenuItem<String> it = DropdownMenuItem(
@@ -234,7 +232,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
         );
         dropdownItems.add(it);
       }
-
       return dropdownItems;
     }
 
@@ -285,7 +282,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 key: field1Key,
                 focusNode: focusNode1,
                 validator: (value) {
-                  if (value!.isEmpty || value == null) {
+                  if (value!.isEmpty) {
                     return 'Please enter a First Name.';
                   }
                   return null;

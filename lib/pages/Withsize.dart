@@ -4,14 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
+// import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/Models/item.dart';
 import 'package:stefomobileapp/Models/user.dart';
 // import 'package:stefomobileapp/Models/lumpsum.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import '../Models/challan.dart';
 import '../Models/order.dart';
-import '../ui/cards.dart';
+// import '../ui/cards.dart';
 import '../ui/common.dart';
 import '../Models/lumpsum.dart';
 import '../ui/custom_tabbar.dart';
@@ -236,7 +236,8 @@ class _OrdersPageState extends State<OrdersContent> {
       l.order_id = responseData["data"][0]["order_id"];
       l.name = responseData["data"][0]["name"];
       l.basePrice = responseData["data"][0]["basePrice"];
-      l.qty = responseData["data"][0]["qty_left"];
+      l.qty = responseData["data"][0]["qty"];
+      l.qty_left = responseData["data"][0]["qty_left"];
       l.price = responseData["data"][0]["price"];
       l.status = responseData["data"][0]["orderStatus"];
       l.ls_id = responseData['data'][0]["ls_id"];
@@ -432,7 +433,8 @@ class _OrdersPageState extends State<OrdersContent> {
                     child: requestList[index].orderType == "With Size" ||
                             requestList[index].orderType == "Use Lumpsum"
                         ? orderwidget1(index)
-                        : Container());
+                        : Container()
+                );
                 // }
                 // return null;
               },

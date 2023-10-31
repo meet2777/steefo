@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import '../ui/common.dart';
 
 class GenerateChallanPage extends StatelessWidget {
-  Order order;
+  final Order order;
 
   GenerateChallanPage({super.key, required this.order});
 
@@ -329,7 +329,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                     key: field1Key,
                     focusNode: focusNode1,
                     validator: (value) {
-                      if (value!.isEmpty || value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter Your Name.';
                       }
                       return null;
@@ -361,7 +361,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                     focusNode: focusNode2,
                     // textCapitalization: TextCapitalization.characters,
                     validator: (value) {
-                      if (value!.isEmpty || value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter a Vehicle Number.';
                       }
                       return null;
@@ -395,7 +395,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                     key: field3Key,
                     focusNode: focusNode3,
                     validator: (value) {
-                      if (value!.isEmpty || value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter a lr Number.';
                       }
                       return null;
@@ -424,7 +424,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                     // key: field3Key,
                     // focusNode: focusNode3,
                     validator: (value) {
-                      if (value!.isEmpty || value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter a lr Number.';
                       }
                       return null;
@@ -481,7 +481,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                             key: field4Key,
                             focusNode: focusNode4,
                             validator: (value) {
-                              if (value!.isEmpty || value == null) {
+                              if (value!.isEmpty) {
                                 return 'Please enter a Qty.';
                               }
                               return null;
@@ -562,7 +562,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                       child: Container(
                           height: 200,
 
-                          // width: MediaQuery.of(context).size.width - 20,
+                          width: MediaQuery.of(context).size.width,
                           // padding: EdgeInsets.only(
                           //     top: 10, bottom: 10, left: 10, right: 10),
                           // decoration: BoxDecoration(
@@ -577,7 +577,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                               scrollDirection: Axis.vertical,
                               child: Center(
                                 child: DataTable(
-                                  //border: TableBorder.all(borderRadius: BorderRadius.circular(20)),
+                                  // border: TableBorder.all(borderRadius: BorderRadius.circular(20)),
                                   decoration: BoxDecoration(
                                     color: const Color.fromRGBO(
                                         233, 236, 239, 0.792156862745098),

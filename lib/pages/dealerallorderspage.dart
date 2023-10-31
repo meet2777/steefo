@@ -15,7 +15,7 @@ import 'package:http/http.dart' as http;
 import '../Models/lumpsum.dart';
 
 class dealerallorderpage extends StatefulWidget {
-  User user;
+  final User user;
   dealerallorderpage({super.key, required this.user});
 
   @override
@@ -45,6 +45,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
         req.totalPrice = responseData["data"][i]["totalPrice"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
+        req.region = responseData["data"][i]["region"];
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
         req.user_name = responseData["data"][i]["firstName"] +
@@ -55,6 +56,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
         req.party_name = responseData["data"][i]["partyName"];
         req.consignee_name = responseData["data"][i]["consigneeName"];
         req.trans_type = responseData["data"][i]["transType"];
+        req.paymentTerm = responseData["data"][i]["paymentTerm"];
         req.trailerType = responseData["data"][i]["trailerType"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.gstNumber = responseData["data"][i]["gstNumber"];

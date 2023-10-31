@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stefomobileapp/Models/lumpsum.dart';
+// import 'package:stefomobileapp/Models/lumpsum.dart';
 import 'package:stefomobileapp/Models/order.dart';
 import 'package:http/http.dart' as http;
 import 'package:stefomobileapp/pages/HomePage.dart';
-import 'package:stefomobileapp/pages/OrderPage.dart';
+// import 'package:stefomobileapp/pages/OrderPage.dart';
 import 'package:stefomobileapp/pages/orderdetailsforpurchases.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import 'package:stefomobileapp/ui/common.dart';
@@ -197,6 +197,7 @@ class _purchasesState extends State<purchases> {
               },
             ),
           ),
+
           SizedBox(
             height: 30,
           ),
@@ -231,7 +232,8 @@ class _purchasesState extends State<purchases> {
                               purchaseOrderList[index].status != "Pending"
                           ? orderCard(context, purchaseOrderList[index], id)
                           : Container());
-                }),
+                }
+                ),
           ),
           SizedBox(
             height: 30,

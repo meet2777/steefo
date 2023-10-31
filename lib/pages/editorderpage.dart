@@ -21,7 +21,7 @@ import '../ui/common.dart';
 import '../Models/order.dart';
 
 class EditOrderPage extends StatelessWidget {
-  Order? order;
+  final Order? order;
   EditOrderPage({super.key,required this.order});
   @override
   Widget build(BuildContext context) {
@@ -244,7 +244,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
       l.order_id = responseData["data"][i]["order_id"];
       l.name = responseData["data"][i]["name"];
       l.basePrice = responseData["data"][i]["basePrice"];
-      l.qty = responseData["data"][i]["qty_left"];
+      l.qty = responseData["data"][i]["qty"];
+      l.qty_left = responseData["data"][i]["qty_left"];
       l.price = responseData["data"][i]["price"];
       l.status = responseData["data"][i]["orderStatus"];
       l.ls_id = responseData['data'][i]["ls_id"];
@@ -857,13 +858,13 @@ class _EditOrderPageState extends State<EditOrderContent> {
         dropdownConsigneeType.add(it);
       }
       return dropdownConsigneeType;
-    }
+    }                                        
 
     List<DropdownMenuItem<String>> getUser() {
       for (int i = 0; i < users.length; i++) {
         DropdownMenuItem<String> it = DropdownMenuItem(
-          value: users[i],
           child: Text(users[i]),
+          value: users[i],
         );
         dropdownUser.add(it);
       }
@@ -1018,8 +1019,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
                         }, onChanged: (Consignee? value) {
                         selectedconsignee = value;
                         party_address.text= value!.userAddress.toString();
-                        party_mob_num.text= value!.userContact.toString();
-                        party_pan_no.text = value!.userGST.toString();
+                        party_mob_num.text= value.userContact.toString();
+                        party_pan_no.text = value.userGST.toString();
                       },
                       ));
                 }else{
@@ -1969,7 +1970,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                         grdpct +
                                         szpct +
                                         tCost) *
-                                        int.parse(qty.text))
+                                        double .parse(qty.text))
                                         .toString()
                                         : ((int.parse(base_price.text) +
                                         grdpct +
@@ -2026,7 +2027,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                               //             .toString());
 
                               totalQuantity =
-                                  totalQuantity + int.parse(qty.text);
+                                  totalQuantity + double.parse(qty.text);
                               // print(tot_price);
                             } else {
                               isItem = "Please Enter All of the above fields";

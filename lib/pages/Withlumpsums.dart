@@ -7,16 +7,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/Withsize.dart';
-
 import '../Models/lumpsum.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
-import '../ui/cards.dart';
+// import '../ui/cards.dart';
 import '../ui/custom_tabbar.dart';
 import 'OrderPage.dart';
 
 class lumpsumsOrdersPage extends StatelessWidget {
-  Lumpsum lumpsum;
+  final Lumpsum lumpsum;
   lumpsumsOrdersPage({super.key, required this.lumpsum});
   @override
   Widget build(BuildContext context) {
@@ -107,6 +106,7 @@ class _OrdersPageState extends State<LumpsumContent> {
         req.consignee_name = responseData["data"][i]["consigneeName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.pincode = responseData["data"][i]["pincode"];
+        req.region = responseData["data"][i]["region"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
@@ -151,7 +151,8 @@ class _OrdersPageState extends State<LumpsumContent> {
       l.order_id = responseData["data"][i]["order_id"];
       l.name = responseData["data"][i]["name"];
       l.basePrice = responseData["data"][i]["basePrice"];
-      l.qty = responseData["data"][i]["qty_left"];
+      l.qty = responseData["data"][i]["qty"];
+      l.qty_left = responseData["data"][i]["qty_left"];
       l.price = responseData["data"][i]["price"];
       l.status = responseData["data"][i]["orderStatus"];
       l.ls_id = responseData['data'][i]["ls_id"];
@@ -220,6 +221,7 @@ class _OrdersPageState extends State<LumpsumContent> {
         req.consignee_name = responseData["data"][i]["consigneeName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.pincode = responseData["data"][i]["pincode"];
+        req.region = responseData["data"][i]["region"];
         req.billing_address = responseData["data"][i]["address"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
@@ -938,7 +940,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10))),
                               child: Text(
-                                order!.status!,
+                                order.status!,
                               ));
                         } else if (order.status == "Denied") {
                           return Container(

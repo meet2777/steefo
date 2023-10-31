@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+// import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/lumpsum.dart';
 // import 'package:stefomobileapp/Models/order.dart';
@@ -16,19 +17,19 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import '../Models/grade.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
-
+import 'OrderPage.dart';
 
 class InventoryPage extends StatelessWidget {
-  Order order;
+  final Order order;
   InventoryPage({super.key, required this.order});
   @override
   Widget build(BuildContext context) {
-    return InventoryContent(order:order);
+    return InventoryContent(order: order);
   }
 }
 
 class InventoryContent extends StatefulWidget {
-  InventoryContent({super.key,required this.order});
+  InventoryContent({super.key, required this.order});
   final Order order;
   final selected = 0;
   @override
@@ -43,6 +44,9 @@ class _InventoryPageState extends State<InventoryContent> {
   List<Grade> gradeList = [];
   List<Grade> gradeList1 = [];
   List<Grade> gradeList2 = [];
+  List<Order> salesOrderList = [];
+  Lumpsum lumpsum = Lumpsum();
+
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final user_id = await prefs.getString('id');
@@ -77,7 +81,7 @@ class _InventoryPageState extends State<InventoryContent> {
           "user_id": user_id,
         });
     var responseData = jsonDecode(res.body);
-    var orders = [];
+    // var orders = [];
     print(responseData);
     for (int i = 0; i < responseData["data"].length; i++) {
       print(responseData['data'][i]['name']);
@@ -104,6 +108,66 @@ class _InventoryPageState extends State<InventoryContent> {
     }
     isDataLoaded = true;
     setState(() {});
+
+    var m = id;
+
+    if (m != id) {
+      final res2 = await http.post(
+        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
+        body: {"id": id},
+      );
+      var responseData2 = jsonDecode(res2.body);
+      print(responseData2);
+
+      for (int i = 0; i < responseData2["data"].length; i++) {
+        Order req = Order();
+        req.deliveryDate = responseData2["data"][i]["deliveryDate"];
+        req.totalPrice = responseData2["data"][i]["totalPrice"];
+        req.totalQuantity = responseData2["data"][i]["totalQuantity"];
+        req.reciever_id = responseData2["data"][i]["supplier_id"];
+        req.user_id = responseData2["data"][i]["user_id"];
+        req.orderid = responseData2["data"][i]["orderid"];
+        req.user_mob_num = responseData2["data"][i]["mobileNumber"];
+        req.org_name = responseData2["data"][i]["orgName"];
+        req.userType = responseData2["data"][i]["userType"];
+        req.user_name = responseData2["data"][i]["firstName"] +
+            " " +
+            responseData2["data"][i]["lastName"];
+        req.status = responseData2["data"][i]["orderStatus"];
+        req.party_name = responseData2["data"][i]["partyName"];
+        req.dealerName = responseData2["data"][i]["dealerName"];
+        req.consignee_name = responseData2["data"][i]["consigneeName"];
+        req.PartygstNumber = responseData2["data"][i]["PartygstNumber"];
+        req.gstNumber = responseData2["data"][i]["gstNumber"];
+        req.party_address = responseData2["data"][i]["shippingAddress"];
+        req.pincode = responseData2["data"][i]["pincode"];
+        req.region = responseData2["data"][i]["region"];
+        req.billing_address = responseData2["data"][i]["address"];
+        req.party_mob_num = responseData2["data"][i]["partyMobileNumber"];
+        req.loading_type = responseData2["data"][i]["loadingType"];
+        req.paymentTerm = responseData2["data"][i]["paymentTerm"];
+        req.qty_left = responseData2["data"][i]["qty_left"];
+        req.trans_type = responseData2["data"][i]["transType"];
+        req.trailerType = responseData2["data"][i]["trailerType"];
+        req.order_date = responseData2["data"][i]["createdAt"];
+        req.base_price = responseData2["data"][i]["basePrice"];
+        req.orderType = responseData2["data"][i]["orderType"];
+        req.orderStatus = responseData2["data"][i]["orderStatus"];
+        req.order_id = responseData2["data"][i]["order_id"].toString();
+        req.date = responseData2["data"][i]["dateTime"];
+        //print(req);
+        if (req.status != "Rejected") {
+          // if (id == req.user_id) {
+          //   purchaseOrderList.add(req);
+          // }
+          if (id == req.reciever_id) {
+            salesOrderList.add(req);
+          }
+        }
+      }
+      //  print(salesOrderList);
+      setState(() {});
+    }
   }
 
   @override
@@ -130,8 +194,7 @@ class _InventoryPageState extends State<InventoryContent> {
               reverseTransitionDuration: Duration.zero,
             ),
           );
-         }
-        );
+        });
         return false;
       },
       child: Scaffold(
@@ -141,7 +204,7 @@ class _InventoryPageState extends State<InventoryContent> {
           }),
           body: LayoutBuilder(builder: (context, constraints) {
             if (isDataLoaded) {
-              return InventoryPageBody();
+              return InventoryPageBody(context);
               // return InventoryPageBody();
             } else {
               return Container();
@@ -180,8 +243,7 @@ class _InventoryPageState extends State<InventoryContent> {
                   ),
                   title: const Text('Safety'),
                   selectedIcon: const Icon(Icons.warehouse_rounded,
-                      color: Colors.blueAccent)
-              ),
+                      color: Colors.blueAccent)),
               BottomBarItem(
                   icon: const Icon(
                     Icons.person_pin,
@@ -189,8 +251,7 @@ class _InventoryPageState extends State<InventoryContent> {
                   title: const Text('Cabin'),
                   backgroundColor: Colors.grey,
                   selectedIcon:
-                      const Icon(Icons.person_pin, color: Colors.blueAccent)
-              ),
+                      const Icon(Icons.person_pin, color: Colors.blueAccent)),
             ],
             //fabLocation: StylishBarFabLocation.center,
             hasNotch: false,
@@ -238,7 +299,7 @@ class _InventoryPageState extends State<InventoryContent> {
     );
   }
 
-  Widget InventoryPageBody() {
+  Widget InventoryPageBody(context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -274,9 +335,8 @@ class _InventoryPageState extends State<InventoryContent> {
                             child: Column(
                               children: [
                                 LumpSumTotal(context, gradeList1[ind]),
-                             ],
-                         )
-                        );
+                          ],
+                        ));
                       },
                     ),
                   ),
@@ -340,7 +400,75 @@ class _InventoryPageState extends State<InventoryContent> {
             height: 10,
           ),
 
-
+          ListView.builder(
+            reverse: true,
+            itemCount: salesOrderList.length,
+            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              print("ordertype${salesOrderList[index].orderType}");
+              if (salesOrderList[index].orderType == "With Size" ||
+                  salesOrderList[index].orderType == "Use Lumpsum") {
+                return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OrderDetails(
+                                  order: salesOrderList[index],
+                                  lumpsum: lumpsum)
+                          )
+                      );
+                    },
+                    child: orderCard(
+                      context,
+                      salesOrderList[index],
+                      //  qtyandprice[index],
+                      id,
+                    ));
+              } else
+                return Container();
+            },
+          )
+          // LayoutBuilder(builder:(context, constraints){
+          //   if(widget.order.date == DateFormat('dd-MM-yyyy').format(DateTime.now())){
+          //     return ListView.builder(
+          //       reverse: true,
+          //       itemCount: salesOrderList.length,
+          //       physics: const NeverScrollableScrollPhysics(),
+          //       scrollDirection: Axis.vertical,
+          //       shrinkWrap: true,
+          //       itemBuilder: (context, index) {
+          //         print("ordertype${salesOrderList[index].orderType}");
+          //         if (salesOrderList[index].orderType == "With Size" ||
+          //             salesOrderList[index].orderType == "Use Lumpsum") {
+          //           return GestureDetector(
+          //               onTap: () {
+          //                 Navigator.push(
+          //                     context,
+          //                     MaterialPageRoute(
+          //                         builder: (context) => OrderDetails(
+          //                             order: salesOrderList[index],lumpsum: lumpsum)
+          //                     )
+          //                 );
+          //               },
+          //               child: orderCard(
+          //                 context,
+          //                 salesOrderList[index],
+          //                 //  qtyandprice[index],
+          //                 id,
+          //               )
+          //           );
+          //         } else
+          //           return Container();
+          //       },
+          //     );
+          //   }else {
+          //     return Container();
+          //   }
+          // },
+          // )
 
           // Container(
           //   //color: Colors.amber,

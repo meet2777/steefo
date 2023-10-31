@@ -974,7 +974,7 @@ Widget InventoryCard1(BuildContext context, Lumpsum lumpsum,Order order,String? 
             children: [
               Text("Remaining Qty: ",
                   style: TextStyle(fontFamily: "Poppins_Bold")),
-              Text(lumpsum.qty.toString(),
+              Text(lumpsum.qty_left.toString(),
                   style: TextStyle(
                     color: Colors.black,
                   )),
@@ -1139,7 +1139,7 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? c
             children: [
               Text("Remaining Qty: ",
                   style: TextStyle(fontFamily: "Poppins_Bold")),
-              Text(lumpsum.qty.toString(),
+              Text(lumpsum.qty_left.toString(),
                   style: TextStyle(
                     color: Colors.black,
                   )),

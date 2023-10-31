@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/pages/Buyers.dart';
-import 'package:stefomobileapp/pages/EditableProfilePage.dart';
+// import 'package:stefomobileapp/pages/EditableProfilePage.dart';
 import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
@@ -11,7 +11,7 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 // import '../Models/order.dart';
 import '../Models/user.dart';
 import '../UI/common.dart';
-import 'DistributorsPage.dart';
+// import 'DistributorsPage.dart';
 import 'HomePage.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -139,35 +139,35 @@ class _ProfilePageState extends State<ProfileContent> {
                 physics: BouncingScrollPhysics(),
                 child: Column(children: [
                   // Padding(padding: EdgeInsets.only(left: 20,right: 20)),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(EditableProfilePage());
-                    },
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        margin: const EdgeInsets.only(top: 20),
-                        alignment: Alignment.centerRight,
-                        height: 40,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 216, 229, 248),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                bottomLeft: Radius.circular(10))),
-                        // child: ElevatedButton(
-                        //     onPressed: () {
-                        //       onRegister();
-                        //     },
-                        //     child: Icon(Icons.edit)),
-                        child: Icon(
-                          Icons.edit_rounded,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Get.to(EditableProfilePage());
+                  //   },
+                  //   child: Align(
+                  //     alignment: Alignment.topRight,
+                  //     child: Container(
+                  //       padding: EdgeInsets.only(right: 10),
+                  //       margin: const EdgeInsets.only(top: 20),
+                  //       alignment: Alignment.centerRight,
+                  //       height: 40,
+                  //       width: 50,
+                  //       decoration: BoxDecoration(
+                  //           color: Color.fromARGB(255, 216, 229, 248),
+                  //           borderRadius: BorderRadius.only(
+                  //               topLeft: Radius.circular(10),
+                  //               bottomLeft: Radius.circular(10))),
+                  //       // child: ElevatedButton(
+                  //       //     onPressed: () {
+                  //       //       onRegister();
+                  //       //     },
+                  //       //     child: Icon(Icons.edit)),
+                  //       child: Icon(
+                  //         Icons.edit_rounded,
+                  //         color: Colors.black,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   // ElevatedButton(
                   //     onPressed: () { EditableProfilePage(); },
                   //     child: const Text("Edit")),

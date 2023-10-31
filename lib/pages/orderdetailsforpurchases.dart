@@ -1,21 +1,21 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
+// import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import 'package:stefomobileapp/pages/ChallanListPage.dart';
+import 'package:stefomobileapp/Models/user.dart';
+// import 'package:stefomobileapp/pages/ChallanListPage.dart';
 import 'package:stefomobileapp/pages/purchasechallanlistpage.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
-import 'EditableProfilePage.dart';
-import 'PlaceOrderPage.dart';
+// import 'EditableProfilePage.dart';
+// import 'PlaceOrderPage.dart';
 import 'editorderpage.dart';
+// import '../Models/user.dart';
 
 // ignore: must_be_immutable
 class OrderDetailsforpurchases extends StatelessWidget {
@@ -29,13 +29,17 @@ class OrderDetailsforpurchases extends StatelessWidget {
 }
 
 class OrderPage extends StatefulWidget {
-  OrderPage({Key? key, this.order}) : super(key: key);
   final Order? order;
+  OrderPage({Key? key, this.order}) : super(key: key);
+
+  // get user => null;
+  final User user = User();
   @override
   State<OrderPage> createState() => _OrderPageState();
 }
 
 class _OrderPageState extends State<OrderPage> {
+  User user = User();
   int flag = 0;
   var listOfColumns = [];
   var remaininglist = [];
@@ -43,14 +47,55 @@ class _OrderPageState extends State<OrderPage> {
   num tot_price = 0;
   double tot_qty = 0;
   loadData() async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id');
     print(widget.order!.orderType);
     print(widget.order!.loading_type);
+    print("user type ");
+    print(widget.user.userType);
 
 
     if (flag == 0) {
       if (widget.order!.orderType != "Lump-sum") {
+
+
+        var test = await http.post(
+          Uri.parse(
+            'http://steefotmtmobile.com/steefo/getrequests.php',
+          ),
+        );
+        //Navigator.of(context).pushNamed("/home");
+        var responseData1 = jsonDecode(test.body);
+        // print("remaining qty"+ qty.qty_left.toString());
+        print("enter1");
+        print(responseData1);
+        for (int i = 0; i < responseData1['data'].length; i++) {
+          print("enter2");
+          User user = User();
+          user.id = responseData1['data'][i]['id'];
+          user.firstName = responseData1['data'][i]['firstName'];
+          user.lastName = responseData1['data'][i]['lastName'];
+          user.email = responseData1['data'][i]['email'];
+          user.mobileNumber = responseData1['data'][i]['mobileNumber'];
+          user.parentId = responseData1['data'][i]['parentId'];
+          user.userType = responseData1['data'][i]['userType'];
+          user.userStatus = responseData1['data'][i]['userStatus'];
+          user.orgName = responseData1['data'][i]['orgName'];
+          user.gstNumber = responseData1['data'][i]['gstNumber'];
+          user.panNumber = responseData1['data'][i]['panNumber'];
+          user.adhNumber = responseData1['data'][i]['adhNumber'];
+          user.address = responseData1['data'][i]['address'];
+          user.uploadedFile = responseData1['data'][i]['uploadedFile'];
+          // regReqList.add(u);
+          print(user.userType);
+          print("enter3");
+          // print(lumpsum.qty_left);
+        }
+
+
+
+
         print(widget.order!.order_id);
         print(widget.order!.PartygstNumber);
         final res = await http.post(
@@ -224,26 +269,32 @@ class _OrderPageState extends State<OrderPage> {
                           height: 10,
                         ),
 
-                            Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  // borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text("Dealer Name:",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: "Poppins_Bold")),
-                                    Text(widget.order!.dealerName.toString(),
-                                        style: const TextStyle(
-                                            fontSize: 15, fontFamily: "Poppins"))
-                                  ],
-                                )
+                            LayoutBuilder(builder: (context, constraints) {
+                              if(widget.order!.userType != "Dealer"){
+                                return Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      // borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text("Dealer Name:",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontFamily: "Poppins_Bold")),
+                                        Text(widget.order!.dealerName.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 15, fontFamily: "Poppins"))
+                                      ],
+                                    )
+                                );
+                              }else {
+                                return Container();
+                              }
+                            },
                             ),
-
 
                             LayoutBuilder(builder: (context, constraints) {
                               if(widget.order!.user_type == "Distributor"){

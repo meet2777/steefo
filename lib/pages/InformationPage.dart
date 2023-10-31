@@ -14,7 +14,7 @@ import 'DealerDetailPage.dart';
 import 'OrderPage.dart';
 
 class DistributorDetailPage extends StatelessWidget {
-  User user;
+  final User user;
   DistributorDetailPage({super.key, required this.user});
 
   @override
@@ -26,7 +26,7 @@ class DistributorDetailPage extends StatelessWidget {
 }
 
 class DistributorDetailContent extends StatefulWidget {
-  User user;
+  final User user;
   DistributorDetailContent({super.key, required this.user});
 
   @override
@@ -104,6 +104,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
         req.reciever_id = responseData["data"][i]["supplier_id"];
         req.user_id = responseData["data"][i]["user_id"];
+        req.region = responseData["data"][i]["region"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
         req.org_name = responseData["data"][i]["orgName"];
         req.user_name = responseData["data"][i]["firstName"] +
@@ -112,6 +113,7 @@ class DistributorDetailState extends State<DistributorDetailContent> {
         req.status = responseData["data"][i]["orderStatus"];
         req.pincode = responseData["data"][i]["pincode"];
         req.trans_type = responseData["data"][i]["transType"];
+        req.paymentTerm = responseData["data"][i]["paymentTerm"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.gstNumber = responseData["data"][i]["gstNumber"];
         req.party_name = responseData["data"][i]["partyName"];

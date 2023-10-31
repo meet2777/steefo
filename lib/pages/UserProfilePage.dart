@@ -7,33 +7,89 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 import 'package:intl/intl.dart';
-import 'package:mailer/smtp_server.dart';
-import 'package:open_file/open_file.dart';
+// import 'package:mailer/smtp_server.dart';
+// import 'package:open_file/open_file.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/validator/validations.dart';
 import '../UI/common.dart';
 import 'package:stefomobileapp/notification_services.dart';
-import 'package:mailer/mailer.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:mailer/mailer.dart';
+// import 'package:flutter_pdfview/flutter_pdfview.dart';
+// import 'package:path_provider/path_provider.dart';
+// import 'package:dio/dio.dart';
+// import 'package:file_picker/file_picker.dart';
 // import 'package:editable_image/editable_image.dart';
 
 class UserProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appbar("Create Profile", () {
-          print("Back Pressed");
-          Navigator.pop(context);
-        }),
+      appBar: AppBar(
+        // toolbarHeight: 80,
+          elevation: 0.0,
+          // shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          // actions: [
+          //   LayoutBuilder(builder: (context, constraints) {
+          //     if (DateFormat('dd-MM-yyyy').format(DateTime.now())) {
+          //       return IconButton(
+          //           onPressed: () {
+          //             alert!();
+          //           },
+          //           icon: const Icon(
+          //             Icons.power_settings_new_rounded,
+          //             color: Colors.black,
+          //           ));
+          //     } else {
+          //       return Padding(
+          //         padding: EdgeInsets.only(right: 10),
+          //         child: GestureDetector(
+          //           onTap: () {
+          //             Get.to(HomePage());
+          //           },
+          //           child: SvgPicture.asset(
+          //             "assets/images/logo.svg",
+          //             // fit: BoxFit.fill,
+          //             // color: Colors.green,
+          //             height: 30,
+          //             width: 30,
+          //           ),
+          //         ),
+          //       );
+          //     }
+          //   })
+          // ],
+          title: Center(
+              child: Text("Create Profile",
+                // textAlign: TextAlign.center,
+                style: const TextStyle(
+
+                    color: Color.fromRGBO(19, 59, 78, 1), fontFamily: "Poppins_Bold"),
+              )),
+          backgroundColor: Colors.white,
+          // leading: txt == DateFormat('dd-MM-yyyy').format(DateTime.now())
+              // ? Image.asset("assets/images/logo_foreground.png")
+              // : IconButton(
+              // onPressed: () {
+              //   c();
+              // },
+              // icon: Icon(
+              //   Icons.arrow_back_ios_rounded,
+              //   color: Colors.black,
+              // ))
+
+        // Image.asset("assets/images/logo_foreground.png"),
+      ),
+        // appBar: appbar("Create Profile", () {
+        //   print("Back Pressed");
+        //   Navigator.pop(context);
+        // }),
         body: Container(
           height: MediaQuery.of(context).size.height,
           color: Colors.white,
@@ -250,18 +306,28 @@ class _ProfileFormState extends State<ProfileForm> {
   }
   List<String> attachments = [];
   bool isHTML = false;
-  final _recipientController = TextEditingController(
-    text: 'meet.prajapati2777@gmail.com',
+  // final _recipientController = TextEditingController(
+  //   text: 'meet.prajapati2777@gmail.com',
+  // );
+  //
+  // final _subjectController = TextEditingController(text: 'New user request');
+  //
+  // final _bodyController = TextEditingController(
+  //   text: 'PDF Document of user',
+  // );
+
+  late Email send_email = Email(
+    body: 'Steefo',
+    subject: 'New Registration Request',
+    recipients: ['it@steefotmt.com'],
+    cc: ['it@steefotmt.com'],
+    // bcc: ['example_bcc@ex.com'],
+    attachmentPaths: ['${File.fromUri(Uri.parse(_file!.path)).readAsBytes()}'],
+    isHTML: false,
   );
 
-  final _subjectController = TextEditingController(text: 'New user request');
-
-  final _bodyController = TextEditingController(
-    text: 'PDF Document of user',
-  );
 
   onRegister() async {
-
     // Future<void> send() async {
     //   final Email email = Email(
     //     body: _bodyController.text,
@@ -322,7 +388,7 @@ class _ProfileFormState extends State<ProfileForm> {
       }
     }
     );
-
+    // FlutterEmailSender.send(send_email);
         validateLoginDetails(AutofillHints.email, AutofillHints.password);
           Navigator.of(context).pushNamed("/login");
   }
@@ -635,6 +701,8 @@ class _ProfileFormState extends State<ProfileForm> {
               width: width,
               padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
               child: TextFormField(
+
+                // inputFormatters: [FilteringTextInputFormatter.allow(RegExp("\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}"))],
                 key: field7Key,
                 focusNode: focusNode7,
                 controller: gstNumber,

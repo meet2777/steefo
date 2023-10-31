@@ -7,12 +7,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/Models/user.dart';
 import 'package:stefomobileapp/pages/UserRequestPage.dart';
-import 'package:stefomobileapp/ui/custom_tabbar.dart';
-import 'package:stylish_bottom_bar/model/bar_items.dart';
-import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
+// import 'package:stefomobileapp/ui/custom_tabbar.dart';
+// import 'package:stylish_bottom_bar/model/bar_items.dart';
+// import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
-import 'OrderPage.dart';
+// import 'OrderPage.dart';
 
 class RequestPage extends StatelessWidget {
   @override
@@ -139,6 +139,7 @@ class _RequestPageState extends State<RequestContent> {
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
         req.pincode = responseData["data"][i]["pincode"];
+        req.region = responseData["data"][i]["region"];
         req.party_name = responseData["data"][i]["partyName"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.party_address = responseData["data"][i]["shippingAddress"];

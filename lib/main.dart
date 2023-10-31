@@ -33,6 +33,7 @@ import 'package:stefomobileapp/pages/challangenerator.dart';
 import 'package:stefomobileapp/pages/editorderpage.dart';
 import 'package:stefomobileapp/pages/newPassPage.dart';
 import 'package:stefomobileapp/pages/pdfView.dart';
+import 'package:upgrader/upgrader.dart';
 import 'Models/order.dart';
 import 'pages/LRPage.dart';
 import 'UI/common.dart';
@@ -50,6 +51,23 @@ Future<void> _firebaseMessagingBackgroungHandler(RemoteMessage message) async {
   print(message.data['moredata'].toString());
   // FirebaseMessaging.onMessageOpenedApp(){};
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+
+    print('A new onMessageOpenedApp event was published!');
+
+    if(message.data['moredata'] == 'REGISTRATION'){
+      navigatorKey.currentState?.pushNamed('/orderreq');
+    }
+    else if(message.data['moredata2'] == 'RATECHANGE'){
+      navigatorKey.currentState?.pushNamed('/home');
+    }else if(message.data['moredata3'] == 'NEWORDER'){
+      navigatorKey.currentState?.pushNamed('/home');
+    }else if(message.data['moredata4'] == 'ChallanGenerated'){
+      navigatorKey.currentState?.pushNamed('/home');
+    }
+
+
+
+
     // print('A new onMessageOpenedApp event was published!');
     // if(message.data['moredata'] == 'REGISTRATION'){
     //   navigatorKey.currentState?.pushNamed('/orderreq');
@@ -99,11 +117,11 @@ Future<void> setupFlutterNotifications() async {
 
   /// Update the iOS foreground notification presentation options to allow
   /// heads up notifications.
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+  // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+  //   alert: true,
+  //   badge: true,
+  //   sound: true,
+  // );
   isFlutterLocalNotificationsInitialized = true;
 }
 
@@ -379,8 +397,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreen extends State<SplashScreen> {
 
-
-
   bool allowDirectLogin = false;
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -417,18 +433,18 @@ class _SplashScreen extends State<SplashScreen> {
 
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-
-      if(message.data['moredata'] == 'REGISTRATION'){
-        navigatorKey.currentState?.pushNamed('/orderreq');
-      }
-      else if(message.data['moredata2'] == 'RATECHANGE'){
-        navigatorKey.currentState?.pushNamed('/home');
-      }else if(message.data['moredata3'] == 'NEWORDER'){
-        navigatorKey.currentState?.pushNamed('/home');
-      }else if(message.data['moredata4'] == 'ChallanGenerated'){
-        navigatorKey.currentState?.pushNamed('/home');
-      }
+      // print('A new onMessageOpenedApp event was published!');
+      //
+      // if(message.data['moredata'] == 'REGISTRATION'){
+      //   navigatorKey.currentState?.pushNamed('/orderreq');
+      // }
+      // else if(message.data['moredata2'] == 'RATECHANGE'){
+      //   navigatorKey.currentState?.pushNamed('/home');
+      // }else if(message.data['moredata3'] == 'NEWORDER'){
+      //   navigatorKey.currentState?.pushNamed('/home');
+      // }else if(message.data['moredata4'] == 'ChallanGenerated'){
+      //   navigatorKey.currentState?.pushNamed('/home');
+      // }
 
       // navigatorKey.currentState?.pushNamed('/orderreq');
       // Navigator.pushNamed(
@@ -444,13 +460,21 @@ class _SplashScreen extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            logo(context).animate().fade(duration: Duration(seconds: 1)),
-            //Form()
-          ],
+      body: UpgradeAlert(
+        upgrader: Upgrader(
+          canDismissDialog: true,
+          shouldPopScope: () => true,
+          durationUntilAlertAgain: Duration(days: 3),
+          dialogStyle: UpgradeDialogStyle.material
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              logo(context).animate().fade(duration: Duration(seconds: 1)),
+              //Form()
+            ],
+          ),
         ),
       ),
     );

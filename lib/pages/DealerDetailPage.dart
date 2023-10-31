@@ -5,14 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/UI/common.dart';
 import 'package:stefomobileapp/pages/dealerallorderspage.dart';
-import 'package:stefomobileapp/ui/cards.dart';
+// import 'package:stefomobileapp/ui/cards.dart';
 import 'package:http/http.dart' as http;
 import '../Models/order.dart';
 import '../Models/user.dart';
-import 'OrderPage.dart';
+// import 'OrderPage.dart';
 
 class DealerDetailPage extends StatelessWidget {
-  User user;
+  final User user;
   DealerDetailPage({super.key, required this.user});
 
   @override
@@ -24,7 +24,7 @@ class DealerDetailPage extends StatelessWidget {
 }
 
 class DealerDetailContent extends StatefulWidget {
-  User user;
+  final User user;
   DealerDetailContent({super.key, required this.user});
 
   @override
@@ -73,10 +73,12 @@ class DealerDetailState extends State<DealerDetailContent> {
             " " +
             responseData["data"][i]["lastName"];
         req.status = responseData["data"][i]["orderStatus"];
+        req.region = responseData["data"][i]["region"];
         req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
         req.gstNumber = responseData["data"][i]["gstNumber"];
         req.pincode = responseData["data"][i]["pincode"];
         req.party_name = responseData["data"][i]["partyName"];
+        req.paymentTerm = responseData["data"][i]["paymentTerm"];
         req.party_address = responseData["data"][i]["shippingAddress"];
         req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
         req.loading_type = responseData["data"][i]["loadingType"];
