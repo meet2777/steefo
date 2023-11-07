@@ -12,6 +12,7 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import '../Models/user.dart';
 import '../UI/common.dart';
 // import 'DistributorsPage.dart';
+import 'EditableProfilePage.dart';
 import 'HomePage.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -138,36 +139,41 @@ class _ProfilePageState extends State<ProfileContent> {
               return SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(children: [
-                  // Padding(padding: EdgeInsets.only(left: 20,right: 20)),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Get.to(EditableProfilePage());
-                  //   },
-                  //   child: Align(
-                  //     alignment: Alignment.topRight,
-                  //     child: Container(
-                  //       padding: EdgeInsets.only(right: 10),
-                  //       margin: const EdgeInsets.only(top: 20),
-                  //       alignment: Alignment.centerRight,
-                  //       height: 40,
-                  //       width: 50,
-                  //       decoration: BoxDecoration(
-                  //           color: Color.fromARGB(255, 216, 229, 248),
-                  //           borderRadius: BorderRadius.only(
-                  //               topLeft: Radius.circular(10),
-                  //               bottomLeft: Radius.circular(10))),
-                  //       // child: ElevatedButton(
-                  //       //     onPressed: () {
-                  //       //       onRegister();
-                  //       //     },
-                  //       //     child: Icon(Icons.edit)),
-                  //       child: Icon(
-                  //         Icons.edit_rounded,
-                  //         color: Colors.black,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                  Padding(padding: EdgeInsets.only(left: 20,right: 20)),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(EditableProfilePage(user: user));
+                    },
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                        // padding: EdgeInsets.only(right: 10),
+                        margin: const EdgeInsets.only(top: 20),
+                        alignment: Alignment.centerRight,
+                        height: 40,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 216, 229, 248),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10))),
+                        child: Icon(
+                          Icons.edit_rounded,
+                          color: Colors.black,
+                        ),
+
+                        // ElevatedButton(
+                        //     onPressed: () {
+                        //       // onRegister();
+                        //     },
+                        //     child: ),
+                        // child: Icon(
+                        //   Icons.edit_rounded,
+                        //   color: Colors.black,
+                        // ),
+                      ),
+                    ),
+                  ),
                   // ElevatedButton(
                   //     onPressed: () { EditableProfilePage(); },
                   //     child: const Text("Edit")),

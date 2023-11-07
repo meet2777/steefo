@@ -296,7 +296,7 @@ class MyApp extends StatelessWidget {
         //'/order': (BuildContext context) => OrderDetails(),
         // '/challan': (BuildContext context) => GeneratedChallan(),
         '/profile': (BuildContext context) => UserProfilePage(),
-        '/editprofile': (BuildContext context) => EditableProfilePage(),
+        '/editprofile': (BuildContext context) => EditableProfilePage(user: User(),),
         '/forgetPass': (BuildContext context) => ForgetPassPage(),
         '/OTP': (BuildContext context) => OTPPage(),
         '/newPass': (BuildContext context) => NewPassPage(),

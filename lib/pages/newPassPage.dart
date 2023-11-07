@@ -133,9 +133,11 @@ class _NewPassPageState extends State<NewPasscontent> {
                           TextFormField(
                             key: field1Key,
                             focusNode: focusNode1,
-                            // controller: password,
+                            controller: password,
                             keyboardType: TextInputType.emailAddress,
                             obscureText: _isPWVisible,
+                            // onChanged: (text) { widget.callback(text);},
+
                             decoration: InputDecoration(
                               labelText: "Enter Password",
                               border: OutlineInputBorder(
@@ -217,12 +219,11 @@ class _NewPassPageState extends State<NewPasscontent> {
                                 vertical: 10, horizontal: 10),
                             child: buttonStyle(("Save"), () {
                               if (_formKey.currentState!.validate()) {
-                                {
                                   onClick(password.text, regpassword.text);
-                                }
                                 // onClick();
                               }
-                            }),
+                             }
+                            ),
                           ),
                           SizedBox(
                             height: 20,

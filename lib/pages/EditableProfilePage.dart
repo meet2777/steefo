@@ -5,18 +5,22 @@ import 'package:stefomobileapp/pages/InventoryPage.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:http/http.dart' as http;
+import '../Models/user.dart';
 import 'DistributorsPage.dart';
 import 'HomePage.dart';
 
 class EditableProfilePage extends StatelessWidget {
+  final User? user;
+  EditableProfilePage({super.key,required this.user});
   @override
   Widget build(BuildContext context) {
-    return ProfileContent();
+    return ProfileContent(user: user);
   }
 }
 
 class ProfileContent extends StatefulWidget {
-  ProfileContent({super.key});
+  final User? user;
+  ProfileContent({super.key, required this.user});
   // final selected = 0;
   @override
   State<ProfileContent> createState() => _ProfilePageState();
@@ -116,6 +120,9 @@ class _ProfilePageState extends State<ProfileContent> {
     super.dispose();
   }
 
+  // String?
+  // firstName;
+
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController orgName = TextEditingController();
@@ -165,6 +172,21 @@ class _ProfilePageState extends State<ProfileContent> {
 
   @override
   Widget build(BuildContext context) {
+
+    firstName = TextEditingController(text: "${widget.user?.firstName}");
+    lastName = TextEditingController(text: "${widget.user?.lastName}");
+    orgName = TextEditingController(text: "${widget.user?.orgName}");
+    email = TextEditingController(text: "${widget.user?.email}");
+    mobileNumber = TextEditingController(text: "${widget.user?.mobileNumber}");
+    gstNumber = TextEditingController(text: "${widget.user?.gstNumber}");
+    panNumber = TextEditingController(text: "${widget.user?.panNumber}");
+    adhNumber = TextEditingController(text: "${widget.user?.adhNumber}");
+    address = TextEditingController(text: "${widget.user?.address}");
+    print(widget.user!.orgName.toString());
+
+
+
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: appbar("Profile", () {

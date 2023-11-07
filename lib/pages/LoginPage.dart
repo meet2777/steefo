@@ -97,7 +97,6 @@ class _loginPageState extends State<LoginContent> {
 
   bool rememberMe = true;
    onLogin(String email, String pw) async {
-
     //  print("before login ");
     // if(token1 != null){
     //   print("api token ==>"+ token1);
@@ -111,9 +110,6 @@ class _loginPageState extends State<LoginContent> {
     // else{
     //   print("Token is null");
     // }
-
-
-
     var test = await http.post(
       Uri.parse("http://steefotmtmobile.com/steefo/login.php"),
       body: {
@@ -213,7 +209,7 @@ class _loginPageState extends State<LoginContent> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SizedBox(
-      child: SingleChildScrollView(child: LoginForm()),
+         child: SingleChildScrollView(child: LoginForm()),
     ));
   }
 
@@ -229,8 +225,7 @@ class _loginPageState extends State<LoginContent> {
                   painter: BluePainter(),
                   child:
                       //--------------------------StartOfChildren---------------------------
-
-                      Column(children: [
+                  Column(children: [
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 30,
                     ),

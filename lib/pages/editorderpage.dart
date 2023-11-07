@@ -146,7 +146,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
     selectedOrderType = widget.order?.orderType.toString();
     selectedTransType = widget.order?.trans_type.toString();
     selectedType = widget.order?.loading_type.toString();
-    selectedconsignee?.userName = widget.order!.consignee_name.toString();
+    selectedconsignee?.userName = widget.order?.consignee_name.toString();
     trailerType = widget.order?.trailerType.toString();
     selectedRegion = widget.order?.region.toString();
     selectedpaymentType = widget.order?.paymentTerm.toString();
@@ -200,7 +200,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
 
   String?
   // selectedValue,
-  //     seletedconsignee,
+      seletedconsignee,
       selectedDealer,
       selectedSize,
       selectedGrade,

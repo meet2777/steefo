@@ -150,8 +150,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
         backgroundColor: Colors.blueAccent,
         textColor: Colors.white);
 
-
-    print(" api check" + responseData1);
+    print("api check" + responseData1);
     Navigator.of(context).pushNamed("/login");
 
     // if(token1 != null){
@@ -165,8 +164,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
     //   print("Token is null");
     // }
     validateLoginDetails(AutofillHints.email, AutofillHints.password);
-
-
   }
 
   @override
