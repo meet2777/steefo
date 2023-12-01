@@ -485,7 +485,6 @@ class _HomePageState extends State<HomeContent> {
     basePrice = responseData1['data'][1]['value'];
     print(" $isSalesEnabled and $basePrice");
 
-
   }
 
   Future<void> loadData() async {

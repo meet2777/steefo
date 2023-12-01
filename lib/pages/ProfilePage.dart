@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/files.dart';
 import 'package:get/get.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/order.dart';
 import 'package:stefomobileapp/pages/Buyers.dart';
@@ -10,10 +15,14 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
 // import '../Models/order.dart';
 import '../Models/user.dart';
-import '../UI/common.dart';
+// import '../UI/common.dart';
 // import 'DistributorsPage.dart';
+import '../ui/common.dart';
 import 'EditableProfilePage.dart';
 import 'HomePage.dart';
+import 'package:http/http.dart' as http;
+
+import 'LoginPage.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -61,6 +70,8 @@ class _ProfilePageState extends State<ProfileContent> {
       user.panNumber = await prefs.getString("panNumber");
       user.adhNumber = await prefs.getString("adhNumber");
       user.address = await prefs.getString("address");
+      user.userType = await prefs.getString("userType");
+      print(user.userType);
       f = 1;
       isDataLoaded = true;
       setState(() {});
@@ -75,6 +86,17 @@ class _ProfilePageState extends State<ProfileContent> {
   void initState() {
     super.initState();
     loadData();
+  }
+
+  Future onDelete() async {
+    await http.post(
+        Uri.parse("http://steefotmtmobile.com/steefo/deleteuser1.php"),
+        body: {
+          "id" : user.id,
+        });
+
+    // var responseData = json.decode(res.body);
+    Navigator.of(context).pushNamed('/login');
   }
 
 // class ProfilePage extends StatelessWidget {
@@ -474,9 +496,90 @@ class _ProfilePageState extends State<ProfileContent> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 30,
-                  )
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      print(user.userType);
+                      if(user.userType != "Manufacturer"){
+                        return Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                          width: MediaQuery.of(context).size.width,
+                          child: DecoratedBox(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              gradient: LinearGradient(colors: [
+                                Color.fromRGBO(75, 100, 160, 1.0),
+                                Color.fromRGBO(19, 59, 78, 1.0),
+
+                                //add more colors
+                              ]),
+                              // borderRadius: BorderRadius.circular(30),
+                              // boxShadow: <BoxShadow>[
+                              // BoxShadow(
+                              //     color: Color.fromRGBO(0, 0, 0, 0.57), //shadow for button
+                              //     blurRadius: 5) //blur radius of shadow
+                              //]
+                            ),
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.transparent,
+                                  onSurface: Colors.transparent,
+                                  shadowColor: Colors.transparent,
+                                  //make color or elevated button transparent
+                                ),
+                                onPressed:() => {
+                                  QuickAlert.show(
+                                      context: context,
+                                      type: QuickAlertType.error,
+                                      barrierDismissible: true,
+                                      cancelBtnText: 'Cancel',
+                                      confirmBtnText: 'Yes',
+                                      title: 'Are you sure?',
+                                      text: 'Delete your account',
+                                      textColor: Colors.red,
+
+                                      // customAsset: Icon(Icons.login_outlined),
+                                      onConfirmBtnTap: () async {
+                                        onDelete();
+                                        // SharedPreferences prefs = await SharedPreferences.getInstance();
+                                        // prefs.clear();
+                                        // Navigator.pushAndRemoveUntil(
+                                        //     context,
+                                        //     MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+                                        //     ModalRoute.withName(
+                                        //         '/') // Replace this with your root screen's route name (usually '/')
+                                        // );
+                                      },
+                                      onCancelBtnTap: () {
+                                        Get.back();
+                                      }
+                                  ),
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 18,
+                                    bottom: 18,
+                                  ),
+                                  child: Text("Delete Account",
+                                    style: const TextStyle(fontFamily: 'Poppins_Bold'),
+                                  ),
+                                )
+                            ),
+                          )
+
+                        //   buttonStyle1("Delete Account ", () {
+                        //     onDelete();
+                        //   }
+                        // )
+
+                        );
+                      }else{
+                        return Container();
+                      }
+                    },
+                  ),
+                  // SizedBox(
+                  //   height: 30,
+                  // )
 
                   //   Column(
                   //   children:[

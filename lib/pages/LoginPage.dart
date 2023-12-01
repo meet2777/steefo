@@ -178,6 +178,15 @@ class _loginPageState extends State<LoginContent> {
             backgroundColor: Colors.orangeAccent,
             textColor: Colors.white);
       }
+       else if (responseData['userStatus'] == 'Deactivate') {
+         Fluttertoast.showToast(
+             msg: 'Your Account was deleted. Please register again',
+             toastLength: Toast.LENGTH_LONG,
+             gravity: ToastGravity.BOTTOM,
+             timeInSecForIosWeb: 5,
+             backgroundColor: Colors.orangeAccent,
+             textColor: Colors.white);
+       }
       else {
         Fluttertoast.showToast(
             msg: 'Your Request Has Been Rejected.\n Please Register Again',
@@ -350,7 +359,8 @@ class _loginPageState extends State<LoginContent> {
                                 () => {
                                       if (_formKey.currentState!.validate())
                                         {onLogin(email.text, pw.text)}
-                                    }))),
+                                    }))
+                    ),
 
                     //-----------------------------Register Now-------------------------
                     Container(
