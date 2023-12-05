@@ -351,7 +351,7 @@ class _ProfilePageState extends State<ProfileContent> {
                               // Padding(padding: EdgeInsets.only(right: 20)),
                               Text(user.email!,
                                   style: TextStyle(
-                                      fontFamily: "Poppins", fontSize: 20)),
+                                      fontFamily: "Poppins", fontSize: 18)),
                             ],
                           ),
                         )

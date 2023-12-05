@@ -95,7 +95,7 @@ class _loginPageState extends State<LoginContent> {
     super.dispose();
   }
 
-  bool rememberMe = true;
+  bool rememberMe = false;
    onLogin(String email, String pw) async {
     //  print("before login ");
     // if(token1 != null){
@@ -183,7 +183,7 @@ class _loginPageState extends State<LoginContent> {
              msg: 'Your Account was deleted. Please register again',
              toastLength: Toast.LENGTH_LONG,
              gravity: ToastGravity.BOTTOM,
-             timeInSecForIosWeb: 5,
+             timeInSecForIosWeb: 3,
              backgroundColor: Colors.orangeAccent,
              textColor: Colors.white);
        }
