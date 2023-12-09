@@ -742,14 +742,14 @@ class _HomePageState extends State<HomeContent> {
                                       // ),
                                       // alignment: Alignment.bottomRight,
                                       child: IconButton(
-                                    onPressed: () async {
-                                      _saveImage(context, i);
-                                    },
-                                    iconSize: 35,
-                                    color: Colors.black,
-                                    // style: ButtonStyle(iconSize: ),
-                                    icon: Icon(Icons.file_download_outlined,
-                                        color: Color.fromRGBO(19, 59, 78, 1.0)),
+                                        onPressed: () async {
+                                          _saveImage(context, i);
+                                        },
+                                        iconSize: 35,
+                                        color: Colors.black,
+                                        // style: ButtonStyle(iconSize: ),
+                                          icon: Icon(Icons.file_download_outlined,
+                                            color: Color.fromRGBO(19, 59, 78, 1.0)),
                                   )),
                                   alignment: Alignment.bottomRight,
                                 );
