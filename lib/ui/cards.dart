@@ -270,18 +270,45 @@ Widget orderCard(BuildContext context, Order order,id) {
                               style: TextStyle(color: Colors.white),
                             ));
                       } else {
-                        return Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.lightBlueAccent,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Text(
-                              order.status!,
-                              style: TextStyle(color: Colors.white),
-                            ));
+                        return LayoutBuilder(
+                            builder: (context, constraints) {
+                              if(order.orderType == "Use Lumpsum"){
+                                return  Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        "Ordered from lumpsum",
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(right: 10),
+                                        child: Text("Order id: " + order.orderid.toString(),
+                                          style: TextStyle(
+                                            color: Colors.grey,
+
+                                          ),),
+                                      ),
+                                    ],
+                                  ),
+                                  //padding: EdgeInsets.only(right: 5),
+                                );
+                              }else{return Container();}
+                            }
+                        );
+                          // Container(
+                            // padding: EdgeInsets.symmetric(
+                            //     horizontal: 5, vertical: 5),
+                            // decoration: BoxDecoration(
+                            //     color: Colors.lightBlueAccent,
+                            //     borderRadius: BorderRadius.only(
+                            //         topLeft: Radius.circular(10),
+                            //         bottomLeft: Radius.circular(10))),
+                            // child: Text(
+                            //   order.status!,
+                            //   style: TextStyle(color: Colors.white),
+                            // )
+                        // );
                       }
                     })),
 
@@ -384,23 +411,23 @@ Widget orderCard(BuildContext context, Order order,id) {
                         //padding: EdgeInsets.only(right: 5),
                       ),
 
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          if(order.orderType == "Use Lumpsum"){
-                            return  Container(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Ordered from lumpsum",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ],
-                              ),
-                              //padding: EdgeInsets.only(right: 5),
-                            );
-                            }else{return Container();}
-                            }
-                      )
+                      // LayoutBuilder(
+                      //   builder: (context, constraints) {
+                      //     if(order.orderType == "Use Lumpsum"){
+                      //       return  Container(
+                      //         child: Row(
+                      //           children: [
+                      //             Text(
+                      //               "Ordered from lumpsum",
+                      //               style: TextStyle(color: Colors.grey),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         //padding: EdgeInsets.only(right: 5),
+                      //       );
+                      //       }else{return Container();}
+                      //       }
+                      // )
 
                     ],
                   ),

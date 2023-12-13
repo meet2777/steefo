@@ -1812,51 +1812,51 @@ class _EditOrderPageState extends State<EditOrderContent> {
 
                     //-------------------------deliveryDate------------------------------------
 
-                    Container(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                        // padding: EdgeInsets.all(15),
-                        // height: MediaQuery.of(context).size.width / 3,
-                        child: Center(
-                            child: TextFormField(
-                              // key: field10Key,
-                              // focusNode: focusNode10,
-                              controller: deliveryDate, //editing controller of this TextField
-                              decoration: InputDecoration(
-                                suffixIcon: Icon(Icons.calendar_today,color: Colors.grey,),
-                                // icon: Icon(Icons.calendar_today,color: Colors.grey,), //icon of text field
-                                hintText: "Delivery Date",
-                                hintStyle: TextStyle(fontSize: 20),
-                                border: OutlineInputBorder(
-                                  // borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide.none),
-                                filled: true,
-                                fillColor: Color.fromRGBO(233, 236, 239,
-                                    0.792156862745098),
-                                //label text of field
-                              ),
-                              readOnly: true,
-                              //set it true, so that user will not able to edit text
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
-                                    //DateTime.now() - not to allow to choose before today.
-                                    lastDate: DateTime(2100));
-                                if (pickedDate != null) {
-                                  print(
-                                      pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                  String formattedDate =
-                                  DateFormat('dd-MM-yyyy').format(pickedDate);
-                                  print(
-                                      formattedDate); //formatted date output using intl package =>  2021-03-16
-                                  setState(() {
-                                    deliveryDate.text =
-                                        formattedDate; //set output date to TextField value.
-                                  });
-                                } else {}
-                              },
-                            ))),
+                    // Container(
+                    //     padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    //     // padding: EdgeInsets.all(15),
+                    //     // height: MediaQuery.of(context).size.width / 3,
+                    //     child: Center(
+                    //         child: TextFormField(
+                    //           // key: field10Key,
+                    //           // focusNode: focusNode10,
+                    //           controller: deliveryDate, //editing controller of this TextField
+                    //           decoration: InputDecoration(
+                    //             suffixIcon: Icon(Icons.calendar_today,color: Colors.grey,),
+                    //             // icon: Icon(Icons.calendar_today,color: Colors.grey,), //icon of text field
+                    //             hintText: "Delivery Date",
+                    //             hintStyle: TextStyle(fontSize: 20),
+                    //             border: OutlineInputBorder(
+                    //               // borderRadius: BorderRadius.circular(20),
+                    //                 borderSide: BorderSide.none),
+                    //             filled: true,
+                    //             fillColor: Color.fromRGBO(233, 236, 239,
+                    //                 0.792156862745098),
+                    //             //label text of field
+                    //           ),
+                    //           readOnly: true,
+                    //           //set it true, so that user will not able to edit text
+                    //           onTap: () async {
+                    //             DateTime? pickedDate = await showDatePicker(
+                    //                 context: context,
+                    //                 initialDate: DateTime.now(),
+                    //                 firstDate: DateTime.now(),
+                    //                 //DateTime.now() - not to allow to choose before today.
+                    //                 lastDate: DateTime(2100));
+                    //             if (pickedDate != null) {
+                    //               print(
+                    //                   pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                    //               String formattedDate =
+                    //               DateFormat('dd-MM-yyyy').format(pickedDate);
+                    //               print(
+                    //                   formattedDate); //formatted date output using intl package =>  2021-03-16
+                    //               setState(() {
+                    //                 deliveryDate.text =
+                    //                     formattedDate; //set output date to TextField value.
+                    //               });
+                    //             } else {}
+                    //           },
+                    //         ))),
 
                     // Container(
                     //   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -2134,7 +2134,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                                                   ? (
                                                                   (int.parse(lumpsumList[index].basePrice!) +
                                                                       tCost + szpct) *
-                                                                      int.parse(qty
+                                                                      double.parse(qty
                                                                           .text))
                                                                   .toString()
                                                                   : ((int.parse(lumpsumList[index]
@@ -2313,8 +2313,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
 
                                           setState(() {
                                             listOfColumns.remove(element);
-                                            // totalQuantity = totalQuantity -
-                                            //     int.parse(element["Qty"]);
+                                            totalQuantity = totalQuantity -
+                                                double.parse(element["Qty"]);
                                           });
                                         },
                                       ),

@@ -61,10 +61,8 @@ class _purchasesState extends State<purchases> {
         req.orderid = responseData["data"][i]["orderid"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
         req.org_name = responseData["data"][i]["orgName"];
-        req.user_name = responseData["data"][i]["firstName"] +
-            " " +
-            responseData["data"][i]["lastName"];
-             req.trans_type = responseData["data"][i]["transType"];
+        req.user_name = responseData["data"][i]["firstName"] + " " + responseData["data"][i]["lastName"];
+        req.trans_type = responseData["data"][i]["transType"];
         req.status = responseData["data"][i]["orderStatus"];
         req.region = responseData["data"][i]["region"];
         req.paymentTerm = responseData["data"][i]["paymentTerm"];

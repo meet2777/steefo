@@ -15,6 +15,7 @@ import '../Models/order.dart';
 import '../Models/user.dart';
 import '../ui/cards.dart';
 import '../ui/common.dart';
+import 'HomePage.dart';
 // import 'package:pdf/widgets.dart' as pw;
 
 // ignore: must_be_immutable
@@ -272,7 +273,7 @@ class _OrderPageState extends State<OrderPage> {
 
       setState(() {});
       flag = 1;
-      print(listOfColumns);
+      print("Specific Order items ${listOfColumns}");
       // print('usertype' + widget.order!.userType.toString());
       // print('usertype =======>>>>>' + user.userType.toString());
       // // print(lumpsum.qty_left);
@@ -571,52 +572,52 @@ class _OrderPageState extends State<OrderPage> {
                       },
                     ),
 
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        if (widget.order?.user_type == "Distributor") {
-                          return Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("Party Name:",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: "Poppins_Bold")),
-                                  Text(widget.order!.party_name.toString(),
-                                      style: const TextStyle(
-                                          fontSize: 15, fontFamily: "Poppins"))
-                                ],
-                              ));
-                        } else {
-                          return Container();
-                        }
-                      },
-                      // child: Container(
-                      //     padding: const EdgeInsets.all(10),
-                      //     decoration: BoxDecoration(
-                      //       // borderRadius: BorderRadius.circular(10),
-                      //       color: Colors.white,
-                      //     ),
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //       children: [
-                      //         const Text("Party Name:",
-                      //             style: TextStyle(
-                      //                 fontSize: 15,
-                      //                 fontFamily: "Poppins_Bold")),
-                      //         Text(widget.order!.party_name.toString(),
-                      //             style: const TextStyle(
-                      //                 fontSize: 15, fontFamily: "Poppins"))
-                      //       ],
-                      //     )
-                      // ),
-                    ),
+                    // LayoutBuilder(
+                    //   builder: (context, constraints) {
+                    //     if (widget.order?.user_type == "Distributor") {
+                    //       return Container(
+                    //           padding: const EdgeInsets.all(10),
+                    //           decoration: BoxDecoration(
+                    //             // borderRadius: BorderRadius.circular(10),
+                    //             color: Colors.white,
+                    //           ),
+                    //           child: Row(
+                    //             mainAxisAlignment:
+                    //                 MainAxisAlignment.spaceBetween,
+                    //             children: [
+                    //               const Text("Party Name:",
+                    //                   style: TextStyle(
+                    //                       fontSize: 15,
+                    //                       fontFamily: "Poppins_Bold")),
+                    //               Text(widget.order!.party_name.toString(),
+                    //                   style: const TextStyle(
+                    //                       fontSize: 15, fontFamily: "Poppins"))
+                    //             ],
+                    //           ));
+                    //     } else {
+                    //       return Container();
+                    //     }
+                    //   },
+                    //   // child: Container(
+                    //   //     padding: const EdgeInsets.all(10),
+                    //   //     decoration: BoxDecoration(
+                    //   //       // borderRadius: BorderRadius.circular(10),
+                    //   //       color: Colors.white,
+                    //   //     ),
+                    //   //     child: Row(
+                    //   //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   //       children: [
+                    //   //         const Text("Party Name:",
+                    //   //             style: TextStyle(
+                    //   //                 fontSize: 15,
+                    //   //                 fontFamily: "Poppins_Bold")),
+                    //   //         Text(widget.order!.party_name.toString(),
+                    //   //             style: const TextStyle(
+                    //   //                 fontSize: 15, fontFamily: "Poppins"))
+                    //   //       ],
+                    //   //     )
+                    //   // ),
+                    // ),
 
                     Container(
                         padding: const EdgeInsets.all(10),
@@ -1628,8 +1629,143 @@ class _OrderPageState extends State<OrderPage> {
                       ],
                     ),
                   );
-                } else {
-                  if (widget.order!.status == "Confirmed") {
+                } if (widget.order!.status == "Confirmed" && widget.order!.orderType == "Lump-sum") {
+
+                    return Column(
+                      children: [
+                        Container(
+                          // ------------------------Complate lumpsum order---------------------
+
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          child: GestureDetector(
+                            onTap: () async {
+                              await http.post(
+                                Uri.parse(
+                                    "http://steefotmtmobile.com/steefo/approveorder.php"),
+                                body: {
+                                  "decision": "Completed",
+                                  "order_id": widget.order?.order_id
+                                },
+                              );
+                                  () {
+                                // orderList.add(requestList[index]);
+                                // requestList.removeAt(index);
+                                // id = "none";
+                                // requestList.removeAt(index);
+                                // loadData();
+                                setState(() {});
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()
+                                    ));
+                                // Get.to(HomePage());
+                              }();
+                            },
+                            child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(left: 10, right: 10),
+                                height: 55,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 1.123,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    gradient: LinearGradient(colors: [
+                                      Color.fromRGBO(75, 100, 160, 1.0),
+                                      Color.fromRGBO(19, 59, 78, 1.0),
+
+                                      //add more colors
+                                    ])),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 18,
+                                    bottom: 18,
+                                  ),
+                                  child: Text(
+                                    "Complete Order",
+                                    style: const TextStyle(
+                                        fontFamily: 'Poppins_Bold', color: Colors.white),
+                                  ),
+                                )),
+                          ),
+                          // buttonStyle("View Challan", () {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => ChallanListPage(
+                          //                 order: widget.order!,
+                          //               )));
+                          // }),
+                        ),
+
+                        // Container(
+                        //   width: MediaQuery.of(context).size.width,
+                        //   padding: const EdgeInsets.symmetric(
+                        //       vertical: 10, horizontal: 20),
+                        //   child: buttonStyle("View Challan", () {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => ChallanListPage(
+                        //                   order: widget.order!,
+                        //                 )));
+                        //   }),
+                        // ),
+                        GestureDetector(
+                          onTap: () async {
+                            await http.post(
+                              Uri.parse(
+                                  "http://steefotmtmobile.com/steefo/approveorder.php"),
+                              body: {
+                                "decision": "Canceled",
+                                "order_id": widget.order!.order_id!
+                              },
+                            );
+                            widget.order!.status = "Canceled";
+                            setState(() {});
+                            Navigator.of(context).pushNamed('/orders');
+                            // Navigator.pop(context);
+                            //Get.back();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 20, right: 20),
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              height: 40,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.cancel_outlined,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text("Cancel Order",
+                                      style: const TextStyle(
+                                          fontFamily: 'Poppins_Bold',
+                                          color: Colors.white)),
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                  color: Colors.redAccent,
+                                  borderRadius: BorderRadius.circular(10)),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    );
+                  } if(widget.order!.status == "Confirmed" && widget.order!.orderType != "Lump sum"){
                     return Column(
                       children: [
                         Container(
@@ -1689,28 +1825,28 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
                       ],
                     );
-                  } else {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      child: buttonStyle("View Challan", () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChallanListPage(
-                                      order: widget.order!,
-                                    )));
-                      }),
-                    );
-                  }
+
+                  } if(widget.order!.status == "Completed" && widget.order!.orderType == "With Size") {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                    child: buttonStyle("View Challan", () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChallanListPage(
+                                order: widget.order!,
+                              )));
+                    }),
+                  );
+                }else {
+                  return Container();
                 }
-              }),
+                }
+              ),
             ]),
           ),
         ),
