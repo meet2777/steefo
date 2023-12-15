@@ -193,7 +193,9 @@ class _OrderPageState extends State<OrderPage> {
             "Name": responseData3["data"][i]["name"],
             "Qty": responseData3["data"][i]["qty"],
             "Price": responseData3["data"][i]["price"]
+
           });
+          print("Specific Order  ${listOfColumns}");
         }
         listOfColumns.add({
           "Sr_no": " ",
@@ -1828,7 +1830,7 @@ class _OrderPageState extends State<OrderPage> {
                       ],
                     );
 
-                  } if(widget.order!.status == "Completed" && widget.order!.orderType == "With Size") {
+                  } if(widget.order!.status == "Completed" && widget.order!.orderType != "Lump-sum") {
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(

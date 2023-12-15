@@ -917,7 +917,7 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                       alignment: Alignment.topLeft,
                       padding: EdgeInsets.only(top: 10, left: 10),
                       child: Text(
-                        order.user_name!.toUpperCase(),
+                        order.org_name!.toUpperCase(),
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 18,

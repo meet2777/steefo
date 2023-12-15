@@ -237,6 +237,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
         "vehicle_number": vehicle_number.text,
         "lr_number": lr_number.text,
         "ch_number": ch_number.text,
+        "generated_time": DateTime.now().toString(),
       },
     );
     var responseData = jsonDecode(res.body);
@@ -330,7 +331,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                     focusNode: focusNode1,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter Your Name.';
+                        return 'Please enter Transporter Name.';
                       }
                       return null;
                     },
@@ -425,7 +426,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                     // focusNode: focusNode3,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter a lr Number.';
+                        return 'Please enter a Challan Number.';
                       }
                       return null;
                     },
@@ -561,7 +562,7 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                       ),
                       child: Container(
                           height: 200,
-
+                      margin: const EdgeInsets.fromLTRB(5, 5, 5, 0),
                           width: MediaQuery.of(context).size.width,
                           // padding: EdgeInsets.only(
                           //     top: 10, bottom: 10, left: 10, right: 10),
@@ -575,38 +576,62 @@ class _GenerateChallanPageState extends State<GenerateChallanContent> {
                           //       top: 10, bottom: 10, left: 10, right: 10),
                           child: SingleChildScrollView(
                               scrollDirection: Axis.vertical,
-                              child: Center(
-                                child: DataTable(
-                                  // border: TableBorder.all(borderRadius: BorderRadius.circular(20)),
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromRGBO(
-                                        233, 236, 239, 0.792156862745098),
+                              child: DataTable(
+                                border: TableBorder.all(
+                                    width: 1, color: Colors.black26),
+                                columnSpacing:
+                                MediaQuery.of(context).size.width / 25,
+                                //border: TableBorder.all(borderRadius: BorderRadius.circular(20)),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20)),
 
-                                    // borderRadius: BorderRadius.circular(20)
-                                  ),
+                                // border: TableBorder.all(borderRadius: BorderRadius.circular(20)),
+                                // decoration: BoxDecoration(
+                                //   color: const Color.fromRGBO(
+                                //       233, 236, 239, 0.792156862745098),
+                                //
+                                //   // borderRadius: BorderRadius.circular(20)
+                                // ),
 
-                                  columns: const [
-                                    DataColumn(label: Text('Sr No')),
-                                    DataColumn(label: Text('HSN/Name')),
-                                    DataColumn(label: Text('Quantity(Tons)')),
-                                  ],
-                                  rows:
-                                      listOfColumns // Loops through dataColumnText, each iteration assigning the value to element
-                                          .map(
-                                            ((element) => DataRow(
-                                                  cells: <DataCell>[
-                                                    DataCell(Text(element[
-                                                        "Sr_no"]!)), //Extracting from Map element the value
-                                                    DataCell(
-                                                        Text(element["Name"]!)),
-                                                    DataCell(
-                                                        Text(element["Qty"])),
-                                                  ],
-                                                )
-                                            ),
-                                          )
-                                          .toList(),
-                                ),
+                                columns: const [
+                                  DataColumn(label: Text('Sr No')),
+                                  DataColumn(label: Text('HSN/Name')),
+                                  DataColumn(label: Text('Quantity(Tons)')),
+                                  DataColumn(label: Text(' '))
+                                ],
+                                rows:
+                                    listOfColumns // Loops through dataColumnText, each iteration assigning the value to element
+                                        .map(
+                                          ((element) => DataRow(
+                                                cells: <DataCell>[
+                                                  DataCell(Text(element[
+                                                      "Sr_no"]!)), //Extracting from Map element the value
+                                                  DataCell(
+                                                      Text(element["Name"]!)),
+                                                  DataCell(
+                                                      Text(element["Qty"])),
+                                                  DataCell(
+                                                      Container(
+                                                        child: IconButton(
+                                                          icon: Icon(Icons.delete_rounded,
+                                                              color: Colors.red),
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              listOfColumns.remove(element);
+                                                              // totalQuantity = (totalQuantity -
+                                                              //     double.parse(element["Qty"]!)
+                                                              // );
+                                                            });
+                                                          },
+                                                        ),
+                                                        width: 25,
+                                                      )),
+
+                                                ],
+                                              )
+                                          ),
+                                        )
+                                        .toList(),
                               )))),
                 ],
               ),

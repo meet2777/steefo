@@ -2386,7 +2386,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                                   ? (
                                                                   (int.parse(lumpsumList[index].basePrice!) +
                                                                               tCost + szpct + przpct + grdpct) *
-                                                                          int.parse(qty
+                                                                          double.parse(qty
                                                                               .text))
                                                                       .toString()
                                                                   : ((int.parse(lumpsumList[index]
@@ -2400,7 +2400,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                                 .qty_left = (double.parse(
                                                                         lumpsumList[index]
                                                                             .qty_left!) -
-                                                                    int.parse(qty
+                                                                    double.parse(qty
                                                                         .text))
                                                                 .toString();
 
@@ -2549,14 +2549,15 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                           width: 70,
                                         ),
                                         alignment: Alignment.center)),
-                                    DataCell(Container(
-                                      child: IconButton(
-                                        icon: Icon(Icons.delete_rounded,
-                                            color: Colors.red),
-                                        onPressed: () {
-                                          setState(() {
-                                            listOfColumns.remove(element);
-                                            totalQuantity = (totalQuantity -
+                                    DataCell(
+                                        Container(
+                                          child: IconButton(
+                                            icon: Icon(Icons.delete_rounded,
+                                                color: Colors.red),
+                                            onPressed: () {
+                                              setState(() {
+                                                listOfColumns.remove(element);
+                                              totalQuantity = (totalQuantity -
                                                 double.parse(element["Qty"]!));
                                           });
                                         },
