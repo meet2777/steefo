@@ -54,6 +54,9 @@ class HomeContent extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomeContent> {
+
+  NotificationServices notificationServices = NotificationServices();
+
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   String? token1;
 
@@ -233,7 +236,7 @@ class _HomePageState extends State<HomeContent> {
     }
   }
 
-  NotificationServices notificationServices = NotificationServices();
+  // NotificationServices notificationServices = NotificationServices();
 
   @override
   void initState() {
@@ -241,6 +244,7 @@ class _HomePageState extends State<HomeContent> {
     getRegReqs();
     //  loadrequestlistlength();
     notificationServices.requestNotificationPermission();
+    notificationServices.forgroundMessage();
     notificationServices.getDeviceToken().then((value) {
       if (kDebugMode) {
         print('device token');
