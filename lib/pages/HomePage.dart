@@ -31,9 +31,9 @@ import '../Models/user.dart';
 import 'LoginPage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'OrderPage.dart';
-import 'addItem.dart';
+import 'AddItem.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:http/http.dart' as http;
+
 
 class HomePage extends StatelessWidget {
   @override
@@ -46,7 +46,6 @@ class HomePage extends StatelessWidget {
 class HomeContent extends StatefulWidget {
   // static const _url =
   //     'https://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg';
-
   const HomeContent({super.key});
   final selected = 0;
   @override
@@ -164,33 +163,6 @@ class _HomePageState extends State<HomeContent> {
       setState(() {});
     }
 
-    // final res = await http.post(
-    //   Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
-    //   body: {"order_id": id3},
-    // );
-    // var responseData = jsonDecode(res.body);
-    // //print(responseData);
-    //
-    // for (int i = 0; i < responseData["data"].length; i++) {
-    //   Lumpsum lumpsum = Lumpsum();
-    //   lumpsum.order_id = responseData["data"][i]["order_id"];
-    //   lumpsum.name = responseData["data"][i]["name"];
-    //   lumpsum.qty = responseData["data"][i]["qty"];
-    //   lumpsum.qty_left = responseData["data"][i]["qty_left"];
-    //   lumpsum.basePrice = responseData["data"][i]["basePrice"];
-    //   lumpsum.price = responseData["data"][i]["price"];
-    //   lumpsum.status = responseData["data"][i]["orderStatus"];
-    //   print("remaining qty"+ lumpsum.qty_left.toString());
-    //   //print(req);
-    //   // if (req.status != "Rejected") {
-    //   //   if (id3 == req.user_id) {
-    //   //     purchaseOrderList.add(req);
-    //   //   }
-    //   //   if (id3 == req.reciever_id) {
-    //   //     salesOrderList.add(req);
-    //   //   }
-    //   // }
-    // }
   }
 
   var flag = 0;
@@ -263,18 +235,6 @@ class _HomePageState extends State<HomeContent> {
     // ]);
   }
 
-  // @override
-  // dispose() {
-  //   SystemChrome.setPreferredOrientations([
-  //     DeviceOrientation.portraitUp,
-  //     DeviceOrientation.portraitDown,
-  //   ]);
-  //   super.dispose();
-  // }
-
-
-
-
   @override
   Widget build(BuildContext context) {
     loadusertype();
@@ -298,9 +258,7 @@ class _HomePageState extends State<HomeContent> {
           //     :
         RefreshIndicator(
                 onRefresh: refresh,
-
-                child:
-                HomePageBody(),
+                child: HomePageBody(),
           ),
           floatingActionButton: LayoutBuilder(builder: (context, constraints) {
             if (user_type != "Manufacturer") {
@@ -318,7 +276,8 @@ class _HomePageState extends State<HomeContent> {
             } else {
               return Container();
             }
-          }),
+           }
+          ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: StylishBottomBar(
@@ -582,36 +541,17 @@ class _HomePageState extends State<HomeContent> {
         // lumpsumList.add(l);
       }
 
-      // final res2 = await http.post(
-      //   Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
-      //   body: {"order_id": id!},
-      // );
-      // var responseData2 = jsonDecode(res2.body);
-      // // print("lumpsum order"+responseData2);
-      // for (int i = 0; i < responseData2["data"].length; i++) {
-      //   Lumpsum lumpsum = Lumpsum();
-      //   lumpsum.ls_id = responseData2["data"][i]["ls_id"];
-      //   lumpsum.order_id = responseData2["data"][i]["order_id"];
-      //   lumpsum.name = responseData2["data"][i]["name"];
-      //   lumpsum.qty = responseData2["data"][i]["qty"];
-      //   lumpsum.qty_left = responseData2["data"][i]["qty_left"];
-      //   lumpsum.basePrice = responseData2["data"][i]["basePrice"];
-      //   lumpsum.price = responseData2["data"][i]["price"];
-      //   lumpsum.status = responseData2["data"][i]["orderStatus"];
-      //   print("remaining qty"+ lumpsum.ls_id.toString());
-      // }
-      setState(() {});
+      if (!mounted) return;
     }
+      setState(() {});
   }
   double timeDeletion = 1.0;
-
 
 
   var price = 999;
   bool light = true;
   Widget HomePageBody() {
     loadData();
-
     // print(NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
     //     .format(1000000000));
     return Container(
@@ -701,7 +641,8 @@ class _HomePageState extends State<HomeContent> {
                                       fit: BoxFit.cover,
                                       "http://steefotmtmobile.com/steefo/carousel/" +
                                           responseData1['images'][i]['name']),
-                                )),
+                                )
+                            ),
                             LayoutBuilder(builder: (context, constraints) {
                               if (user_type == "Manufacturer") {
                                 return Align(
@@ -757,32 +698,7 @@ class _HomePageState extends State<HomeContent> {
                                   )),
                                   alignment: Alignment.bottomRight,
                                 );
-                                //     Container(
-                                //       alignment: Alignment.topRight,
-                                //       padding: EdgeInsets.only(right: 5),
-                                //       child: ElevatedButton(onPressed: () async{
-                                //         _saveImage(context,i);
-                                //       // String url= "http://urbanwebmobile.in/steffo/carousel/"+
-                                //       //     responseData1['images'][i]['name'];
-                                //       //
-                                //       // final tempDir = await getTemporaryDirectory();
-                                //       // final path = '${tempDir.path}';
-                                //       // await Dio().download(url,path);
-                                //       // await GallerySaver.saveImage(path);
-                                //       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text("downloaded")));
-                                //       } ,
-                                //
-                                //           style: ElevatedButton.styleFrom(
-                                //
-                                //             textStyle: TextStyle(fontSize: 18),
-                                //             primary: Color.fromRGBO(19, 59, 78, 1.0),
-                                //             onPrimary: Colors.white,
-                                //             // backgroundColor: Colors.transparent
-                                //             // onSurface: Colors.amber,
-                                //           ),
-                                //         child: Text("Download")
-                                // ),
-                                //     );
+
                               }
                             }),
                             LayoutBuilder(builder: (context, constraints) {
@@ -855,130 +771,12 @@ class _HomePageState extends State<HomeContent> {
             height: 0,
           ),
 
-          // ElevatedButton(onPressed: () async{
-          //   String url= "http://urbanwebmobile.in/steffo/carousel/"+
-          //       responseData1['images'][i]['name'];
-          //
-          //   final tempDir = await getTemporaryDirectory();
-          //   final path = '${tempDir.path}/myfile.jpg';
-          //   await Dio().download(url,path);
-          //
-          //   await GallerySaver.saveImage(path);
-          // } ,
-          //     child: Text("Download")),
 
-          // LayoutBuilder(builder: (context, constraints) {
-          //   if (imagesFiles!.length > 0) {
-          //     print(responseData1);
-          //     return Container(
-          //       decoration: BoxDecoration(
-          //           color: Colors.grey,
-          //           borderRadius: BorderRadius.circular(10)),
-          //       child: DotsIndicator(
-          //         dotsCount: responseData1['images'].length == 0
-          //             ? 1
-          //             : responseData1['images'].length,
-          //         position: currentIndex.toDouble(),
-          //         decorator: DotsDecorator(
-          //           spacing: EdgeInsets.all(0),
-          //           activeColor: responseData1['images'].length == 0
-          //               ? Colors.transparent
-          //               : Colors.black,
-          //           color: Colors.grey,
-          //         ),
-          //       ),
-          //     );
-          //   } else {
-          //     return Container();
-          //   }
-          // }),
-          // Align(
-          //   alignment: Alignment.center,
-          //   child: Container(
-          //     height: 05,
-          //     width: 40,
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(10),
-          //       color: Colors.grey,
-          //     ),
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: 10,
-          // ),
 
-          //carousel end//////////////////////////////////////////////////
-          // baserate(),
-
-          //enable sales start
-          // LayoutBuilder(builder: (context, constraints) {
-          //   if (user_type == "Manufacturer") {
-          //     return Column(
-          //       mainAxisAlignment: MainAxisAlignment.end,
-          //       children: [
-          //         Container(
-          //             height: 50,
-          //             padding: EdgeInsets.only(left: 10, right: 10),
-          //             decoration: BoxDecoration(
-          //               color: light
-          //                   ? Color(0xFFB6E388)
-          //                   : Colors.grey.shade700,
-          //               //color: Color(0xFFB6E388),
-          //               borderRadius: BorderRadius.circular(10),
-          //             ),
-          //             child: Row(
-          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //               children: [
-          //                 Text(
-          //                   "Enable Sales",
-          //                   style: TextStyle(
-          //                       color: light ? Colors.black : Colors.white,
-          //                       fontWeight: FontWeight.w700,
-          //                       fontSize: 22),
-          //                 ),
-          //                 SizedBox(
-          //                   width: 10,
-          //                 ),
-          // FlutterSwitch(
-          //   borderRadius: 15,
-          //   showOnOff: true,
-          //   //  toggleSize: 50,
-          //   onToggle: (bool value) async {
-          //     light = value;
-          //     setState(() {});
-          //     var res = await http.post(
-          //         Uri.parse(
-          //             "http://urbanwebmobile.in/steffo/setsale.php"),
-          //         body: {"status": value.toString()});
-          //   },
-          //   // This bool value toggles the switch.
-          //   value: light,
-          //   inactiveColor: Colors.black,
-          //   activeColor: Colors.white,
-          //   activeToggleColor: Colors.black,
-          //   inactiveTextColor: Colors.white,
-          //   activeTextColor: Colors.black,
-          // )
-          //               ],
-          //             )),
-          //         //enable sales end
-          //         //price bar start
-
-          //         SizedBox(
-          //           height: light ? 10 : 0,
-          //         ),
-          //         //price bar end
-
-          //         //admin control button start
-          //       ],
-          //     );
-          //   } else {
-          //     return Container();
-          //   }
-          // }),
           SizedBox(
             height: 10,
           ),
+
           LayoutBuilder(builder: (context, constraint) {
             if (user_type == "challan") {
               return Container(
@@ -1008,7 +806,8 @@ class _HomePageState extends State<HomeContent> {
                                 salesOrderList[index],
                                 //  qtyandprice[index],
                                 id,
-                              ));
+                              )
+                          );
                         } else
                           return Container();
                       },

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/UI/common.dart';
-import 'package:stefomobileapp/pages/dealerallorderspage.dart';
+import 'package:stefomobileapp/pages/DealerAllOrdersPage.dart';
 // import 'package:stefomobileapp/ui/cards.dart';
 import 'package:http/http.dart' as http;
 import '../Models/order.dart';
@@ -229,37 +229,9 @@ class DealerDetailState extends State<DealerDetailContent> {
                     ),
                   ],
                 )),
-            // Align(
-            //   alignment: Alignment.topRight,
-            //   child: Container(
-            //     margin: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-            //     decoration: BoxDecoration(
-            //         color: Colors.lightBlueAccent,
-            //         borderRadius: BorderRadius.circular(5)),
-            //     child: Text(
-            //       widget.user.userType!,
-            //       style: TextStyle(color: Colors.white),
-            //     ),
-            //   ),
-            // )
           ],
         ),
-        // Divider(
-        //   color: Colors.blueGrey,
-        // ),
-        // Container(
-        //   // color: Colors.amber,
-        //   alignment: Alignment.center,
-        //   child: Text(
-        //     "ORDERS",
-        //     style: TextStyle(
-        //         color: Color.fromRGBO(19, 59, 78, 1.0),
-        //         fontSize: 22,
-        //         fontWeight: FontWeight.bold),
-        //   ),
-        //   //  padding: EdgeInsets.only(bottom: 5),
-        // ),
+
 
         Expanded(
           //  flex: 1,
@@ -271,15 +243,7 @@ class DealerDetailState extends State<DealerDetailContent> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 10),
-                  //   child: Text(
-                  //     "Orders",
-                  //     style: GoogleFonts.poppins(
-                  //         textStyle: TextStyle(
-                  //             fontWeight: FontWeight.bold, fontSize: 20)),
-                  //   ),
-                  // ),
+
                   SizedBox(
                     height: 20,
                   ),
@@ -308,40 +272,7 @@ class DealerDetailState extends State<DealerDetailContent> {
                       ),
                     ),
                   ),
-                  // Divider(
-                  //   color: Colors.blueGrey,
-                  // ),
-                  // Container(
-                  //     alignment: Alignment.center,
-                  //     child: Text(
-                  //       "Orders",
-                  //       style: TextStyle(
-                  //           color: Color.fromRGBO(19, 59, 78, 1.0),
-                  //           fontSize: 20,
-                  //           fontWeight: FontWeight.bold),
-                  //     )),
-                  // SizedBox(
-                  //   height: 15,
-                  // ),
-                  // ListView.builder(
-                  //   itemCount: orderList.length,
-                  //   physics: const NeverScrollableScrollPhysics(),
-                  //   scrollDirection: Axis.vertical,
-                  //   shrinkWrap: true,
-                  //   itemBuilder: (context, index) {
-                  //     print(orderList.length);
-                  //     return InkWell(
-                  //         onTap: () {
-                  //           Navigator.push(
-                  //               context,
-                  //               MaterialPageRoute(
-                  //                   builder: (context) =>
-                  //                       OrderDetails(order: orderList[index])));
-                  //         },
-                  //         child: orderCard(
-                  //             context, orderList[index], widget.user.id));
-                  //   },
-                  // ),
+
                 ],
               ),
             ),

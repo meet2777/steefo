@@ -130,11 +130,11 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
             Material(
               color: Colors.white,
               child: TabBar(
-                indicatorColor: Colors.blueGrey,
+                indicatorColor: Colors.black,
                 indicator: BoxDecoration(
                     color: Colors.blueGrey,
                     borderRadius: BorderRadius.circular(10)),
-                labelColor: Colors.black,
+                labelColor: Colors.white,
                 isScrollable: true,
                 tabs: [
                   Tab(
@@ -199,7 +199,7 @@ class _dealerallorderpageState extends State<dealerallorderpage> {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Container(
-        padding: EdgeInsets.only(left: 10, right: 10),
+        // padding: EdgeInsets.only(left: 10, right: 10),
         // height: 100,
         // color: Colors.amber,
         child: ListView.builder(

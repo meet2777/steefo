@@ -90,9 +90,6 @@ class _ChallanListPageState extends State<ChallanListContent> {
       isDataLoaded = true;
       setState(() {});
 
-
-
-
     // final SharedPreferences prefs = await SharedPreferences.getInstance();
     id = await prefs.getString('id');
     if (flag == 0) {

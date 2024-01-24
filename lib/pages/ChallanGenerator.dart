@@ -69,31 +69,6 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
   String? id;
   String? userType;
   List<Challan> challanList = [];
-  // loadChallanList() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  //   id = await prefs.getString('id');
-  //   if (flag == 0) {
-  //     final res = await http.post(
-  //       Uri.parse("http://urbanwebmobile.in/steffo/getchallanlist.php"),
-  //       body: {"order_id": widget.order.order_id},
-  //     );
-  //     var responseData = jsonDecode(res.body);
-  //     print(responseData);
-
-  //     for (int i = 0; i < responseData["data"].length; i++) {
-  //       Challan ch = Challan();
-  //       ch.order_id = responseData["data"][i]["order_id"];
-  //       ch.challan_id = responseData["data"][i]["challan_id"].toString();
-  //       ch.transporter_name = responseData["data"][i]["transporter_name"];
-  //       ch.vehicle_number = responseData["data"][i]["vehicle_number"];
-  //       ch.lr_number = responseData["data"][i]["lr_number"];
-  //       challanList.add(ch);
-  //     }
-  //     flag = 1;
-  //     setState(() {});
-  //   }
-  // }
 
   @override
   void initState() {
@@ -105,7 +80,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appbar("Specific", () {
+      appBar: appbar("Orders", () {
         // Get.to(HomePage());
       }),
       body: SingleChildScrollView(
@@ -114,24 +89,24 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
             selectedCardColor: Colors.blueGrey,
             selectedTitleColor: Colors.white,
             unSelectedTitleColor: Colors.black,
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             unSelectedCardColor: Colors.white,
             titleStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            tabBarItemExtend: ((MediaQuery.of(context).size.width) / 3),
+            tabBarItemExtend: ((MediaQuery.of(context).size.width) / 2),
             // tabBarItems: ["Orders", "Requests"],
             tabBarItems: [
-              "Requests",
-              " Confirmed Orders",
+              // "Requests",
+              "Confirmed Orders",
               "Completed"
             ],
             // tabViewItems: [OrdersPageBody(), OrderList1()]
             tabViewItems: [
-              Container(child: OrderList1()),
+              // Container(child: OrderList1()),
               Container(child: ConfirmedOrders()),
               Container(child: CompletedListBody())
-            ]),
+            ]
+        ),
       ),
     );
   }
@@ -147,6 +122,48 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
     id = await prefs.getString('id');
     print("sss" + "${id}");
 
+    final response = await http.post(
+      Uri.parse("http://steefotmtmobile.com/steefo/challanorder.php"),
+      body: {"id": id!},
+    );
+    var responseData1 = jsonDecode(response.body);
+    for (int i = 0; i < responseData1["data"].length; i++) {
+      Order or = Order();
+      or.orderStatus = responseData1["data"][i]["orderStatus"];
+      or.deliveryDate = responseData1["data"][i]["deliveryDate"];
+      or.totalPrice = responseData1["data"][i]["totalPrice"];
+      or.totalQuantity = responseData1["data"][i]["totalQuantity"];
+      or.reciever_id = responseData1["data"][i]["supplier_id"];
+      or.user_id = responseData1["data"][i]["user_id"];
+      or.user_mob_num = responseData1["data"][i]["mobileNumber"];
+      or.org_name = responseData1["data"][i]["orgName"];
+      or.user_name = responseData1["data"][i]["firstName"] + " " +
+          responseData1["data"][i]["lastName"];
+      or.status = responseData1["data"][i]["orderStatus"];
+      or.party_name = responseData1["data"][i]["partyName"];
+      or.party_address = responseData1["data"][i]["shippingAddress"];
+      or.pincode = responseData1["data"][i]["pincode"];
+      or.billing_address = responseData1["data"][i]["address"];
+      or.party_mob_num = responseData1["data"][i]["partyMobileNumber"];
+      or.PartygstNumber = responseData1["data"][i]["PartygstNumber"];
+      or.loading_type = responseData1["data"][i]["loadingType"];
+      or.trans_type = responseData1["data"][i]["transType"];
+      or.order_date = responseData1["data"][i]["createdAt"];
+      or.base_price = responseData1["data"][i]["basePrice"];
+      or.orderType = responseData1["data"][i]["orderType"];
+      or.order_id = responseData1["data"][i]["order_id"].toString();
+      or.date = responseData1["data"][i]["dateTime"];
+      //print(req);
+      if (or.status != "Rejected") {
+        if (id == or.user_id) {
+          purchaseOrderList.add(or);
+        }
+        if (id == or.reciever_id) {
+          salesOrderList.add(or);
+        }
+      }
+    }
+
     if (m != id) {
       final res = await http.post(
         Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
@@ -157,6 +174,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
 
       for (int i = 0; i < responseData["data"].length; i++) {
         Order req = Order();
+        req.orderStatus = responseData["data"][i]["orderStatus"];
         req.deliveryDate = responseData["data"][i]["deliveryDate"];
         req.totalPrice = responseData["data"][i]["totalPrice"];
         req.totalQuantity = responseData["data"][i]["totalQuantity"];
@@ -164,10 +182,8 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
         req.user_id = responseData["data"][i]["user_id"];
         req.user_mob_num = responseData["data"][i]["mobileNumber"];
         req.org_name = responseData["data"][i]["orgName"];
-        req.user_name = responseData["data"][i]["firstName"] +
-            " " +
+        req.user_name = responseData["data"][i]["firstName"] + " " +
             responseData["data"][i]["lastName"];
-
         req.status = responseData["data"][i]["orderStatus"];
         req.party_name = responseData["data"][i]["partyName"];
         req.party_address = responseData["data"][i]["shippingAddress"];
@@ -201,7 +217,6 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
   // String? userType;
 
   List<Order> requestList = [];
-
   Future<void> loadData1() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var m = id1;
@@ -315,7 +330,7 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                print("ordertype${salesOrderList[index].orderType}");
+                print("orderty  pe${salesOrderList[index].orderType}");
                 if (salesOrderList[index].orderType == "With Size" ||
                     salesOrderList[index].orderType == "Use Lumpsum") {
                   return GestureDetector(
@@ -550,12 +565,6 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Container(
-                //     child: const Text(
-                //   "Order Details",
-                //   textAlign: TextAlign.left,
-                //   style: TextStyle(fontFamily: "Poppins_Bold"),
-                // )),
                 TextButton(
                     onPressed: () async {
                       await http.post(
@@ -617,301 +626,12 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
     );
   }
 
-// Widget orderwidget1(int index) {
-//   return Center(
-//     // padding: const EdgeInsets.only(left: 10, right: 1),
-//     child: Container(
-//         decoration: const BoxDecoration(
-//           color: Color.fromRGBO(255, 255, 255, 0.5),
-//           // borderRadius: BorderRadius.circular(8)
-//         ),
-//         //  height: 50,
-//         //  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-//         padding: EdgeInsets.only(left: 10, right: 10),
-//         child: SingleChildScrollView(
-//           physics: BouncingScrollPhysics(),
-//           child: Column(
-//             children: [
-//               Container(
-//                 child: ListView.builder(
-//                   itemCount: salesOrderList.length,
-//                   physics: const NeverScrollableScrollPhysics(),
-//                   scrollDirection: Axis.vertical,
-//                   shrinkWrap: true,
-//                   itemBuilder: (context, index) {
-//                     return GestureDetector(
-//                         onTap: () {
-//                           Navigator.push(
-//                               context,
-//                               MaterialPageRoute(
-//                                   builder: (context) => OrderDetails(
-//                                       order: salesOrderList[index])));
-//                         },
-//                         child: orderCard(
-//                           context,
-//                           salesOrderList[index],
-//                           id,
-//                         )
-//                     );
-//                   },
-//                 ),
-//               ),
-//               SizedBox(
-//                 height: 30,
-//               ),
-//             ],
-//           ),
-//         )),
-//
-//     // Container(
-//     //   margin: EdgeInsets.only(top: 10),
-//     //   padding: const EdgeInsets.all(8.0),
-//     //   decoration: BoxDecoration(
-//     //     borderRadius: BorderRadius.circular(10.0),
-//     //     color: Colors.grey.shade100,
-//     //   ),
-//     //   child: Column(
-//     //     mainAxisAlignment: MainAxisAlignment.start,
-//     //     children: [
-//     //       SizedBox(
-//     //         height: 5,
-//     //       ),
-//     //       Text(
-//     //         requestList[index].user_name!.toUpperCase(),
-//     //         overflow: TextOverflow.ellipsis,
-//     //         maxLines: 3,
-//     //         style: GoogleFonts.poppins(
-//     //           fontSize: 20,
-//     //           fontWeight: FontWeight.bold,
-//     //         ),
-//     //       ),
-//     //       SizedBox(
-//     //         height: 5,
-//     //       ),
-//     //       Divider(color: Colors.orangeAccent),
-//     //       Container(
-//     //         child: Row(
-//     //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//     //           children: [
-//     //             Container(
-//     //               child: Text(
-//     //                 "Organization Name:",
-//     //                 style: TextStyle(fontFamily: "Poppins_Bold"),
-//     //               ),
-//     //               padding: EdgeInsets.symmetric(vertical: 5),
-//     //             ),
-//     //             Text(
-//     //               requestList[index].party_name!,
-//     //               overflow: TextOverflow.ellipsis,
-//     //               maxLines: 3,
-//     //             )
-//     //           ],
-//     //         ),
-//     //       ),
-//     //       Container(
-//     //         child: Row(
-//     //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//     //           children: [
-//     //             Text(
-//     //               "Order Date:",
-//     //               style: TextStyle(fontFamily: "Poppins_Bold"),
-//     //             ),
-//     //             Text(requestList[index].order_date!.substring(0, 10))
-//     //           ],
-//     //         ),
-//     //       ),
-//     //       Container(
-//     //         padding: EdgeInsets.symmetric(vertical: 5),
-//     //         child: Row(
-//     //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//     //           children: [
-//     //             Text(
-//     //               "Base Price:",
-//     //               style: TextStyle(fontFamily: "Poppins_Bold"),
-//     //             ),
-//     //             Text(requestList[index].base_price!)
-//     //           ],
-//     //         ),
-//     //       ),
-//     //       Row(
-//     //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//     //         children: [
-//     //           // Container(
-//     //           //     child: const Text(
-//     //           //   "Order Details",
-//     //           //   textAlign: TextAlign.left,
-//     //           //   style: TextStyle(fontFamily: "Poppins_Bold"),
-//     //           // )),
-//     //           TextButton(
-//     //               onPressed: () async {
-//     //                 await http.post(
-//     //                   Uri.parse(
-//     //                       "http://urbanwebmobile.in/steffo/approveorder.php"),
-//     //                   body: {
-//     //                     "decision": "Approved",
-//     //                     "order_id": requestList[index].order_id!
-//     //                   },
-//     //                 );
-//     //
-//     //                 () {
-//     //                   // orderList.add(requestList[index]);
-//     //                   // requestList.removeAt(index);
-//     //                   id = "none";
-//     //
-//     //                   setState(() {
-//     //                     print('setstate');
-//     //                     //  loadData();
-//     //                   });
-//     //                 }();
-//     //                 // Get.to(RequestPage());
-//     //               },
-//     //               child: GradientText(
-//     //                 style:
-//     //                     TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-//     //                 colors: [Colors.greenAccent, Colors.grey],
-//     //                 "Accept",
-//     //               )),
-//     //
-//     //           TextButton(
-//     //               onPressed: () async {
-//     //                 await http.post(
-//     //                   Uri.parse(
-//     //                       "http://urbanwebmobile.in/steffo/approveorder.php"),
-//     //                   body: {
-//     //                     "decision": "Denied",
-//     //                     "order_id": requestList[index].order_id!
-//     //                   },
-//     //                 );
-//     //                 () {
-//     //                   // orderList.add(requestList[index]);
-//     //                   // requestList.removeAt(index);
-//     //                   id = "none";
-//     //                   loadData();
-//     //                   setState(() {});
-//     //                   // Get.to(RequestPage());
-//     //                 }();
-//     //               },
-//     //               child: GradientText(
-//     //                 style:
-//     //                     TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-//     //                 colors: [Colors.redAccent, Colors.grey],
-//     //                 "Decline",
-//     //               ))
-//     //         ],
-//     //       ),
-//     //     ],
-//     //   ),
-//     // ),
-//   );
-// }
-
-//   Widget PurchaseOrderList() {
-//     return Container(
-//         decoration: const BoxDecoration(
-//           color: Color.fromRGBO(255, 255, 255, 0.5),
-//           // borderRadius: BorderRadius.circular(5)
-//         ),
-//         height: 50,
-//         margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-//         child: SingleChildScrollView(
-//           physics: BouncingScrollPhysics(),
-//           child: Column(
-//             children: [
-//               Container(
-//                 child: ListView.builder(
-//                   itemCount: purchaseOrderList.length,
-//                   physics: const NeverScrollableScrollPhysics(),
-//                   scrollDirection: Axis.vertical,
-//                   shrinkWrap: true,
-//                   itemBuilder: (context, index) {
-//                     return InkWell(
-//                         onTap: () {
-//                           Navigator.push(
-//                               context,
-//                               MaterialPageRoute(
-//                                   builder: (context) => OrderDetails(
-//                                       order: purchaseOrderList[index])));
-//                         },
-//                         child:
-//                             orderCard(context, purchaseOrderList[index], id));
-//                   },
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ));
-//   }
 }
 
 //---------------------------------SingleOrderRequestWidget---------------------
 
 //-------------------------------SingleRegistrationRequest----------------------
 
-// Widget RegistrationRequestCard(context, index) {
-//   String org_name = " Bhuyangdev Steel Corporation";
-//   var region = ['Ahmedabad', 'Mehsana', 'Anand'];
-
-//   return Container(
-//     decoration: BoxDecoration(
-//         color: Colors.white, borderRadius: BorderRadius.circular(20)),
-//     padding: EdgeInsets.all(5),
-//     margin: EdgeInsets.all(5),
-//     child: Column(
-//       mainAxisAlignment: MainAxisAlignment.start,
-//       children: [
-//         Text("PlaceHolder"),
-//         Row(
-//           children: [
-//             Container(
-//                 child: Text(
-//               "Entity Details",
-//               textAlign: TextAlign.left,
-//               style: TextStyle(fontFamily: "Poppins_Bold"),
-//             )),
-//             Container(
-//                 width: MediaQuery.of(context).size.width - 200,
-//                 child: IconButton(
-//                     onPressed: () {},
-//                     icon: Icon(
-//                       Icons.thumb_up_alt_rounded,
-//                       color: Colors.green,
-//                     ))),
-//             IconButton(
-//                 onPressed: () {},
-//                 icon: Icon(
-//                   Icons.thumb_down_alt_rounded,
-//                   color: Colors.red,
-//                 ))
-//           ],
-//         ),
-//         Container(
-//           child: Row(
-//             children: [
-//               Container(
-//                 child: Text(
-//                   "Org Name:",
-//                   style: TextStyle(fontFamily: "Roboto"),
-//                 ),
-//                 padding: EdgeInsets.symmetric(vertical: 5),
-//               ),
-//               Expanded(
-//                   child: Text(
-//                 org_name,
-//                 overflow: TextOverflow.ellipsis,
-//                 maxLines: 3,
-//               ))
-//             ],
-//           ),
-//         ),
-//         Container(
-//           child: Row(
-//             children: [Text("Region:"), Text(region[index])],
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
 
 Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
   if (order.status == 'Confirmed') {
@@ -1017,68 +737,6 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                         }
                       })),
 
-                  // Container(
-                  //     padding: EdgeInsets.only(top: 10),
-                  //     child: LayoutBuilder(builder: (context, constraints) {
-                  //       if (order.status == "Confirmed") {
-                  //         return Container(
-                  //           // width: 40,
-                  //             padding: EdgeInsets.symmetric(
-                  //                 horizontal: 5, vertical: 5),
-                  //             decoration: BoxDecoration(
-                  //                 color: Colors.greenAccent,
-                  //                 borderRadius: BorderRadius.only(
-                  //                     topLeft: Radius.circular(10),
-                  //                     bottomLeft: Radius.circular(10))),
-                  //             child: Text(
-                  //               order!.status!,
-                  //
-                  //             ));
-                  //       } else if(order.status == "Denied") {
-                  //         return Container(
-                  //             padding: EdgeInsets.symmetric(
-                  //                 horizontal: 5, vertical: 5),
-                  //             decoration: BoxDecoration(
-                  //                 color: Colors.redAccent,
-                  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
-                  //             child: Text(
-                  //               order.status!,
-                  //               style: TextStyle(
-                  //                   color: Colors.white
-                  //               ),
-                  //             ));
-                  //       } else{
-                  //         return Container(
-                  //             padding: EdgeInsets.symmetric(
-                  //                 horizontal: 5, vertical: 5),
-                  //             decoration: BoxDecoration(
-                  //                 color: Colors.yellow,
-                  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
-                  //             child: Text(
-                  //               order.status!,
-                  //               style: TextStyle(
-                  //                   color: Colors.white
-                  //               ),
-                  //             ));
-                  //       }
-                  //     })),
-
-                  // Container(
-                  //   padding: EdgeInsets.only(right: 10),
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //           children: [
-                  //             Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-                  //             Padding(
-                  //               padding: const EdgeInsets.only(left: 10),
-                  //               child: Text(order.status!),
-                  //             )
-                  //           ],
-                  //         ),
-                  //       ),
-                  // Container(
-                  //   child: Text(),
-                  // )
                 ],
               ),
               SizedBox(
@@ -1138,15 +796,6 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                     ],
                   ),
 
-                  // Container(
-                  //   padding: EdgeInsets.only(left: 20),
-                  //   height: 30,
-                  //   child: VerticalDivider(
-                  //     color: Colors.grey,
-                  //     thickness: 2,
-                  //     width: 2,
-                  //   ),
-                  // ),
                   Container(
                     padding: EdgeInsets.only(right: 10),
                     child: Row(
@@ -1168,162 +817,14 @@ Widget orderCard(BuildContext context, Order order, String? curr_user_id) {
                     ),
                     //  padding: EdgeInsets.only(right: 5),
                   ),
-                  // Text(
-                  //   "${order.totalQuantity!.toString()}",
-                  //   style: TextStyle(color: Colors.black),
-                  // ),
-                  // Text( tot_price )
 
-                  // Container(
-                  //   child: Text(
-                  //       item.price!
-                  //   ),
-                  // )
                 ],
               ),
 
-              // TextButton(
-              //             onPressed: () async {
-              //               await http.post(
-              //                 Uri.parse(
-              //                     "http://urbanwebmobile.in/steffo/approveorder.php"),
-              //                 body: {
-              //                   "decision": "Approved",
-              //                   "order_id": requestList[index].order_id!
-              //                 },
-              //               );
-              //               () {
-              //                 // orderList.add(requestList[index]);
-              //                 // requestList.removeAt(index);
-              //                 id = "none";
-              //                 setState(() {
-              //                   print('setstate');
-              //                   //  loadData();
-              //                 });
-              //               }();
-              //               // Get.to(RequestPage());
-              //             },
-              //             child: GradientText(
-              //               style:
-              //                   TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              //               colors: [Colors.greenAccent, Colors.grey],
-              //               "Accept",
-              //             )),
 
-              // TextButton(
-              //     onPressed: () async {
-              //       await http.post(
-              //         Uri.parse(
-              //             "http://urbanwebmobile.in/steffo/approveorder.php"),
-              //         body: {
-              //           "decision": "Denied",
-              //           "order_id": requestList[index].order_id!
-              //         },
-              //       );
-              //       () {
-              //         // orderList.add(requestList[index]);
-              //         // requestList.removeAt(index);
-              //         id = "none";
-              //         loadData();
-              //         setState(() {});
-              //         // Get.to(RequestPage());
-              //       }();
-              //     },
-              //     child: GradientText(
-              //       style:
-              //           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              //       colors: [Colors.redAccent, Colors.grey],
-              //       "Decline",
-              //     ))
             ],
           ),
-          // Container(
-          //   child: Text("data"),
-          // )
 
-          // Column(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     Container(
-          //       padding: EdgeInsets.only(top: 5, bottom: 5),
-          //       child: Text(
-          //         order.user_name!.toUpperCase(),
-          //         style: GoogleFonts.poppins(
-          //             textStyle: TextStyle(
-          //                 color: Colors.black,
-          //                 fontWeight: FontWeight.bold,
-          //                 fontSize: 20)),
-          //       ),
-          //     ),
-          //     // LayoutBuilder(builder: (context, constraints) {
-          //     //   if (curr_user_id == order.reciever_id) {
-          //     //     return Container(
-          //     //         padding:
-          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-          //     //         decoration: BoxDecoration(
-          //     //             color: Colors.blue,
-          //     //             borderRadius: BorderRadius.circular(20)),
-          //     //         child: Text(
-          //     //           "Sales",
-          //     //         ));
-          //     //   } else {
-          //     //     return Container(
-          //     //         padding:
-          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-          //     //         decoration: BoxDecoration(
-          //     //             color: Colors.green,
-          //     //             borderRadius: BorderRadius.circular(20)),
-          //     //         child: Text("Purchase"));
-          //     //   }
-          //     // })
-          //     Divider(
-          //       color: Colors.greenAccent,
-          //     ),
-          //
-          //     Container(
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Container(
-          //             child: Text(
-          //               "Org Name:",
-          //               style: TextStyle(fontFamily: "Poppins_Bold"),
-          //             ),
-          //             padding: EdgeInsets.only(bottom: 5, right: 5),
-          //           ),
-          //           Text(
-          //             order.party_name!,
-          //             overflow: TextOverflow.ellipsis,
-          //             maxLines: 3,
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     Container(
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-          //           Padding(
-          //             padding: const EdgeInsets.only(left: 35.0),
-          //             child: Text(order.status!),
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     Container(
-          //       padding: EdgeInsets.symmetric(vertical: 5),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Text("Order Date: ",
-          //               style: TextStyle(fontFamily: "Poppins_Bold")),
-          //           Text(order.order_date!.substring(0, 10))
-          //         ],
-          //       ),
-          //     )
-          //   ],
-          // ),
         ),
         SizedBox(
           height: 10,
@@ -1468,68 +969,6 @@ Widget completedorderCard(
                         }
                       })),
 
-                  // Container(
-                  //     padding: EdgeInsets.only(top: 10),
-                  //     child: LayoutBuilder(builder: (context, constraints) {
-                  //       if (order.status == "Confirmed") {
-                  //         return Container(
-                  //           // width: 40,
-                  //             padding: EdgeInsets.symmetric(
-                  //                 horizontal: 5, vertical: 5),
-                  //             decoration: BoxDecoration(
-                  //                 color: Colors.greenAccent,
-                  //                 borderRadius: BorderRadius.only(
-                  //                     topLeft: Radius.circular(10),
-                  //                     bottomLeft: Radius.circular(10))),
-                  //             child: Text(
-                  //               order!.status!,
-                  //
-                  //             ));
-                  //       } else if(order.status == "Denied") {
-                  //         return Container(
-                  //             padding: EdgeInsets.symmetric(
-                  //                 horizontal: 5, vertical: 5),
-                  //             decoration: BoxDecoration(
-                  //                 color: Colors.redAccent,
-                  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
-                  //             child: Text(
-                  //               order.status!,
-                  //               style: TextStyle(
-                  //                   color: Colors.white
-                  //               ),
-                  //             ));
-                  //       } else{
-                  //         return Container(
-                  //             padding: EdgeInsets.symmetric(
-                  //                 horizontal: 5, vertical: 5),
-                  //             decoration: BoxDecoration(
-                  //                 color: Colors.yellow,
-                  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10))),
-                  //             child: Text(
-                  //               order.status!,
-                  //               style: TextStyle(
-                  //                   color: Colors.white
-                  //               ),
-                  //             ));
-                  //       }
-                  //     })),
-
-                  // Container(
-                  //   padding: EdgeInsets.only(right: 10),
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //           children: [
-                  //             Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-                  //             Padding(
-                  //               padding: const EdgeInsets.only(left: 10),
-                  //               child: Text(order.status!),
-                  //             )
-                  //           ],
-                  //         ),
-                  //       ),
-                  // Container(
-                  //   child: Text(),
-                  // )
                 ],
               ),
               SizedBox(
@@ -1589,15 +1028,6 @@ Widget completedorderCard(
                     ],
                   ),
 
-                  // Container(
-                  //   padding: EdgeInsets.only(left: 20),
-                  //   height: 30,
-                  //   child: VerticalDivider(
-                  //     color: Colors.grey,
-                  //     thickness: 2,
-                  //     width: 2,
-                  //   ),
-                  // ),
                   Container(
                     padding: EdgeInsets.only(right: 10),
                     child: Row(
@@ -1619,162 +1049,13 @@ Widget completedorderCard(
                     ),
                     //  padding: EdgeInsets.only(right: 5),
                   ),
-                  // Text(
-                  //   "${order.totalQuantity!.toString()}",
-                  //   style: TextStyle(color: Colors.black),
-                  // ),
-                  // Text( tot_price )
-
-                  // Container(
-                  //   child: Text(
-                  //       item.price!
-                  //   ),
-                  // )
                 ],
               ),
 
-              // TextButton(
-              //             onPressed: () async {
-              //               await http.post(
-              //                 Uri.parse(
-              //                     "http://urbanwebmobile.in/steffo/approveorder.php"),
-              //                 body: {
-              //                   "decision": "Approved",
-              //                   "order_id": requestList[index].order_id!
-              //                 },
-              //               );
-              //               () {
-              //                 // orderList.add(requestList[index]);
-              //                 // requestList.removeAt(index);
-              //                 id = "none";
-              //                 setState(() {
-              //                   print('setstate');
-              //                   //  loadData();
-              //                 });
-              //               }();
-              //               // Get.to(RequestPage());
-              //             },
-              //             child: GradientText(
-              //               style:
-              //                   TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              //               colors: [Colors.greenAccent, Colors.grey],
-              //               "Accept",
-              //             )),
-
-              // TextButton(
-              //     onPressed: () async {
-              //       await http.post(
-              //         Uri.parse(
-              //             "http://urbanwebmobile.in/steffo/approveorder.php"),
-              //         body: {
-              //           "decision": "Denied",
-              //           "order_id": requestList[index].order_id!
-              //         },
-              //       );
-              //       () {
-              //         // orderList.add(requestList[index]);
-              //         // requestList.removeAt(index);
-              //         id = "none";
-              //         loadData();
-              //         setState(() {});
-              //         // Get.to(RequestPage());
-              //       }();
-              //     },
-              //     child: GradientText(
-              //       style:
-              //           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              //       colors: [Colors.redAccent, Colors.grey],
-              //       "Decline",
-              //     ))
             ],
           ),
-          // Container(
-          //   child: Text("data"),
-          // )
 
-          // Column(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     Container(
-          //       padding: EdgeInsets.only(top: 5, bottom: 5),
-          //       child: Text(
-          //         order.user_name!.toUpperCase(),
-          //         style: GoogleFonts.poppins(
-          //             textStyle: TextStyle(
-          //                 color: Colors.black,
-          //                 fontWeight: FontWeight.bold,
-          //                 fontSize: 20)),
-          //       ),
-          //     ),
-          //     // LayoutBuilder(builder: (context, constraints) {
-          //     //   if (curr_user_id == order.reciever_id) {
-          //     //     return Container(
-          //     //         padding:
-          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-          //     //         decoration: BoxDecoration(
-          //     //             color: Colors.blue,
-          //     //             borderRadius: BorderRadius.circular(20)),
-          //     //         child: Text(
-          //     //           "Sales",
-          //     //         ));
-          //     //   } else {
-          //     //     return Container(
-          //     //         padding:
-          //     //             EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-          //     //         decoration: BoxDecoration(
-          //     //             color: Colors.green,
-          //     //             borderRadius: BorderRadius.circular(20)),
-          //     //         child: Text("Purchase"));
-          //     //   }
-          //     // })
-          //     Divider(
-          //       color: Colors.greenAccent,
-          //     ),
-          //
-          //     Container(
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Container(
-          //             child: Text(
-          //               "Org Name:",
-          //               style: TextStyle(fontFamily: "Poppins_Bold"),
-          //             ),
-          //             padding: EdgeInsets.only(bottom: 5, right: 5),
-          //           ),
-          //           Text(
-          //             order.party_name!,
-          //             overflow: TextOverflow.ellipsis,
-          //             maxLines: 3,
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     Container(
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Text("Status:", style: TextStyle(fontFamily: "Poppins_Bold")),
-          //           Padding(
-          //             padding: const EdgeInsets.only(left: 35.0),
-          //             child: Text(order.status!),
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     Container(
-          //       padding: EdgeInsets.symmetric(vertical: 5),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Text("Order Date: ",
-          //               style: TextStyle(fontFamily: "Poppins_Bold")),
-          //           Text(order.order_date!.substring(0, 10))
-          //         ],
-          //       ),
-          //     )
-          //   ],
-          // ),
+
         ),
         SizedBox(
           height: 10,

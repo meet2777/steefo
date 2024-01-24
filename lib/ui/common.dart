@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 
-import '../pages/download_service.dart';
+import '../pages/DownloadService.dart';
 
 
 
@@ -62,7 +62,7 @@ Widget buttonStyle(String str, void c()) {
             ),
             child: Text(
               str,
-              style: const TextStyle(fontFamily: 'Poppins_Bold'),
+              style: const TextStyle(fontFamily: 'Poppins_Bold',color: Colors.white),
             ),
           )));
 }
@@ -90,7 +90,7 @@ appbar(String txt, void c(), {void Function()? alert}) {
               padding: EdgeInsets.only(right: 10),
               child: GestureDetector(
                 onTap: () {
-                  Get.to(HomePage());
+                  Get.to(() => HomePage());
                 },
                 child: SvgPicture.asset(
                   "assets/images/logo.svg",
@@ -140,16 +140,16 @@ appbar1(String txt,String fileName, void c(), {void Function()? alert}) {
       // shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
       actions: [
         LayoutBuilder(builder: (context, constraints) {
-          if (txt ==DateFormat('dd-MM-yyyy').format(DateTime.now())) {
-            return IconButton(
-                onPressed: () {
-                  alert!();
-                },
-                icon: const Icon(
-                  Icons.power_settings_new_rounded,
-                  color: Colors.black,
-                ));
-          } else {
+          // if (txt ==DateFormat('dd-MM-yyyy').format(DateTime.now())) {
+          //   return IconButton(
+          //       onPressed: () {
+          //         alert!();
+          //       },
+          //       icon: const Icon(
+          //         Icons.power_settings_new_rounded,
+          //         color: Colors.black,
+          //       ));
+          // } else {
             return Padding(
               padding: EdgeInsets.only(right: 10),
               child: GestureDetector(
@@ -160,8 +160,9 @@ appbar1(String txt,String fileName, void c(), {void Function()? alert}) {
                 child: Icon(Icons.download_for_offline,color: Colors.black,size: 35,)
               ),
             );
-          }
-        })
+          // }
+        }
+        )
       ],
       title: Center(
           child: Text(

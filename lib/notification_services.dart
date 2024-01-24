@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:app_settings/app_settings.dart';
+import 'package:firebase_core_dart/firebase_core_dart.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:stefomobileapp/pages/HomePage.dart';
 import 'package:stefomobileapp/pages/RequestPage.dart';
-import 'package:stefomobileapp/pages/message_screen.dart';
+import 'package:stefomobileapp/pages/MessageScreen.dart';
 
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -32,7 +33,6 @@ class NotificationServices {
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
       if(kDebugMode){
-
       print('user granted provisional permission');
       }
     } else {
@@ -74,7 +74,7 @@ class NotificationServices {
         print(message.data['id']);
       }
       if(Platform.isIOS){
-        forgroundMessage();
+        FirebaseMessaging.instance.requestPermission();
       }
       if (Platform.isAndroid) {
         initLocalNotification(message, context);
@@ -101,7 +101,7 @@ class NotificationServices {
       channel.id.toString(),
       channel.name.toString(),
       channelDescription: 'your channel description',
-      importance: Importance.high,
+      importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
           sound: channel.sound

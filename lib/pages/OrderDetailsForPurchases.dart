@@ -9,12 +9,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:stefomobileapp/Models/user.dart';
 // import 'package:stefomobileapp/pages/ChallanListPage.dart';
-import 'package:stefomobileapp/pages/purchasechallanlistpage.dart';
+import 'package:stefomobileapp/pages/PurchaseChallanListPage.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
 // import 'EditableProfilePage.dart';
 // import 'PlaceOrderPage.dart';
-import 'editorderpage.dart';
+import 'EditOrderPage.dart';
 // import '../Models/user.dart';
 
 // ignore: must_be_immutable

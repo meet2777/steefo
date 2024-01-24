@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/UI/common.dart';
-import 'package:stefomobileapp/pages/InventoryPage.dart';
-import 'package:stylish_bottom_bar/model/bar_items.dart';
-import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:http/http.dart' as http;
 import '../Models/user.dart';
-import 'DistributorsPage.dart';
-import 'HomePage.dart';
 
 class EditableProfilePage extends StatelessWidget {
   final User? user;
@@ -184,9 +179,6 @@ class _ProfilePageState extends State<ProfileContent> {
     address = TextEditingController(text: "${widget.user?.address}");
     print(widget.user!.orgName.toString());
 
-
-
-
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: appbar("Profile", () {
@@ -201,18 +193,6 @@ class _ProfilePageState extends State<ProfileContent> {
               children: [
                 Padding(padding: EdgeInsets.only(left: 30, top: 20)),
 
-                // Container(
-                //   color: Colors.white,
-                //   padding: EdgeInsets.only(left: 10,top: 20,bottom: 20),
-                //   // height: 100,
-                //   width: 500,
-                //   child: Column(
-                //     children: [
-                //
-                //       imageProfile(context),
-                //     ],
-                //   ),
-                // ),
                 Container(
                   // color: Colors.orangeAccent,
                   padding: EdgeInsets.only(left: 10, right: 10),
@@ -315,24 +295,6 @@ class _ProfilePageState extends State<ProfileContent> {
                       SizedBox(
                         height: 10,
                       ),
-                      // Card(
-                      //   elevation: 5,
-                      //   child: TextFormField(
-                      //     decoration: InputDecoration(
-                      //       border: OutlineInputBorder(
-                      //         borderSide: BorderSide(
-                      //             width: 1, color: Colors.black),
-                      //         //<-- SEE HERE
-                      //       ),
-                      //       focusedBorder: OutlineInputBorder(
-                      //         borderSide: BorderSide(width: 1, color: Colors.black),
-                      //       ),
-                      //       hoverColor: Colors.black,
-                      //       labelText: "Name",
-                      //       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(
                         height: 10,
                       ),
@@ -566,136 +528,9 @@ class _ProfilePageState extends State<ProfileContent> {
             ),
           ),
         ),
-        // bottomNavigationBar: StylishBottomBar(
-        //   option: AnimatedBarOptions(
-        //     iconSize: 30,
-        //     barAnimation: BarAnimation.fade,
-        //     //barAnimation: BarAnimation.liquid,
-        //     iconStyle: IconStyle.simple,
-        //     opacity: 0.3,
-        //   ),
-        //
-        //   items: [
-        //     BottomBarItem(
-        //       icon: const Icon(
-        //         Icons.home_filled,
-        //       ),
-        //       title: const Text('Abc'),
-        //       backgroundColor: Colors.red,
-        //       selectedIcon:
-        //           const Icon(Icons.home_filled, color: Colors.blueAccent),
-        //     ),
-        //     BottomBarItem(
-        //         icon: const Icon(
-        //           Icons.inventory_2_rounded,
-        //         ),
-        //         title: const Text('Safety'),
-        //         backgroundColor: Colors.orange,
-        //         selectedIcon: const Icon(Icons.inventory_2_rounded,
-        //             color: Colors.blueAccent)),
-        //     BottomBarItem(
-        //         icon: const Icon(
-        //           Icons.warehouse_rounded,
-        //         ),
-        //         title: const Text('Safety'),
-        //         selectedIcon: const Icon(Icons.warehouse_rounded,
-        //             color: Colors.blueAccent)),
-        //     BottomBarItem(
-        //         icon: const Icon(
-        //           Icons.person_pin,
-        //         ),
-        //         title: const Text('Cabin'),
-        //         backgroundColor: Colors.purple,
-        //         selectedIcon:
-        //             const Icon(Icons.person_pin, color: Colors.blueAccent)),
-        //   ],
-        //   //fabLocation: StylishBarFabLocation.center,
-        //   hasNotch: false,
-        //   currentIndex: _selected,
-        //   onTap: (index) {
-        //     setState(() {
-        //       if (index == 0) {
-        //         Navigator.pushReplacement(
-        //           context,
-        //           PageRouteBuilder(
-        //             pageBuilder: (context, animation1, animation2) =>
-        //                 HomePage(),
-        //             transitionDuration: Duration.zero,
-        //             reverseTransitionDuration: Duration.zero,
-        //           ),
-        //         );
-        //       }
-        //       if (index == 1) {
-        //         Navigator.pushReplacement(
-        //           context,
-        //           PageRouteBuilder(
-        //             pageBuilder: (context, animation1, animation2) =>
-        //                 InventoryPage(),
-        //             transitionDuration: Duration.zero,
-        //             reverseTransitionDuration: Duration.zero,
-        //           ),
-        //         );
-        //       }
-        //
-        //       if (index == 2) {
-        //         Navigator.pushReplacement(
-        //           context,
-        //           PageRouteBuilder(
-        //             pageBuilder: (context, animation1, animation2) =>
-        //                 DistributorPage(),
-        //             transitionDuration: Duration.zero,
-        //             reverseTransitionDuration: Duration.zero,
-        //           ),
-        //         );
-        //       }
-        //     });
-        //   },
-        // )
+
     );
   }
-  // Widget imageProfile(BuildContext context){
-  // return Stack(
-  //   // alignment: Alignment.topLeft,
-  //   children:[
-  //     Align(alignment: Alignment.topRight),
-  //     CircleAvatar(
-  //       radius: 50,
-  //       backgroundImage: AssetImage("assets/images/profile.png"),
-  //     ),
-  //     Positioned(
-  //         bottom: 10,
-  //         left: 60,
-  //         child: InkWell(
-  //           onTap: (){
-  //             showModalBottomSheet<void>(
-  //               context: context,
-  //               builder: (BuildContext context) {
-  //                 return SizedBox(
-  //                   height: 150,
-  //                   child: Center(
-  //                     child: Row(
-  //                       mainAxisAlignment: MainAxisAlignment.center,
-  //                       mainAxisSize: MainAxisSize.min,
-  //                       children: <Widget>[
-  //                         IconButton(onPressed: (){}, icon: Icon(Icons.camera)),
-  //                         IconButton(onPressed: (){}, icon: Icon(Icons.folder_copy)),
-  //                         // const Text('Modal BottomSheet'),
-  //
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 );
-  //               },
-  //             );
-  //           },
-  //           child: Icon(
-  //             Icons.camera_alt,
-  //             color: Colors.white,
-  //             size: 30,
-  //           ),
-  //         ),
-  //     ),
-  //   ]
-  // );
-  // }
+
+
 }

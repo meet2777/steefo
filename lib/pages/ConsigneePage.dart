@@ -38,21 +38,7 @@ class _consigneeState extends State<ExtendedConsignee> {
 
   String? id;
   var f1 = 0;
-  // Future<void> loadData() async {
-  //   if (f1 == 0) {
-  //     final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     id = await prefs.getString('id');
-  //     // supplier_id = await prefs.getString('parentId');
-  //     // if (user_type == "Builder") {
-  //     //   selectedOrderType = "With Size";
-  //     //   selectedTransType = "None";
-  //     //   selectedType = "None";
-  //     // }
-  //     f1 = 1;
-  //     setState(() {});
-  //   }
-  //   //print("is setstate on loop");
-  // }
+
 
   onSubmit() async{
     if (f1 == 0) {

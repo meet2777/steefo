@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get_navigation/src/routes/default_transitions.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -696,10 +697,11 @@ class _OrderPageState extends State<OrderPage> {
                         color: Colors.white,
                       ),
                       child: Column(
+
                         children: [
                           Row(
                             children: const [
-                              Text("Shipping Address",
+                              Text("Shipping Address:",
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontFamily: "Poppins_Bold")),
@@ -716,29 +718,9 @@ class _OrderPageState extends State<OrderPage> {
                               ),
                             ],
                           ),
-                          // con
-                          // Row(
-                          //   children: const [
-                          //     Text("Contact",
-                          //         style: TextStyle(
-                          //             fontSize: 15,
-                          //             fontFamily: "Poppins_Bold")),
-                          //   ],
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     Text(widget.order!.party_mob_num!,
-                          //         style: const TextStyle(
-                          //             fontSize: 15,
-                          //             fontFamily: "Poppins"))
-                          //   ],
-                          // ),
                         ],
                       ),
                     ),
-                    // const SizedBox(
-                    //   height: 10.0,
-                    // ),
 
                     Container(
                         padding: const EdgeInsets.all(10),
@@ -952,6 +934,7 @@ class _OrderPageState extends State<OrderPage> {
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Card(
+                  color: Colors.white,
                   margin: EdgeInsets.only(left: 20, right: 20),
                   elevation: 2,
                   child: Container(
@@ -1037,6 +1020,7 @@ class _OrderPageState extends State<OrderPage> {
                           SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             child: Card(
+                              color: Colors.white,
                               margin: EdgeInsets.only(left: 20, right: 20),
                               elevation: 2,
                               child: Container(

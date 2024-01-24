@@ -92,51 +92,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
 
   var token;
   String isItem = " ";
-  // List<User> regReqList = [];
-  // var flag = 0;
-  // getRegReqs() async {
-  //   if (flag == 0) {
-  //     print("enter");
-  //     var test = await http.post(
-  //         Uri.parse(
-  //           'http://urbanwebmobile.in/steffo/getregdetails.php',
-  //         ),
-  //         body: {'id': idfortoken});
-  //     //Navigator.of(context).pushNamed("/home");
 
-  //     var responseData = jsonDecode(test.body);
-  //     print("enter1");
-  //     print(responseData);
-  //     for (int i = 0; i < responseData['data'].length; i++) {
-  //       print("enter2");
-  //       User u = User();
-  //       u.id = responseData['data'][i]['id'];
-  //       u.firstName = responseData['data'][i]['firstName'];
-  //       u.lastName = responseData['data'][i]['lastName'];
-  //       u.email = responseData['data'][i]['email'];
-  //       u.mobileNumber = responseData['data'][i]['mobileNumber'];
-  //       u.parentId = responseData['data'][i]['parentId'];
-  //       u.userType = responseData['data'][i]['userType'];
-  //       u.userStatus = responseData['data'][i]['userStatus'];
-  //       u.orgName = responseData['data'][i]['orgName'];
-  //       u.gstNumber = responseData['data'][i]['gstNumber'];
-  //       u.panNumber = responseData['data'][i]['panNumber'];
-  //       u.adhNumber = responseData['data'][i]['adhNumber'];
-  //       u.address = responseData['data'][i]['address'];
-  //       u.deviceToken = responseData['data'][i]['deviceToken'];
 
-  //       token = u.deviceToken;
-
-  //       regReqList.add(u);
-
-  //       print("enter3${u.deviceToken}");
-  //     }
-  //     setState(() {});
-  //     flag = 1;
-  //     print("registrationlist${regReqList.length.toString()}");
-  //     print(token);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +115,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
     party_pan_no = TextEditingController(text: "${widget.order?.PartygstNumber}");
     party_mob_num = TextEditingController(text: "${widget.order?.party_mob_num}");
     base_price = TextEditingController(text: "${widget.order?.base_price}");
-    qty = TextEditingController(text: "${widget.order?.totalQuantity}");
+    // qty = TextEditingController(text: "${widget.order?.totalQuantity}");
     deliveryDate = TextEditingController(text: "${widget.order?.deliveryDate}");
     // selectedconsignee= TextEditingController(text: "${widget.order?.consignee_name}") as Consignee?;
 
@@ -373,71 +330,6 @@ class _EditOrderPageState extends State<EditOrderContent> {
   num tot_price = 0;
   loadItemData() async {
 
-    // if (widget.order!.orderType != "Lump-sum") {
-    //   print('insize');
-    //   final res = await http.post(
-    //     Uri.parse("http://steefotmtmobile.com/steefo/getorderdetails.php"),
-    //     body: {
-    //       "order_id": widget.order!.order_id,
-    //       // "qty_left": widget.order!.qty_left,
-    //       // "id": widget.order!.id,
-    //     },
-    //   );
-    //   var responseData = jsonDecode(res.body);
-    //   // print(
-    //   //     "dddddddddddddddddddddddddddddddddddddddddddddddddddddddd${responseData}");
-    //   //print(responseData);
-    //   listOfColumns = [];
-    //
-    //   for (int i = 0; i < responseData["data"].length; i++) {
-    //     listOfColumns.add({
-    //       "Sr_no": (i + 1).toString(),
-    //       "Name": responseData["data"][i]["name"],
-    //       "Qty": responseData["data"][i]["qty"],
-    //       "Price": responseData["data"][i]["price"]
-    //     });
-    //     // tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
-    //     // tot_qty = tot_qty + int.parse(responseData["data"][i]["qty"]);
-    //   }
-    //   listOfColumns.add({
-    //     "Sr_no": " ",
-    //     "Name": " ",
-    //     "Qty": " ",
-    //     "Price": " "
-    //     // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
-    //     //     .format(int.parse(tot_price.toString())),
-    //   });
-    // } else {
-    //   print("inlumpsum");
-    //   final res = await http.post(
-    //     Uri.parse("http://steefotmtmobile.com/steefo/getlumpsumorder.php"),
-    //     body: {
-    //       // "qty_left" : responseData["data"][i]["qty_left"],
-    //       "order_id": widget.order?.order_id,
-    //     },
-    //   );
-    //   var responseData = jsonDecode(res.body);
-    //   // print("ddddddddddd");
-    //   listOfColumns = [];
-    //   for (int i = 0; i < responseData["data"].length; i++) {
-    //     listOfColumns.add({
-    //       "Sr_no": (i + 1).toString(),
-    //       "Name": responseData["data"][i]["name"],
-    //       "Qty": responseData["data"][i]["qty"],
-    //       "Price": responseData["data"][i]["price"]
-    //     });
-    //     // tot_price = tot_price + int.parse(responseData["data"][i]["price"]);
-    //     // tot_qty = tot_qty + int.parse(responseData["data"][i]["qty"]);
-    //   }
-    //   listOfColumns.add({
-    //     "Sr_no": " ",
-    //     "Name": " ",
-    //     "Qty": " ",
-    //     "Price": " "
-    //     // NumberFormat.simpleCurrency(locale: 'hi-IN', decimalDigits: 2)
-    //     //     .format(int.parse(tot_price.toString())),
-    //   });
-    // }
 
     if (f == 0) {
       f = 1;
@@ -479,22 +371,10 @@ class _EditOrderPageState extends State<EditOrderContent> {
         payments.add(responseData3['data'][i]["paymentName"]);
         Payment p = Payment();
         p.paymentName = responseData3['data'][i]["paymentName"];
-        p.paymentCost = responseData3['data'][i]["paymentCost"];
+        p.paymentCost = responseData3['data'][i]["paymentPrice"];
         paymentList.add(p);
       }
 
-      // var res4 = await http
-      //     .post(Uri.parse("http://steefotmtmobile.com/steefo/getdealer.php"));
-      // var responseData4 = jsonDecode(res4.body);
-      // for (int i = 0; i < responseData4['data'].length; i++) {
-      //   print(responseData4['data'][i]);
-      //   dealers.add(responseData4['data'][i]["orgName"]);
-      //   Dealer d = Dealer();
-      //   d.parentId = responseData4['data'][i]["parentId "];
-      //   d.orgName = responseData4['data'][i]["orgName"];
-      //   d.userType = responseData4['data'][i]["userType"];
-      //   dealerList.add(d);
-      // }
 
       String uri;
       final SharedPreferences pref = await SharedPreferences.getInstance();
@@ -547,33 +427,6 @@ class _EditOrderPageState extends State<EditOrderContent> {
         // child.add(u);
       }
 
-      // var res5 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"));
-      // var responseData5 = jsonDecode(res5.body);
-      // for (int i = 0; i < responseData5["data"].length; i++) {
-      //   Order req = Order();
-      //   req.reciever_id = responseData["data"][i]["supplier_id"];
-      //   req.user_id = responseData["data"][i]["user_id"];
-      //   req.org_name = responseData["data"][i]["orgName"];
-      //   req.user_mob_num = responseData["data"][i]["mobileNumber"];
-      //   req.user_name = responseData["data"][i]["firstName"]+" "+responseData["data"][i]["lastName"];
-      //   req.status = responseData["data"][i]["orderStatus"];
-      //   req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
-      //   req.trailerType = responseData["data"][i]["trailerType"];
-      //   req.party_name = responseData5["data"][i]["partyName"];
-      //   req.party_address = responseData["data"][i]["shippingAddress"];
-      //   req.pincode = responseData["data"][i]["pincode"];
-      //   req.billing_address = responseData["data"][i]["address"];
-      //   req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
-      //   req.loading_type = responseData["data"][i]["loadingType"];
-      //   // req.loading_type = responseData["data"][i][""];
-      //   req.trans_type = responseData["data"][i]["transType"];
-      //   req.order_date = responseData["data"][i]["createdAt"];
-      //   req.base_price = responseData["data"][i]["basePrice"];
-      //   req.orderType = responseData["data"][i]["orderType"];
-      //   req.qty_left = responseData["data"][i]["qty_left"];
-      //   req.order_id = responseData["data"][i]["order_id"].toString();
-      //   //print(req);
-      // }
       setState(() {});
     }
   }
@@ -613,53 +466,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
       }
     }
 
-    // var res5 = await http.post(Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"));
-    // var responseData5 = jsonDecode(res5.body);
-    // for (int i = 0; i < responseData5["data"].length; i++) {
-    //   Order req = Order();
-    //   req.reciever_id = responseData5["data"][i]["supplier_id"];
-    //   req.user_id = responseData5["data"][i]["user_id"];
-    //   req.org_name = responseData5["data"][i]["orgName"];
-    //   req.user_mob_num = responseData5["data"][i]["mobileNumber"];
-    //   req.user_name = responseData5["data"][i]["firstName"]+" "+responseData5["data"][i]["lastName"];
-    //   req.status = responseData5["data"][i]["orderStatus"];
-    //   req.PartygstNumber = responseData5["data"][i]["PartygstNumber"];
-    //   req.trailerType = responseData5["data"][i]["trailerType"];
-    //   req.party_name = responseData5["data"][i]["partyName"];
-    //   req.party_address = responseData5["data"][i]["shippingAddress"];
-    //   req.pincode = responseData5["data"][i]["pincode"];
-    //   req.billing_address = responseData5["data"][i]["address"];
-    //   req.party_mob_num = responseData5["data"][i]["partyMobileNumber"];
-    //   req.loading_type = responseData5["data"][i]["loadingType"];
-    //   // req.loading_type = responseData["data"][i][""];
-    //   req.trans_type = responseData5["data"][i]["transType"];
-    //   req.order_date = responseData5["data"][i]["createdAt"];
-    //   req.base_price = responseData5["data"][i]["basePrice"];
-    //   req.orderType = responseData5["data"][i]["orderType"];
-    //   req.qty_left = responseData5["data"][i]["qty_left"];
-    //   req.order_id = responseData5["data"][i]["order_id"].toString();
-    //   //print(req);
-    // }
 
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // var id = await prefs.getString('user_id');
-    // // print(selectedValue);
-    // await prefs.setString('user_id', id.toString());
-    // await prefs.setString('supplier_id', supplier_id.toString());
-    // await prefs.setString("party_name", party_name.text.toString());
-    // await prefs.setString("party_address", party_address.text.toString());
-    // await prefs.setString("pincode", pincode.text.toString());
-    // await prefs.setString("PartygstNumber", party_pan_no.text.toString());
-    // await prefs.setString("mobileNumber", party_mob_num.text.toString());
-    // await prefs.setString("orderType", selectedOrderType.toString());
-    // await prefs.setString("paymentTerm", selectedpaymentType.toString());
-    // await prefs.setString("trailerType", trailerType.toString());
-    // await prefs.setString("loadingType", selectedType.toString());
-    // await prefs.setString("transType", selectedTransType.toString());
-    // await prefs.setString("basePrice", base_price.text.toString());
-    // await prefs.setString("totalQuantity", totalQuantity.toString());
-    // await prefs.setString("totalPrice", tot_price.toString());
-    // await prefs.setString("deliveryDate", deliveryDate.text.toString());
+
 
     var resorder = await http.post(
       Uri.parse("http://steefotmtmobile.com/steefo/updateOrder.php"),
@@ -714,37 +522,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
         "dateTime": DateTime.now().toString(),
       }
     );
-    // NotificationServices notificationServices = NotificationServices();
-    // notificationServices.getDeviceToken().then((value) async {
-    //   var data = {
-    //     'to': value.toString(),
-    //     'priority': 'high',
-    //     'notification': {
-    //       'title': 'Parth',
-    //       'body': 'You Got An Order',
-    //     },
-    //     'data': {'type': 'msg', 'id': 'parth1234'},
-    //   };
-    //   print(value.toString());
-    //   print('notification enter');
-    //   await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
-    //       body: jsonEncode(data),
-    //       headers: {
-    //         'Content-Type': 'application/json; charset=UTF-8',
-    //         'Authorization':
-    //             'key=AAAA_8-x_z4:APA91bE5c27vN7PgA4BTTOtLcLpxnz3W-Ljjet2YAfwr3b0t10YMXSbgwTX01aJoDZhylqCZjZ3EiuUR9M2KDGcvCfBSBumulrujHHuN7zI_6kN0JIrMCkxiwT63QD5AfNTyE0gxEao7'
-    //       });
-    // }
-    //  );
-    // Fluttertoast.showToast(
-    //     msg: 'Your Order Is Placed',
-    //     toastLength: Toast.LENGTH_SHORT,
-    //     gravity: ToastGravity.BOTTOM,
-    //     timeInSecForIosWeb: 1,
-    //     backgroundColor: Colors.blueAccent,
-    //     textColor: Colors.white);
-    // Navigator.of(context).pushNamed("/home");
-    // print(responseData["value"].toString());
+
+
 
     print("body"+resorder.request.toString());
     var responseData = jsonDecode(resorder.body);
@@ -1068,63 +847,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
               ),
 
 
-              // LayoutBuilder(builder: (context, constraints){
-              //   if(user_type == "Distributor"){
-              //     return Container(
-              //       child: DropdownButtonFormField(
-              //         decoration: const InputDecoration(
-              //             hintText: "Select Name",
-              //             hintStyle: TextStyle(fontSize: 20),
-              //             filled: true,
-              //             fillColor: Color.fromRGBO(
-              //                 233, 236, 239, 0.792156862745098),
-              //             border: OutlineInputBorder(
-              //               borderSide: BorderSide.none,
-              //               // borderRadius: BorderRadius.circular(20)
-              //             )),
-              //         value: selectedDealer,
-              //         items: getDealer(),
-              //         onChanged: (String? newValue) {
-              //           selectedDealer = newValue;
-              //         },
-              //       ),
-              //     );
-              //   }else{
-              //     selectedDealer = " ";
-              //     return Container();
-              //   }
-              // }
-              // ),
-              //-----------------------------------------------Name--------------------------------------------------------
-              // Container(
-              //   padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
-              //   child: TextFormField(
-              //     textInputAction: TextInputAction.next,
-              //     // key: field1Key,
-              //     // focusNode: focusNode1,
-              //     // validator: (value) {
-              //     //   if (value!.isEmpty) {
-              //     //     return 'Please enter a Name.';
-              //     //   }
-              //     //   return null;
-              //     // },
-              //     controller: party_name,
-              //     maxLines: 1,
-              //     decoration: const InputDecoration(
-              //         hintText: "Name",
-              //         hintStyle: TextStyle(fontSize: 20),
-              //         //  hintText: "Name",
-              //         // floatingLabelBehavior: FloatingLabelBehavior.never,
-              //         border: OutlineInputBorder(
-              //           // borderRadius: BorderRadius.circular(20),
-              //             borderSide: BorderSide.none),
-              //         filled: true,
-              //         fillColor: Color.fromRGBO(233, 236, 239,
-              //             0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
-              //
-              //     ),
-              //   ),
-              // ),
+
               //----------------------------Shipping Address------------------
 
               Container(
@@ -1313,177 +1036,8 @@ class _EditOrderPageState extends State<EditOrderContent> {
                         value: selectedOrderType,
                         items: getOrderType(),
                         onChanged: null,
-                        //     (String? newValue) {
-                        //   setState(() {});
-                        //   // selectedOrderType = newValue;
-                        //   // if (selectedOrderType == "Use Lumpsum") {
-                        //   //   showDialog(
-                        //   //     context: context,
-                        //   //     builder: (context) {
-                        //   //
-                        //   //       // for (int i = 0; i < paymentList.length; i++) {
-                        //   //       //   if (paymentList[i].paymentName == selectedpaymentType) {
-                        //   //       //     prcpct = int.parse(paymentList[i].paymentCost!);
-                        //   //       //   }
-                        //   //       // }
-                        //   //       var grdpct, szpct = 0;
-                        //   //
-                        //   //       for (int i = 0; i < gradeList.length; i++) {
-                        //   //         if (gradeList[i].value == selectedGrade) {
-                        //   //           grdpct = int.parse(gradeList[i].price!);
-                        //   //         }
-                        //   //       }
-                        //   //       for (int i = 0; i < sizeList.length; i++) {
-                        //   //         if (sizeList[i].value == selectedSize) {
-                        //   //           szpct = int.parse(sizeList[i].price!);
-                        //   //         }
-                        //   //       }
-                        //   //       return Dialog(
-                        //   //         shape: RoundedRectangleBorder(
-                        //   //             borderRadius: BorderRadius.circular(10)),
-                        //   //         elevation: 16,
-                        //   //         child: Column(
-                        //   //           children: [
-                        //   //             Container(
-                        //   //               // margin: EdgeInsets.only(left: 5, right: 5),
-                        //   //                 alignment: Alignment.center,
-                        //   //                 decoration: BoxDecoration(
-                        //   //                     color: Color.fromRGBO(19, 59, 78, 1.0),
-                        //   //                     borderRadius:
-                        //   //                     BorderRadius.circular(10)),
-                        //   //                 height: 50,
-                        //   //                 // width: ,
-                        //   //                 child: Text("Select The Lumpsum",
-                        //   //                     style: GoogleFonts.poppins(
-                        //   //                         textStyle: TextStyle(
-                        //   //                             color: Colors.white,
-                        //   //                             fontWeight:
-                        //   //                             FontWeight.w600)
-                        //   //                     )
-                        //   //                 )
-                        //   //             ),
-                        //   //             SingleChildScrollView(
-                        //   //               physics: BouncingScrollPhysics(),
-                        //   //               child: Container(
-                        //   //                 height: MediaQuery.of(context)
-                        //   //                     .size
-                        //   //                     .height /
-                        //   //                     1.24,
-                        //   //                 child: ListView.builder(
-                        //   //                     reverse: true,
-                        //   //                     physics: BouncingScrollPhysics(),
-                        //   //                     shrinkWrap: true,
-                        //   //                     itemCount: lumpsumList.length,
-                        //   //                     itemBuilder: (context, index) {
-                        //   //                       print(lumpsumList[index]
-                        //   //                           .name
-                        //   //                           .toString());
-                        //   //                       // print(
-                        //   //                       //     "lumpsumlistlength${lumpsumList[index].name}selectedlist${selectedGrade}");
-                        //   //                       // print(int.parse(
-                        //   //                       //         lumpsumList[index]
-                        //   //                       //             .qty!) >=
-                        //   //                       //     int.parse(qty.text));
-                        //   //                       return LayoutBuilder(builder:
-                        //   //                           (context, constraints) {
-                        //   //                         if (lumpsumList[index]
-                        //   //                             .status
-                        //   //                             .toString() ==
-                        //   //                             "Confirmed"
-                        //   //                         // lumpsumList[index].name ==
-                        //   //                         //       "$selectedGrade" &&
-                        //   //                         ) {
-                        //   //                           print(
-                        //   //                               "entrance............");
-                        //   //                           print(
-                        //   //                               "status....................${lumpsumList[index].name}");
-                        //   //                           print(szpct);
-                        //   //                           // print(prcpct);
-                        //   //                           print(selectedSize);
-                        //   //                           return Container(
-                        //   //                               margin: EdgeInsets.only(
-                        //   //                                   top: 10),
-                        //   //                               child: InkWell(
-                        //   //                                 onTap: () {
-                        //   //                                   listOfColumns.add({
-                        //   //                                     "Sr_no": itemNum
-                        //   //                                         .toString(),
-                        //   //                                     "Name":
-                        //   //                                     lumpsumList[
-                        //   //                                     index]
-                        //   //                                         .name.toString()+ selectedSize.toString(),
-                        //   //                                     "Qty": qty.text,
-                        //   //                                     "Price": selectedTransType ==
-                        //   //                                         "Ex-Work" &&
-                        //   //                                         selectedOrderType !=
-                        //   //                                             "Lump-sum"
-                        //   //                                         ? (
-                        //   //                                         (int.parse(lumpsumList[index].basePrice!) +
-                        //   //                                             tCost + szpct) *
-                        //   //                                             int.parse(qty
-                        //   //                                                 .text))
-                        //   //                                         .toString()
-                        //   //                                         : ((int.parse(lumpsumList[index]
-                        //   //                                         .basePrice!)) *
-                        //   //                                         int.parse(
-                        //   //                                             qty.text))
-                        //   //                                         .toString()
-                        //   //                                   });
-                        //   //                                   lumpsumList[index]
-                        //   //                                       .qty = (int.parse(
-                        //   //                                       lumpsumList[index]
-                        //   //                                           .qty!) -
-                        //   //                                       int.parse(qty
-                        //   //                                           .text))
-                        //   //                                       .toString();
-                        //   //
-                        //   //                                   reductionData.add({
-                        //   //                                     "id": lumpsumList[
-                        //   //                                     index]
-                        //   //                                         .ls_id,
-                        //   //                                     "qty":
-                        //   //                                     lumpsumList[
-                        //   //                                     index]
-                        //   //                                         .qty
-                        //   //                                   });
-                        //   //                                   totalQuantity =
-                        //   //                                       totalQuantity +
-                        //   //                                           int.parse(qty
-                        //   //                                               .text);
-                        //   //                                   itemNum =
-                        //   //                                       itemNum + 1;
-                        //   //                                   setState(() {});
-                        //   //                                   Navigator.pop(
-                        //   //                                       context);
-                        //   //                                 },
-                        //   //                                 child: InventoryCard(
-                        //   //                                     context,
-                        //   //                                     lumpsumList[
-                        //   //                                     index],Order(),id ),
-                        //   //                               ));
-                        //   //                         } else {
-                        //   //                           return Container();
-                        //   //                         }
-                        //   //                       });
-                        //   //                     }),
-                        //   //               ),
-                        //   //             )
-                        //   //           ],
-                        //   //         ),
-                        //   //       );
-                        //   //     },
-                        //   //   );
-                        //   //   //selectedTransType = "None";
-                        //   // }
-                        // },
-                        // key: field5Key,
-                        // focusNode: focusNode5,
-                        // validator: (selectedValue) {
-                        //   if (selectedValue == null) {
-                        //     return 'Please select a value.';
-                        //   }
-                        //   return null;
-                        // },
+
+
                       ));
                 } else {
                   return Container();
@@ -1622,32 +1176,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                 }
               }),
 
-              // Container(
-              //   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              //   child: TextFormField(
-              //     key: field5Key,
-              //     focusNode: focusNode5,
-              //     controller: loading_type,
-              //     maxLines: 1,
-              //     validator: (value) {
-              //       if (value!.isEmpty || value == null) {
-              //         return 'Please enter a value.';
-              //       }
-              //       return null;
-              //     },
-              //     decoration: const InputDecoration(
-              //         labelText: "Loading Type",
-              //         floatingLabelBehavior: FloatingLabelBehavior.never,
-              //         border: OutlineInputBorder(
-              //             // borderRadius: BorderRadius.circular(20),
-              //             borderSide: BorderSide.none),
-              //         filled: true,
-              //         fillColor: Color.fromRGBO(233, 236, 239,
-              //             0.792156862745098) // Color.fromRGBO(233, 236, 239, 0.792156862745098)
-              //
-              //         ),
-              //   ),
-              // ),
+
 
               //------------------------------BasePrice--------------------------
 
@@ -1660,33 +1189,6 @@ class _EditOrderPageState extends State<EditOrderContent> {
                 ),
                 child: Column(
                   children: [
-                    // Container(
-                    //     padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    //     child: DropdownButtonFormField(
-                    //       decoration: const InputDecoration(
-                    //           hintText: "Select The Product",
-                    //           filled: true,
-                    //           fillColor: Color.fromRGBO(
-                    //               233, 236, 239, 0.792156862745098),
-                    //           border: OutlineInputBorder(
-                    //             borderSide: BorderSide.none,
-                    //             // borderRadius: BorderRadius.circular(20)
-                    //           )),
-                    //       value: selectedValue,
-                    //       items: getItems(),
-                    //       onChanged: (String? newValue) {
-                    //         selectedValue = newValue;
-                    //       },
-                    //       key: field9Key,
-                    //       focusNode: focusNode9,
-                    //       validator: (selectedValue) {
-                    //         if (selectedValue == null) {
-                    //           return 'Please select a value.';
-                    //         }
-                    //         return null;
-                    //       },
-                    //     )),
-
                     //------------------------- Grade ------------------------------------
 
                     Container(
@@ -1763,6 +1265,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: TextFormField(
+                        readOnly: true,
                         enableInteractiveSelection: false,
                         textInputAction: TextInputAction.next,
                         // key: field6Key,
@@ -1812,86 +1315,9 @@ class _EditOrderPageState extends State<EditOrderContent> {
 
                     //-------------------------deliveryDate------------------------------------
 
-                    // Container(
-                    //     padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    //     // padding: EdgeInsets.all(15),
-                    //     // height: MediaQuery.of(context).size.width / 3,
-                    //     child: Center(
-                    //         child: TextFormField(
-                    //           // key: field10Key,
-                    //           // focusNode: focusNode10,
-                    //           controller: deliveryDate, //editing controller of this TextField
-                    //           decoration: InputDecoration(
-                    //             suffixIcon: Icon(Icons.calendar_today,color: Colors.grey,),
-                    //             // icon: Icon(Icons.calendar_today,color: Colors.grey,), //icon of text field
-                    //             hintText: "Delivery Date",
-                    //             hintStyle: TextStyle(fontSize: 20),
-                    //             border: OutlineInputBorder(
-                    //               // borderRadius: BorderRadius.circular(20),
-                    //                 borderSide: BorderSide.none),
-                    //             filled: true,
-                    //             fillColor: Color.fromRGBO(233, 236, 239,
-                    //                 0.792156862745098),
-                    //             //label text of field
-                    //           ),
-                    //           readOnly: true,
-                    //           //set it true, so that user will not able to edit text
-                    //           onTap: () async {
-                    //             DateTime? pickedDate = await showDatePicker(
-                    //                 context: context,
-                    //                 initialDate: DateTime.now(),
-                    //                 firstDate: DateTime.now(),
-                    //                 //DateTime.now() - not to allow to choose before today.
-                    //                 lastDate: DateTime(2100));
-                    //             if (pickedDate != null) {
-                    //               print(
-                    //                   pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                    //               String formattedDate =
-                    //               DateFormat('dd-MM-yyyy').format(pickedDate);
-                    //               print(
-                    //                   formattedDate); //formatted date output using intl package =>  2021-03-16
-                    //               setState(() {
-                    //                 deliveryDate.text =
-                    //                     formattedDate; //set output date to TextField value.
-                    //               });
-                    //             } else {}
-                    //           },
-                    //         ))),
-
-                    // Container(
-                    //   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    //   child: TextFormField(
-                    //     keyboardType: TextInputType.number,
-                    //     textInputAction: TextInputAction.done,
-                    //     key: field10Key,
-                    //     focusNode: focusNode10,
-                    //     validator: (value) {
-                    //       if (value!.isEmpty) {
-                    //         return 'Please enter a date.';
-                    //       }
-                    //       return null;
-                    //     },
-                    //     controller: deliveryDate,
-                    //     maxLines: 1,
-                    //     decoration: const InputDecoration(
-                    //         hintText: "DeliveryDate",
-                    //         hintStyle: TextStyle(fontSize: 20),
-                    //         //  hintText: "Name",
-                    //         // floatingLabelBehavior: FloatingLabelBehavior.never,
-                    //         border: OutlineInputBorder(
-                    //             // borderRadius: BorderRadius.circular(20),
-                    //             borderSide: BorderSide.none),
-                    //         filled: true,
-                    //         fillColor: Color.fromRGBO(233, 236, 239,
-                    //             0.792156862745098) //Color.fromRGBO(233, 236, 239, 0.792156862745098)
-                    //
-                    //         ),
-                    //   ),
-                    // ),
                     Center(
                       child: Text(isItem, style: TextStyle(color: Colors.red)),
                     ),
-
 
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -1904,20 +1330,21 @@ class _EditOrderPageState extends State<EditOrderContent> {
                             minimumSize: const Size(190, 40)),
                         onPressed: () {
                           var grdpct, szpct = 0;
+                          var przpct = 0;
                           if (selectedOrderType != "Use Lumpsum") {
                             if (selectedGrade != null &&
                                 // selectedpaymentType != null &&
-                                selectedSize != null
+                                selectedSize != null &&
                                 // qty.text != "" &&
-                                // base_price.text != "" &&
-                                // selectedRegion != null
+                                base_price.text != "" &&
+                                selectedRegion != null
                             // selectedTransType != null
                             ) {
-                              // for (int i = 0; i < paymentList.length; i++) {
-                              //   if (paymentList[i].paymentName == selectedpaymentType) {
-                              //     prcpct = int.parse(paymentList[i].paymentCost!);
-                              //   }
-                              // }
+                              for (int i = 0; i < paymentList.length; i++) {
+                                if (paymentList[i].paymentName == selectedpaymentType) {
+                                  przpct = int.parse(paymentList[i].paymentCost!);
+                                }
+                              }
                               for (int i = 0; i < gradeList.length; i++) {
                                 if (gradeList[i].value == selectedGrade) {
                                   grdpct = int.parse(gradeList[i].price!);
@@ -1944,11 +1371,13 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                         selectedOrderType != "Lump-sum"
                                         ? (int.parse(base_price.text) +
                                         grdpct +
+                                        przpct +
                                         szpct +
                                         tCost) *
                                         quty
                                         : (int.parse(base_price.text) +
                                         grdpct +
+                                        przpct+
                                         szpct +
                                         0) *
                                         quty;
@@ -1969,62 +1398,22 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                         ? ((int.parse(base_price.text) +
                                         grdpct +
                                         szpct +
+                                        przpct +
                                         tCost) *
                                         double .parse(qty.text))
                                         .toString()
                                         : ((int.parse(base_price.text) +
                                         grdpct +
                                         szpct +
+                                        przpct +
                                         0) *
                                         double.parse(qty.text))
                                         .toString()
                                   });
-                                  // print(selectedTransType == "CIF" &&
-                                  //         selectedOrderType != "Lump-sum"
-                                  //     ? ((int.parse(base_price.text) +
-                                  //                 grdpct +
-                                  //                 szpct +
-                                  //                 tCost) *
-                                  //             int.parse(qty.text))
-                                  //         .toString()
-                                  //     : ((int.parse(base_price.text) +
-                                  //                 grdpct +
-                                  //                 szpct +
-                                  //                 0) *
-                                  //             int.parse(qty.text))
-                                  //         .toString());
+
                                   itemNum = itemNum + 1;
                                 }
                               });
-                              // print(selectedTransType == "CIF" &&
-                              //         selectedOrderType != "Lump-sum"
-                              //     ? ((int.parse(base_price.text) +
-                              //                 grdpct +
-                              //                 szpct +
-                              //                 tCost) *
-                              //             int.parse(qty.text))
-                              //         .toString()
-                              //     : ((int.parse(base_price.text) +
-                              //                 grdpct +
-                              //                 szpct +
-                              //                 0) *
-                              //             int.parse(qty.text))
-                              //         .toString());
-                              // tot_price = tot_price +
-                              //     num.parse(selectedTransType == "CIF" &&
-                              //             selectedOrderType != "Lump-sum"
-                              //         ? ((int.parse(base_price.text) +
-                              //                     grdpct +
-                              //                     szpct +
-                              //                     tCost) *
-                              //                 int.parse(qty.text))
-                              //             .toString()
-                              //         : ((int.parse(base_price.text) +
-                              //                     grdpct +
-                              //                     szpct +
-                              //                     0) *
-                              //                 int.parse(qty.text))
-                              //             .toString());
 
                               totalQuantity =
                                   totalQuantity + double.parse(qty.text);
@@ -2038,11 +1427,11 @@ class _EditOrderPageState extends State<EditOrderContent> {
                               context: context,
                               builder: (context) {
 
-                                // for (int i = 0; i < paymentList.length; i++) {
-                                //   if (paymentList[i].paymentName == selectedpaymentType) {
-                                //     prcpct = int.parse(paymentList[i].paymentCost!);
-                                //   }
-                                // }
+                                for (int i = 0; i < paymentList.length; i++) {
+                                  if (paymentList[i].paymentName == selectedpaymentType) {
+                                    przpct = int.parse(paymentList[i].paymentCost!);
+                                  }
+                                }
 
                                 for (int i = 0; i < gradeList.length; i++) {
                                   if (gradeList[i].value == selectedGrade) {
@@ -2055,6 +1444,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                   }
                                 }
                                 return Dialog(
+                                  surfaceTintColor: Colors.white,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   elevation: 16,
@@ -2127,21 +1517,15 @@ class _EditOrderPageState extends State<EditOrderContent> {
                                                               index]
                                                                   .name.toString()+ selectedSize.toString(),
                                                               "Qty": qty.text,
-                                                              "Price": selectedTransType ==
-                                                                  "Ex-Work" &&
-                                                                  selectedOrderType !=
-                                                                      "Lump-sum"
+                                                              "Price": selectedTransType == "Ex-Work" &&
+                                                                  selectedOrderType != "Lump-sum"
                                                                   ? (
                                                                   (int.parse(lumpsumList[index].basePrice!) +
-                                                                      tCost + szpct) *
-                                                                      double.parse(qty
-                                                                          .text))
-                                                                  .toString()
-                                                                  : ((int.parse(lumpsumList[index]
-                                                                  .basePrice!)) *
-                                                                  double.parse(
-                                                                      qty.text))
-                                                                  .toString()
+                                                                      tCost + szpct + grdpct + przpct ) *
+                                                                      double.parse(qty.text)).toString()
+                                                                  : ((int.parse(lumpsumList[index].basePrice!)+
+                                                                  szpct + grdpct + przpct) *
+                                                                  double.parse(qty.text)).toString()
                                                             });
                                                             lumpsumList[index]
                                                                 .qty = (double.parse(
@@ -2190,7 +1574,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
                             );
                           }
                         },
-                        child: const Text("Add Item")),
+                        child: const Text("Add Item",style: TextStyle(color: Colors.white),)),
                   ],
                 ),
               ),
@@ -2207,6 +1591,7 @@ class _EditOrderPageState extends State<EditOrderContent> {
               //-----------------------DataTable--------------------------------
 
               Card(
+                color: Colors.white,
                 child: SingleChildScrollView(
                   child: Column(
                     children: [

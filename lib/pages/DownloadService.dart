@@ -1,12 +1,12 @@
-// import 'package:dio/dio.dart';
-// import 'package:open_file/open_file.dart';
-// import 'package:path_provider/path_provider.dart';
+import 'package:dio/dio.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:dio/dio.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'download_service.dart';
+import 'DownloadService.dart';
 abstract class DownloadService {
   Future<void> download({required String url});
 }
@@ -31,7 +31,6 @@ class MobileDownloadService implements DownloadService {
     // You should put the name you want for the file here.
     // Take in account the extension.
     String fileName = 'myfile';
-
     // downloads the file
     Dio dio = Dio();
     await dio.download(url, "${dir?.path}/$fileName");
@@ -39,6 +38,7 @@ class MobileDownloadService implements DownloadService {
     // opens the file
     OpenFile.open("${dir?.path}/$fileName", type: 'application/pdf');
   }
+
   Future<bool> _requestWritePermission() async {
     await Permission.storage.request();
     return await Permission.storage.request().isGranted;

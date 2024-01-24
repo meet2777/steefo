@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 // import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stefomobileapp/Models/lumpsum.dart';
@@ -37,6 +38,8 @@ class InventoryContent extends StatefulWidget {
 }
 
 class _InventoryPageState extends State<InventoryContent> {
+
+  bool _isLoading = false;
   String? id, supplier_id;
   var _selected = 1;
   bool isDataLoaded = false;
@@ -131,8 +134,8 @@ class _InventoryPageState extends State<InventoryContent> {
         req.org_name = responseData2["data"][i]["orgName"];
         req.userType = responseData2["data"][i]["userType"];
         req.user_name = responseData2["data"][i]["firstName"] +
-            " " +
-            responseData2["data"][i]["lastName"];
+            " "
+            + responseData2["data"][i]["lastName"];
         req.status = responseData2["data"][i]["orderStatus"];
         req.party_name = responseData2["data"][i]["partyName"];
         req.dealerName = responseData2["data"][i]["dealerName"];
@@ -281,7 +284,6 @@ class _InventoryPageState extends State<InventoryContent> {
                     ),
                   );
                 }
-
                 if (index == 3) {
                   Navigator.pushReplacement(
                     context,
@@ -400,75 +402,72 @@ class _InventoryPageState extends State<InventoryContent> {
             height: 10,
           ),
 
-          ListView.builder(
-            reverse: true,
-            itemCount: salesOrderList.length,
-            physics: const NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              print("ordertype${salesOrderList[index].orderType}");
-              if (salesOrderList[index].orderType == "With Size" ||
-                  salesOrderList[index].orderType == "Use Lumpsum") {
-                return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
+          Container(
+            child: ListView.builder(
+              reverse: true,
+              itemCount: salesOrderList.length,
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                print("ordertype${salesOrderList[index].orderType}");
+                if (salesOrderList[index].orderType == "Lump-sum") {
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderDetails(
+                                    order: salesOrderList[index],lumpsum: lumpsum)));
+                      },
+                      child: orderCard(
+                        context,
+                        salesOrderList[index],
+                        id,
+                      ));
+                } else
+                  return Container();
+              },
+            ),
+          ),
+          LayoutBuilder(builder:(context, constraints){
+            if(widget.order.date == DateFormat('dd-MM-yyyy').format(DateTime.now())){
+              return ListView.builder(
+                reverse: true,
+                itemCount: salesOrderList.length,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  print("ordertype${salesOrderList[index].orderType}");
+                  if (salesOrderList[index].orderType == "With Size" ||
+                      salesOrderList[index].orderType == "Use Lumpsum") {
+                    return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrderDetails(
+                                      order: salesOrderList[index],lumpsum: lumpsum)
+                              )
+                          );
+                        },
+                        child: orderCard(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => OrderDetails(
-                                  order: salesOrderList[index],
-                                  lumpsum: lumpsum)
-                          )
-                      );
-                    },
-                    child: orderCard(
-                      context,
-                      salesOrderList[index],
-                      //  qtyandprice[index],
-                      id,
-                    ));
-              } else
-                return Container();
-            },
+                          salesOrderList[index],
+                          //  qtyandprice[index],
+                          id,
+                        )
+                    );
+                  } else
+                    return Container();
+                },
+              );
+            }else {
+              return Container();
+            }
+          },
           )
-          // LayoutBuilder(builder:(context, constraints){
-          //   if(widget.order.date == DateFormat('dd-MM-yyyy').format(DateTime.now())){
-          //     return ListView.builder(
-          //       reverse: true,
-          //       itemCount: salesOrderList.length,
-          //       physics: const NeverScrollableScrollPhysics(),
-          //       scrollDirection: Axis.vertical,
-          //       shrinkWrap: true,
-          //       itemBuilder: (context, index) {
-          //         print("ordertype${salesOrderList[index].orderType}");
-          //         if (salesOrderList[index].orderType == "With Size" ||
-          //             salesOrderList[index].orderType == "Use Lumpsum") {
-          //           return GestureDetector(
-          //               onTap: () {
-          //                 Navigator.push(
-          //                     context,
-          //                     MaterialPageRoute(
-          //                         builder: (context) => OrderDetails(
-          //                             order: salesOrderList[index],lumpsum: lumpsum)
-          //                     )
-          //                 );
-          //               },
-          //               child: orderCard(
-          //                 context,
-          //                 salesOrderList[index],
-          //                 //  qtyandprice[index],
-          //                 id,
-          //               )
-          //           );
-          //         } else
-          //           return Container();
-          //       },
-          //     );
-          //   }else {
-          //     return Container();
-          //   }
-          // },
-          // )
 
           // Container(
           //   //color: Colors.amber,

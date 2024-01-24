@@ -24,7 +24,7 @@ import 'LoginPage.dart';
 import 'RequestPage.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:image_picker/image_picker.dart';
-import 'addItem.dart';
+import 'AddItem.dart';
 
 class HomePage extends StatelessWidget {
   @override

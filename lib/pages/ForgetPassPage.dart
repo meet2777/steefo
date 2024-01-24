@@ -25,54 +25,8 @@ class _ForgetPassPageState extends State<ForgetPasscontent> {
   final TextEditingController otp = TextEditingController();
   EmailOTP myAuth = EmailOTP();
 
-  // EmailAuth emailAuth =EmailAuth(sessionName: "sessionName");
-  // void verify() {
-  //   print(emailAuth.validateOtp(
-  //       recipientMail: email.value.text,
-  //       userOtp: otp.value.text));
-  // }
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // Initialize the package
-  //   emailAuth = new EmailAuth(
-  //     sessionName: "Sample session",
-  //   );
-  //   /// Configuring the remote server
-  //   // emailAuth.config(remoteServerConfiguration);
-  // }
 
-  // void sendOtp() async {
-  //   bool result = await emailAuth.sendOtp(
-  //       recipientMail: email.toString(), otpLength: 4);
-  //   if (result) {
-  //     setState(() {
-  //       submitValid = true;
-  //     });
-  //   }
-  // }
 
-  // final TextEditingController _otpController = TextEditingController();
-
-  // void sendOTP()async{
-  //   EmailAuth.sessionName="Test Session";
-  //   var res = await EmailAuth.sendOtp(recipientMail: _emailController.text);
-  //   if(res){
-  //     print("OTP Sent");
-  //   }else{
-  //     print("We could not sent the otp");
-  //   }
-  //
-  // }
-  //
-  // void verifyOTP(async){
-  //   var res = EmailAuth.validate(recieverMail: _emailController.text,userOTP:_otpController.text);
-  //   if(res){
-  //     print("OTP verified");
-  //   }else {
-  //     print("Invalid OTP");
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -162,23 +116,7 @@ class _ForgetPassPageState extends State<ForgetPasscontent> {
                           height: 20,
                         ),
 
-                        // TextFormField(
-                        //   // controller: _otpController,
-                        //   keyboardType: TextInputType.emailAddress,
-                        //   decoration: InputDecoration(
-                        //     // border: OutlineInputBorder(
-                        //     //   borderRadius: BorderRadius.circular(5)
-                        //     // ),
-                        //     labelText: "OTP",
-                        //     labelStyle: TextStyle(
-                        //       color: Colors.black,
-                        //       fontWeight: FontWeight.w400,
-                        //       fontSize: 20,
-                        //     ),
-                        //   ),
-                        //   validator: EmailValidator(errorText: "Not Valid"),
-                        //   style: TextStyle(fontSize: 20),
-                        // ),
+
 
                         SizedBox(
                           height: 40,

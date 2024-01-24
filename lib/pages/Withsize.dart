@@ -382,7 +382,9 @@ class _OrdersPageState extends State<OrdersContent> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => OrderDetails(
-                                    order: salesOrderList[index],lumpsum: lumpsum)));
+                                    order: salesOrderList[index],lumpsum: lumpsum)
+                            )
+                        );
                       },
                       child: completedorderCard(
                         context,
@@ -428,7 +430,9 @@ class _OrdersPageState extends State<OrdersContent> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  OrderDetails(order: requestList[index],lumpsum: lumpsum)));
+                                  OrderDetails(order: requestList[index],lumpsum: lumpsum)
+                          )
+                      );
                     },
                     child: requestList[index].orderType == "With Size" ||
                             requestList[index].orderType == "Use Lumpsum"

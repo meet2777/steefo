@@ -131,7 +131,7 @@ import '../Models/user.dart';
 //     return Container();
 // }
 
-Widget orderCard(BuildContext context, Order order,id) {
+Widget orderCard(BuildContext context, Order order, id) {
   return Column(
     children: [
       Container(
@@ -172,7 +172,7 @@ Widget orderCard(BuildContext context, Order order,id) {
                       //   width: 180,
                       // ),
                       Text(
-                        order.date!.substring(0,10),
+                        order.date!.substring(0, 10),
                         style: TextStyle(color: Colors.grey),
                       )
                     ],
@@ -189,12 +189,11 @@ Widget orderCard(BuildContext context, Order order,id) {
                                 fontSize: 17)),
                       ),
                       Text(
-                        order.date!.substring(10,19),
+                        order.date!.substring(10, 19),
                         style: TextStyle(color: Colors.grey),
                       )
                     ],
                   ),
-
                 ],
               ),
             ),
@@ -270,44 +269,45 @@ Widget orderCard(BuildContext context, Order order,id) {
                               style: TextStyle(color: Colors.white),
                             ));
                       } else {
-                        return LayoutBuilder(
-                            builder: (context, constraints) {
-                              if(order.orderType == "Use Lumpsum"){
-                                return  Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        "Ordered from lumpsum",
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.only(right: 10),
-                                        child: Text("Order id: " + order.orderid.toString(),
-                                          style: TextStyle(
-                                            color: Colors.grey,
-
-                                          ),),
-                                      ),
-                                    ],
+                        return LayoutBuilder(builder: (context, constraints) {
+                          if (order.orderType == "Use Lumpsum") {
+                            return Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "Ordered from lumpsum",
+                                    style: TextStyle(color: Colors.grey),
                                   ),
-                                  //padding: EdgeInsets.only(right: 5),
-                                );
-                              }else{return Container();}
-                            }
-                        );
-                          // Container(
-                            // padding: EdgeInsets.symmetric(
-                            //     horizontal: 5, vertical: 5),
-                            // decoration: BoxDecoration(
-                            //     color: Colors.lightBlueAccent,
-                            //     borderRadius: BorderRadius.only(
-                            //         topLeft: Radius.circular(10),
-                            //         bottomLeft: Radius.circular(10))),
-                            // child: Text(
-                            //   order.status!,
-                            //   style: TextStyle(color: Colors.white),
-                            // )
+                                  Container(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: Text(
+                                      "Order id: " + order.orderid.toString(),
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              //padding: EdgeInsets.only(right: 5),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        });
+                        // Container(
+                        // padding: EdgeInsets.symmetric(
+                        //     horizontal: 5, vertical: 5),
+                        // decoration: BoxDecoration(
+                        //     color: Colors.lightBlueAccent,
+                        //     borderRadius: BorderRadius.only(
+                        //         topLeft: Radius.circular(10),
+                        //         bottomLeft: Radius.circular(10))),
+                        // child: Text(
+                        //   order.status!,
+                        //   style: TextStyle(color: Colors.white),
+                        // )
                         // );
                       }
                     })),
@@ -396,7 +396,8 @@ Widget orderCard(BuildContext context, Order order,id) {
                             Text(
                               "Quantity:",
                               style: TextStyle(
-                                  fontFamily: "Poppins_Bold", color: Colors.grey),
+                                  fontFamily: "Poppins_Bold",
+                                  color: Colors.grey),
                             ),
                             Text(
                               order.totalQuantity.toString(),
@@ -428,7 +429,6 @@ Widget orderCard(BuildContext context, Order order,id) {
                       //       }else{return Container();}
                       //       }
                       // )
-
                     ],
                   ),
 
@@ -542,7 +542,7 @@ Widget orderCard(BuildContext context, Order order,id) {
 Widget DistributorCard(User user, BuildContext context) {
   if (user.userType == "Distributor") {
     return Container(
-      height: 120,
+      // height: 120,
       // margin: EdgeInsets.only(top: 20,),
       margin: EdgeInsets.all(10.0),
       // padding: const EdgeInsets.all(8.0),
@@ -561,10 +561,12 @@ Widget DistributorCard(User user, BuildContext context) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
+            // verticalDirection:VerticalDirection.up,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Padding(padding: EdgeInsets.only(bottom: 5)),
               Container(
-                //  height: 50,
+                 // height: 50,
                 alignment: Alignment.center,
                 padding:
                     EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
@@ -579,7 +581,7 @@ Widget DistributorCard(User user, BuildContext context) {
                   user.orgName!.toUpperCase(),
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Goggle'),
                   // overflow: TextOverflow.visible,
@@ -591,7 +593,7 @@ Widget DistributorCard(User user, BuildContext context) {
 
               Row(
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 10, top: 10)),
+                  Padding(padding: EdgeInsets.only(left: 10)),
                   Container(
                     child: Text(
                       "Mobile No: ",
@@ -614,7 +616,7 @@ Widget DistributorCard(User user, BuildContext context) {
               ),
               Row(
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 10, top: 10)),
+                  Padding(padding: EdgeInsets.only(left: 10, top: 10,)),
                   Container(
                     child: Text(
                       "Email: ",
@@ -905,8 +907,8 @@ Widget DealerCard(User user, BuildContext context) {
     return Container();
 }
 
-
-Widget InventoryCard1(BuildContext context, Lumpsum lumpsum,Order order,String? curr_user_id) {
+Widget InventoryCard1(
+    BuildContext context, Lumpsum lumpsum, Order order, String? curr_user_id) {
   print('object');
   return Container(
     decoration: BoxDecoration(
@@ -916,7 +918,7 @@ Widget InventoryCard1(BuildContext context, Lumpsum lumpsum,Order order,String? 
     child: Column(
       children: [
         Container(
-          padding: EdgeInsets.only(left: 5, right: 5,top: 5,bottom: 5),
+          padding: EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
           //  margin: EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -1013,12 +1015,12 @@ Widget InventoryCard1(BuildContext context, Lumpsum lumpsum,Order order,String? 
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Base Price: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text("Base Price: ",
+                  style: TextStyle(fontFamily: "Poppins_Bold")),
               Text(lumpsum.basePrice.toString(),
                   style: TextStyle(
                     color: Colors.black,
-                  )
-              ),
+                  )),
             ],
           ),
         ),
@@ -1068,10 +1070,8 @@ Widget InventoryCard1(BuildContext context, Lumpsum lumpsum,Order order,String? 
   );
 }
 
-
-
-
-Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? curr_user_id) {
+Widget InventoryCard(
+    BuildContext context, Lumpsum lumpsum, Order order, String? curr_user_id) {
   print('object');
   return Container(
     decoration: BoxDecoration(
@@ -1081,7 +1081,7 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? c
     child: Column(
       children: [
         Container(
-          padding: EdgeInsets.only(left: 5, right: 5,top: 5,bottom: 5),
+          padding: EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
           //  margin: EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -1178,12 +1178,12 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? c
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Base Price: ", style: TextStyle(fontFamily: "Poppins_Bold")),
+              Text("Base Price: ",
+                  style: TextStyle(fontFamily: "Poppins_Bold")),
               Text(lumpsum.basePrice.toString(),
                   style: TextStyle(
                     color: Colors.black,
-                  )
-              ),
+                  )),
             ],
           ),
         ),
@@ -1236,28 +1236,30 @@ Widget InventoryCard(BuildContext context, Lumpsum lumpsum,Order order,String? c
 Widget LumpSumTotal(BuildContext context, Grade g) {
   return Container(
       child: Row(
-    children: [
-      Expanded(
-        flex: 6,
-        child: Text(g.value.toString(),
-            style: TextStyle(
-              fontSize: 17,
-              color: Colors.black,
-            )),
-      ),
-      Expanded(
-        flex: 1,
-        child: Text(":", style: TextStyle(fontSize: 17, color: Colors.black)),
-      ),
-      Expanded(
-        flex: 2,
-        child: Center(
-            child: Text(g.qty.toString(),
-                style: TextStyle(fontSize: 17, color: Colors.black))),
-      ),
-    ],
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Text(g.value.toString(),
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Colors.black,
+                )),
+          ),
+          Expanded(
+            flex: 0,
+            child: Text(":", style: TextStyle(fontSize: 17, color: Colors.black)),
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(
+                child: Text(g.qty.toString(),
+                    style: TextStyle(fontSize: 17, color: Colors.black)
+                )
+            ),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.start,
   ));
 }
 

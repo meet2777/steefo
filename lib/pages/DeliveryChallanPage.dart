@@ -7,12 +7,12 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../Models/challan.dart';
 import '../Models/order.dart';
 import '../UI/common.dart';
-import 'download_service.dart';
+import 'DownloadService.dart';
 
 class deliveryChallanPage extends StatelessWidget {
   // final int order_id = 533;
-  final Order order;
-  final Challan challan;
+  Order order;
+  Challan challan;
   deliveryChallanPage({Key? key,required this.order,required this.challan}) : super(key: key);
 
   Future<void> _downloadFile(String url) async {
@@ -49,6 +49,8 @@ class deliveryChallanPage extends StatelessWidget {
                       onTap:
                           () {
                         _downloadFile("http://steefotmtmobile.com/steefo/download_challan.php?id=${order.order_id}&id2=${challan.challan_id}");
+                        print("Download Challan ");
+
                       },
                       child: Icon(Icons.download_for_offline,color: Colors.black,size: 35,)
                   ),

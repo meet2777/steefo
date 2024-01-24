@@ -29,15 +29,16 @@ import 'package:stefomobileapp/pages/RegistrationPage.dart';
 import 'package:stefomobileapp/pages/RequestPage.dart';
 import 'package:stefomobileapp/pages/PlaceOrderPage.dart';
 import 'package:stefomobileapp/pages/UserProfilePage.dart';
-import 'package:stefomobileapp/pages/challangenerator.dart';
-import 'package:stefomobileapp/pages/editorderpage.dart';
-import 'package:stefomobileapp/pages/newPassPage.dart';
-import 'package:stefomobileapp/pages/pdfView.dart';
+import 'package:stefomobileapp/pages/ChallanGenerator.dart';
+import 'package:stefomobileapp/pages/EditOrderPage.dart';
+import 'package:stefomobileapp/pages/NewPassPage.dart';
+import 'package:stefomobileapp/pages/PdfView.dart';
 import 'package:upgrader/upgrader.dart';
 import 'Models/order.dart';
 import 'pages/LRPage.dart';
 import 'UI/common.dart';
 import 'Models/lumpsum.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -212,7 +213,7 @@ Future<void> _firebaseMessagingBackgroungHandler(RemoteMessage message) async {
 
 
 // late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-// late AndroidNotificationChannel channel;
+// late AndroidNot ificationChannel channel;
 //
 // bool isFlutterLocalNotificationsInitialized = false;
 //

@@ -8,7 +8,7 @@ import 'package:stefomobileapp/Models/order.dart';
 import 'package:http/http.dart' as http;
 import 'package:stefomobileapp/pages/HomePage.dart';
 // import 'package:stefomobileapp/pages/OrderPage.dart';
-import 'package:stefomobileapp/pages/orderdetailsforpurchases.dart';
+import 'package:stefomobileapp/pages/OrderDetailsForPurchases.dart';
 import 'package:stefomobileapp/ui/cards.dart';
 import 'package:stefomobileapp/ui/common.dart';
 import 'package:stefomobileapp/ui/custom_tabbar.dart';

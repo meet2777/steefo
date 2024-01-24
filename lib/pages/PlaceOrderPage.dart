@@ -664,8 +664,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                 "http://steefotmtmobile.com/steefo/ordernotification.php"),
             // "http://steefotmtmobile.com/steefo/notificationNew.php" as Uri,
             body: {"token": token1.toString(), "parentId": supplier_id});
-        Future.delayed(Duration(seconds: 0))
-            .then((value) => {Navigator.of(context).pushNamed("/home")});
         Fluttertoast.showToast(
             msg: 'Your Order Is Placed',
             toastLength: Toast.LENGTH_SHORT,
@@ -673,6 +671,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             timeInSecForIosWeb: 3,
             backgroundColor: Colors.blueAccent,
             textColor: Colors.white);
+        Future.delayed(Duration(seconds: 0)).then((value) => {Navigator.of(context).pushNamed("/home")});
         print(response.body);
         return jsonEncode(response.body);
 
@@ -682,7 +681,6 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
         //   print("Token is null");
         // }
       } else {}
-
       Fluttertoast.showToast(
           msg: 'Your Order Is Placed',
           toastLength: Toast.LENGTH_SHORT,
@@ -1459,6 +1457,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                   }
                                 }
                                 return Dialog(
+                                  surfaceTintColor: Colors.grey,
+                                  // backgroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   elevation: 16,
@@ -2304,6 +2304,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                   }
                                 }
                                 return Dialog(
+                                  surfaceTintColor: Colors.white,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   elevation: 16,
@@ -2390,7 +2391,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                                                                               .text))
                                                                       .toString()
                                                                   : ((int.parse(lumpsumList[index]
-                                                                              .basePrice!)) *
+                                                                              .basePrice!)+ szpct + grdpct+przpct) *
                                                                           int.parse(
                                                                               qty.text))
                                                                       .toString()
@@ -2449,7 +2450,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
                             );
                           }
                         },
-                        child: const Text("Add Item")),
+                        child: const Text("Add Item",style: TextStyle(color: Colors.white),)),
                   ],
                 ),
               ),
@@ -2466,6 +2467,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
               //-----------------------DataTable--------------------------------
 
               Card(
+                color: Colors.white,
                 child: SingleChildScrollView(
                   child: Column(
                     children: [

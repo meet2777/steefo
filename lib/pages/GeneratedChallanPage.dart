@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:stefomobileapp/Models/challan.dart';
-import 'package:stefomobileapp/pages/deliveryChallanPage.dart';
+import 'package:stefomobileapp/pages/DeliveryChallanPage.dart';
 //import '../Models/gen_item_list.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
@@ -295,7 +295,6 @@ class _ChallanPageState extends State<ChallanPage> {
                                 )
                             ),
 
-
                             Container(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 decoration: BoxDecoration(
@@ -320,30 +319,6 @@ class _ChallanPageState extends State<ChallanPage> {
                                 )
                             ),
 
-
-                            // Container(
-                            //     padding: const EdgeInsets.only(bottom: 10),
-                            //     decoration: BoxDecoration(
-                            //       // borderRadius: BorderRadius.circular(20),
-                            //       // color: Colors.white.withOpacity(0.85),
-                            //     ),
-                            //     child: Row(
-                            //       mainAxisAlignment:
-                            //       MainAxisAlignment.spaceBetween,
-                            //       children: [
-                            //         Text("Party Name:",
-                            //             style: TextStyle(
-                            //               fontFamily: "Poppins_Bold",
-                            //               fontSize: 15,
-                            //               // fontWeight: FontWeight.bold
-                            //             )),
-                            //         Text(or.party_name!,
-                            //             style: TextStyle(
-                            //                 fontSize: 15,
-                            //                 fontFamily: "Poppins"))
-                            //       ],
-                            //     )
-                            // ),
                             Text(
                               "Shipping Address",
                               style: TextStyle(
@@ -360,27 +335,7 @@ class _ChallanPageState extends State<ChallanPage> {
                               maxLines: 4,
                               softWrap: true,
                             ),Padding(padding: EdgeInsets.only(bottom:10)),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //   children: [
-                            //     Text(
-                            //       "Shipping Address :",
-                            //       style: TextStyle(
-                            //         fontSize: 10,
-                            //         fontWeight: FontWeight.bold,
-                            //       ),
-                            //     ),
-                            //     Expanded(
-                            //       // padding: EdgeInsets.only(bottom: 25, top: 10),
-                            //       child: Text(or.party_address!,
-                            //         style: TextStyle(fontSize: 10,),
-                            //         textAlign: TextAlign.right,
-                            //         maxLines: 4,
-                            //         softWrap: true,
-                            //       ),
-                            //     )
-                            //   ],
-                            // ),
+
                             Container(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 decoration: BoxDecoration(
@@ -405,15 +360,6 @@ class _ChallanPageState extends State<ChallanPage> {
                                 )
                             ),
 
-                            // const Text("Contact",
-                            //     style: TextStyle(
-                            //       fontFamily: "Poppins_Bold",
-                            //       fontSize: 15,
-                            //       // fontWeight: FontWeight.bold
-                            //     )),
-                            // Text(or.party_mob_num!,
-                            //     style: const TextStyle(
-                            //         fontSize: 15, fontFamily: "Poppins")),
                           ],
                         ),
                       ),
@@ -621,104 +567,33 @@ class _ChallanPageState extends State<ChallanPage> {
                     SizedBox(
                       height: 30,
                     ),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     Get.to(HomePage());
-                    //   },
-                    //   child: Container(
-                    //     alignment: Alignment.center,
-                    //     child: Text(
-                    //       'Back To Homepage',
-                    //       style:
-                    //           TextStyle(fontSize: 25, color: Colors.white),
-                    //       textAlign: TextAlign.center,
-                    //     ),
-                    //     decoration: BoxDecoration(
-                    //         color: Colors.blueGrey,
-                    //         borderRadius: BorderRadius.circular(10)),
-                    //     height: 40,
-                    //     width: double.infinity,
-                    //   ),
-                    // )
+
                   ],
                 ),
               ),
-              // GestureDetector(
-              //   onTap: () async {
-              //     await http.post(
-              //       Uri.parse(
-              //           "http://urbanwebmobile.in/steffo/approveorder.php"),
-              //       body: {"decision": "Completed", "order_id": widget.orderid},
-              //     );
-              //     () {
-              //       // orderList.add(requestList[index]);
-              //       // requestList.removeAt(index);
-              //       // id = "none";
-              //       // requestList.removeAt(index);
-              //       // loadData();
-              //       setState(() {});
-              //       Get.to(HomePage());
-              //     }();
-              //   },
-              //   child: Container(
-              //       alignment: Alignment.center,
-              //       margin: EdgeInsets.only(left: 10, right: 10),
-              //       height: 60,
-              //       width: MediaQuery.of(context).size.width,
-              //       decoration: BoxDecoration(
-              //           borderRadius: BorderRadius.all(Radius.circular(10)),
-              //           gradient: LinearGradient(colors: [
-              //             Color.fromRGBO(75, 100, 160, 1.0),
-              //             Color.fromRGBO(19, 59, 78, 1.0),
 
-              //             //add more colors
-              //           ])),
-              //       child: Padding(
-              //         padding: const EdgeInsets.only(
-              //           top: 18,
-              //           bottom: 18,
-              //         ),
-              //         child: Text(
-              //           "Complete Order",
-              //           style: const TextStyle(
-              //               fontFamily: 'Poppins_Bold', color: Colors.white),
-              //         ),
-              //       )),
-              // ),
               SizedBox(
                 height: 10,
               ),
 
+
               Container(
                   margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                width: MediaQuery.of(context).size.width,
-                child: buttonStyle("Download Challan",(){
-                  // print("Press View Download===>${challan.deliveryChallan!}");
-
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  width: MediaQuery.of(context).size.width,
+                  child: buttonStyle("Download Challan", () {
+                    _executePhpPage();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => deliveryChallanPage(order: or, challan: ch
 
-                                 )));
+                            )));
 
-                    // Navigator.of(context).pushNamed("/pdfView");
+                    // if (_formKey.currentState!.validate()) {
+                    // }
 
-                }),
-              ),
-
-              // Container(
-              //     margin:
-              //     const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              //     width: MediaQuery.of(context).size.width,
-              //     child: buttonStyle("Download Challan", () {
-              //       _executePhpPage();
-              //
-              //       // if (_formKey.currentState!.validate()) {
-              //       // }
-              //
-              //     }))
+                  }))
 
             ])),
       ),

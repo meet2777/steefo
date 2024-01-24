@@ -1093,8 +1093,7 @@ class _AddItemPageState extends State<AddItemContent> {
                                               body: {
                                                 "regionName": newRegion.text,
                                                 "tCost": RegionPrice.text,
-                                                }
-                                              );
+                                              });
 
                                           Get.to(HomePage());
                                           Get.showSnackbar(
@@ -1232,23 +1231,29 @@ class _AddItemPageState extends State<AddItemContent> {
                                                                     ),
                                                                     ElevatedButton(
                                                                         style: ButtonStyle(
-                                                                            shape: MaterialStatePropertyAll(ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20))),
-                                                                            backgroundColor: MaterialStatePropertyAll(Colors.lightBlueAccent)),
-                                                                        onPressed: () {
+                                                                            shape: MaterialStatePropertyAll(ContinuousRectangleBorder(
+                                                                                borderRadius: BorderRadius.circular(
+                                                                                    20))),
+                                                                            backgroundColor: MaterialStatePropertyAll(Colors
+                                                                                .lightBlueAccent)),
+                                                                        onPressed:
+                                                                            () {
                                                                           final numericRegex =
-                                                                          RegExp(r'^[0-9]*$');
+                                                                              RegExp(r'^[0-9]*$');
                                                                           if (numericRegex.hasMatch(newPaymentPrice.text) &&
                                                                               newPaymentPrice.text.trim() != "") {
-                                                                            paymentList[ind].paymentCost = newPaymentPrice.text;
+                                                                            paymentList[ind].paymentCost =
+                                                                                newPaymentPrice.text;
                                                                             http.post(Uri.parse("http://steefotmtmobile.com/steefo/updatepayment.php"), body: {
                                                                               "paymentName": paymentList[ind].paymentName,
                                                                               "paymentPrice": newPaymentPrice.text,
                                                                             });
                                                                           }
-                                                                          Navigator.pop(context);
+                                                                          Navigator.pop(
+                                                                              context);
                                                                         },
-                                                                        child: Text("Submit")
-                                                                    ),
+                                                                        child: Text(
+                                                                            "Submit")),
                                                                     // ElevatedButton(
                                                                     //     style: ButtonStyle(
                                                                     //         shape: MaterialStatePropertyAll(ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20))),

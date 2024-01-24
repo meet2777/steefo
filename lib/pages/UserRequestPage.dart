@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stefomobileapp/UI/common.dart';
 import 'package:http/http.dart' as http;
-import 'package:stefomobileapp/pages/pdfView.dart';
+import 'package:stefomobileapp/pages/PdfView.dart';
 import '../Models/user.dart';
 
 class UserRequestPage extends StatelessWidget {
@@ -397,7 +397,7 @@ class UserRequestPage extends StatelessWidget {
               margin: EdgeInsets.only(top: 5),
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: ElevatedButton(
-                  child: Text("APPROVE",style: TextStyle(fontSize: 18),),
+                  child: Text("APPROVE",style: TextStyle(fontSize: 18,color: Colors.white),),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(102, 178, 83, 1.0)),
                   onPressed: () async {
@@ -462,7 +462,7 @@ class UserRequestPage extends StatelessWidget {
                     //   }
                     // }
                   },
-                  child: Text("REJECT",style: TextStyle(fontSize: 18),)),
+                  child: Text("REJECT",style: TextStyle(fontSize: 18,color: Colors.white),)),
             ),
             SizedBox(
               height: 20,
