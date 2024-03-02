@@ -37,9 +37,9 @@ Widget buttonStyle(String str, void c()) {
         gradient: LinearGradient(colors: [
           Color.fromRGBO(75, 100, 160, 1.0),
           Color.fromRGBO(19, 59, 78, 1.0),
-
           //add more colors
-        ]),
+         ]
+        ),
         // borderRadius: BorderRadius.circular(30),
         // boxShadow: <BoxShadow>[
         // BoxShadow(

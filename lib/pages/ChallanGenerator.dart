@@ -52,14 +52,12 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
       var responseData1 = jsonDecode(res.body);
       for (int i = 0; i < responseData1["data"].length; i++) {
         Item i = Item();
-
         i.name = responseData1['data'][i]['id'];
         i.price = responseData1['data'][i]['price'];
         i.qty = responseData1['data'][i]['qty'];
         qtyandprice.add(i);
       }
       print(qtyandprice);
-
       // flag = 1;
       setState(() {});
     }
@@ -150,67 +148,67 @@ class _OrdersPageState extends State<ChallangeneratorContent> {
       or.trans_type = responseData1["data"][i]["transType"];
       or.order_date = responseData1["data"][i]["createdAt"];
       or.base_price = responseData1["data"][i]["basePrice"];
-      or.orderType = responseData1["data"][i]["orderType"];
+      or.orderType = responseData1["data"][i]["order/Type"];
       or.order_id = responseData1["data"][i]["order_id"].toString();
       or.date = responseData1["data"][i]["dateTime"];
       //print(req);
-      if (or.status != "Rejected") {
+      // if (or.status != "Rejected") {
         if (id == or.user_id) {
           purchaseOrderList.add(or);
         }
         if (id == or.reciever_id) {
           salesOrderList.add(or);
         }
-      }
+      // }
     }
 
-    if (m != id) {
-      final res = await http.post(
-        Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
-        body: {"id": id!},
-      );
-      var responseData = jsonDecode(res.body);
-      print(responseData);
-
-      for (int i = 0; i < responseData["data"].length; i++) {
-        Order req = Order();
-        req.orderStatus = responseData["data"][i]["orderStatus"];
-        req.deliveryDate = responseData["data"][i]["deliveryDate"];
-        req.totalPrice = responseData["data"][i]["totalPrice"];
-        req.totalQuantity = responseData["data"][i]["totalQuantity"];
-        req.reciever_id = responseData["data"][i]["supplier_id"];
-        req.user_id = responseData["data"][i]["user_id"];
-        req.user_mob_num = responseData["data"][i]["mobileNumber"];
-        req.org_name = responseData["data"][i]["orgName"];
-        req.user_name = responseData["data"][i]["firstName"] + " " +
-            responseData["data"][i]["lastName"];
-        req.status = responseData["data"][i]["orderStatus"];
-        req.party_name = responseData["data"][i]["partyName"];
-        req.party_address = responseData["data"][i]["shippingAddress"];
-        req.pincode = responseData["data"][i]["pincode"];
-        req.billing_address = responseData["data"][i]["address"];
-        req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
-        req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
-        req.loading_type = responseData["data"][i]["loadingType"];
-        req.trans_type = responseData["data"][i]["transType"];
-        req.order_date = responseData["data"][i]["createdAt"];
-        req.base_price = responseData["data"][i]["basePrice"];
-        req.orderType = responseData["data"][i]["orderType"];
-        req.order_id = responseData["data"][i]["order_id"].toString();
-        req.date = responseData["data"][i]["dateTime"];
-        //print(req);
-        if (req.status != "Rejected") {
-          if (id == req.user_id) {
-            purchaseOrderList.add(req);
-          }
-          if (id == req.reciever_id) {
-            salesOrderList.add(req);
-          }
-        }
-      }
-      //  print(salesOrderList);
-      setState(() {});
-    }
+    // if (m != id) {
+    //   final res = await http.post(
+    //     Uri.parse("http://steefotmtmobile.com/steefo/vieworder.php"),
+    //     body: {"id": id!},
+    //   );
+    //   var responseData = jsonDecode(res.body);
+    //   print(responseData);
+    //
+    //   for (int i = 0; i < responseData["data"].length; i++) {
+    //     Order req = Order();
+    //     req.orderStatus = responseData["data"][i]["orderStatus"];
+    //     req.deliveryDate = responseData["data"][i]["deliveryDate"];
+    //     req.totalPrice = responseData["data"][i]["totalPrice"];
+    //     req.totalQuantity = responseData["data"][i]["totalQuantity"];
+    //     req.reciever_id = responseData["data"][i]["supplier_id"];
+    //     req.user_id = responseData["data"][i]["user_id"];
+    //     req.user_mob_num = responseData["data"][i]["mobileNumbhger"];
+    //     req.org_name = responseData["data"][i]["orgName"];
+    //     req.user_name = responseData["data"][i]["firstName"] + " " +
+    //         responseData["data"][i]["lastName"];
+    //     req.status = responseData["data"][i]["orderStatus"];
+    //     req.party_name = responseData["data"][i]["partyName"];
+    //     req.party_address = responseData["data"][i]["shippingAddress"];
+    //     req.pincode = responseData["data"][i]["pincode"];
+    //     req.billing_address = responseData["data"][i]["address"];
+    //     req.party_mob_num = responseData["data"][i]["partyMobileNumber"];
+    //     req.PartygstNumber = responseData["data"][i]["PartygstNumber"];
+    //     req.loading_type = responseData["data"][i]["loadingType"];
+    //     req.trans_type = responseData["data"][i]["transType"];
+    //     req.order_date = responseData["data"][i]["createdAt"];
+    //     req.base_price = responseData["data"][i]["basePrice"];
+    //     req.orderType = responseData["data"][i]["orderType"];
+    //     req.order_id = responseData["data"][i]["order_id"].toString();
+    //     req.date = responseData["data"][i]["dateTime"];
+    //     //print(req);
+    //     if (req.status != "Rejected") {
+    //       if (id == req.user_id) {
+    //         purchaseOrderList.add(req);
+    //       }
+    //       if (id == req.reciever_id) {
+    //         salesOrderList.add(req);
+    //       }
+    //     }
+    //   }
+    //   //  print(salesOrderList);
+    //   setState(() {});
+    // }
   }
 
   String? id1 = "";

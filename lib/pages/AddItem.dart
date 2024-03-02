@@ -211,8 +211,12 @@ class _AddItemPageState extends State<AddItemContent> {
                                                         context: context,
                                                         builder: (context) {
                                                           return Container(
+                                                            // color: Colors.white,
                                                             child: Dialog(
+                                                              // backgroundColor: Colors.white,
                                                               child: Container(
+                                                                color: Colors
+                                                                    .white,
                                                                 padding:
                                                                     EdgeInsets
                                                                         .all(
@@ -383,6 +387,7 @@ class _AddItemPageState extends State<AddItemContent> {
                             return Form(
                               key: _formKey,
                               child: AlertDialog(
+                                surfaceTintColor: Colors.white,
                                 title: Text(
                                   "ADD GRADE",
                                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -543,14 +548,12 @@ class _AddItemPageState extends State<AddItemContent> {
                                                           context: context,
                                                           builder: (context) {
                                                             return Container(
+                                                              // color: Colors.white,
                                                               child: Dialog(
                                                                 child:
-                                                                    Container(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                              10),
-                                                                  height: 170,
+                                                                Container(
+                                                                  color: Colors.white,
+                                                                  padding: EdgeInsets.all(10), height: 170,
                                                                   child: Column(
                                                                     mainAxisAlignment:
                                                                         MainAxisAlignment
@@ -712,6 +715,7 @@ class _AddItemPageState extends State<AddItemContent> {
                             return Form(
                               key: _formKey,
                               child: AlertDialog(
+                                surfaceTintColor: Colors.white,
                                 title: Text(
                                   "ADD SIZE",
                                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -818,7 +822,11 @@ class _AddItemPageState extends State<AddItemContent> {
                   ],
                 ),
               ),
+
+
               //-------------------------regions----------------------------------
+
+
               SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
@@ -870,8 +878,8 @@ class _AddItemPageState extends State<AddItemContent> {
                                                           builder: (context) {
                                                             return Container(
                                                               child: Dialog(
-                                                                child:
-                                                                    Container(
+                                                                child: Container(
+                                                                  color: Colors.white,
                                                                   height: 150,
                                                                   child: Column(
                                                                     mainAxisAlignment:

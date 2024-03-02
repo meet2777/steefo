@@ -92,7 +92,7 @@ class _InventoryPageState extends State<InventoryContent> {
         var ind = gradeList.indexWhere((element) =>
             element.value?.trim() == responseData['data'][i]['name'].trim());
         gradeList[ind].qty = gradeList[ind].qty! +
-            double.parse(responseData['data'][i]['qty_left']);
+            double.parse(responseData['data'][i]['qty']);
       } catch (e) {
         print(e);
       }
@@ -121,7 +121,6 @@ class _InventoryPageState extends State<InventoryContent> {
       );
       var responseData2 = jsonDecode(res2.body);
       print(responseData2);
-
       for (int i = 0; i < responseData2["data"].length; i++) {
         Order req = Order();
         req.deliveryDate = responseData2["data"][i]["deliveryDate"];
@@ -133,8 +132,7 @@ class _InventoryPageState extends State<InventoryContent> {
         req.user_mob_num = responseData2["data"][i]["mobileNumber"];
         req.org_name = responseData2["data"][i]["orgName"];
         req.userType = responseData2["data"][i]["userType"];
-        req.user_name = responseData2["data"][i]["firstName"] +
-            " "
+        req.user_name = responseData2["data"][i]["firstName"] + " "
             + responseData2["data"][i]["lastName"];
         req.status = responseData2["data"][i]["orderStatus"];
         req.party_name = responseData2["data"][i]["partyName"];
@@ -379,9 +377,9 @@ class _InventoryPageState extends State<InventoryContent> {
               ],
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          // SizedBox(
+          //   height: 10,
+          // ),
           Align(
             alignment: Alignment.topLeft,
             child: Container(
@@ -390,7 +388,7 @@ class _InventoryPageState extends State<InventoryContent> {
               height: 60,
               padding: EdgeInsets.only(top: 20),
               child: Text(
-                "abc ",
+                "With Size:",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
@@ -401,73 +399,79 @@ class _InventoryPageState extends State<InventoryContent> {
           SizedBox(
             height: 10,
           ),
-
-          Container(
-            child: ListView.builder(
-              reverse: true,
-              itemCount: salesOrderList.length,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                print("ordertype${salesOrderList[index].orderType}");
-                if (salesOrderList[index].orderType == "Lump-sum") {
-                  return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OrderDetails(
-                                    order: salesOrderList[index],lumpsum: lumpsum)));
-                      },
-                      child: orderCard(
-                        context,
-                        salesOrderList[index],
-                        id,
-                      ));
-                } else
-                  return Container();
-              },
+          Card(
+            color: Colors.white54,
+            child: Container(
+            height: 100,
             ),
-          ),
-          LayoutBuilder(builder:(context, constraints){
-            if(widget.order.date == DateFormat('dd-MM-yyyy').format(DateTime.now())){
-              return ListView.builder(
-                reverse: true,
-                itemCount: salesOrderList.length,
-                physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  print("ordertype${salesOrderList[index].orderType}");
-                  if (salesOrderList[index].orderType == "With Size" ||
-                      salesOrderList[index].orderType == "Use Lumpsum") {
-                    return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => OrderDetails(
-                                      order: salesOrderList[index],lumpsum: lumpsum)
-                              )
-                          );
-                        },
-                        child: orderCard(
-                          context,
-                          salesOrderList[index],
-                          //  qtyandprice[index],
-                          id,
-                        )
-                    );
-                  } else
-                    return Container();
-                },
-              );
-            }else {
-              return Container();
-            }
-          },
           )
+
+          // Container(
+          //   child: ListView.builder(
+          //     reverse: true,
+          //     itemCount: salesOrderList.length,
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     scrollDirection: Axis.vertical,
+          //     shrinkWrap: true,
+          //     itemBuilder: (context, index) {
+          //       print("ordertype${salesOrderList[index].orderType}");
+          //       if (salesOrderList[index].orderType == "Lump-sum") {
+          //         return GestureDetector(
+          //             onTap: () {
+          //               Navigator.push(
+          //                   context,
+          //                   MaterialPageRoute(
+          //                       builder: (context) => OrderDetails(
+          //                           order: salesOrderList[index],lumpsum: lumpsum)));
+          //             },
+          //             child: orderCard(
+          //               context,
+          //               salesOrderList[index],
+          //               id,
+          //             ));
+          //       } else
+          //         return Container();
+          //     },
+          //   ),
+          // ),
+          // LayoutBuilder(builder:(context, constraints){
+          //   if(widget.order.date == DateFormat('dd-MM-yyyy').format(DateTime.now())){
+          //     return ListView.builder(
+          //       reverse: true,
+          //       itemCount: salesOrderList.length,
+          //       physics: const NeverScrollableScrollPhysics(),
+          //       scrollDirection: Axis.vertical,
+          //       shrinkWrap: true,
+          //       itemBuilder: (context, index) {
+          //         print("ordertype${salesOrderList[index].orderType}");
+          //         if (salesOrderList[index].orderType == "With Size" ||
+          //             salesOrderList[index].orderType == "Use Lumpsum") {
+          //           return GestureDetector(
+          //               onTap: () {
+          //                 Navigator.push(
+          //                     context,
+          //                     MaterialPageRoute(
+          //                         builder: (context) => OrderDetails(
+          //                             order: salesOrderList[index],lumpsum: lumpsum)
+          //                     )
+          //                 );
+          //               },
+          //               child: orderCard(
+          //                 context,
+          //                 salesOrderList[index],
+          //                 //  qtyandprice[index],
+          //                 id,
+          //               )
+          //           );
+          //         } else
+          //           return Container();
+          //       },
+          //     );
+          //   }else {
+          //     return Container();
+          //   }
+          // },
+          // )
 
           // Container(
           //   //color: Colors.amber,
