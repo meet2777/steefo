@@ -16,9 +16,14 @@ import 'package:stefomobileapp/ui/cards.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import '../Models/grade.dart';
+import '../Models/item.dart';
 import '../Models/order.dart';
 import '../ui/common.dart';
 import 'OrderPage.dart';
+import 'package:flutter/material.dart';
+import 'package:charts_flutter_new/flutter.dart' as charts;
+// import 'package:syncfusion_flutter_charts/charts.dart';
+
 
 class InventoryPage extends StatelessWidget {
   final Order order;
@@ -37,7 +42,41 @@ class InventoryContent extends StatefulWidget {
   State<InventoryContent> createState() => _InventoryPageState();
 }
 
+// class SalesData {
+//   SalesData(this.year, this.sales);
+//   final DateTime year;
+//   final double sales;
+// }
+
 class _InventoryPageState extends State<InventoryContent> {
+
+  List<Sale>fromJson(String strJson){
+    final data = jsonDecode(strJson);
+    return List<Sale>.from(data.map((i) => Sale.fromMap(i)));
+  }
+
+  List<Sale> sales = [];
+  Future<List<Sale>>getdata() async{
+    List<Sale> list =[];
+    final response = await http.get(Uri.parse("http://steefotmtmobile.com/steefo/chartdata.php"));
+    if(response.statusCode==200){
+      list = fromJson(response.body);
+    }
+    return list;
+  }
+  static List<charts.Series<Sale,String>> chartData(List<Sale> data){
+
+    return [charts.Series<Sale,String>(
+      id: 'Sale',
+      domainFn: (Sale s,_) =>s.Date,
+      measureFn: (Sale s,_)=>s.qty,
+      data: data
+    )
+    ];
+  }
+
+
+
 
   bool _isLoading = false;
   String? id, supplier_id;
@@ -50,9 +89,37 @@ class _InventoryPageState extends State<InventoryContent> {
   List<Order> salesOrderList = [];
   Lumpsum lumpsum = Lumpsum();
 
+
+
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final user_id = await prefs.getString('id');
+
+
+    // final res3 = await http.post(
+    //   Uri.parse("http://steefotmtmobile.com/steefo/getorderdetails.php"),
+    //   body: {
+    //     // "id" : responseData1['data'][i]['id']
+    //     "order_id": widget.order.order_id,
+    //   },
+    // );
+    // var responseData3 = jsonDecode(res3.body);
+    // for (int i = 0; i < responseData3["data"].length; i++) {
+    //   Item i = Item();
+    //   i.id = responseData3['data'][i]['id'];
+    //   i.name = responseData3['data'][i]['name'];
+    //   i.price = responseData3['data'][i]['price'];
+    //   i.qty = responseData3['data'][i]['qty'];
+    //   // qtyandprice.add(i);
+    // }
+    // setState(() {});
+    // print("object ___------------------->>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+    // print(responseData3);
+
+
+
+
+
 
     var res1 = await http
         .post(Uri.parse("http://steefotmtmobile.com/steefo/getgrade.php"));
@@ -173,13 +240,24 @@ class _InventoryPageState extends State<InventoryContent> {
 
   @override
   void initState() {
-    // TODO: implement initState
+   getdata().then((value)=> sales=value);
     loadData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    // final List<SalesData> chartData = [
+    //   SalesData(2010 as DateTime, 35),
+    //   SalesData(2011 as DateTime , 28),
+    //   SalesData(2012 as DateTime , 34),
+    //   SalesData(2013 as DateTime , 32),
+    //   SalesData(2014 as DateTime , 40)
+    // ];
+
+
+
     return WillPopScope(
       onWillPop: () async {
         if (_selected == 0) {
@@ -300,6 +378,13 @@ class _InventoryPageState extends State<InventoryContent> {
   }
 
   Widget InventoryPageBody(context) {
+    // final List<SalesData> chartData = [
+    //   SalesData(2010 as DateTime, 35),
+    //   SalesData(2011 as DateTime, 28),
+    //   SalesData(2012 as DateTime, 34),
+    //   SalesData(2013 as DateTime, 32),
+    //   SalesData(2014 as DateTime, 40)
+    // ];
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -307,76 +392,77 @@ class _InventoryPageState extends State<InventoryContent> {
           // SizedBox(
           //   height: 10,
           // ),
-          Container(
-            margin: EdgeInsets.only(left: 10, right: 10),
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                // color: Colors.white,
-                // color : Color(0xffEB6440),
-                // color : Color(0xff497174),
-                color: Color.fromARGB(255, 216, 229, 248),
-                boxShadow: []),
-            padding: EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  // width: MediaQuery.of(context).size.width / 2.5,
-                  child: Flexible(
-                    child: ListView.builder(
-                      itemCount: gradeList1.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, ind) {
-                        return Container(
-                            child: Column(
-                              children: [
-                                LumpSumTotal(context, gradeList1[ind]),
-                          ],
-                        ));
-                      },
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 110,
-                  child: Row(
-                    children: [
-                      VerticalDivider(
-                        color: Colors.grey,
-                        thickness: 2.0,
-                        width: 20,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  // flex: 1,
-                  child: Container(
-                    child: ListView.builder(
-                      itemCount: gradeList2.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, ind) {
-                        return Container(
-                            alignment: Alignment.topLeft,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                LumpSumTotal(context, gradeList2[ind]),
-                              ],
-                            ));
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.only(left: 10, right: 10),
+          //   width: MediaQuery.of(context).size.width,
+          //   decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(10.0),
+          //       // color: Colors.white,
+          //       // color : Color(0xffEB6440),
+          //       // color : Color(0xff497174),
+          //       color: Color.fromARGB(255, 216, 229, 248),
+          //       boxShadow: []),
+          //   padding: EdgeInsets.all(10.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Container(
+          //         // width: MediaQuery.of(context).size.width / 2.5,
+          //         child: Flexible(
+          //           child: ListView.builder(
+          //             itemCount: gradeList1.length,
+          //             physics: const NeverScrollableScrollPhysics(),
+          //             scrollDirection: Axis.vertical,
+          //             shrinkWrap: true,
+          //             itemBuilder: (context, ind) {
+          //               return Container(
+          //                   child: Column(
+          //                     children: [
+          //                       LumpSumTotal(context, gradeList1[ind]),
+          //                 ],
+          //               ));
+          //             },
+          //           ),
+          //         ),
+          //       ),
+          //       Container(
+          //         height: 110,
+          //         child: Row(
+          //           children: [
+          //             VerticalDivider(
+          //               color: Colors.grey,
+          //               thickness: 2.0,
+          //               width: 20,
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //       Expanded(
+          //         // flex: 1,
+          //         child: Container(
+          //           child: ListView.builder(
+          //             itemCount: gradeList2.length,
+          //             physics: const NeverScrollableScrollPhysics(),
+          //             scrollDirection: Axis.vertical,
+          //             shrinkWrap: true,
+          //             itemBuilder: (context, ind) {
+          //               return Container(
+          //                   alignment: Alignment.topLeft,
+          //                   child: Column(
+          //                     mainAxisAlignment: MainAxisAlignment.start,
+          //                     children: [
+          //                       LumpSumTotal(context, gradeList2[ind]),
+          //                     ],
+          //                   )
+          //               );
+          //             },
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           // SizedBox(
           //   height: 10,
           // ),
@@ -396,15 +482,232 @@ class _InventoryPageState extends State<InventoryContent> {
               ),
             ),
           ),
-          SizedBox(
+
+         SizedBox(
             height: 10,
           ),
           Card(
             color: Colors.white54,
             child: Container(
             height: 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // Padding(padding: EdgeInsets.only(to: 10)),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Pending",
+                        style: TextStyle(fontSize: 16,
+                          color: Colors.redAccent,
+                        fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      Text("111",
+                        style: TextStyle(fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
+                        ),
+                      )
+                    ],
+                  ),
+                  // Container(child: Divider(height: 50,color: Colors.black,)),
+                  Container(
+                    height: 90,
+                    child: Row(
+                      children: [
+                        VerticalDivider(
+                          color: Colors.black54,
+                          thickness: 2.0,
+                          width: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    Text("Confirmed",
+                      style: TextStyle(fontSize: 16,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold
+                      ),),
+                      Text("111",
+                        style: TextStyle(fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
+                        ),
+                      )
+                  ],),
+                  Container(
+                    height: 90,
+                    child: Row(
+                      children: [
+                        VerticalDivider(
+                          color: Colors.black54,
+                          thickness: 2.0,
+                          width: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    Text("Completed",
+                      style: TextStyle(fontSize: 16,
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                      Text("111",
+                        style: TextStyle(fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
+          ),
+
+          Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              //   color: Colors.black,
+              margin: EdgeInsets.only(left: 10),
+              height: 60,
+              padding: EdgeInsets.only(top: 10),
+              child: Text(
+                "Lumpsum:",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+          ),
+
+          Card(
+            color: Colors.white54,
+            child: Container(
+              height: 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // Padding(padding: EdgeInsets.only(to: 10)),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Pending",
+                        style: TextStyle(fontSize: 16,
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      Text("111",
+                        style: TextStyle(fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
+                        ),
+                      )
+                    ],
+                  ),
+                  // Container(child: Divider(height: 50,color: Colors.black,)),
+                  Container(
+                    height: 90,
+                    child: Row(
+                      children: [
+                        VerticalDivider(
+                          color: Colors.black54,
+                          thickness: 2.0,
+                          width: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Confirmed",
+                        style: TextStyle(fontSize: 16,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold
+                        ),),
+                      Text("111",
+                        style: TextStyle(fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
+                        ),
+                      )
+                    ],
+                  ),
+
+                  Container(
+                    height: 90,
+                    child: Row(
+                      children: [
+                        VerticalDivider(
+                          color: Colors.black54,
+                          thickness: 2.0,
+                          width: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Completed",
+                        style: TextStyle(fontSize: 16,
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      Text("111",
+                        style: TextStyle(fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+
+          Container(
+            height: 300,
+              child: charts.BarChart(
+                chartData(sales),
+                animate: true,
+
+              ),
+              // child: SfCartesianChart(
+              //     primaryXAxis: DateTimeAxis(),
+              //     series: <CartesianSeries>[
+              //       // Renders line chart
+              //       LineSeries<SalesData, DateTime>(
+              //           dataSource: chartData,
+              //           xValueMapper: (SalesData sales, _) => sales.year,
+              //           yValueMapper: (SalesData sales, _) => sales.sales
+              //       )
+              //     ]
+              // )
           )
+
+
 
           // Container(
           //   child: ListView.builder(
@@ -517,5 +820,17 @@ class _InventoryPageState extends State<InventoryContent> {
         ],
       ),
     );
+  }
+}
+
+class Sale {
+  final String Date;
+  final int qty;
+
+  Sale({required this.Date, required this.qty});
+
+  factory Sale.fromMap(Map<String, dynamic>map){
+    return Sale(Date:map["Date"], qty: int.parse(map["qty"]));
+
   }
 }

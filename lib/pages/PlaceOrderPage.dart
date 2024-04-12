@@ -612,7 +612,8 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             "name": listOfColumns[i]["Name"],
             "qty": listOfColumns[i]["Qty"],
             "qty_left": listOfColumns[i]["Qty"],
-            "price": listOfColumns[i]["Price"]
+            "price": listOfColumns[i]["Price"],
+            "Date" : DateTime.now().toString(),
           },
         );
         //  print("${listOfColumns[i]["Price"]}...................");
@@ -627,6 +628,7 @@ class _PlaceOrderPageState extends State<PlaceOrderContent> {
             "name": listOfColumns[i]["Name"],
             "qty": listOfColumns[i]["Qty"],
             "price": listOfColumns[i]["Price"],
+            "DateTime" : DateTime.now().toString(),
             "basePrice": base_price.text,
           },
         );

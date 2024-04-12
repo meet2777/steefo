@@ -1,4 +1,4 @@
 class Item{
-  String? name,qty,price;
+  String? id,name,qty,price;
 
 }

@@ -521,8 +521,8 @@ class _ProfilePageState extends State<ProfileContent> {
                             ),
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.transparent,
-                                  onSurface: Colors.transparent,
+                                  backgroundColor: Colors.transparent,
+                                  disabledForegroundColor: Colors.transparent.withOpacity(0.38), disabledBackgroundColor: Colors.transparent.withOpacity(0.12),
                                   shadowColor: Colors.transparent,
                                   //make color or elevated button transparent
                                 ),
@@ -560,7 +560,7 @@ class _ProfilePageState extends State<ProfileContent> {
                                     bottom: 18,
                                   ),
                                   child: Text("Delete Account",
-                                    style: const TextStyle(fontFamily: 'Poppins_Bold'),
+                                    style: const TextStyle(fontFamily: 'Poppins_Bold',color: Colors.white),
                                   ),
                                 )
                             ),
